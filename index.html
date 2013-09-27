@@ -248,7 +248,10 @@
             navigator.userAgent.indexOf("Win64") != -1 ) OS = "WIN";
         if (navigator.platform.indexOf("Mac") != -1) OS = "OSX";
         if (navigator.appVersion.indexOf("X11") != -1 ||
-            navigator.appVersion.indexOf("Linux") != -1) OS = "UNIX";
+            navigator.appVersion.indexOf("Linux") != -1) {
+            OS = "LINUX32";
+            if (navigator.appVersion.indexOf("x86_64") != -1) OS = "LINUX64";
+        }
         
         $.getJSON('http://dev.brackets.io/updates/stable/en.json', function(data){
             // assume first entry is latest
