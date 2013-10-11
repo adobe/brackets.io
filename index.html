@@ -261,6 +261,13 @@
             OS = "LINUX32";
             if (navigator.appVersion.indexOf("x86_64") != -1) OS = "LINUX64";
         }
+        if (navigator.userAgent.indexOf("iPad") != -1 ||
+            navigator.userAgent.indexOf("iPod") != -1 ||
+            navigator.userAgent.indexOf("iPhone") != -1 ||
+            navigator.userAgent.indexOf("Android") != -1) OS = "OTHER";
+        if(OS == "OTHER"){
+            document.getElementById("hero-cta-button").style.display = "none";
+        }
 
         $.getJSON('http://dev.brackets.io/updates/stable/en.json', function(data){
             // assume first entry is latest
@@ -274,7 +281,7 @@
                 version_url = "http://download.brackets.io/file.cfm?platform=" + OS + "&build=" + build.version;
             }
             document.getElementById("download-version").innerHTML = version_label;
-            document.getElementById("download-button").href = version_url;
+            document.getElementById("hero-cta-button").href = version_url;
             // update features (limit 5)
             var feature_content = "<h2>New Features in " + build.versionString + "</h2>";
             for(i = 0; i < Math.min(build.newFeatures.length, 5); i++) {
