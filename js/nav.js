@@ -16,3 +16,13 @@ $(window).bind('resize', function(){
         $('.nav').show();
     }
 });
+
+/* For mobile */
+$('html').on('touchstart', function(e) {
+    $('.nav').hide();
+})
+
+$('#hamburger').click(function(event){
+    event.stopPropagation();
+});    
+                  
