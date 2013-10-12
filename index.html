@@ -60,7 +60,7 @@
       </style>
     <![endif]-->
 </head>
-<body>
+<body onload="init();">
     <div id="header-wrapper">
         <div id="header" class="row">
             <div class="large-12 columns clearfix">
@@ -103,6 +103,7 @@
                 </div>
             </div>
         </div>
+        <canvas id="hero-create" width="600" height="300" style="background-color:#f00;"></canvas>
     </div>
 
     <div id="sub-hero-wrapper">
@@ -304,6 +305,49 @@
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
+    </script>
+    
+    <!-- create.js hero -->
+    <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script src="http://code.createjs.com/tweenjs-0.4.0.min.js"></script>
+    <script src="http://code.createjs.com/movieclip-0.6.0.min.js"></script>
+    <script src="http://code.createjs.com/preloadjs-0.3.0.min.js"></script>
+    <script src="js/hero-create.js"></script>
+    
+    <script>
+        var canvas, stage, exportRoot;
+        
+        function init() {
+            canvas = document.getElementById("hero-create");
+            images = images||{};
+        
+            var manifest = [
+                {src:"img/hero/fragmenthtmlcode.png", id:"fragmenthtmlcode"},
+                {src:"img/hero/fragmenttagunhighlight.png", id:"fragmenttagunhighlight"},
+                {src:"img/hero/hero03quickedit.png", id:"hero03quickedit"}
+            ];
+        
+            var loader = new createjs.LoadQueue(false);
+            loader.addEventListener("fileload", handleFileLoad);
+            loader.addEventListener("complete", handleComplete);
+            loader.loadManifest(manifest);
+        }
+        
+        function handleFileLoad(evt) {
+            if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+        }
+        
+        function handleComplete() {
+            exportRoot = new lib.Untitled1();
+        
+            stage = new createjs.Stage(canvas);
+            stage.scaleX = stage.scaleY = .5;
+            stage.addChild(exportRoot);
+            stage.update();
+        
+            createjs.Ticker.setFPS(24);
+            createjs.Ticker.addEventListener("tick", stage);
+        }
     </script>
     
 </body>
