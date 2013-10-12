@@ -1,9 +1,9 @@
-$('#hamburger').click(function(e) {
+$('#hamburger').on('click touchstart', function() {
    $('.nav').show();
    return false;
 });
 
-$(document).click(function(e){
+$('html').on('click touchstart', function() {
     if ($(window).width() <= 890) {
         $('.nav').hide();
     } else {
@@ -17,12 +17,7 @@ $(window).bind('resize', function(){
     }
 });
 
-/* For mobile */
-$('html').on('touchstart', function(e) {
-    $('.nav').hide();
-})
-
-$('#hamburger').click(function(event){
-    event.stopPropagation();
-});    
-                  
+$('.nav').on('click touchstart', function(e) {
+    e.stopPropagation();    
+});
+        
