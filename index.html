@@ -55,6 +55,8 @@
         }
     </style>
 
+    <link rel="stylesheet" href="css/spinner.css" />
+
     <!--[if gte IE 9]>
       <style type="text/css">
         .gradient {
@@ -192,52 +194,13 @@
         </div>
         <div class="large-4 columns">
             <h2>Recent Blog Posts</h2>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/11/20/1240/">Brackets Sprint 34 Build</a>
-            </h3>
-            <p>November 20, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/11/01/brackets-sprint-33-build/">Brackets Sprint 33 Build</a>
-            </h3>
-            <p>November 1, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/10/14/brackets-sprint-32-build/">Brackets Sprint 32 Build</a>
-            </h3>
-            <p>October 14, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/10/07/new-linting-api/">New Linting API</a>
-            </h3>
-            <p>October 7, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/09/26/reflow-cleaner-extension/">Reflow Cleaner Extension</a>
-            </h3>
-            <p>September 26, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/09/23/brackets-sprint-31-build/">Brackets Sprint 31 Build</a>
-            </h3>
-            <p>September 23, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/09/06/new-brackets-committer-lance-campbell/">New Brackets Committer: Lance Campbell</a>
-            </h3>
-            <p>September 6, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/09/05/brackets-sprint-30-build/">Brackets Sprint 30 Build</a>
-            </h3>
-            <p>September 5, 2013</p>
-
-            <h3>
-                <a href="http://blog.brackets.io/2013/08/28/theseus-javascript-debugger-for-chrome-and-nodejs/">Theseus JavaScript Debugger for Chrome and NodeJS</a>
-            </h3>
-            <p>August 28, 2013</p>
-
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <div id="blogposts">
+                <!-- this will be filled dynamically -->
+            </div>
             <p>
                 <a href="http://blog.brackets.io">More on blog.brackets.io&hellip;</a>
             </p>
@@ -368,6 +331,36 @@
             feature_content = feature_content + '<p><a href="' + build.releaseNotesURL + '">More in the release notes.</a></p>';
             document.getElementById("features").innerHTML = feature_content;
         });
+    </script>
+
+    <script>
+        function recentBlogposts() {
+            var site = "http://blog.brackets.io/feed/";
+
+            // get RSS xml and convert it to json
+            // Request that YSQL string, and run a callback function.
+            // Pass a defined function to prevent cache-busting.
+            var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + site + '"') + '&format=json&callback=?';
+
+            var $blogposts = $("#blogposts");
+            $.getJSON(yql, function(data){
+                var options = {year: "numeric", month: "long", day: "numeric"};
+                var $blogpostsDiv = $blogposts.append('<div id="blogposts"></div>').hide();
+
+                data.query.results.rss.channel.item.forEach(function (item) {
+                    $blogpostsDiv.append('<h3><a href="' + item.link + '">' +
+                                      item.title +
+                                      '</a></h3><p>' +
+                                      new Date(item.pubDate).toLocaleDateString("en-US", options) +
+                                      '</p>');
+                });
+
+                $(".spinner").hide();
+                $blogposts.fadeIn(1000);
+            });
+        }
+
+        $(recentBlogposts());
     </script>
 
     <script type="text/javascript">
