@@ -346,29 +346,38 @@
 
     <script>
         function recentBlogposts() {
-            var site = "http://blog.brackets.io/feed/";
-
-            // get RSS xml and convert it to json
-            // Request that YSQL string, and run a callback function.
-            // Pass a defined function to prevent cache-busting.
-            var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from xml where url="' + site + '"') + '&format=json&callback=?';
+            var site = "http://blog.brackets.io/feed/json";
 
             var $blogposts = $("#blogposts");
-            $.getJSON(yql, function(data){
+
+            function onSuccess(data) {
                 var options = {year: "numeric", month: "long", day: "numeric"};
                 var $blogpostsDiv = $blogposts.append('<div id="blogposts"></div>').hide();
 
-                data.query.results.rss.channel.item.forEach(function (item) {
-                    $blogpostsDiv.append('<h3><a href="' + item.link + '">' +
+                data.forEach(function (item) {
+                    $blogpostsDiv.append('<h3><a href="' + item.permalink + '">' +
                                       item.title +
                                       '</a></h3><p>' +
-                                      new Date(item.pubDate).toLocaleDateString("en-US", options) +
+                                      new Date(item.date).toLocaleDateString("en-US", options) +
                                       '</p>');
                 });
 
                 $(".spinner").hide();
                 $blogposts.fadeIn(1000);
-            });
+            };
+
+            function onError() {
+                var $blogpostsDiv = $blogposts.append("<p>Refresh page to load posts</p>").hide();
+                $(".spinner").hide();
+                $blogposts.fadeIn(1000);
+            };
+
+            $.ajax({
+                type: "GET",
+                url: site,
+                dataType: "json",
+                success: onSuccess,
+                error: onError});
         }
 
         $(recentBlogposts());
