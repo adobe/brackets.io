@@ -335,7 +335,8 @@
 
     <script>
         function recentBlogposts() {
-            var site = "http://blog.brackets.io/feed/json";
+            var site = "http://blog.brackets.io/feed/json",
+                dateRegex = /(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)/;
 
             var $blogposts = $("#blogposts");
 
@@ -344,10 +345,18 @@
                 var $blogpostsDiv = $blogposts.append('<div id="blogposts"></div>').hide();
 
                 data.forEach(function (item) {
+                    var dateComponents = item.date.match(dateRegex),
+                        postingDate = new Date(dateComponents[1],
+                                               dateComponents[2] - 1, // zero based month
+                                               dateComponents[3],
+                                               dateComponents[4],
+                                               dateComponents[5],
+                                               dateComponents[6]);
+
                     $blogpostsDiv.append('<h3><a href="' + item.permalink + '">' +
                                       item.title +
                                       '</a></h3><p>' +
-                                      new Date(item.date).toLocaleDateString("en-US", options) +
+                                      postingDate.toLocaleDateString("en-US", options) +
                                       '</p>');
                 });
 
