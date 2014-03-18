@@ -291,17 +291,18 @@
     </script>
 
     <script>
+        var ext="";
         var OS = "UNKNOWN";
         if (navigator.userAgent.indexOf("Win32") != -1 ||
             navigator.userAgent.indexOf("Windows") != -1 ||
             navigator.userAgent.indexOf("WOW64") != -1 ||
-            navigator.userAgent.indexOf("Win64") != -1) OS = "WIN";
-        if (navigator.platform.indexOf("Mac") != -1) OS = "OSX";
+            navigator.userAgent.indexOf("Win64") != -1) {OS = "WIN"; ext=".msi";};
+        if (navigator.platform.indexOf("Mac") != -1) {OS = "OSX"; ext=".dmg";};
         if (navigator.appVersion.indexOf("X11") != -1 ||
             navigator.appVersion.indexOf("Linux") != -1) {
-            OS = "LINUX32";
+            OS = "LINUX32"; ext=".32-bit.deb";
             if (navigator.appVersion.indexOf("x86_64") != -1 ||
-                navigator.userAgent.indexOf("x86_64") != -1) OS = "LINUX64";
+                navigator.userAgent.indexOf("x86_64") != -1) {OS = "LINUX64"; ext=".64-bit.deb";}
         }
         if (navigator.userAgent.indexOf("iPad") != -1 ||
             navigator.userAgent.indexOf("iPod") != -1 ||
@@ -311,22 +312,30 @@
             document.getElementById("download").style.display = "none";
         }
 
-        $.getJSON('http://dev.brackets.io/updates/stable/en.json', function(data) {
+      //  $.getJSON('http://dev.brackets.io/updates/stable/en.json', function(data) {
             // assume first entry is latest
-            var build = data[0];
-            build.version = build.versionString.substr(build.versionString.indexOf(' ') + 1, build.versionString.length);
+            var build = "37";
+            
+            var url = "https://github.com/adobe/brackets/releases/download/sprint-"+build+"/Brackets.Sprint."+ build + ext;
+        
+           // build.version = build.versionString.substr(build.versionString.indexOf(' ') + 1, build.versionString.length);
 
             // update button
             if (OS != "OTHER") {
+                var version_label = "";
+                if (OS != "UNKNOWN") version_label = build + ' (' + OS + ')';
+                /*
                 var version_label = build.versionString;
                 var version_url = build.downloadURL;
                 if (OS != "UNKNOWN") {
                     version_label = version_label + ' (' + OS + ')';
                     version_url = "http://download.brackets.io/file.cfm?platform=" + OS + "&build=" + build.version;
                 }
+                */
                 document.getElementById("download-version").innerHTML = version_label;
-                document.getElementById("hero-cta-button").href = version_url;
+                document.getElementById("hero-cta-button").href = url;
             }
+            
             // update features (limit 5)
             var feature_content = "<h2>New Features in " + build.versionString + "</h2>";
             for (i = 0; i < Math.min(build.newFeatures.length, 5); i++) {
@@ -335,7 +344,7 @@
             }
             feature_content = feature_content + '<p><a href="' + build.releaseNotesURL + '">More in the release notes.</a></p>';
             document.getElementById("features").innerHTML = feature_content;
-        });
+      //  });
     </script>
 
     <script>
