@@ -316,7 +316,7 @@ filter: none;
             }
 
             $.getJSON('http://dev.brackets.io/updates/stable/en.json', function(data) {
-                var build = data;
+                var build = data[0];
                 // update features (limit 5)
                 var feature_content = "<h2>New Features in " + build.versionString + "</h2>";
                 for (i = 0; i < Math.min(build.newFeatures.length, 5); i++) {
@@ -326,6 +326,7 @@ filter: none;
                 feature_content = feature_content + '<p><a href="' + build.releaseNotesURL + '">More in the release notes.</a></p>';
                 document.getElementById("features").innerHTML = feature_content;
             });
+            
             // assume first entry is latest
             var buildNum = "37";
 
