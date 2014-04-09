@@ -413,7 +413,7 @@ filter: none;
             document.getElementById("features").innerHTML = feature_content;
         });
 
-         // assume first entry is latest
+         // SET THE BUILD NUMBER HERE
         var buildNum = "37";
 
         var url = "https://github.com/adobe/brackets/releases/download/sprint-" + buildNum + "/Brackets.Sprint." + buildNum + ext;
@@ -422,20 +422,15 @@ filter: none;
         if (OS != "OTHER") {
             var version_label = "";
             if (OS != "UNKNOWN") version_label = buildNum + ' (' + OS + ')';
-            /*
-                var version_label = build.versionString;
-                var version_url = build.downloadURL;
-                if (OS != "UNKNOWN") {
-                    version_label = version_label + ' (' + OS + ')';
-                    version_url = "http://download.brackets.io/file.cfm?platform=" + OS + "&build=" + build.version;
-                }
-                */
             document.getElementById("download-version").innerHTML = version_label;
             document.getElementById("hero-cta-button").href = url;
             document.getElementById("hero-cta-button").onclick = function(e) {
-                //e.preventDefault();
+                e.preventDefault();
+                var downloadStarted = false;
+                setTimeout(function() {  if(!downloadStarted) window.location.href = url; }, 1000); // fallback
                 _gaq.push(['_trackEvent', 'Downloads', buildNum, OS], function(){
-                    window.location=url;
+                    downloadStarted = true;
+                    window.location.href=url;
                 });
             }
         }
