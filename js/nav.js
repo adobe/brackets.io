@@ -1,5 +1,5 @@
 $('#hamburger').on('click touchstart', function() {
-   $('.nav').show();
+   $('.nav').toggle();
    return false;
 });
 
