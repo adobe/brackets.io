@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="css/foundation.readonly.min.css" />
 
     <link rel="stylesheet" href="css/reveal.css">
-    
+
     <link rel="shortcut icon" href="favicon.ico" />
 
     <!-- social media images -->
@@ -44,11 +44,6 @@
 
     <!-- Only Edit brackets.io.css -->
     <link rel="stylesheet" href="css/brackets.io.css" />
-
-    <script src="js/vendor/custom.modernizr.js"></script>
-
-    <!-- Source Sans Pro - Regular, Italic, Semibold -->
-    <script src="http://use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
 
     <!-- These stop FOUT -->
     <style type="text/css">
@@ -305,7 +300,7 @@ filter: none;
             <p data-i18n="index.page.system-requirements.mac.header">Mac OS X</p>
             <ul>
                 <li data-i18n="index.page.system-requirements.mac.list.0">Multicore Intel processor</li>
-                <li data-i18n="index.page.system-requirements.mac.list.1">Mac OS X v10.6, v10.7 or v10.8</li>
+                <li data-i18n="index.page.system-requirements.mac.list.1">Mac OS X v10.6, v10.7, v10.8 or v10.9</li>
                 <li data-i18n="index.page.system-requirements.mac.list.2">256MB of RAM (2GB of RAM for Live Development)</li>
                 <li data-i18n="index.page.system-requirements.mac.list.3">200MB of available hard-disk space for installation</li>
                 <li data-i18n="index.page.system-requirements.mac.list.4">1280x800 display with 16-bit video card</li>
@@ -339,6 +334,10 @@ filter: none;
         <a class="close-reveal-modal">&#215;</a>
     </section>
 
+    <script src="js/vendor/custom.modernizr.js"></script>
+
+    <!-- Source Sans Pro - Regular, Italic, Semibold -->
+    <script src="http://use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
 
     <script>
         document.write('<script src=js/vendor/' +
@@ -357,7 +356,7 @@ filter: none;
             $("#requirements-link").click(function() {
                   //  alert("testing");
                    // $("#sub-hero-wrapper").empty();
-                    
+
                     $.get( "requirements.inc", function(data) {
                         $( "#modal" ).html( data );
                     });
@@ -398,36 +397,7 @@ filter: none;
         }
     </script>
 
-    <script>
-        var requestedLang,
-            lang,
-            options = {
-                fallbackLng: false,
-                // debug: true, // development only
-                detectLngQS: "lang", // use ?lang=... instead of ?setLng=...
-                cookieName: "lang", // use cookie "lang" instead of "i18next"
-                load: "unspecific", // only use the unspecific locale ("de" instead of "de-DE")
-                // useLocalStorage: true, // production only
-                localStorageExpirationTime: 3 * 24 * 60 * 60 * 1000 // cache 3 days
-            },
-            i18nLoaded = new $.Deferred();
-
-        i18n.init(options)
-            .done(function () {
-                // the heart variable is used to insert the blue heart in index.page.content.why.love-and-js.header
-                $(document).i18n({
-                    heart: "<a href='contribute.html'>&hearts;</a>",
-                    twitter: "<a href='http://www.twitter.com/brackets'>Twitter</a>",
-                    googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>"
-                });
-            })
-            .always(function () {
-                lang = i18n.lng();
-                $("html").attr("lang", lang);
-                i18nLoaded.resolve();
-            });
-        requestedLang = lang = i18n.lng();
-    </script>
+    <script src="js/load.i18next.js"></script>
 
     <script>
         var shortLocale = (requestedLang && requestedLang.split("-")[0]) || "en",
@@ -475,10 +445,10 @@ filter: none;
         if (OS != "OTHER") {
             var buildNum = "38"; // SET THE BUILD NUMBER HERE
             var url = "https://github.com/adobe/brackets/releases/download/sprint-" + buildNum + "/Brackets.Sprint." + buildNum + ext;
-            
+
             ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
             ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-                
+
             var version_label = "";
             if (OS != "UNKNOWN") version_label = buildNum + ' (' + OS + ')';
             document.getElementById("download-version").innerHTML = version_label;
@@ -486,7 +456,6 @@ filter: none;
         }
         // other-download track
         logAndGo("other-downloads", document.getElementById("other-downloads").href, ['_trackEvent', 'Other-Downloads', buildNum, OS]);
-        
     </script>
 
     <script>

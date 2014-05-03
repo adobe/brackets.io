@@ -32,18 +32,13 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="css/normalize.readonly.css" />
     <link rel="stylesheet" href="css/foundation.readonly.min.css" />
-    
+
     <!-- social media images -->
     <link rel="image_src" href="/img/hero.png" />
     <meta property="og:image" content="http://www.brackets.io/img/hero.png"/>
 
     <!-- Only Edit brackets.io.css -->
     <link rel="stylesheet" href="css/brackets.io.css" />
-
-    <script src="js/vendor/custom.modernizr.js"></script>
-
-    <!-- Source Sans Pro - Regular, Italic, Semibold -->
-    <script src="http://use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
 
     <!-- These stop FOUT -->
     <style type="text/css">
@@ -98,7 +93,7 @@
             </div>
         </div>
     </div>
-    
+
     <!--
     <div id="banner-wrapper">
         <div id="banner" class="row">
@@ -354,6 +349,11 @@
         </div>
     </div>
 
+    <script src="js/vendor/custom.modernizr.js"></script>
+
+    <!-- Source Sans Pro - Regular, Italic, Semibold -->
+    <script src="http://use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
+
     <script>
         document.write('<script src=js/vendor/' +
         ('__proto__' in {} ? 'zepto' : 'jquery') +
@@ -365,33 +365,8 @@
     <script>
         $(document).foundation();
     </script>
-    
-    <script>
-        var requestedLang,
-            lang,
-            options = {
-                fallbackLng: false,
-                // debug: true, // development only
-                detectLngQS: "lang", // use ?lang=... instead of ?setLng=...
-                cookieName: "lang", // use cookie "lang" instead of "i18next"
-                load: "unspecific", // only use the unspecific locale ("de" instead of "de-DE")
-                // useLocalStorage: true, // production only
-                localStorageExpirationTime: 3 * 24 * 60 * 60 * 1000 // cache 3 days
-            },
-            i18nLoaded = new $.Deferred();
 
-        i18n.init(options)
-            .done(function () {
-                // the heart variable is used to insert the blue heart in index.page.content.why.love-and-js.header
-                $(document).i18n();
-            })
-            .always(function () {
-                lang = i18n.lng();
-                $("html").attr("lang", lang);
-                i18nLoaded.resolve();
-            });
-        requestedLang = lang = i18n.lng();
-    </script>
+    <script src="js/load.i18next.js"></script>
 
     <script>
         function localizedCommentsCount (count) {
@@ -421,7 +396,7 @@
             }, error:function(data){
                 // fail silently
             }});
-            
+
             // get starter features from trello
             $.ajax({url:'https://api.trello.com/1/boards/4f90a6d98f77505d7940ce88/cards?key=1953abc13ad18fd16a66a2a1d938a07a&filter=open&fields=badges,name,url,labels', dataType:'json', success:function(data){
                 i18nLoaded.done(function () {
@@ -451,7 +426,7 @@
             }});
         };
     </script>
-    
+
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-32881640-1']);
@@ -463,6 +438,6 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-    
+
 </body>
 </html>
