@@ -1,4 +1,4 @@
-var production = false; // false = development, true = production
+var production = true; // false = development, true = production
 
 var requestedLang,
     lang,
