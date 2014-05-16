@@ -189,7 +189,7 @@ filter: none;
                 <a href="http://www.youtube.com/watch?v=VKitqLpJtAY&feature=share&list=PL4BC6BE6AA61BE69D" data-i18n="index.page.content.why.video">Watch the Video&hellip;</a>
             </p>
         </div>
-        <div class="large-4 columns" id="features">
+        <div class="large-4 columns loading" id="features">
             <h2 data-i18n="index.page.content.new-features.new-features">New Features</h2>
 
             <h3 data-i18n="index.page.content.new-features.live-html.header"><!-- JS generated content --></h3>
@@ -211,9 +211,7 @@ filter: none;
         </div>
         <div class="large-4 columns">
             <h2 data-i18n="index.page.content.blog.header">Recent Blog Posts</h2>
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
+            <div class="spinner" id="blogposts-spinner">
             </div>
             <div id="blogposts">
                 <!-- this will be filled dynamically -->
@@ -413,6 +411,7 @@ filter: none;
                 }
                 feature_content = feature_content + '<p><a href="' + build.releaseNotesURL + '">' + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + '</a></p>';
                 document.getElementById("features").innerHTML = feature_content;
+                document.getElementById("features").className = document.getElementById("features").className.replace("loading", "").trim();
             });
         });
 
@@ -477,13 +476,13 @@ filter: none;
                         '</p>');
                 });
 
-                $(".spinner").hide();
+                $("#blogposts-spinner").hide();
                 $blogposts.fadeIn(1000);
             };
 
             function onError() {
                 var $blogpostsDiv = $blogposts.append("<p>Refresh page to load posts</p>").hide();
-                $(".spinner").hide();
+                $("#blogposts-spinner").hide();
                 $blogposts.fadeIn(1000);
             };
 
