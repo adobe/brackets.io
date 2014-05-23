@@ -389,20 +389,21 @@ filter: none;
 
     <script>
         var shortLocale = (requestedLang && requestedLang.split("-")[0]) || "en",
-            versionInfoBaseUrl = "/updates/stable/",
+            versionInfoBaseUrl = "http://s3.amazonaws.com/files.brackets.io/updates/stable/",
             versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
 
         if (shortLocale !== "en") {
             $.ajax({
                 url: versionInfoUrl,
-                type: "HEAD"
+                type: "HEAD",
+                dataType: "jsonp"
             }).fail(function () {
                 shortLocale = "en";
                 versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
             });
         }
 
-        $.getJSON(versionInfoUrl, function(data) {
+        $.getJSON(versionInfoUrl + "callback=?", function(data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 // update features (limit 5)
