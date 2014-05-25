@@ -319,12 +319,6 @@ filter: none;
         </div>
         <a class="close-reveal-modal">&#215;</a>
     </section>
-    <section id="video-modal" class="reveal-modal large" data-reveal>
-        <h2></h2>
-        <div class="flex-video"></div>
-
-        <a class="close-reveal-modal">&#215;</a>
-    </section>
 
     <script src="js/vendor/custom.modernizr.js"></script>
 
@@ -335,42 +329,9 @@ filter: none;
     <script src="js/i18next.min.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/nav.js"></script>
+    <script src="js/youtube-modal.js"></script>
     <script>
         $(document).foundation();
-    </script>
-
-    <script>
-        function isMobile() {
-            return !!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/.test(navigator.userAgent);
-        }
-
-        $("[data-yt-id]").on("click", function (e) {
-            // don't show the modal on mobile devices - these will probably provide an option to open videos in some app
-            if(isMobile() || $(document).width() < 600) {
-                return;
-            }
-
-            e.preventDefault();
-            var $this = $(this),
-                youTubeId = $this.data("yt-id"),
-                modalTitle = $this.text(),
-                youTubeLink = $this.attr("href"),
-                $modal = $("#video-modal"),
-                translationId = $this.data("i18n");
-
-            function setTitle(title) {
-                $modal.find("h2").html("<a href='" + youTubeLink + "'>" + title + "</a>");
-            }
-
-            setTitle(modalTitle);
-            if (i18nLoaded.state() == "pending") {
-                i18nLoaded.done(function () {
-                    setTitle(i18n.t(translationId));
-                });
-            }
-            $modal.find(".flex-video").html("<iframe width='420' height='315' src='//www.youtube.com/embed/" + youTubeId + (youTubeId.indexOf("?") > -1 ? "&" : "?") + "autoplay=1' frameborder='0' allowfullscreen></iframe>");
-            $modal.foundation("reveal", "open");
-        });
     </script>
 
     <script>
