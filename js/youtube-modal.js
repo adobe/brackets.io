@@ -13,8 +13,9 @@ function isMobile() {
 }
 
 $("[data-yt-id]").on("click", function (e) {
+    var $window = $(window);
     // don't show the modal on mobile devices - these will probably provide an option to open videos in some app
-    if(isMobile() || $(document).width() < 600) {
+    if(isMobile() || $window.width() < 450) {
         return;
     }
 
@@ -36,6 +37,16 @@ $("[data-yt-id]").on("click", function (e) {
             setTitle(i18n.t(translationId));
         });
     }
-    $modal.find(".flex-video").html("<iframe width='420' height='315' src='//www.youtube.com/embed/" + youTubeId + (youTubeId.indexOf("?") > -1 ? "&" : "?") + "autoplay=1' frameborder='0' allowfullscreen></iframe>");
+    $modal.find(".flex-video")
+        .html("<iframe width='420' height='315' src='//www.youtube.com/embed/" + youTubeId + (youTubeId.indexOf("?") > -1 ? "&" : "?") + "autoplay=1' frameborder='0' allowfullscreen></iframe>")
+        .toggleClass("widescreen", $window.width() > $window.height());
     $modal.foundation("reveal", "open");
+
+    // scroll modal into view
+    window.setTimeout(function () {
+        var scrollTop = $modal.offset().top - $("#header-wrapper").height() + 10;
+        $("html, body").animate({scrollTop: scrollTop}, 300, function () {
+            $(this).scrollTop(scrollTop);
+        });
+    }, 500);
 });
