@@ -1,7 +1,7 @@
 // NOTE: We have to load this script before calling $(document).foundation() (or call it later again) in order to let Foundation apply the correct styles
 
 $("script").first().before(
-    "<section id='video-modal' class='reveal-modal large' data-reveal>" +
+    "<section id='video-modal' class='reveal-modal' data-reveal>" +
         "<h2></h2>" +
         "<div class='flex-video'></div>" +
         "<a class='close-reveal-modal'>&#215;</a>" +
@@ -15,7 +15,7 @@ function isMobile() {
 $("[data-yt-id]").on("click", function (e) {
     var $window = $(window);
     // don't show the modal on mobile devices - these will probably provide an option to open videos in some app
-    if(isMobile() || $window.width() < 450) {
+    if(isMobile() || $window.width() < 400) {
         return;
     }
 
@@ -27,6 +27,23 @@ $("[data-yt-id]").on("click", function (e) {
         $modal = $("#video-modal"),
         translationId = $this.data("i18n");
 
+    function onResize() {
+        var windowHeight = $window.height(),
+            windowWidth = $window.width(),
+            elemWidth = Math.min(1.25 * windowHeight, 0.95 * windowWidth);
+
+        /*
+        #video-modal {
+            max-width: 95vw;
+            margin-left: -62.5vh;
+        }
+        */
+        $modal
+            .css("width", elemWidth)
+            .css("margin-left", -0.5 * elemWidth)
+            .find(".flex-video").toggleClass("widescreen", !!(windowWidth > windowHeight));
+        console.log(Math.random());
+    }
     function setTitle(title) {
         $modal.find("h2").html("<a href='" + youTubeLink + "'>" + title + "</a>");
     }
@@ -37,16 +54,20 @@ $("[data-yt-id]").on("click", function (e) {
             setTitle(i18n.t(translationId));
         });
     }
-    $modal.find(".flex-video")
-        .html("<iframe width='420' height='315' src='//www.youtube.com/embed/" + youTubeId + (youTubeId.indexOf("?") > -1 ? "&" : "?") + "autoplay=1' frameborder='0' allowfullscreen></iframe>")
-        .toggleClass("widescreen", $window.width() > $window.height());
+    $modal.find(".flex-video").html("<iframe width='420' height='315' src='//www.youtube.com/embed/" + youTubeId + (youTubeId.indexOf("?") > -1 ? "&" : "?") + "autoplay=1' frameborder='0' allowfullscreen></iframe>");
     $modal.foundation("reveal", "open");
 
     // scroll modal into view
-    window.setTimeout(function () {
+    $modal.on("opened", function () {
+        $window.on("resize", onResize);
+        onResize();
+
         var scrollTop = $modal.offset().top - $("#header-wrapper").height() + 10;
-        $("html, body").animate({scrollTop: scrollTop}, 300, function () {
+        $("html, body").animate({scrollTop: scrollTop}, 500, function () {
             $(this).scrollTop(scrollTop);
         });
-    }, 500);
+    });
+    $modal.on("close", function () {
+        $window.off("resize", onResize);
+    });
 });
