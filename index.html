@@ -395,15 +395,14 @@ filter: none;
         if (shortLocale !== "en") {
             $.ajax({
                 url: versionInfoUrl,
-                type: "HEAD",
-                dataType: "jsonp"
+                type: "HEAD"
             }).fail(function () {
                 shortLocale = "en";
                 versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
             });
         }
 
-        $.getJSON(versionInfoUrl + "?callback=?", function(data) {
+        $.getJSON(versionInfoUrl, function(data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 // update features (limit 5)
@@ -426,7 +425,7 @@ filter: none;
                 setTimeout(function() {  if(!downloadStarted) window.location.href = _url; }, 1200); // fallback
                 _gaq.push(tagObj, function(){
                     downloadStarted = true;
-                    setTimeout(function() {  window.location.href = _url; }, 1000); // short delay just in case it doens't get logged
+                    setTimeout(function() {  window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
                 });
             }
         }
