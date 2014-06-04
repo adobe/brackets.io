@@ -355,16 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>Displays an auto suggest pop-up list of files to allow the user to quickly navigate to a file and lines
-within a file.
-Uses FileIndexManger to supply the file list.</p>
-<p>TODO (issue 333) - currently jquery smart auto complete is used for the pop-up list. While it mostly works
-it has several issues, so it should be replace with an alternative. Issues:</p>
-<ul>
-<li>the pop-up position logic has flaws that require CSS workarounds</li>
-<li>the pop-up properties cannot be modified once the object is constructed</li>
-</ul>
-
+              
             </div>
           </section>
     
@@ -405,10 +396,10 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 <h4>CURSOR_POS_EXP</h4>
                 <dl>
                 </dl>
-                <div class="description"><p>@const {RegExp} The regular expression to check the cursor position</p>
+                <div class="description"><p>The regular expression to check the cursor position</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var CURSOR_POS_EXP = new RegExp(&quot;:([^,]+)?(,(.+)?)?&quot;);</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var CURSOR_POS_EXP = new RegExp(&quot;:([^,]+)?(,(.+)?)?&quot;);</code></pre>
               </div>
               <div class="member private">
       
@@ -418,12 +409,14 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 </span>
                 <h4>_curDialog</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Dialog</dd>
                     <dt>Private</dt>
                 </dl>
                 <div class="description"><p>The currently open quick open dialog.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _curDialog;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _curDialog;</code></pre>
               </div>
               <div class="member">
       
@@ -433,11 +426,13 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 </span>
                 <h4>currentPlugin</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>QuickOpenPlugin</dd>
                 </dl>
-                <div class="description"><p>@type {QuickOpenPlugin}</p>
+                <div class="description"><p>Current plugin</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var currentPlugin = null;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var currentPlugin = null;</code></pre>
               </div>
               <div class="member">
       
@@ -447,11 +442,13 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 </span>
                 <h4>fileList</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Array.&lt;FileInfo&gt;</dd>
                 </dl>
-                <div class="description"><p>@type Array.&lt;FileInfo&gt;</p>
+                <div class="description"><p>List of files</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var fileList;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var fileList;</code></pre>
               </div>
               <div class="member">
       
@@ -461,11 +458,13 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 </span>
                 <h4>fileListPromise</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>$.Promise</dd>
                 </dl>
-                <div class="description"><p>@type $.Promise</p>
+                <div class="description"><p>File list promise</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var fileListPromise;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var fileListPromise;</code></pre>
               </div>
               <div class="member">
       
@@ -475,11 +474,13 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
                 </span>
                 <h4>plugins</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Array.&lt;QuickOpenPlugin&gt;</dd>
                 </dl>
-                <div class="description"><p>@type Array.&lt;QuickOpenPlugin&gt;</p>
+                <div class="description"><p>List of plugins</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var plugins = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var plugins = [];</code></pre>
               </div>
               
             </section>
@@ -502,7 +503,7 @@ it has several issues, so it should be replace with an alternative. Issues:</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function QuickOpenPlugin(name, languageIds, done, search, match, itemFocus, itemSelect, resultsFormatter, matcherOptions, label) {
+              <pre class="language-javascript"><code class="language-javascript">    function QuickOpenPlugin(name, languageIds, done, search, match, itemFocus, itemSelect, resultsFormatter, matcherOptions, label) {
         this.name = name;
         this.languageIds = languageIds;
         this.done = done;
@@ -560,7 +561,7 @@ If itemFocus() makes changes to the current document or cursor/scroll position a
 cancels Quick Open (via Esc), those changes are automatically reverted.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addQuickOpenPlugin(pluginDef) {
+              <pre class="language-javascript"><code class="language-javascript">    function addQuickOpenPlugin(pluginDef) {
         &#x2F;&#x2F; Backwards compatibility (for now) for old fileTypes field, if newer languageIds not specified
         if (pluginDef.fileTypes &amp;&amp; !pluginDef.languageIds) {
             console.warn(&quot;Using fileTypes for QuickOpen plugins is deprecated. Use languageIds instead.&quot;);
@@ -604,7 +605,7 @@ with the given query text too. Updates text field contents if Quick Open already
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function beginSearch(prefix, initialString) {
+              <pre class="language-javascript"><code class="language-javascript">    function beginSearch(prefix, initialString) {
         function createDialog() {
             _curDialog = new QuickNavigateDialog();
             _curDialog.showDialog(prefix, initialString);
@@ -681,7 +682,7 @@ with the given query text too. Updates text field contents if Quick Open already
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function domItemToSearchResult(domItem) {
+              <pre class="language-javascript"><code class="language-javascript">    function domItemToSearchResult(domItem) {
         if (!domItem) {
             return null;
         }
@@ -709,7 +710,7 @@ is followed by a colon. Callers should explicitly test result with isNaN()</p>
                   <dd>string to extract line number from</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function extractCursorPos(query) {
+              <pre class="language-javascript"><code class="language-javascript">    function extractCursorPos(query) {
         var regInfo = query.match(CURSOR_POS_EXP),
             result;
         
@@ -739,7 +740,7 @@ is followed by a colon. Callers should explicitly test result with isNaN()</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getLastFilterResult() {
+              <pre class="language-javascript"><code class="language-javascript">    function getLastFilterResult() {
         var cachedResult = $(&quot;input#quickOpenSearch&quot;).data(&quot;smart-autocomplete&quot;).rawResults;
         return cachedResult || [];
     }</code></pre>
@@ -769,7 +770,7 @@ matched; else formats the label with no highlighting.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function highlightMatch(item, matchClass, rangeFilter) {
+              <pre class="language-javascript"><code class="language-javascript">    function highlightMatch(item, matchClass, rangeFilter) {
         var label = item.label || item;
         matchClass = matchClass || &quot;quicksearch-namematch&quot;;
         
@@ -848,7 +849,7 @@ waiting to run, once per key event. All but the last one reflect a stale value o
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function queryIsStale(query) {
+              <pre class="language-javascript"><code class="language-javascript">    function queryIsStale(query) {
         var currentQuery = $(&quot;input#quickOpenSearch&quot;).val();
         return currentQuery !== query;
     }
@@ -920,7 +921,7 @@ waiting to run, once per key event. All but the last one reflect a stale value o
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function QuickNavigateDialog() {
+                  <pre class="language-javascript"><code class="language-javascript">    function QuickNavigateDialog() {
         this.$searchField = undefined; &#x2F;&#x2F; defined when showDialog() is called
         
         &#x2F;&#x2F; Bind event handlers
@@ -966,7 +967,7 @@ waiting to run, once per key event. All but the last one reflect a stale value o
 when it&#39;s done closing.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._closeDeferred = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._closeDeferred = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -983,7 +984,7 @@ when it&#39;s done closing.</p>
 QuickNavigateDialog (a single search until the dialog is dismissed)</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._filenameMatcher = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filenameMatcher = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1001,7 +1002,7 @@ information for the lifetime of a QuickNavigateDialog (a single search
 until the dialog is dismissed)</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._matchers = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._matchers = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1018,7 +1019,7 @@ until the dialog is dismissed)</p>
 TODO: in the future, if focusing an item can switch documents, need to restore this on Escape.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._origDocPath = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origDocPath = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1034,7 +1035,7 @@ TODO: in the future, if focusing an item can switch documents, need to restore t
                     <div class="description"><p>Remembers the scroll position in origDocPath when showDialog() was called (see origSelection above).</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._origScrollPos = null;
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origScrollPos = null;
 
     function _filenameFromPath(path, includeExtension) {
         var end;
@@ -1065,7 +1066,7 @@ item can change the selection; we restore this original selection if the user pr
 no document was open when Quick Open was invoked.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._origSelections = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origSelections = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -1081,7 +1082,7 @@ no document was open when Quick Open was invoked.</p>
 when the dialog starts closing; it doesn&#39;t wait for the ModalBar animation to finish.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype.isOpen = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.isOpen = false;</code></pre>
                   </div>
                   
                 </section>
@@ -1112,7 +1113,7 @@ when the dialog starts closing; it doesn&#39;t wait for the ModalBar animation t
                       <dd>The filtered list of results.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._filterCallback = function (query) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filterCallback = function (query) {
         &#x2F;&#x2F; If previous filter calls ran slow, we may have accumulated several query change events in the meantime.
         &#x2F;&#x2F; Only respond to the one that&#39;s current. Note that this only works because we&#39;re called on a timeout after
         &#x2F;&#x2F; the key event; checking DURING the key event itself would never yield a future value for the input field.
@@ -1174,7 +1175,7 @@ when the dialog starts closing; it doesn&#39;t wait for the ModalBar animation t
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleBlur = function (e) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleBlur = function (e) {
         this.close();
     };</code></pre>
                   </div>
@@ -1193,7 +1194,7 @@ where the popup closes that we want the dialog to remain open (e.g. deleting sea
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleDocumentMouseDown = function (e) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleDocumentMouseDown = function (e) {
         if (this.modalBar.getRoot().find(e.target).length === 0 &amp;&amp; $(&quot;.smart_autocomplete_container&quot;).find(e.target).length === 0) {
             this.close();
         } else {
@@ -1220,7 +1221,7 @@ to the currentPlugin</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleItemFocus = function (e, selectedDOMItem) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemFocus = function (e, selectedDOMItem) {
         var selectedItem = domItemToSearchResult(selectedDOMItem);
         
         if (currentPlugin &amp;&amp; currentPlugin.itemFocus) {
@@ -1247,7 +1248,7 @@ for carrying out an action (e.g. go to line).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleItemSelect = function (e, selectedDOMItem) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemSelect = function (e, selectedDOMItem) {
 
         &#x2F;&#x2F; This is a work-around to select first item when a selection event occurs
         &#x2F;&#x2F; (usually from pressing the enter key) and no item is selected in the list.
@@ -1311,7 +1312,7 @@ After this, Smart Autocomplete doesn&#39;t call _handleFilter() &amp; re-render 
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleKeyUp = function (e) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleKeyUp = function (e) {
         &#x2F;&#x2F; Cancel the search on Esc key, and finish the search on Enter key
         if (e.keyCode === KeyEvent.DOM_VK_RETURN || e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             &#x2F;&#x2F; Smart Autocomplete also handles Enter; but it does so without a timeout, which causes #1855.
@@ -1352,7 +1353,7 @@ list items are re-rendered. Both happen synchronously just after we return. Call
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleResultsReady = function (e, results) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleResultsReady = function (e, results) {
         &#x2F;&#x2F; Give visual clue when there are no results (unless we&#39;re in &quot;Go To Line&quot; mode, where there
         &#x2F;&#x2F; are never results, or we&#39;re in file search mode and waiting for the index to get rebuilt)
         var hasNoResults = (results.length === 0 &amp;&amp; (fileList || currentPlugin) &amp;&amp; !this._isValidLineNumberQuery(this.$searchField.val()));
@@ -1374,7 +1375,7 @@ re-rendering DOM list items). NOT called if the last filter action had 0 results
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._handleShowResults = function (e, results) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleShowResults = function (e, results) {
         &#x2F;&#x2F; Scroll to top result (unless some other item has been highlighted by user)
         if ($(&quot;.smart_autocomplete_highlight&quot;).length === 0) {
             this._handleItemFocus(null, $(&quot;.smart_autocomplete_container &gt; li:first-child&quot;).get(0));
@@ -1401,7 +1402,7 @@ or is a valid line number within the visible range of the current full editor.</
                       <dd>true if the given query is a valid line number query.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._isValidLineNumberQuery = function (query) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._isValidLineNumberQuery = function (query) {
         &#x2F;&#x2F; Empty query returns NaN from extractLineNumber, but we want to treat it as valid for UI purposes.
         if (query === &quot;:&quot;) {
             return true;
@@ -1433,7 +1434,7 @@ or is a valid line number within the visible range of the current full editor.</
                       <dd>The HTML to be displayed.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._resultsFormatterCallback = function (item) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._resultsFormatterCallback = function (item) {
         var query = this.$searchField.val();
         
         var formatter;
@@ -1467,7 +1468,7 @@ or is a valid line number within the visible range of the current full editor.</
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype._updateDialogLabel = function (plugin, query) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._updateDialogLabel = function (plugin, query) {
         var dialogLabel = &quot;&quot;;
         if (plugin &amp;&amp; plugin.label) {
             dialogLabel = plugin.label;
@@ -1515,7 +1516,7 @@ searching is done.</p>
                       <dd>Resolved when the search bar is entirely closed.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype.close = function (scrollPos, selections) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.close = function (scrollPos, selections) {
         if (!this.isOpen) {
             return this._closeDeferred.promise();
         }
@@ -1588,7 +1589,7 @@ given prefix.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype.setSearchFieldValue = function (prefix, initialString) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.setSearchFieldValue = function (prefix, initialString) {
         prefix = prefix || &quot;&quot;;
         initialString = initialString || &quot;&quot;;
         initialString = prefix + initialString;
@@ -1615,7 +1616,7 @@ given prefix.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">QuickNavigateDialog.prototype.showDialog = function (prefix, initialString) {
+                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.showDialog = function (prefix, initialString) {
         if (this.isOpen) {
             return;
         }

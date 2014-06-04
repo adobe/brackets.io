@@ -355,7 +355,38 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define</p>
+              <p>To ensure cache coherence, current and future asynchronous state-changing 
+operations of FileSystemEntry and its subclasses should implement the 
+following high-level sequence of steps:</p>
+<ol>
+<li>Block external filesystem change events;</li>
+<li>Execute the low-level state-changing operation;</li>
+<li>Update the internal filesystem state, including caches;</li>
+<li>Apply the callback;</li>
+<li>Fire an appropriate internal change notification; and</li>
+<li>Unblock external change events.</li>
+</ol>
+<p>Note that because internal filesystem state is updated first, both the original 
+caller and the change notification listeners observe filesystem state that is
+current w.r.t. the operation. Furthermore, because external change events are
+blocked before the operation begins, listeners will only receive the internal
+change event for the operation and not additional (or possibly inconsistent)
+external change events.</p>
+<p>State-changing operations that block external filesystem change events must
+take care to always subsequently unblock the external change events in all
+control paths. It is safe to assume, however, that the underlying impl will
+always apply the callback with some value.</p>
+<p>Caches should be conservative. Consequently, the entry&#39;s cached data should
+always be cleared if the underlying impl&#39;s operation fails. This is the case
+event for read-only operations because an unexpected failure implies that the
+system is in an unknown state. The entry should communicate this by failing
+where appropriate, and should not use the cache to hide failure.</p>
+<p>Only watched entries should make use of cached data because change events are
+only expected for such entries, and change events are used to granularly
+invalidate out-of-date caches.</p>
+<p>By convention, callbacks are optional for asynchronous, state-changing
+operations, but required for read-only operations. The first argument to the
+callback should always be a nullable error string from FileSystemError.</p>
 
             </div>
           </section>
@@ -390,7 +421,7 @@
                 <div class="description"><p>Counter to give every entry a unique id</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var nextId = 0;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var nextId = 0;</code></pre>
               </div>
               
             </section>
@@ -419,7 +450,7 @@ and is never used directly.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function FileSystemEntry(path, fileSystem) {
+                  <pre class="language-javascript"><code class="language-javascript">    function FileSystemEntry(path, fileSystem) {
         this._setPath(path);
         this._fileSystem = fileSystem;
         this._id = nextId++;
@@ -479,7 +510,7 @@ and is never used directly.</p>
                     <div class="description"><p>Parent file system.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._fileSystem = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._fileSystem = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -495,7 +526,7 @@ and is never used directly.</p>
                     <div class="description"><p>Whether or not the entry is a directory</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._isDirectory = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isDirectory = false;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -511,7 +542,7 @@ and is never used directly.</p>
                     <div class="description"><p>Whether or not the entry is a file</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._isFile = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isFile = false;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -527,7 +558,7 @@ and is never used directly.</p>
                     <div class="description"><p>The name of this entry.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._name = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._name = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -543,7 +574,7 @@ and is never used directly.</p>
                     <div class="description"><p>The parent of this entry.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._parentPath = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._parentPath = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -559,7 +590,7 @@ and is never used directly.</p>
                     <div class="description"><p>The path of this entry.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._path = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._path = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -575,7 +606,7 @@ and is never used directly.</p>
                     <div class="description"><p>Cached stat object for this file.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._stat = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._stat = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -591,7 +622,7 @@ and is never used directly.</p>
                     <div class="description"><p>Cached copy of this entry&#39;s watched root</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._watchedRoot = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRoot = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -607,7 +638,7 @@ and is never used directly.</p>
                     <div class="description"><p>Cached result of _watchedRoot.filter(this.name, this.parentPath).</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._watchedRootFilterResult = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRootFilterResult = false;</code></pre>
                   </div>
                   
                 </section>
@@ -632,7 +663,7 @@ and is never used directly.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._clearCachedData = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._clearCachedData = function () {
         this._stat = undefined;
     };</code></pre>
                   </div>
@@ -657,7 +688,7 @@ and is never used directly.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._isWatched = function (relaxed) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isWatched = function (relaxed) {
         var watchedRoot = this._watchedRoot,
             filterResult = this._watchedRootFilterResult;
         
@@ -701,7 +732,7 @@ and is never used directly.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._setPath = function (newPath) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._setPath = function (newPath) {
         var parts = newPath.split(&quot;&#x2F;&quot;);
         if (this.isDirectory) {
             parts.pop(); &#x2F;&#x2F; Remove the empty string after last trailing &quot;&#x2F;&quot;
@@ -761,7 +792,7 @@ and is never used directly.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, callback) {
         var maxDepth = options.maxDepth,
             maxEntriesCounter = options.maxEntriesCounter;
         
@@ -841,7 +872,7 @@ unknown.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.exists = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.exists = function (callback) {
         if (this._stat) {
             callback(null, true);
             return;
@@ -880,7 +911,7 @@ to trash, the item is permanently deleted.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.moveToTrash = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.moveToTrash = function (callback) {
         if (!this._impl.moveToTrash) {
             this.unlink(callback);
             return;
@@ -931,7 +962,7 @@ to trash, the item is permanently deleted.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.rename = function (newFullPath, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.rename = function (newFullPath, callback) {
         callback = callback || function () {};
         
         &#x2F;&#x2F; Block external change events until after the write has finished
@@ -981,7 +1012,7 @@ to trash, the item is permanently deleted.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.stat = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.stat = function (callback) {
         if (this._stat) {
             callback(null, this._stat);
             return;
@@ -1015,7 +1046,7 @@ to trash, the item is permanently deleted.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.toString = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.toString = function () {
         return &quot;[&quot; + (this.isDirectory ? &quot;Directory &quot; : &quot;File &quot;) + this._path + &quot;]&quot;;
     };</code></pre>
                   </div>
@@ -1037,7 +1068,7 @@ and all of its contents. For reversible delete, see moveToTrash().</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.unlink = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.unlink = function (callback) {
         callback = callback || function () {};
         
         &#x2F;&#x2F; Block external change events until after the write has finished
@@ -1093,7 +1124,7 @@ filesystem traversals should use this method. </p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystemEntry.prototype.visit = function (visitor, options, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.visit = function (visitor, options, callback) {
         if (typeof options === &quot;function&quot;) {
             callback = options;
             options = {};

@@ -387,7 +387,7 @@
                 <div class="description"><p>Value passed to fail() handlers that have been triggered due to withTimeout()&#39;s timeout</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var ERROR_TIMEOUT = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var ERROR_TIMEOUT = {};</code></pre>
               </div>
               
             </section>
@@ -421,7 +421,7 @@ computation is halted immediately and the promise is rejected with this halting 
                   <dd>Arguments to call the first function with</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function chain(functions, args) {
+              <pre class="language-javascript"><code class="language-javascript">    function chain(functions, args) {
         var deferred = $.Deferred();
         
         function chainHelper(index, args) {
@@ -507,7 +507,7 @@ visible dialog: because they run in parallel, you could show multiple dialogs at
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function doInParallel(items, beginProcessItem, failFast) {
+              <pre class="language-javascript"><code class="language-javascript">    function doInParallel(items, beginProcessItem, failFast) {
         var promises = [];
         var masterDeferred = new $.Deferred();
         
@@ -573,7 +573,7 @@ argument: an array objects, one per failed task. Each error object contains:</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function doInParallel_aggregateErrors(items, beginProcessItem) {
+              <pre class="language-javascript"><code class="language-javascript">    function doInParallel_aggregateErrors(items, beginProcessItem) {
         var errors = [];
         
         var masterDeferred = new $.Deferred();
@@ -651,7 +651,7 @@ Promise before beginProcessItem() returns it.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function doSequentially(items, beginProcessItem, failAndStopFast) {
+              <pre class="language-javascript"><code class="language-javascript">    function doSequentially(items, beginProcessItem, failAndStopFast) {
 
         var masterDeferred = new $.Deferred(),
             hasFailed = false;
@@ -715,7 +715,7 @@ Processing yields by idleTime between time-slices.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function doSequentiallyInBackground(items, fnProcessItem, maxBlockingTime, idleTime) {
+              <pre class="language-javascript"><code class="language-javascript">    function doSequentiallyInBackground(items, fnProcessItem, maxBlockingTime, idleTime) {
         
         maxBlockingTime = maxBlockingTime || 15;
         idleTime = idleTime || 30;
@@ -777,7 +777,7 @@ Async.withTimeout.</p>
 </dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function waitForAll(promises, failOnReject, timeout) {
+              <pre class="language-javascript"><code class="language-javascript">    function waitForAll(promises, failOnReject, timeout) {
         var masterDeferred = new $.Deferred(),
             count = 0,
             sawRejects = false;
@@ -840,7 +840,7 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p
                   <dd>If true, then resolve deferred on timeout, otherwise reject. Default is false.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function withTimeout(promise, timeout, resolveTimeout) {
+              <pre class="language-javascript"><code class="language-javascript">    function withTimeout(promise, timeout, resolveTimeout) {
         var wrapper = new $.Deferred();
         
         var timer = window.setTimeout(function () {
@@ -882,7 +882,7 @@ has finished.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function PromiseQueue() {
+                  <pre class="language-javascript"><code class="language-javascript">    function PromiseQueue() {
         this._queue = [];
     }</code></pre>
                 </div>
@@ -908,7 +908,7 @@ The promise we&#x27;re currently waiting on, or null if there&#x27;s nothing cur
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">PromiseQueue.prototype._curPromise = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._curPromise = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -925,7 +925,7 @@ still be an operation we need to wait on; that operation&#x27;s promise is store
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">PromiseQueue.prototype._queue = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._queue = null;</code></pre>
                   </div>
                   
                 </section>
@@ -950,7 +950,7 @@ still be an operation we need to wait on; that operation&#x27;s promise is store
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">PromiseQueue.prototype._doNext = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._doNext = function () {
         var self = this;
         if (this._queue.length) {
             var op = this._queue.shift();
@@ -995,7 +995,7 @@ is resolved or rejected.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">PromiseQueue.prototype.add = function (op) {
+                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype.add = function (op) {
         this._queue.push(op);
 
         &#x2F;&#x2F; If something is currently executing, then _doNext() will get called when it&#39;s done. If nothing
@@ -1019,7 +1019,7 @@ is resolved or rejected.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">PromiseQueue.prototype.removeAll = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype.removeAll = function () {
         this._queue = [];
     };</code></pre>
                   </div>

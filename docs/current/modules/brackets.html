@@ -358,7 +358,6 @@
               <p>brackets is the root of the Brackets codebase. This file pulls in all other modules as
 dependencies (or dependencies thereof), initializes the UI, and binds global menus &amp; keyboard
 shortcuts to their Commands.</p>
-<p>TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic</p>
 <p>Unlike other modules, this one can be accessed without an explicit require() because it exposes
 a global object, window.brackets.</p>
 
@@ -483,7 +482,7 @@ a global object, window.brackets.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _beforeHTMLReady() {
+              <pre class="language-javascript"><code class="language-javascript">    function _beforeHTMLReady() {
         &#x2F;&#x2F; Add the platform (mac or win) to the body tag so we can have platform-specific CSS rules
         $(&quot;body&quot;).addClass(&quot;platform-&quot; + brackets.platform);
         
@@ -609,6 +608,187 @@ a global object, window.brackets.</p>
         $(window.document).ready(_onReady);
     });
 });</code></pre>
+            </div>
+            <div class="member private">
+              <span class="pull-right scope">
+                Private
+                
+              </span>
+              <h4>_initTest</h4>
+              <div class="description"><p>Setup test object</p>
+</div>
+              <dl>
+              </dl>
+              <button class="btn btn-small show-code">Show code</button>
+              <pre class="language-javascript"><code class="language-javascript">    function _initTest() {
+        &#x2F;&#x2F; TODO: (issue #265) Make sure the &quot;test&quot; object is not included in final builds
+        &#x2F;&#x2F; All modules that need to be tested from the context of the application
+        &#x2F;&#x2F; must to be added to this object. The unit tests cannot just pull
+        &#x2F;&#x2F; in the modules since they would run in context of the unit test window,
+        &#x2F;&#x2F; and would not have access to the app html&#x2F;css.
+        brackets.test = {
+            CodeHintManager         : CodeHintManager,
+            CodeInspection          : CodeInspection,
+            CommandManager          : CommandManager,
+            Commands                : Commands,
+            CSSUtils                : require(&quot;language&#x2F;CSSUtils&quot;),
+            DefaultDialogs          : DefaultDialogs,
+            Dialogs                 : Dialogs,
+            DocumentCommandHandlers : DocumentCommandHandlers,
+            DocumentManager         : DocumentManager,
+            DOMAgent                : require(&quot;LiveDevelopment&#x2F;Agents&#x2F;DOMAgent&quot;),
+            DragAndDrop             : DragAndDrop,
+            EditorManager           : EditorManager,
+            ExtensionLoader         : ExtensionLoader,
+            ExtensionUtils          : ExtensionUtils,
+            FileFilters             : require(&quot;search&#x2F;FileFilters&quot;),
+            FileSyncManager         : FileSyncManager,
+            FileSystem              : FileSystem,
+            FileViewController      : FileViewController,
+            FindInFiles             : require(&quot;search&#x2F;FindInFiles&quot;),
+            HTMLInstrumentation     : require(&quot;language&#x2F;HTMLInstrumentation&quot;),
+            Inspector               : require(&quot;LiveDevelopment&#x2F;Inspector&#x2F;Inspector&quot;),
+            InstallExtensionDialog  : require(&quot;extensibility&#x2F;InstallExtensionDialog&quot;),
+            JSUtils                 : JSUtils,
+            KeyBindingManager       : KeyBindingManager,
+            LanguageManager         : LanguageManager,
+            LiveDevelopment         : require(&quot;LiveDevelopment&#x2F;LiveDevelopment&quot;),
+            LiveDevServerManager    : require(&quot;LiveDevelopment&#x2F;LiveDevServerManager&quot;),
+            Menus                   : Menus,
+            MultiRangeInlineEditor  : require(&quot;editor&#x2F;MultiRangeInlineEditor&quot;).MultiRangeInlineEditor,
+            NativeApp               : NativeApp,
+            PerfUtils               : PerfUtils,
+            PreferencesManager      : PreferencesManager,
+            ProjectManager          : ProjectManager,
+            RemoteAgent             : require(&quot;LiveDevelopment&#x2F;Agents&#x2F;RemoteAgent&quot;),
+            ScrollTrackMarkers      : require(&quot;search&#x2F;ScrollTrackMarkers&quot;),
+            UpdateNotification      : require(&quot;utils&#x2F;UpdateNotification&quot;),
+            WorkingSetView          : WorkingSetView,
+
+            doneLoading             : false
+        };
+
+        AppInit.appReady(function () {
+            brackets.test.doneLoading = true;
+        });
+    }</code></pre>
+            </div>
+            <div class="member private">
+              <span class="pull-right scope">
+                Private
+                
+              </span>
+              <h4>_onReady</h4>
+              <div class="description"><p>Setup Brackets</p>
+</div>
+              <dl>
+              </dl>
+              <button class="btn btn-small show-code">Show code</button>
+              <pre class="language-javascript"><code class="language-javascript">    function _onReady() {
+        PerfUtils.addMeasurement(&quot;window.document Ready&quot;);
+
+        EditorManager.setEditorHolder($(&quot;#editor-holder&quot;));
+
+        &#x2F;&#x2F; Let the user know Brackets doesn&#39;t run in a web browser yet
+        if (brackets.inBrowser) {
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.ERROR_IN_BROWSER_TITLE,
+                Strings.ERROR_IN_BROWSER
+            );
+        }
+
+        &#x2F;&#x2F; Use quiet scrollbars if we aren&#39;t on Lion. If we&#39;re on Lion, only
+        &#x2F;&#x2F; use native scroll bars when the mouse is not plugged in or when
+        &#x2F;&#x2F; using the &quot;Always&quot; scroll bar setting. 
+        var osxMatch = &#x2F;Mac OS X 10\D([\d+])\D&#x2F;.exec(navigator.userAgent);
+        if (osxMatch &amp;&amp; osxMatch[1] &amp;&amp; Number(osxMatch[1]) &gt;= 7) {
+            &#x2F;&#x2F; test a scrolling div for scrollbars
+            var $testDiv = $(&quot;&lt;div style=&#39;position:fixed;left:-50px;width:50px;height:50px;overflow:auto;&#39;&gt;&lt;div style=&#39;width:100px;height:100px;&#39;&#x2F;&gt;&lt;&#x2F;div&gt;&quot;).appendTo(window.document.body);
+            
+            if ($testDiv.outerWidth() === $testDiv.get(0).clientWidth) {
+                $(&quot;.sidebar&quot;).removeClass(&quot;quiet-scrollbars&quot;);
+            }
+            
+            $testDiv.remove();
+        }
+
+        &#x2F;&#x2F; Load default languages and preferences
+        Async.waitForAll([LanguageManager.ready, PreferencesManager.ready]).always(function () {
+            &#x2F;&#x2F; Load all extensions. This promise will complete even if one or more
+            &#x2F;&#x2F; extensions fail to load.
+            var extensionPathOverride = params.get(&quot;extensions&quot;);  &#x2F;&#x2F; used by unit tests
+            var extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(&quot;,&quot;) : null);
+            
+            &#x2F;&#x2F; Load the initial project after extensions have loaded
+            extensionLoaderPromise.always(function () {
+                &#x2F;&#x2F; Finish UI initialization
+                ViewCommandHandlers.restoreFontSize();
+                var initialProjectPath = ProjectManager.getInitialProjectPath();
+                ProjectManager.openProject(initialProjectPath).always(function () {
+                    _initTest();
+                    
+                    &#x2F;&#x2F; If this is the first launch, and we have an index.html file in the project folder (which should be
+                    &#x2F;&#x2F; the samples folder on first launch), open it automatically. (We explicitly check for the
+                    &#x2F;&#x2F; samples folder in case this is the first time we&#39;re launching Brackets after upgrading from
+                    &#x2F;&#x2F; an old version that might not have set the &quot;afterFirstLaunch&quot; pref.)
+                    var deferred = new $.Deferred();
+                    
+                    if (!params.get(&quot;skipSampleProjectLoad&quot;) &amp;&amp; !PreferencesManager.getViewState(&quot;afterFirstLaunch&quot;)) {
+                        PreferencesManager.setViewState(&quot;afterFirstLaunch&quot;, &quot;true&quot;);
+                        if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
+                            FileSystem.resolve(initialProjectPath + &quot;index.html&quot;, function (err, file) {
+                                if (!err) {
+                                    var promise = CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, { fullPath: file.fullPath });
+                                    promise.then(deferred.resolve, deferred.reject);
+                                } else {
+                                    deferred.reject();
+                                }
+                            });
+                        } else {
+                            deferred.resolve();
+                        }
+                    } else {
+                        deferred.resolve();
+                    }
+                    
+                    deferred.always(function () {
+                        &#x2F;&#x2F; Signal that Brackets is loaded
+                        AppInit._dispatchReady(AppInit.APP_READY);
+                        
+                        PerfUtils.addMeasurement(&quot;Application Startup&quot;);
+                        
+                        if (PreferencesManager._isUserScopeCorrupt()) {
+                            Dialogs.showModalDialog(
+                                DefaultDialogs.DIALOG_ID_ERROR,
+                                Strings.ERROR_PREFS_CORRUPT_TITLE,
+                                Strings.ERROR_PREFS_CORRUPT
+                            )
+                                .done(function () {
+                                    CommandManager.execute(Commands.FILE_OPEN_PREFERENCES);
+                                });
+                        }
+                        
+                    });
+                    
+                    &#x2F;&#x2F; See if any startup files were passed to the application
+                    if (brackets.app.getPendingFilesToOpen) {
+                        brackets.app.getPendingFilesToOpen(function (err, files) {
+                            DragAndDrop.openDroppedFiles(files);
+                        });
+                    }
+                });
+            });
+        });
+        
+        &#x2F;&#x2F; Check for updates
+        if (!params.get(&quot;skipUpdateCheck&quot;) &amp;&amp; !brackets.inBrowser) {
+            AppInit.appReady(function () {
+                &#x2F;&#x2F; launches periodic checks for updates cca every 24 hours
+                UpdateNotification.launchAutomaticUpdate();
+            });
+        }
+    }</code></pre>
             </div>
             
           </section>

@@ -393,7 +393,7 @@
                   <dd>CSS code to use as the tag's content</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addEmbeddedStyleSheet(css) {
+              <pre class="language-javascript"><code class="language-javascript">    function addEmbeddedStyleSheet(css) {
         return $(&quot;&lt;style&gt;&quot;).text(css).appendTo(&quot;head&quot;)[0];
     }</code></pre>
             </div>
@@ -416,7 +416,7 @@
                   <dd>Optionally check for load and error events</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addLinkedStyleSheet(url, deferred) {
+              <pre class="language-javascript"><code class="language-javascript">    function addLinkedStyleSheet(url, deferred) {
         var attributes = {
             type: &quot;text&#x2F;css&quot;,
             rel:  &quot;stylesheet&quot;,
@@ -453,7 +453,7 @@
                   <dd>Relative path from the extension folder to a file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getModulePath(module, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function getModulePath(module, path) {
         var modulePath = module.uri.substr(0, module.uri.lastIndexOf(&quot;&#x2F;&quot;) + 1);
         if (path) {
             modulePath += path;
@@ -481,7 +481,7 @@
                   <dd>Relative path from the extension folder to a file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getModuleUrl(module, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function getModuleUrl(module, path) {
         var url = encodeURI(getModulePath(module, path));
         
         &#x2F;&#x2F; On Windows, $.get() fails if the url is a full pathname. To work around this,
@@ -511,7 +511,7 @@ so that&#39;s why we need a different check here</p>
                   <dd>that should be checked if it's absolute</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isAbsolutePathOrUrl(pathOrUrl) {
+              <pre class="language-javascript"><code class="language-javascript">    function isAbsolutePathOrUrl(pathOrUrl) {
         return brackets.platform === &quot;win&quot; ? PathUtils.isAbsoluteUrl(pathOrUrl) : FileSystem.isAbsolutePath(pathOrUrl);
     }</code></pre>
             </div>
@@ -535,7 +535,7 @@ so that&#39;s why we need a different check here</p>
                   <dd>Relative path from the extension folder to a file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function loadFile(module, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function loadFile(module, path) {
         var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path),
             promise = $.get(url);
 
@@ -561,7 +561,7 @@ so that&#39;s why we need a different check here</p>
                   <dd>Relative path from the extension folder to a CSS or LESS file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function loadStyleSheet(module, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function loadStyleSheet(module, path) {
         var result = new $.Deferred();
 
         loadFile(module, path)
@@ -621,7 +621,7 @@ Make sure URLs in the code are wrapped in quotes, like so:
                   <dd>URL to the file containing the code</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function parseLessCode(code, url) {
+              <pre class="language-javascript"><code class="language-javascript">    function parseLessCode(code, url) {
         var result = new $.Deferred(),
             options;
         

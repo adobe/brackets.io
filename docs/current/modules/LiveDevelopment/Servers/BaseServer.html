@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, $, brackets, window</p>
-
+              
             </div>
           </section>
     
@@ -380,19 +379,21 @@
                   </span>
                   <h4>BaseServer</h4>
                   <em><p>Base class for live preview servers</p>
+<p>Configuration parameters for this server:</p>
+<ul>
+<li>baseUrl      - Optional base URL (populated by the current project)</li>
+<li>pathResolver - Function to covert absolute native paths to project relative paths</li>
+<li>root         - Native path to the project root (and base URL)</li>
+</ul>
 </em>
                   <dl>
-                    <dt>config
-</dt>
+                    <dt>config</dt>
                     <dd class="label label-info pull-left">{baseUrl: string, root: string, pathResolver: function(string): string}</dd>
-                    <dd>Configuration parameters for this server:
- baseUrl - Optional base URL (populated by the current project)
- pathResolver - Function to covert absolute native paths to project relative paths
- root - Native path to the project root (and base URL)</dd>
+                    <dd></dd>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function BaseServer(config) {
+                  <pre class="language-javascript"><code class="language-javascript">    function BaseServer(config) {
         this._baseUrl       = config.baseUrl;
         this._root          = config.root;          &#x2F;&#x2F; ProjectManager.getProjectRoot().fullPath
         this._pathResolver  = config.pathResolver;  &#x2F;&#x2F; ProjectManager.makeProjectRelativeIfPossible(doc.file.fullPath)
@@ -424,7 +425,7 @@
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype._setDocInfo = function (liveDocument) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype._setDocInfo = function (liveDocument) {
         var parentUrl,
             rootUrl,
             matches,
@@ -470,7 +471,7 @@
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.add = function (liveDocument) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.add = function (liveDocument) {
         if (!liveDocument) {
             return;
         }
@@ -502,7 +503,7 @@ calls this method when determining if a server can serve a file.</p>
                       <dd>true When the file can be served, otherwise false.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.canServe = function (localPath) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.canServe = function (localPath) {
         return true;
     };
 
@@ -523,7 +524,7 @@ calls this method when determining if a server can serve a file.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.clear = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.clear = function () {
         this._liveDocuments = {};
     };</code></pre>
                   </div>
@@ -547,7 +548,7 @@ calls this method when determining if a server can serve a file.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.get = function (path) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.get = function (path) {
         return this._liveDocuments[this._documentKey(path)];
     };</code></pre>
                   </div>
@@ -568,7 +569,7 @@ Base url for current project. </dd>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.getBaseUrl = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.getBaseUrl = function () {
         return this._baseUrl;
     };</code></pre>
                   </div>
@@ -592,7 +593,7 @@ Base url for current project. </dd>
  Returns null if the path is not a descendant of the project root.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.pathToUrl = function (path) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.pathToUrl = function (path) {
         var url             = null,
             baseUrl         = this.getBaseUrl(),
             relativePath    = this._pathResolver(path);
@@ -630,7 +631,7 @@ is shown and Live Development does not start..</p>
  when the server is ready to handle HTTP requests.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.readyToServe = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.readyToServe = function () {
         &#x2F;&#x2F; Base implementation always resolves
         return $.Deferred().resolve().promise();
     };</code></pre>
@@ -651,7 +652,7 @@ is shown and Live Development does not start..</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.remove = function (liveDocument) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.remove = function (liveDocument) {
         if (!liveDocument) {
             return;
         }
@@ -676,7 +677,7 @@ is shown and Live Development does not start..</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.start = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.start = function () {
         &#x2F;&#x2F; do nothing
     };</code></pre>
                   </div>
@@ -693,7 +694,7 @@ is shown and Live Development does not start..</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.stop = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.stop = function () {
         &#x2F;&#x2F; do nothing
     };
 
@@ -720,7 +721,7 @@ is shown and Live Development does not start..</p>
  not a descendant of the project.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">BaseServer.prototype.urlToPath = function (url) {
+                    <pre class="language-javascript"><code class="language-javascript">    BaseServer.prototype.urlToPath = function (url) {
         var path,
             baseUrl = &quot;&quot;;
 

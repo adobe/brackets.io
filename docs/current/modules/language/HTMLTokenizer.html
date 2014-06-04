@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>unittests: HTML Tokenizer</p>
-
+              
             </div>
           </section>
     
@@ -389,7 +388,7 @@
                   <dd>the character to test</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isLegalInAttributeName(c) {
+              <pre class="language-javascript"><code class="language-javascript">    function isLegalInAttributeName(c) {
         return c !== &#39;&quot;&#39; &amp;&amp; c !== &quot;&#39;&quot; &amp;&amp; c !== &quot;&lt;&quot; &amp;&amp; c !== &quot;=&quot;;
     }</code></pre>
             </div>
@@ -406,7 +405,7 @@
                   <dd>the character to test</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isLegalInTagName(c) {
+              <pre class="language-javascript"><code class="language-javascript">    function isLegalInTagName(c) {
         &#x2F;&#x2F; We allow &quot;-&quot; in tag names since they&#39;re popular in Angular custom tag names
         &#x2F;&#x2F; and will be legal in the web components spec.
         return (&#x2F;[A-Za-z0-9\-]&#x2F;).test(c);
@@ -425,7 +424,7 @@
                   <dd>the character to test</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isLegalInUnquotedAttributeValue(c) {
+              <pre class="language-javascript"><code class="language-javascript">    function isLegalInUnquotedAttributeValue(c) {
         return c !== &quot;&lt;&quot; &amp;&amp; c !== &quot;=&quot;;
     }
     
@@ -446,7 +445,7 @@
                   <dd>the character to test</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isWhitespace(c) {
+              <pre class="language-javascript"><code class="language-javascript">    function isWhitespace(c) {
         return c === &quot; &quot; || c === &quot;\t&quot; || c === &quot;\r&quot; || c === &quot;\n&quot;;
     }</code></pre>
             </div>
@@ -471,7 +470,7 @@
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Tokenizer(text) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Tokenizer(text) {
         this._state = TEXT;
         this._buffer = text;
         this._sectionStart = 0;
@@ -511,7 +510,7 @@
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Tokenizer.prototype._emitSpecialToken = function (type, index, indexPos) {
+                    <pre class="language-javascript"><code class="language-javascript">    Tokenizer.prototype._emitSpecialToken = function (type, index, indexPos) {
         &#x2F;&#x2F; Force the section start to be -1, since these tokens don&#39;t have meaningful content--they&#39;re
         &#x2F;&#x2F; just marking particular boundaries we care about (end of an open tag or a self-closing tag).
         this._sectionStart = -1;
@@ -539,7 +538,7 @@ this._sectionStart should be set to a valid value before the next call to one of
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Tokenizer.prototype._emitToken = function (type, index, indexPos) {
+                    <pre class="language-javascript"><code class="language-javascript">    Tokenizer.prototype._emitToken = function (type, index, indexPos) {
         this._setToken(type, index, indexPos);
         this._sectionStart = -1;
         this._sectionStartPos = null;
@@ -563,7 +562,7 @@ started before the next <code>_emit</code>.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Tokenizer.prototype._emitTokenIfNonempty = function (type) {
+                    <pre class="language-javascript"><code class="language-javascript">    Tokenizer.prototype._emitTokenIfNonempty = function (type) {
         if (this._index &gt; this._sectionStart) {
             this._setToken(type);
         }
@@ -594,7 +593,7 @@ from <code>nextToken()</code>. If there&#39;s already a _token, we stuff it in _
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Tokenizer.prototype._setToken = function (type, index, indexPos) {
+                    <pre class="language-javascript"><code class="language-javascript">    Tokenizer.prototype._setToken = function (type, index, indexPos) {
         if (index === undefined) {
             index = this._index;
         }
@@ -655,7 +654,7 @@ from <code>nextToken()</code>. If there&#39;s already a _token, we stuff it in _
  end: the end index of the token contents within the text, or the position of the boundary for "opentagend" and "selfclosingtag"</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Tokenizer.prototype.nextToken = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Tokenizer.prototype.nextToken = function () {
         this._token = null;
         
         if (this._nextToken) {

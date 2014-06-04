@@ -355,13 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it.
-This module dispatches the following events:
-     &quot;load&quot; - when an extension is successfully loaded. The second argument is the file path to the
-         extension root.
-     &quot;loadFailed&quot; - when an extension load is unsuccessful. The second argument is the file path to the
-         extension root.</p>
-
+              
             </div>
           </section>
     
@@ -380,6 +374,40 @@ This module dispatches the following events:
             
           </section>
     
+            <section class="variables">
+              <h3>Variables 
+                <label class="checkbox">
+                  <input class="toggle-public" type="checkbox"> Show Private Members
+                </label>
+              </h3>
+              
+              <div class="member">
+      
+                <span class="pull-right scope">
+                  
+                  
+                </span>
+                <h4>contexts</h4>
+                <dl>
+                    <dt>Type</dt>
+                      <dd>Object&lt;string, Object&gt;</dd>
+                </dl>
+                <div class="description"><p>Stores require.js contexts of extensions</p>
+</div>
+                <button class="btn btn-small show-code">Show code</button>
+                <pre class="language-javascript"><code class="language-javascript">    var contexts    = {};
+
+    &#x2F;&#x2F; The native directory path ends with either &quot;test&quot; or &quot;src&quot;. We need &quot;src&quot; to
+    &#x2F;&#x2F; load the text and i18n modules.
+    srcPath = srcPath.replace(&#x2F;\&#x2F;test$&#x2F;, &quot;&#x2F;src&quot;); &#x2F;&#x2F; convert from &quot;test&quot; to &quot;src&quot;
+
+    var globalConfig = {
+            &quot;text&quot; : srcPath + &quot;&#x2F;thirdparty&#x2F;text&#x2F;text&quot;,
+            &quot;i18n&quot; : srcPath + &quot;&#x2F;thirdparty&#x2F;i18n&#x2F;i18n&quot;
+        };</code></pre>
+              </div>
+              
+            </section>
     
           <section class="functions">
             <h3>Functions 
@@ -399,7 +427,7 @@ This module dispatches the following events:
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getInitExtensionTimeout() {
+              <pre class="language-javascript"><code class="language-javascript">    function _getInitExtensionTimeout() {
         return _initExtensionTimeout;
     }</code></pre>
             </div>
@@ -430,7 +458,7 @@ This module dispatches the following events:
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _loadAll(directory, config, entryPoint, processExtension) {
+              <pre class="language-javascript"><code class="language-javascript">    function _loadAll(directory, config, entryPoint, processExtension) {
         var result = new $.Deferred();
         
         FileSystem.getDirectoryForPath(directory).getContents(function (err, contents) {
@@ -484,7 +512,7 @@ This module dispatches the following events:
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _mergeConfig(baseConfig) {
+              <pre class="language-javascript"><code class="language-javascript">    function _mergeConfig(baseConfig) {
         var deferred = new $.Deferred(),
             extensionConfigFile = FileSystem.getFileForPath(baseConfig.baseUrl + &quot;&#x2F;requirejs-config.json&quot;);
 
@@ -526,7 +554,7 @@ This module dispatches the following events:
                   <dd>Timeout in milliseconds</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _setInitExtensionTimeout(value) {
+              <pre class="language-javascript"><code class="language-javascript">    function _setInitExtensionTimeout(value) {
         _initExtensionTimeout = value;
     }</code></pre>
             </div>
@@ -545,7 +573,7 @@ This module dispatches the following events:
                   <dd>used to identify the extension</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getRequireContextForExtension(name) {
+              <pre class="language-javascript"><code class="language-javascript">    function getRequireContextForExtension(name) {
         return contexts[name];
     }</code></pre>
             </div>
@@ -563,7 +591,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getUserExtensionPath() {
+              <pre class="language-javascript"><code class="language-javascript">    function getUserExtensionPath() {
         if (brackets.app.getApplicationSupportDirectory) {
             return brackets.app.getApplicationSupportDirectory() + &quot;&#x2F;extensions&#x2F;user&quot;;
         }
@@ -588,7 +616,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
  src/extensions or (b) an absolute path.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function init(paths) {
+              <pre class="language-javascript"><code class="language-javascript">    function init(paths) {
         var params = new UrlParams();
         
         if (_init) {
@@ -671,7 +699,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
  each subdirectory is interpreted as an independent extension</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function loadAllExtensionsInNativeDirectory(directory) {
+              <pre class="language-javascript"><code class="language-javascript">    function loadAllExtensionsInNativeDirectory(directory) {
         return _loadAll(directory, {baseUrl: directory}, &quot;main&quot;, loadExtension);
     }</code></pre>
             </div>
@@ -698,7 +726,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
                   <dd>name of the main js file to load</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function loadExtension(name, config, entryPoint) {
+              <pre class="language-javascript"><code class="language-javascript">    function loadExtension(name, config, entryPoint) {
         var extensionConfig = {
             context: name,
             baseUrl: config.baseUrl,</code></pre>
@@ -719,7 +747,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
  each subdirectory is interpreted as an independent extension</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function testAllExtensionsInNativeDirectory(directory) {
+              <pre class="language-javascript"><code class="language-javascript">    function testAllExtensionsInNativeDirectory(directory) {
         var bracketsPath = FileUtils.getNativeBracketsDirectoryPath(),
             config = {
                 baseUrl: directory
@@ -756,7 +784,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
                   <dd>name of the main js file to load</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function testExtension(name, config, entryPoint) {
+              <pre class="language-javascript"><code class="language-javascript">    function testExtension(name, config, entryPoint) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + &quot;&#x2F;&quot; + entryPoint + &quot;.js&quot;;
         

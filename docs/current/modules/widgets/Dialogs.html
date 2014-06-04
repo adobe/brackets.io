@@ -394,7 +394,7 @@
                 <div class="description"><p>Dialog Buttons IDs</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var DIALOG_BTN_CANCEL           = &quot;cancel&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var DIALOG_BTN_CANCEL           = &quot;cancel&quot;,
         DIALOG_BTN_OK               = &quot;ok&quot;,
         DIALOG_BTN_DONTSAVE         = &quot;dontsave&quot;,
         DIALOG_BTN_SAVE_AS          = &quot;save_as&quot;,
@@ -413,7 +413,7 @@
                 <div class="description"><p>Dialog Buttons Class Names</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var DIALOG_BTN_CLASS_PRIMARY    = &quot;primary&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var DIALOG_BTN_CLASS_PRIMARY    = &quot;primary&quot;,
         DIALOG_BTN_CLASS_NORMAL     = &quot;&quot;,
         DIALOG_BTN_CLASS_LEFT       = &quot;left&quot;;</code></pre>
               </div>
@@ -425,11 +425,13 @@
                 </span>
                 <h4>zIndex</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>number</dd>
                 </dl>
-                <div class="description"><p>@type {number} The z-index used for the dialogs. Each new dialog increase this number by 2</p>
+                <div class="description"><p>The z-index used for the dialogs. Each new dialog increase this number by 2</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var zIndex = 1050;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var zIndex = 1050;</code></pre>
               </div>
               
             </section>
@@ -458,7 +460,7 @@
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _dismissDialog($dlg, buttonId) {
+              <pre class="language-javascript"><code class="language-javascript">    function _dismissDialog($dlg, buttonId) {
         $dlg.data(&quot;buttonId&quot;, buttonId);
         $dlg.modal(&quot;hide&quot;);
     }</code></pre>
@@ -480,7 +482,7 @@
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleTab(event, $dlg) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleTab(event, $dlg) {
         var $inputs = $(&quot;:input:enabled, a&quot;, $dlg).filter(&quot;:visible&quot;);
 
         if ($(event.target).closest($dlg).length) {
@@ -519,7 +521,7 @@
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _hasButton($dlg, buttonId) {
+              <pre class="language-javascript"><code class="language-javascript">    function _hasButton($dlg, buttonId) {
         return ($dlg.find(&quot;[data-button-id=&#39;&quot; + buttonId + &quot;&#39;]&quot;).length &gt; 0);
     }</code></pre>
             </div>
@@ -540,7 +542,7 @@
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">var _keydownHook = function (e, autoDismiss) {
+              <pre class="language-javascript"><code class="language-javascript">    var _keydownHook = function (e, autoDismiss) {
         var $primaryBtn     = this.find(&quot;.primary&quot;),
             buttonId        = null,
             which           = String.fromCharCode(e.which),
@@ -610,7 +612,7 @@ given button was clicked.</p>
                   <dd>Whether to autodismiss the dialog on a button click.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _processButton($dlg, buttonId, autoDismiss) {
+              <pre class="language-javascript"><code class="language-javascript">    function _processButton($dlg, buttonId, autoDismiss) {
         if (autoDismiss) {
             _dismissDialog($dlg, buttonId);
         } else {
@@ -637,7 +639,7 @@ be called with the special buttonId DIALOG_CANCELED (note: callback is run async
                   <dd>The button id to use when closing the dialog. Defaults to DIALOG_CANCELED</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function cancelModalDialogIfOpen(dlgClass, buttonId) {
+              <pre class="language-javascript"><code class="language-javascript">    function cancelModalDialogIfOpen(dlgClass, buttonId) {
         $(&quot;.&quot; + dlgClass + &quot;.instance&quot;).each(function () {
             if ($(this).is(&quot;:visible&quot;)) {   &#x2F;&#x2F; Bootstrap breaks if try to hide dialog that&#39;s already hidden
                 _dismissDialog($(this), buttonId || DIALOG_CANCELED);
@@ -674,7 +676,7 @@ be called with the special buttonId DIALOG_CANCELED (note: callback is run async
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function setDialogMaxSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function setDialogMaxSize() {
         var maxWidth, maxHeight,
             $dlgs = $(&quot;.modal-inner-wrapper &gt; .instance&quot;);
 
@@ -726,7 +728,7 @@ as parameters as described.</p>
  key, and dismiss the dialog yourself when ready by calling `close()` on the returned dialog.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showModalDialog(dlgClass, title, message, buttons, autoDismiss) {
+              <pre class="language-javascript"><code class="language-javascript">    function showModalDialog(dlgClass, title, message, buttons, autoDismiss) {
         var templateVars = {
             dlgClass: dlgClass,
             title:    title   || &quot;&quot;,
@@ -759,7 +761,7 @@ The template can either be a string or a jQuery object representing a DOM node t
  key, and dismiss the dialog yourself when ready by calling `close()` on the returned dialog.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showModalDialogUsingTemplate(template, autoDismiss) {
+              <pre class="language-javascript"><code class="language-javascript">    function showModalDialogUsingTemplate(template, autoDismiss) {
         if (autoDismiss === undefined) {
             autoDismiss = true;
         }
@@ -863,7 +865,7 @@ The template can either be a string or a jQuery object representing a DOM node t
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Dialog($dlg, promise) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Dialog($dlg, promise) {
         this._$dlg    = $dlg;
         this._promise = promise;
     }</code></pre>
@@ -890,7 +892,7 @@ The template can either be a string or a jQuery object representing a DOM node t
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Dialog.prototype.close = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Dialog.prototype.close = function () {
         if (this._$dlg.is(&quot;:visible&quot;)) {   &#x2F;&#x2F; Bootstrap breaks if try to hide dialog that&#39;s already hidden
             _dismissDialog(this._$dlg, DIALOG_CANCELED);
         }
@@ -909,7 +911,7 @@ The template can either be a string or a jQuery object representing a DOM node t
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Dialog.prototype.done = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    Dialog.prototype.done = function (callback) {
         this._promise.done(callback);
     };</code></pre>
                   </div>
@@ -919,14 +921,14 @@ The template can either be a string or a jQuery object representing a DOM node t
                       
                     </span>
                     <h4>getElement</h4>
-                    <div class="description"><p>@type {$.Element} The dialog jQuery element</p>
+                    <div class="description"><p>The dialog jQuery element</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Dialog.prototype.getElement = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Dialog.prototype.getElement = function () {
         return this._$dlg;
     };</code></pre>
                   </div>
@@ -936,14 +938,14 @@ The template can either be a string or a jQuery object representing a DOM node t
                       
                     </span>
                     <h4>getPromise</h4>
-                    <div class="description"><p>@type {$.Promise} The dialog promise</p>
+                    <div class="description"><p>The dialog promise</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Dialog.prototype.getPromise = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Dialog.prototype.getPromise = function () {
         return this._promise;
     };</code></pre>
                   </div>

@@ -357,12 +357,14 @@
             <div>
               <p>The ExtensionManager fetches/caches the extension registry and provides
 information about the status of installed extensions. ExtensionManager raises the 
-following events:
-    statusChange - indicates that an extension has been installed/uninstalled or
-        its status has otherwise changed. Second parameter is the id of the
-        extension.
-    registryUpdate - indicates that an existing extension was synchronized
-        with new data from the registry.</p>
+following events:</p>
+<ul>
+<li>statusChange - indicates that an extension has been installed/uninstalled or
+its status has otherwise changed. Second parameter is the id of the
+extension.</li>
+<li>registryUpdate - indicates that an existing extension was synchronized
+with new data from the registry.</li>
+</ul>
 
             </div>
           </section>
@@ -404,7 +406,7 @@ following events:
                 <div class="description"><p>Extension status constants.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var ENABLED      = &quot;enabled&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var ENABLED      = &quot;enabled&quot;,
         START_FAILED = &quot;startFailed&quot;;</code></pre>
               </div>
               <div class="member public">
@@ -419,7 +421,7 @@ following events:
                 <div class="description"><p>Extension location constants.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var LOCATION_DEFAULT = &quot;default&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var LOCATION_DEFAULT = &quot;default&quot;,
         LOCATION_DEV     = &quot;dev&quot;,
         LOCATION_USER    = &quot;user&quot;,
         LOCATION_UNKNOWN = &quot;unknown&quot;;</code></pre>
@@ -437,7 +439,7 @@ following events:
                 <div class="description"><p>Requested changes to the installed extensions.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _idsToRemove = [],
+                <pre class="language-javascript"><code class="language-javascript">    var _idsToRemove = [],
         _idsToUpdate = [];</code></pre>
               </div>
               <div class="member private public">
@@ -466,7 +468,7 @@ with no package metadata). The fields of each record are:
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var extensions = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var extensions = {};</code></pre>
               </div>
               
             </section>
@@ -495,7 +497,7 @@ with no package metadata). The fields of each record are:
                   <dd>The local path of the loaded extension's folder.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleExtensionLoad(e, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleExtensionLoad(e, path) {
         function setData(id, metadata) {
             var locationType,
                 userExtensionPath = ExtensionLoader.getUserExtensionPath();
@@ -557,7 +559,7 @@ with no package metadata). The fields of each record are:
                   <dd>The extension folder.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _loadPackageJson(folder) {
+              <pre class="language-javascript"><code class="language-javascript">    function _loadPackageJson(folder) {
         var file = FileSystem.getFileForPath(folder + &quot;&#x2F;package.json&quot;),
             result = new $.Deferred();
         FileUtils.readAsText(file)
@@ -586,7 +588,7 @@ with no package metadata). The fields of each record are:
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _reset() {
+              <pre class="language-javascript"><code class="language-javascript">    function _reset() {
         exports.extensions = extensions = {};
         _idsToRemove = [];
         _idsToUpdate = [];
@@ -603,7 +605,7 @@ with no package metadata). The fields of each record are:
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _setExtensions(newExtensions) {
+              <pre class="language-javascript"><code class="language-javascript">    function _setExtensions(newExtensions) {
         exports.extensions = extensions = newExtensions;
         Object.keys(extensions).forEach(function (id) {
             synchronizeEntry(id);
@@ -628,7 +630,7 @@ This function is designed to work without the necessity to download extension re
                   <dd>previous output of getAvailableUpdates()</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function cleanAvailableUpdates(updates) {
+              <pre class="language-javascript"><code class="language-javascript">    function cleanAvailableUpdates(updates) {
         return updates.reduce(function (arr, updateInfo) {
             var extDefinition = extensions[updateInfo.id];
             if (!extDefinition || !extDefinition.installInfo) {
@@ -696,7 +698,7 @@ were marked for update.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function cleanupUpdates() {
+              <pre class="language-javascript"><code class="language-javascript">    function cleanupUpdates() {
         Object.keys(_idsToUpdate).forEach(function (id) {
             var filename = _idsToUpdate[id].localPath;
             if (filename) {
@@ -718,7 +720,7 @@ extension info.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function downloadRegistry() {
+              <pre class="language-javascript"><code class="language-javascript">    function downloadRegistry() {
         var result = new $.Deferred();
         $.ajax({
             url: brackets.config.extension_registry,
@@ -753,7 +755,7 @@ extension info.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getAvailableUpdates() {
+              <pre class="language-javascript"><code class="language-javascript">    function getAvailableUpdates() {
         var result = [];
         Object.keys(extensions).forEach(function (extensionId) {
             var extensionInfo = extensions[extensionId];
@@ -789,7 +791,7 @@ extension info.</p>
                   <dd>The Brackets API version to check against.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getCompatibilityInfo(entry, apiVersion) {
+              <pre class="language-javascript"><code class="language-javascript">    function getCompatibilityInfo(entry, apiVersion) {
         if (!entry.versions) {
             var fallback = getCompatibilityInfoForVersion(entry.metadata, apiVersion);
             if (fallback.isCompatible) {
@@ -838,7 +840,7 @@ specifies why.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getCompatibilityInfoForVersion(extVersion, apiVersion) {
+              <pre class="language-javascript"><code class="language-javascript">    function getCompatibilityInfoForVersion(extVersion, apiVersion) {
         var requiredVersion = (extVersion.brackets || (extVersion.engines &amp;&amp; extVersion.engines.brackets)),
             result = {};
         result.isCompatible = !requiredVersion || semver.satisfies(apiVersion, requiredVersion);
@@ -883,7 +885,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
                   <dd>The version to download.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getExtensionURL(id, version) {
+              <pre class="language-javascript"><code class="language-javascript">    function getExtensionURL(id, version) {
         return StringUtils.format(brackets.config.extension_url, id, version);
     }</code></pre>
             </div>
@@ -898,7 +900,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function hasExtensionsToRemove() {
+              <pre class="language-javascript"><code class="language-javascript">    function hasExtensionsToRemove() {
         return Object.keys(_idsToRemove).length &gt; 0;
     }</code></pre>
             </div>
@@ -913,7 +915,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function hasExtensionsToUpdate() {
+              <pre class="language-javascript"><code class="language-javascript">    function hasExtensionsToUpdate() {
         return Object.keys(_idsToUpdate).length &gt; 0;
     }</code></pre>
             </div>
@@ -931,7 +933,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
                   <dd>The id of the extension to check.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isMarkedForRemoval(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function isMarkedForRemoval(id) {
         return !!(_idsToRemove[id]);
     }</code></pre>
             </div>
@@ -949,7 +951,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
                   <dd>The id of the extension to check.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isMarkedForUpdate(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function isMarkedForUpdate(id) {
         return !!(_idsToUpdate[id]);
     }</code></pre>
             </div>
@@ -970,7 +972,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
                   <dd>Whether to mark or unmark it.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function markForRemoval(id, mark) {
+              <pre class="language-javascript"><code class="language-javascript">    function markForRemoval(id, mark) {
         if (mark) {
             _idsToRemove[id] = true;
         } else {
@@ -993,7 +995,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
                   <dd>The id of the extension to remove.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function remove(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function remove(id) {
         var result = new $.Deferred();
         if (extensions[id] &amp;&amp; extensions[id].installInfo) {
             Package.remove(extensions[id].installInfo.path)
@@ -1022,7 +1024,7 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function removeMarkedExtensions() {
+              <pre class="language-javascript"><code class="language-javascript">    function removeMarkedExtensions() {
         return Async.doInParallel_aggregateErrors(
             Object.keys(_idsToRemove),
             function (id) {
@@ -1046,7 +1048,7 @@ downloaded package file.</p>
                   <dd>The id of the extension for which the update is being removed</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function removeUpdate(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function removeUpdate(id) {
         var installationResult = _idsToUpdate[id];
         if (!installationResult) {
             return;
@@ -1074,7 +1076,7 @@ an <code>updateAvailable</code> flag.</p>
                   <dd>of the extension to synchronize</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function synchronizeEntry(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function synchronizeEntry(id) {
         var entry = extensions[id];
         
         &#x2F;&#x2F; Do nothing if we only have one set of data
@@ -1121,7 +1123,7 @@ an <code>updateAvailable</code> flag.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unmarkAllForRemoval() {
+              <pre class="language-javascript"><code class="language-javascript">    function unmarkAllForRemoval() {
         _idsToRemove = {};
     }</code></pre>
             </div>
@@ -1142,7 +1144,7 @@ an <code>updateAvailable</code> flag.</p>
                   <dd>path to the package file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function update(id, packagePath) {
+              <pre class="language-javascript"><code class="language-javascript">    function update(id, packagePath) {
         return Package.installUpdate(packagePath, id);
     }</code></pre>
             </div>
@@ -1157,7 +1159,7 @@ an <code>updateAvailable</code> flag.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function updateExtensions() {
+              <pre class="language-javascript"><code class="language-javascript">    function updateExtensions() {
         return Async.doInParallel_aggregateErrors(
             Object.keys(_idsToUpdate),
             function (id) {
@@ -1183,7 +1185,7 @@ turn off the removal mark.</p>
                   <dd>info about the install provided by the Package.download function</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function updateFromDownload(installationResult) {
+              <pre class="language-javascript"><code class="language-javascript">    function updateFromDownload(installationResult) {
         var installationStatus = installationResult.installationStatus;
         if (installationStatus === Package.InstallationStatuses.ALREADY_INSTALLED ||
                 installationStatus === Package.InstallationStatuses.NEEDS_UPDATE ||

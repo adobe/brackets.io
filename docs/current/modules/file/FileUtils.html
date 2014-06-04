@@ -393,24 +393,11 @@
                 <h4>LINE_ENDINGS_CRLF</h4>
                 <dl>
                 </dl>
-                <div class="description"><p>@const</p>
+                <div class="description"><p>Line endings</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var LINE_ENDINGS_CRLF = &quot;CRLF&quot;;</code></pre>
-              </div>
-              <div class="member public">
-      
-                <span class="pull-right scope">
-                  
-                  Public API
-                </span>
-                <h4>LINE_ENDINGS_LF</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>@const</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var LINE_ENDINGS_LF = &quot;LF&quot;;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var LINE_ENDINGS_CRLF = &quot;CRLF&quot;,
+        LINE_ENDINGS_LF   = &quot;LF&quot;;</code></pre>
               </div>
               <div class="member private">
       
@@ -422,10 +409,10 @@
                 <dl>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@const - hard-coded for now, but may want to make these preferences</p>
+                <div class="description"><p>File extensions - hard-coded for now, but may want to make these preferences</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;],
+                <pre class="language-javascript"><code class="language-javascript">    var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;],
         _serverHtmlFileExts = [&quot;php&quot;, &quot;php3&quot;, &quot;php4&quot;, &quot;php5&quot;, &quot;phtm&quot;, &quot;phtml&quot;, &quot;cfm&quot;, &quot;cfml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;jsp&quot;, &quot;jspx&quot;, &quot;shtm&quot;, &quot;shtml&quot;];</code></pre>
               </div>
               
@@ -452,7 +439,7 @@
                   <dd>File name of a file or directory</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getFilenameWithoutExtension(filename) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getFilenameWithoutExtension(filename) {
         var index = filename.lastIndexOf(&quot;.&quot;);
         return index === -1 ? filename : filename.slice(0, index);
     }</code></pre>
@@ -472,7 +459,7 @@ used by Directory.fullPath actually DOES include the trailing &quot;/&quot;</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function canonicalizeFolderPath(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function canonicalizeFolderPath(path) {
         console.error(&quot;Warning: FileUtils.canonicalizeFolderPath() is deprecated. Use paths ending in &#39;&#x2F;&#39; if possible, like Directory.fullPath&quot;);
         return stripTrailingSlash(path);
     }</code></pre>
@@ -498,7 +485,7 @@ extension first and then the extensions to fix issue #4409</p>
                   <dd>If true it compares the extensions first and then the file names.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function compareFilenames(filename1, filename2, extFirst) {
+              <pre class="language-javascript"><code class="language-javascript">    function compareFilenames(filename1, filename2, extFirst) {
         var ext1   = getFileExtension(filename1),
             ext2   = getFileExtension(filename2),
             cmpExt = ext1.toLocaleLowerCase().localeCompare(ext2.toLocaleLowerCase(), undefined, {numeric: true}),
@@ -558,7 +545,7 @@ case, remove the initial &quot;/&quot;.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function convertToNativePath(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function convertToNativePath(path) {
         path = unescape(path);
         if (path.indexOf(&quot;:&quot;) !== -1 &amp;&amp; path[0] === &quot;&#x2F;&quot;) {
             return path.substr(1);
@@ -585,7 +572,7 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
                   <dd>A native-style path.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function convertWindowsPathToUnixPath(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function convertWindowsPathToUnixPath(path) {
         if (brackets.platform === &quot;win&quot;) {
             path = path.replace(&#x2F;\\&#x2F;g, &quot;&#x2F;&quot;);
         }
@@ -606,7 +593,7 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
                   <dd>full path to a file or directory</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getBaseName(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getBaseName(fullPath) {
         var lastSlash = fullPath.lastIndexOf(&quot;&#x2F;&quot;);
         if (lastSlash === fullPath.length - 1) {  &#x2F;&#x2F; directory: exclude trailing &quot;&#x2F;&quot; too
             return fullPath.slice(fullPath.lastIndexOf(&quot;&#x2F;&quot;, fullPath.length - 2) + 1, -1);
@@ -629,7 +616,7 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
                   <dd>full path to a file or directory</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getDirectoryPath(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getDirectoryPath(fullPath) {
         return fullPath.substr(0, fullPath.lastIndexOf(&quot;&#x2F;&quot;) + 1);
     }</code></pre>
             </div>
@@ -649,7 +636,7 @@ full remaining text is considered the extension.</p>
                   <dd>full path to a file or directory</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getFileExtension(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getFileExtension(fullPath) {
         var baseName = getBaseName(fullPath),
             idx      = baseName.lastIndexOf(&quot;.&quot;);
 
@@ -674,7 +661,7 @@ not work for unit tests (which is run from brackets/test/SpecRunner.html)</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getNativeBracketsDirectoryPath() {
+              <pre class="language-javascript"><code class="language-javascript">    function getNativeBracketsDirectoryPath() {
         var pathname = decodeURI(window.location.pathname);
         var directory = pathname.substr(0, pathname.lastIndexOf(&quot;&#x2F;&quot;));
         return convertToNativePath(directory);
@@ -694,7 +681,7 @@ Returns a native absolute path to the module folder.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getNativeModuleDirectoryPath(module) {
+              <pre class="language-javascript"><code class="language-javascript">    function getNativeModuleDirectoryPath(module) {
         var path;
         
         if (module &amp;&amp; module.uri) {
@@ -717,7 +704,7 @@ Returns a native absolute path to the module folder.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getPlatformLineEndings() {
+              <pre class="language-javascript"><code class="language-javascript">    function getPlatformLineEndings() {
         return brackets.platform === &quot;win&quot; ? LINE_ENDINGS_CRLF : LINE_ENDINGS_LF;
     }</code></pre>
             </div>
@@ -742,7 +729,7 @@ a prefix of filename, then undefined is returned.</p>
                   <dd>Full path to the file for which we are computing a relative path</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getRelativeFilename(basePath, filename) {
+              <pre class="language-javascript"><code class="language-javascript">    function getRelativeFilename(basePath, filename) {
         if (!filename || filename.substr(0, basePath.length) !== basePath) {
             return;
         }
@@ -768,7 +755,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
                   <dd>full path to a file or directory</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getSmartFileExtension(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getSmartFileExtension(fullPath) {
         var baseName = getBaseName(fullPath),
             parts = baseName.split(&quot;.&quot;);
 
@@ -805,7 +792,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
                   <dd>could be a path, a file name or just a file extension</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isServerHtmlFileExt(filePath) {
+              <pre class="language-javascript"><code class="language-javascript">    function isServerHtmlFileExt(filePath) {
         if (!filePath) {
             return false;
         }
@@ -827,7 +814,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
                   <dd>could be a path, a file name or just a file extension</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function isStaticHtmlFileExt(filePath) {
+              <pre class="language-javascript"><code class="language-javascript">    function isStaticHtmlFileExt(filePath) {
         if (!filePath) {
             return false;
         }
@@ -850,7 +837,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
                   <dd>File to read</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function readAsText(file) {
+              <pre class="language-javascript"><code class="language-javascript">    function readAsText(file) {
         var result = new $.Deferred();
 
         &#x2F;&#x2F; Measure performance
@@ -887,7 +874,7 @@ null if usage is mixed or if no line endings found.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function sniffLineEndings(text) {
+              <pre class="language-javascript"><code class="language-javascript">    function sniffLineEndings(text) {
         var subset = text.substr(0, 1000);  &#x2F;&#x2F; (length is clipped to text.length)
         var hasCRLF = &#x2F;\r\n&#x2F;.test(subset);
         var hasLF = &#x2F;[^\r]\n&#x2F;.test(subset);
@@ -915,7 +902,7 @@ normally, as this is the format used by Directory.fullPath.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function stripTrailingSlash(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function stripTrailingSlash(path) {
         if (path &amp;&amp; path[path.length - 1] === &quot;&#x2F;&quot;) {
             return path.slice(0, -1);
         } else {
@@ -941,7 +928,7 @@ normally, as this is the format used by Directory.fullPath.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function translateLineEndings(text, lineEndings) {
+              <pre class="language-javascript"><code class="language-javascript">    function translateLineEndings(text, lineEndings) {
         if (lineEndings !== LINE_ENDINGS_CRLF &amp;&amp; lineEndings !== LINE_ENDINGS_LF) {
             lineEndings = getPlatformLineEndings();
         }
@@ -1011,7 +998,7 @@ normally, as this is the format used by Directory.fullPath.</p>
  the FileSystem's last-known contents---should be ignored.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function writeText(file, text, allowBlindWrite) {
+              <pre class="language-javascript"><code class="language-javascript">    function writeText(file, text, allowBlindWrite) {
         var result = new $.Deferred(),
             options = {};
         

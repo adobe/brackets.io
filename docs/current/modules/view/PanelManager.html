@@ -360,10 +360,10 @@
 currently available window size.</p>
 <p>Events:</p>
 <ul>
-<li>editorAreaResize -- When editor-holder&#39;s size changes for any reason (including panel show/hide<pre><code>    panel resize, or the window resize).
-    The 2nd arg is the new editor-holder height.
-    The 3rd arg is a refreshHint flag for internal EditorManager use.
-</code></pre></li>
+<li>editorAreaResize -- When editor-holder&#39;s size changes for any reason (including panel show/hide
+panel resize, or the window resize).
+The 2nd arg is the new editor-holder height.
+The 3rd arg is a refreshHint flag for internal EditorManager use.</li>
 </ul>
 
             </div>
@@ -395,12 +395,14 @@ currently available window size.</p>
                 </span>
                 <h4>$editorHolder</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>jQueryObject</dd>
                 </dl>
-                <div class="description"><p>@type {jQueryObject} The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror
-        instance (or the no-editor placeholder)</p>
+                <div class="description"><p>The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror
+instance (or the no-editor placeholder)</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var $editorHolder;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var $editorHolder;</code></pre>
               </div>
               <div class="member">
       
@@ -410,11 +412,13 @@ currently available window size.</p>
                 </span>
                 <h4>$windowContent</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>jQueryObject</dd>
                 </dl>
-                <div class="description"><p>@type {jQueryObject} The &quot;.content&quot; vertical stack (editor + all header/footer panels)</p>
+                <div class="description"><p>The &quot;.content&quot; vertical stack (editor + all header/footer panels)</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var $windowContent;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var $windowContent;</code></pre>
               </div>
               <div class="member">
       
@@ -424,11 +428,13 @@ currently available window size.</p>
                 </span>
                 <h4>windowResizing</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>boolean</dd>
                 </dl>
-                <div class="description"><p>@type {boolean} Have we already started listening for the end of the ongoing window resize?</p>
+                <div class="description"><p>Have we already started listening for the end of the ongoing window resize?</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var windowResizing = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var windowResizing = false;</code></pre>
               </div>
               
             </section>
@@ -459,7 +465,7 @@ currently available window size.</p>
                   <dd>Minimum height of panel in px.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function Panel($panel, minSize) {
+              <pre class="language-javascript"><code class="language-javascript">    function Panel($panel, minSize) {
         this.$panel = $panel;
         
         Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize, false, undefined, true);
@@ -478,7 +484,7 @@ For internal use only: most code should call EditorManager.resizeEditor().</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _notifyLayoutChange(refreshHint) {
+              <pre class="language-javascript"><code class="language-javascript">    function _notifyLayoutChange(refreshHint) {
         triggerEditorResize(refreshHint);
         updateResizeLimits();
     }
@@ -529,7 +535,7 @@ accounting for the current size of all visible panels, toolbar, &amp; status bar
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function calcEditorHeight() {
+              <pre class="language-javascript"><code class="language-javascript">    function calcEditorHeight() {
         var availableHt = $windowContent.height();
         
         $editorHolder.siblings().each(function (i, elem) {
@@ -568,7 +574,7 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
                   <dd>Minimum height of panel in px.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function createBottomPanel(id, $panel, minSize) {
+              <pre class="language-javascript"><code class="language-javascript">    function createBottomPanel(id, $panel, minSize) {
         $panel.insertBefore(&quot;#status-bar&quot;);
         $panel.hide();
         updateResizeLimits();  &#x2F;&#x2F; initialize panel&#39;s max size
@@ -587,7 +593,7 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function handleWindowResize() {
+              <pre class="language-javascript"><code class="language-javascript">    function handleWindowResize() {
         &#x2F;&#x2F; These are not initialized in Jasmine Spec Runner window until a test
         &#x2F;&#x2F; is run that creates a mock document.
         if (!$windowContent || !$editorHolder) {
@@ -625,7 +631,7 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function listenToResize($panel) {
+              <pre class="language-javascript"><code class="language-javascript">    function listenToResize($panel) {
         &#x2F;&#x2F; Update editor height when shown&#x2F;hidden, &amp; continuously as panel is resized
         $panel.on(&quot;panelCollapsed panelExpanded panelResizeUpdate&quot;, function () {
             triggerEditorResize();
@@ -652,7 +658,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
                   <dd>One of "skip", "force", or undefined. See EditorManager docs.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function triggerEditorResize(refreshHint) {
+              <pre class="language-javascript"><code class="language-javascript">    function triggerEditorResize(refreshHint) {
         &#x2F;&#x2F; Find how much space is left for the editor
         var editorAreaHeight = calcEditorHeight();
         
@@ -673,7 +679,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function updateResizeLimits() {
+              <pre class="language-javascript"><code class="language-javascript">    function updateResizeLimits() {
         var editorAreaHeight = $editorHolder.height();
         
         $editorHolder.siblings().each(function (i, elem) {

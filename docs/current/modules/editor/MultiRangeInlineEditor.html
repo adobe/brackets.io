@@ -400,7 +400,7 @@ of the editor allows the user to select which range is visible. </p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _nextRange() {
+              <pre class="language-javascript"><code class="language-javascript">    function _nextRange() {
         var focusedMultiRangeInlineEditor = getFocusedMultiRangeInlineEditor();
         if (focusedMultiRangeInlineEditor) {
             focusedMultiRangeInlineEditor._selectNextRange();
@@ -435,7 +435,7 @@ of the editor allows the user to select which range is visible. </p>
                   <dd>Style name to query</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _parseStyleSize($target, styleName) {
+              <pre class="language-javascript"><code class="language-javascript">    function _parseStyleSize($target, styleName) {
         return parseInt($target.css(styleName), 10);
     }</code></pre>
             </div>
@@ -450,7 +450,7 @@ of the editor allows the user to select which range is visible. </p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _previousRange() {
+              <pre class="language-javascript"><code class="language-javascript">    function _previousRange() {
         var focusedMultiRangeInlineEditor = getFocusedMultiRangeInlineEditor();
         if (focusedMultiRangeInlineEditor) {
             focusedMultiRangeInlineEditor._selectPreviousRange();
@@ -468,7 +468,7 @@ of the editor allows the user to select which range is visible. </p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getFocusedMultiRangeInlineEditor() {
+              <pre class="language-javascript"><code class="language-javascript">    function getFocusedMultiRangeInlineEditor() {
         var focusedWidget = EditorManager.getFocusedInlineWidget();
         if (focusedWidget instanceof MultiRangeInlineEditor) {
             return focusedWidget;
@@ -496,7 +496,7 @@ in the results list.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function SearchResultItem(rangeResult) {
+                  <pre class="language-javascript"><code class="language-javascript">    function SearchResultItem(rangeResult) {
         this.name = rangeResult.name;
         this.textRange = new TextRange(rangeResult.document, rangeResult.lineStart, rangeResult.lineEnd);
         &#x2F;&#x2F; this.$listItem is assigned in load()
@@ -540,7 +540,7 @@ in the results list.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function MultiRangeInlineEditor(ranges, messageCB, labelCB) {
+                  <pre class="language-javascript"><code class="language-javascript">    function MultiRangeInlineEditor(ranges, messageCB, labelCB) {
         InlineTextEditor.call(this);
         
         &#x2F;&#x2F; Store the results to show in the range list. This creates TextRanges bound to the Document,
@@ -578,12 +578,14 @@ in the results list.</p>
                     </span>
                     <h4>_ranges</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>Array.&lt;SearchResultItem&gt;</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {Array.&lt;SearchResultItem&gt;}</p>
+                    <div class="description"><p>List of search results</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._ranges = null;
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ranges = null;
     MultiRangeInlineEditor.prototype._selectedRangeIndex = null;
     MultiRangeInlineEditor.prototype._messageCB = null;
     MultiRangeInlineEditor.prototype._labelCB = null;</code></pre>
@@ -617,7 +619,7 @@ in the results list.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._createListItem = function (range, index) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._createListItem = function (range, index) {
         var self = this,
             $rangeItem = $(&quot;&lt;li&#x2F;&gt;&quot;),
             $rangeListChildren = this.$rangeList.children();
@@ -662,7 +664,7 @@ vertical scroll position of the host editor to ensure that the cursor is visible
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._ensureCursorVisible = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ensureCursorVisible = function () {
         if (!this.editor) {
             return;
         }
@@ -696,7 +698,7 @@ vertical scroll position of the host editor to ensure that the cursor is visible
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._getRanges = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getRanges = function () {
         return this._ranges;
     };</code></pre>
                   </div>
@@ -713,7 +715,7 @@ vertical scroll position of the host editor to ensure that the cursor is visible
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._getSelectedRange = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getSelectedRange = function () {
         return this._selectedRangeIndex &gt;= 0 ? this._ranges[this._selectedRangeIndex] : null;
     };</code></pre>
                   </div>
@@ -732,7 +734,7 @@ restoring focus and the insertion point.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._onClick = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onClick = function (event) {
         if (!this.editor) {
             return;
         }
@@ -775,7 +777,7 @@ restoring focus and the insertion point.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._onLostContent = function (event, cause) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onLostContent = function (event, cause) {
         &#x2F;&#x2F; Ignore when the editor&#39;s content got lost due to a deleted file
         if (cause &amp;&amp; cause.type === &quot;deleted&quot;) { return; }
         &#x2F;&#x2F; Else yield to the parent&#39;s implementation
@@ -795,7 +797,7 @@ restoring focus and the insertion point.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._selectNextRange = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectNextRange = function () {
         if (this._selectedRangeIndex &lt; this._ranges.length - 1) {
             this.setSelectedIndex(this._selectedRangeIndex + 1);
         }
@@ -814,7 +816,7 @@ restoring focus and the insertion point.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._selectPreviousRange = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectPreviousRange = function () {
         if (this._selectedRangeIndex &gt; 0) {
             this.setSelectedIndex(this._selectedRangeIndex - 1);
         }
@@ -833,7 +835,7 @@ restoring focus and the insertion point.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._updateCommands = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateCommands = function () {
         var enabled = (this.hasFocus() &amp;&amp; this._ranges.length &gt; 1);
         _prevMatchCmd.setEnabled(enabled &amp;&amp; this._selectedRangeIndex &gt; 0);
         _nextMatchCmd.setEnabled(enabled &amp;&amp; this._selectedRangeIndex !== -1 &amp;&amp; this._selectedRangeIndex &lt; this._ranges.length - 1);
@@ -854,7 +856,7 @@ widget.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype._updateEditorMinHeight = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateEditorMinHeight = function () {
         if (!this.editor) {
             return;
         }
@@ -948,7 +950,7 @@ if there are no other ranges for that document.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.addAndSelectRange = function (name, doc, lineStart, lineEnd) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.addAndSelectRange = function (name, doc, lineStart, lineEnd) {
         var newRange = new SearchResultItem({
                 name: name,
                 document: doc,
@@ -1043,7 +1045,7 @@ if there are no other ranges for that document.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.load = function (hostEditor) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.load = function (hostEditor) {
         MultiRangeInlineEditor.prototype.parentClass.load.apply(this, arguments);
         
         &#x2F;&#x2F; Create the message area
@@ -1108,7 +1110,7 @@ if there are no other ranges for that document.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.onAdded = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onAdded = function () {
         var self = this;
         
         &#x2F;&#x2F; Before setting the inline widget height, force a height on the
@@ -1144,7 +1146,7 @@ if there are no other ranges for that document.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.onClosed = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onClosed = function () {
         &#x2F;&#x2F; Superclass onClosed() destroys editor
         MultiRangeInlineEditor.prototype.parentClass.onClosed.apply(this, arguments);
 
@@ -1172,7 +1174,7 @@ state that might have changed while the editor was hidden.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.onParentShown = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onParentShown = function () {
         MultiRangeInlineEditor.prototype.parentClass.onParentShown.apply(this, arguments);
         this._updateSelectedMarker(false);
     };</code></pre>
@@ -1190,7 +1192,7 @@ state that might have changed while the editor was hidden.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.refresh = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.refresh = function () {
         MultiRangeInlineEditor.prototype.parentClass.refresh.apply(this, arguments);
         this.sizeInlineWidgetToContents(true);
         if (this.editor) {
@@ -1218,7 +1220,7 @@ state that might have changed while the editor was hidden.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.setSelectedIndex = function (index, force) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.setSelectedIndex = function (index, force) {
         var newIndex = Math.min(Math.max(-1, index), this._ranges.length - 1),
             self = this;
         
@@ -1295,7 +1297,7 @@ state that might have changed while the editor was hidden.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents = function (force, ensureVisibility) {
+                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents = function (force, ensureVisibility) {
         &#x2F;&#x2F; Size the code mirror editors height to the editor content
         &#x2F;&#x2F; We use &quot;call&quot; rather than &quot;apply&quot; here since ensureVisibility was an argument added just for this override.
         MultiRangeInlineEditor.prototype.parentClass.sizeInlineWidgetToContents.call(this, force);

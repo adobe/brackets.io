@@ -457,7 +457,7 @@ The 3rd arg is the new name.</p>
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _currentDocument = null;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _currentDocument = null;</code></pre>
               </div>
               <div class="member private">
       
@@ -474,7 +474,7 @@ The 3rd arg is the new name.</p>
                 <div class="description"><p>While true, the MRU order is frozen</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _documentNavPending = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _documentNavPending = false;</code></pre>
               </div>
               <div class="member private">
       
@@ -491,7 +491,7 @@ The 3rd arg is the new name.</p>
                 <div class="description"><p>All documents with refCount &gt; 0. Maps Document.file.id -&gt; Document.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _openDocuments = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _openDocuments = {};</code></pre>
               </div>
               <div class="member private">
       
@@ -506,7 +506,7 @@ The 3rd arg is the new name.</p>
                 <div class="description"><p>Random path prefix for untitled documents</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _untitledDocumentPath = &quot;&#x2F;_brackets_&quot; + _.random(10000000, 99999999);</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _untitledDocumentPath = &quot;&#x2F;_brackets_&quot; + _.random(10000000, 99999999);</code></pre>
               </div>
               <div class="member private">
       
@@ -524,7 +524,7 @@ The 3rd arg is the new name.</p>
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _workingSet = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _workingSet = [];</code></pre>
               </div>
               <div class="member private">
       
@@ -541,7 +541,7 @@ The 3rd arg is the new name.</p>
                 <div class="description"><p>Contains the same set of items as _workingSet, but ordered in the way they where added to _workingSet (0 = last added).</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _workingSetAddedOrder = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _workingSetAddedOrder = [];</code></pre>
               </div>
               <div class="member private">
       
@@ -558,7 +558,7 @@ The 3rd arg is the new name.</p>
                 <div class="description"><p>Contains the same set of items as _workingSet, but ordered by how recently they were _currentDocument (0 = most recent).</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _workingSetMRUOrder = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _workingSetMRUOrder = [];</code></pre>
               </div>
               
             </section>
@@ -587,7 +587,7 @@ preference from old preference model.</p>
  for migration of working set files.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _checkPreferencePrefix(key) {
+              <pre class="language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
         var pathPrefix = &quot;files_&quot;;
         if (key.indexOf(pathPrefix) === 0) {
             &#x2F;&#x2F; Get the project path from the old preference key by stripping &quot;files_&quot;.
@@ -660,7 +660,7 @@ preference from old preference model.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _clearCurrentDocument() {
+              <pre class="language-javascript"><code class="language-javascript">    function _clearCurrentDocument() {
         &#x2F;&#x2F; If editor already blank, do nothing
         if (!_currentDocument) {
             return;
@@ -687,7 +687,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _gcDocuments() {
+              <pre class="language-javascript"><code class="language-javascript">    function _gcDocuments() {
         getAllOpenDocuments().forEach(function (doc) {
             &#x2F;&#x2F; Is the only ref to this document its own master Editor?
             if (doc._refCount === 1 &amp;&amp; doc._masterEditor) {
@@ -708,7 +708,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleLanguageAdded(event, language) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleLanguageAdded(event, language) {
         _.forEach(_openDocuments, function (doc, key) {
             &#x2F;&#x2F; No need to look at the new language if this document has one already
             if (doc.getLanguage().isFallbackLanguage()) {
@@ -728,7 +728,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleLanguageModified(event, language) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleLanguageModified(event, language) {
         _.forEach(_openDocuments, function (doc, key) {
             var docLanguage = doc.getLanguage();
             &#x2F;&#x2F; A modified language can affect a document
@@ -788,7 +788,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _markMostRecent(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _markMostRecent(doc) {
         var mruI = findInWorkingSet(doc.file.fullPath, _workingSetMRUOrder);
         if (mruI !== -1) {
             _workingSetMRUOrder.splice(mruI, 1);
@@ -807,7 +807,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _projectOpen(e) {
+              <pre class="language-javascript"><code class="language-javascript">    function _projectOpen(e) {
         &#x2F;&#x2F; file root is appended for each project
         var projectRoot = ProjectManager.getProjectRoot(),
             files = [],
@@ -865,7 +865,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _removeAllFromWorkingSet() {
+              <pre class="language-javascript"><code class="language-javascript">    function _removeAllFromWorkingSet() {
         var fileList = _workingSet;
 
         &#x2F;&#x2F; Remove all
@@ -888,7 +888,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _savePreferences() {
+              <pre class="language-javascript"><code class="language-javascript">    function _savePreferences() {
         &#x2F;&#x2F; save the working set file paths
         var files        = [],
             isActive     = false,
@@ -944,7 +944,7 @@ a list of files because there&#39;s only 1 redraw at the end</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addListToWorkingSet(fileList) {
+              <pre class="language-javascript"><code class="language-javascript">    function addListToWorkingSet(fileList) {
         var uniqueFileList = [];
 
         &#x2F;&#x2F; Process only files not already in working set
@@ -1001,7 +1001,7 @@ Does not change which document is currently open in the editor. Completes synchr
  (useful if suppressRedraw was used with removeFromWorkingSet() earlier)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addToWorkingSet(file, index, forceRedraw) {
+              <pre class="language-javascript"><code class="language-javascript">    function addToWorkingSet(file, index, forceRedraw) {
         var indexRequested = (index !== undefined &amp;&amp; index !== null &amp;&amp; index !== -1);
         
         &#x2F;&#x2F; If the file has a custom viewer, then don&#39;t add it to the working set.
@@ -1060,7 +1060,7 @@ Can be called any number of times, and ended by a single finalizeDocumentNavigat
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function beginDocumentNavigation() {
+              <pre class="language-javascript"><code class="language-javascript">    function beginDocumentNavigation() {
         _documentNavPending = true;
     }</code></pre>
             </div>
@@ -1076,7 +1076,7 @@ unsaved changes, so the UI should confirm with the user before calling this.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function closeAll() {
+              <pre class="language-javascript"><code class="language-javascript">    function closeAll() {
         _clearCurrentDocument();
         _removeAllFromWorkingSet();
     }
@@ -1129,7 +1129,7 @@ set. Any other editors for this Document remain open. Discards any unsaved chang
                   <dd>- if true, don't automatically open and select the next document</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function closeFullEditor(file, skipAutoSelect) {
+              <pre class="language-javascript"><code class="language-javascript">    function closeFullEditor(file, skipAutoSelect) {
         &#x2F;&#x2F; If this was the current document shown in the editor UI, we&#39;re going to switch to a
         &#x2F;&#x2F; different document (or none if working set has no other options)
         if (_currentDocument &amp;&amp; _currentDocument.file.fullPath === file.fullPath) {
@@ -1185,7 +1185,7 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
                   <dd>- file extension of the new Document's File, including "."</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function createUntitledDocument(counter, fileExt) {
+              <pre class="language-javascript"><code class="language-javascript">    function createUntitledDocument(counter, fileExt) {
         var filename = Strings.UNTITLED + &quot;-&quot; + counter + fileExt,
             fullPath = _untitledDocumentPath + &quot;&#x2F;&quot; + filename,
             now = new Date(),
@@ -1206,7 +1206,7 @@ current is bumped to the front of the MRU list.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function finalizeDocumentNavigation() {
+              <pre class="language-javascript"><code class="language-javascript">    function finalizeDocumentNavigation() {
         if (_documentNavPending) {
             _documentNavPending = false;
             
@@ -1235,7 +1235,7 @@ Returns -1 if not found.</p>
  use only.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findInWorkingSet(fullPath, list) {
+              <pre class="language-javascript"><code class="language-javascript">    function findInWorkingSet(fullPath, list) {
         list = list || _workingSet;
         
         return _.findIndex(list, function (file, i) {
@@ -1259,7 +1259,7 @@ Returns -1 if not found.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findInWorkingSetAddedOrder(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function findInWorkingSetAddedOrder(fullPath) {
         return findInWorkingSet(fullPath, _workingSetAddedOrder);
     }</code></pre>
             </div>
@@ -1276,7 +1276,7 @@ these Documents are synced with external changes on disk.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getAllOpenDocuments() {
+              <pre class="language-javascript"><code class="language-javascript">    function getAllOpenDocuments() {
         var result = [];
         var id;
         for (id in _openDocuments) {
@@ -1300,7 +1300,7 @@ document always has a backing Editor (Document._masterEditor != null) and is thu
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getCurrentDocument() {
+              <pre class="language-javascript"><code class="language-javascript">    function getCurrentDocument() {
         return _currentDocument;
     }</code></pre>
             </div>
@@ -1327,7 +1327,7 @@ refs and listeners for that Editor UI).</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getDocumentForPath(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath) {
         var doc = getOpenDocumentForPath(fullPath);
 
         if (doc) {
@@ -1406,7 +1406,7 @@ as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getDocumentText(file) {
+              <pre class="language-javascript"><code class="language-javascript">    function getDocumentText(file) {
         var result = new $.Deferred(),
             doc = getOpenDocumentForPath(file.fullPath);
         if (doc) {
@@ -1441,7 +1441,7 @@ return currentDocument itself if working set is length 1.</p>
                   <dd>-1 for previous, +1 for next; no other values allowed</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getNextPrevFile(inc) {
+              <pre class="language-javascript"><code class="language-javascript">    function getNextPrevFile(inc) {
         if (inc !== -1 &amp;&amp; inc !== +1) {
             console.error(&quot;Illegal argument: inc = &quot; + inc);
             return null;
@@ -1488,7 +1488,7 @@ it; see {@link getDocumentForPath()} for details.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getOpenDocumentForPath(fullPath) {
+              <pre class="language-javascript"><code class="language-javascript">    function getOpenDocumentForPath(fullPath) {
         var id;
         
         &#x2F;&#x2F; Need to walk all open documents and check for matching path. We can&#39;t
@@ -1520,7 +1520,7 @@ To listen for ALL changes to this list, you must listen for both events.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getWorkingSet() {
+              <pre class="language-javascript"><code class="language-javascript">    function getWorkingSet() {
         return _.clone(_workingSet);
     }</code></pre>
             </div>
@@ -1548,7 +1548,7 @@ sort of &quot;project file model,&quot; making this just a private event handler
                   <dd>- if true, don't automatically open/select the next document</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function notifyFileDeleted(file, skipAutoSelect) {
+              <pre class="language-javascript"><code class="language-javascript">    function notifyFileDeleted(file, skipAutoSelect) {
         &#x2F;&#x2F; First ensure it&#39;s not currentDocument, and remove from working set
         closeFullEditor(file, skipAutoSelect);
         
@@ -1579,7 +1579,7 @@ for updating underlying model data and notifying all views of the change.</p>
                   <dd>The path of the file/folder that has been deleted</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function notifyPathDeleted(path) {</code></pre>
+              <pre class="language-javascript"><code class="language-javascript">    function notifyPathDeleted(path) {</code></pre>
             </div>
             <div class="member public">
               <span class="pull-right scope">
@@ -1602,7 +1602,7 @@ for updating underlying model data and notifying all views of the change.</p>
                   <dd>True if path is a folder; False if it is a file.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function notifyPathNameChanged(oldName, newName, isFolder) {
+              <pre class="language-javascript"><code class="language-javascript">    function notifyPathNameChanged(oldName, newName, isFolder) {
         &#x2F;&#x2F; Notify all open documents 
         _.forEach(_openDocuments, function (doc, id) {
             &#x2F;&#x2F; TODO: Only notify affected documents? For now _notifyFilePathChange 
@@ -1636,7 +1636,7 @@ the current editor even if it&#39;s for this file. Does not prompt for unsaved c
                   <dd>to suppress redraw after removal</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function removeFromWorkingSet(file, suppressRedraw) {
+              <pre class="language-javascript"><code class="language-javascript">    function removeFromWorkingSet(file, suppressRedraw) {
         &#x2F;&#x2F; If doc isn&#39;t in working set, do nothing
         var index = findInWorkingSet(file.fullPath);
         if (index === -1) {
@@ -1670,7 +1670,7 @@ in the file tree / working set UI, etc. This call may also add the item to the w
  working set.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function setCurrentDocument(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function setCurrentDocument(doc) {
         
         &#x2F;&#x2F; If this doc is already current, do nothing
         if (_currentDocument === doc) {
@@ -1717,7 +1717,7 @@ in the file tree / working set UI, etc. This call may also add the item to the w
  Documentation: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/sort</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function sortWorkingSet(compareFn) {
+              <pre class="language-javascript"><code class="language-javascript">    function sortWorkingSet(compareFn) {
         _workingSet.sort(compareFn);
         $(exports).triggerHandler(&quot;workingSetSort&quot;);
     }</code></pre>
@@ -1739,7 +1739,7 @@ in the file tree / working set UI, etc. This call may also add the item to the w
                   <dd>New file index</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function swapWorkingSetIndexes(index1, index2) {
+              <pre class="language-javascript"><code class="language-javascript">    function swapWorkingSetIndexes(index1, index2) {
         var length = _workingSet.length - 1;
         var temp;
         

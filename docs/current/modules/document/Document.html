@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, $</p>
-
+              
             </div>
           </section>
     
@@ -396,7 +395,7 @@ if it were an array containing just that item.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function oneOrEach(itemOrArr, cb) {
+              <pre class="language-javascript"><code class="language-javascript">    function oneOrEach(itemOrArr, cb) {
         if (Array.isArray(itemOrArr)) {
             _.each(itemOrArr, cb);
         } else {
@@ -419,27 +418,22 @@ if it were an array containing just that item.</p>
                   <em><p>Model for the contents of a single file and its current modification state.
 See DocumentManager documentation for important usage notes.</p>
 <p>Document dispatches these events:</p>
-<p>change -- When the text of the editor changes (including due to undo/redo). </p>
-<pre><code>   Passes ({Document}, {ChangeList}), where ChangeList is an array
-   of change record objects. Each change record looks like:
-
-       { from: start of change, expressed as {line: &lt;line number&gt;, ch: &lt;character offset&gt;},
-         to: end of change, expressed as {line: &lt;line number&gt;, ch: &lt;chracter offset&gt;},
-         text: array of lines of text to replace existing text }
-
-   The line and ch offsets are both 0-based.
-
-   The ch offset in &quot;from&quot; is inclusive, but the ch offset in &quot;to&quot; is exclusive. For example,
-   an insertion of new content (without replacing existing content) is expressed by a range
-   where from and to are the same.
-
-   If &quot;from&quot; and &quot;to&quot; are undefined, then this is a replacement of the entire text content.
-
-   IMPORTANT: If you listen for the &quot;change&quot; event, you MUST also addRef() the document 
-   (and releaseRef() it whenever you stop listening). You should also listen to the &quot;deleted&quot;
-   event.
-</code></pre><p>deleted -- When the file for this document has been deleted. All views onto the document should
-     be closed. The document will no longer be editable or dispatch &quot;change&quot; events.</p>
+<p><strong>change</strong> -- When the text of the editor changes (including due to undo/redo). </p>
+<p>Passes ({Document}, {ChangeList}), where ChangeList is an array
+of change record objects. Each change record looks like:</p>
+<pre><code>{ from: start of change, expressed as {line: &lt;line number&gt;, ch: &lt;character offset&gt;},
+  to: end of change, expressed as {line: &lt;line number&gt;, ch: &lt;chracter offset&gt;},
+  text: array of lines of text to replace existing text }
+</code></pre><p>The line and ch offsets are both 0-based.</p>
+<p>The ch offset in &quot;from&quot; is inclusive, but the ch offset in &quot;to&quot; is exclusive. For example,
+an insertion of new content (without replacing existing content) is expressed by a range
+where from and to are the same.</p>
+<p>If &quot;from&quot; and &quot;to&quot; are undefined, then this is a replacement of the entire text content.</p>
+<p>IMPORTANT: If you listen for the &quot;change&quot; event, you MUST also addRef() the document 
+(and releaseRef() it whenever you stop listening). You should also listen to the &quot;deleted&quot;
+event.</p>
+<p><strong>deleted</strong> -- When the file for this document has been deleted. All views onto the document should
+be closed. The document will no longer be editable or dispatch &quot;change&quot; events.</p>
 </em>
                   <dl>
                     <dt>file</dt>
@@ -454,7 +448,7 @@ See DocumentManager documentation for important usage notes.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Document(file, initialTimestamp, rawText) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Document(file, initialTimestamp, rawText) {
         if (!(this instanceof Document)) {  &#x2F;&#x2F; error if constructor called without &#39;new&#39;
             throw new Error(&quot;Document constructor must be called with &#39;new&#39;&quot;);
         }
@@ -487,7 +481,7 @@ See DocumentManager documentation for important usage notes.</p>
 inconsistent line endings, defaults to the current platform&#39;s standard endings.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._lineEndings = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._lineEndings = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -505,7 +499,7 @@ has not yet been modified or been the currentDocument; in that case, our backing
 string _text.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._masterEditor = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._masterEditor = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -520,7 +514,7 @@ string _text.</p>
 DocumentManager._openDocuments whenever refCount &gt; 0.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._refCount = 0;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._refCount = 0;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -536,7 +530,7 @@ DocumentManager._openDocuments whenever refCount &gt; 0.</p>
                     <div class="description"><p>True while refreshText() is in progress and change notifications shouldn&#39;t trip the dirty flag.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._refreshInProgress = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._refreshInProgress = false;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -552,7 +546,7 @@ DocumentManager._openDocuments whenever refCount &gt; 0.</p>
                     <div class="description"><p>The text contents of the file, or null if our backing model is _masterEditor.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._text = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._text = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -568,7 +562,7 @@ DocumentManager._openDocuments whenever refCount &gt; 0.</p>
 it means the file was modified by an app other than Brackets.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.diskTimestamp = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.diskTimestamp = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -584,7 +578,7 @@ it means the file was modified by an app other than Brackets.</p>
 If Document is untitled, this is an InMemoryFile object.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.file = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.file = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -600,7 +594,7 @@ If Document is untitled, this is an InMemoryFile object.</p>
 When this changes on any Document, DocumentManager dispatches a &quot;dirtyFlagChange&quot; event.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.isDirty = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.isDirty = false;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -615,7 +609,7 @@ When this changes on any Document, DocumentManager dispatches a &quot;dirtyFlagC
                     <div class="description"><p>Whether this document is currently being saved.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.isSaving = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.isSaving = false;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -634,7 +628,7 @@ keep changes.
 Note that this is a time as returned by Date.getTime(), not a Date object.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.keepChangesTime = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.keepChangesTime = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -649,7 +643,7 @@ Note that this is a time as returned by Date.getTime(), not a Date object.</p>
                     <div class="description"><p>The Language for this document. Will be resolved by file extension in the constructor</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.language = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.language = null;</code></pre>
                   </div>
                   
                 </section>
@@ -676,7 +670,7 @@ Should ONLY be called by Editor and Document.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._ensureMasterEditor = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._ensureMasterEditor = function () {
         if (!this._masterEditor) {
             EditorManager._createFullEditorForDocument(this);
         }
@@ -696,7 +690,7 @@ to that Editor&#39;s UI, OR by our setText()/refreshText() methods.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._handleEditorChange = function (event, editor, changeList) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._handleEditorChange = function (event, editor, changeList) {
         if (!this._refreshInProgress) {
             &#x2F;&#x2F; Sync isDirty from CodeMirror state
             var wasDirty = this.isDirty;
@@ -734,7 +728,7 @@ when EditorManager has told it to act as the master editor).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._makeEditable = function (masterEditor) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._makeEditable = function (masterEditor) {
         if (this._masterEditor) {
             console.error(&quot;Document is already editable&quot;);
         } else {
@@ -759,7 +753,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._makeNonEditable = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._makeNonEditable = function () {
         if (!this._masterEditor) {
             console.error(&quot;Document is already non-editable&quot;);
         } else {
@@ -781,7 +775,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._markClean = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._markClean = function () {
         this.isDirty = false;
         if (this._masterEditor) {
             this._masterEditor._codeMirror.markClean();
@@ -802,7 +796,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._notifyFilePathChanged = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._notifyFilePathChanged = function () {
         &#x2F;&#x2F; File extension may have changed
         this._updateLanguage();
     };</code></pre>
@@ -820,7 +814,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._updateLanguage = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._updateLanguage = function () {
         var oldLanguage = this.language;
         this.language = LanguageManager.getLanguageForPath(this.file.fullPath);
         
@@ -841,7 +835,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype._updateTimestamp = function (timestamp) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype._updateTimestamp = function (timestamp) {
         this.diskTimestamp = timestamp;
         &#x2F;&#x2F; Clear the &quot;keep changes&quot; timestamp since it&#39;s no longer relevant.
         this.keepChangesTime = null;
@@ -860,7 +854,7 @@ Editor.destroy() should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.addRef = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.addRef = function () {
         &#x2F;&#x2F;console.log(&quot;+++REF+++ &quot;+this);
         
         if (this._refCount === 0) {
@@ -904,7 +898,7 @@ it did before the edit.</p>
                       <dd>The adjusted position.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.adjustPosForChange = function (pos, textLines, start, end) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.adjustPosForChange = function (pos, textLines, start, end) {
         &#x2F;&#x2F; Same as CodeMirror.adjustForChange(), but that&#39;s a private function
         &#x2F;&#x2F; and Marijn would rather not expose it publicly.
         var change = { text: textLines, from: start, to: end };
@@ -941,7 +935,7 @@ batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.batchOperation = function (doOperation) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.batchOperation = function (doOperation) {
         this._ensureMasterEditor();
         
         var self = this;
@@ -1016,7 +1010,7 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.doMultipleEdits = function (edits, origin) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.doMultipleEdits = function (edits, origin) {
         var self = this;
         
         &#x2F;&#x2F; Sort the edits backwards, so we don&#39;t have to adjust the edit positions as we go along
@@ -1121,7 +1115,7 @@ The language returned is based on the file extension.</p>
                       <dd>An object describing the language used in this document</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.getLanguage = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.getLanguage = function () {
         return this.language;
     };</code></pre>
                   </div>
@@ -1144,7 +1138,7 @@ The language returned is based on the file extension.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.getLine = function (lineNum) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.getLine = function (lineNum) {
         this._ensureMasterEditor();
         return this._masterEditor._codeMirror.getLine(lineNum);
     };</code></pre>
@@ -1171,7 +1165,7 @@ The language returned is based on the file extension.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.getRange = function (start, end) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.getRange = function (start, end) {
         this._ensureMasterEditor();
         return this._masterEditor._codeMirror.getRange(start, end);
     };</code></pre>
@@ -1198,7 +1192,7 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.getText = function (useOriginalLineEndings) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.getText = function (useOriginalLineEndings) {
         if (this._masterEditor) {
             &#x2F;&#x2F; CodeMirror.getValue() always returns text with LF line endings; fix up to match line
             &#x2F;&#x2F; endings preferred by the document, if necessary
@@ -1236,7 +1230,7 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
                       <dd>- whether or not the document is untitled</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.isUntitled = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.isUntitled = function () {
         return this.file instanceof InMemoryFile;
     };
 
@@ -1259,7 +1253,7 @@ document not dirty and notifies listeners of the save.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.notifySaved = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.notifySaved = function () {
         if (!this._masterEditor) {
             console.log(&quot;### Warning: saving a Document that is not modifiable!&quot;);
         }
@@ -1299,7 +1293,7 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.refreshText = function (text, newTimestamp) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.refreshText = function (text, newTimestamp) {
         var perfTimerName = PerfUtils.markStart(&quot;refreshText:\t&quot; + (!this.file || this.file.fullPath));
 
         &#x2F;&#x2F; If clean, don&#39;t transiently mark dirty during refresh
@@ -1351,7 +1345,7 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.releaseRef = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.releaseRef = function () {
         &#x2F;&#x2F;console.log(&quot;---REF--- &quot;+this);
 
         this._refCount--;
@@ -1408,7 +1402,7 @@ fixed when we migrate to use CodeMirror&#39;s native document-linking functional
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.replaceRange = function (text, start, end, origin) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.replaceRange = function (text, start, end, origin) {
         this._ensureMasterEditor();
         this._masterEditor._codeMirror.replaceRange(text, start, end, origin);
         &#x2F;&#x2F; _handleEditorChange() triggers &quot;change&quot; event
@@ -1431,7 +1425,7 @@ match the document&#39;s current line-ending style.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.setText = function (text) {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.setText = function (text) {
         this._ensureMasterEditor();
         this._masterEditor._codeMirror.setValue(text);
         &#x2F;&#x2F; _handleEditorChange() triggers &quot;change&quot; event
@@ -1450,7 +1444,7 @@ match the document&#39;s current line-ending style.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Document.prototype.toString = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Document.prototype.toString = function () {
         var dirtyInfo = (this.isDirty ? &quot; (dirty!)&quot; : &quot; (clean)&quot;);
         var editorInfo = (this._masterEditor ? &quot; (Editable)&quot; : &quot; (Non-editable)&quot;);
         var refInfo = &quot; refs:&quot; + this._refCount;

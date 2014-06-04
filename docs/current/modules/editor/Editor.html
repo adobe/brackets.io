@@ -363,29 +363,29 @@ destroy() an Editor that&#39;s going away so it can release its Document ref.</p
 <p>For now, there&#39;s a distinction between the &quot;master&quot; Editor for a Document - which secretly acts
 as the Document&#39;s internal model of the text state - and the multitude of &quot;slave&quot; secondary Editors
 which, via Document, sync their changes to and from that master.</p>
-<p>For now, direct access to the underlying CodeMirror object is still possible via _codeMirror --
+<p>For now, direct access to the underlying CodeMirror object is still possible via <code>_codeMirror</code> --
 but this is considered deprecated and may go away.</p>
 <p>The Editor object dispatches the following events:</p>
 <ul>
-<li>keyEvent -- When any key event happens in the editor (whether it changes the text or not).<pre><code>Event handlers are passed ({Editor}, {KeyboardEvent}). The 2nd arg is the raw DOM event.
-Note: most listeners will only want to respond when event.type === &quot;keypress&quot;.
-</code></pre></li>
-<li>cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.<pre><code>Note: do not listen to this in order to be generally informed of edits--listen to the
-&quot;change&quot; event on Document instead.
-</code></pre></li>
+<li>keyEvent -- When any key event happens in the editor (whether it changes the text or not).
+Event handlers are passed <code>({Editor}, {KeyboardEvent})</code>. The 2nd arg is the raw DOM event.
+Note: most listeners will only want to respond when <code>event.type === &quot;keypress&quot;</code>.</li>
+<li>cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
+Note: do not listen to this in order to be generally informed of edits--listen to the
+&quot;change&quot; event on Document instead.</li>
 <li>scroll -- When the editor is scrolled, either by user action or programmatically.</li>
-<li>lostContent -- When the backing Document changes in such a way that this Editor is no longer<pre><code>able to display accurate text. This occurs if the Document&#39;s file is deleted, or in certain
+<li>lostContent -- When the backing Document changes in such a way that this Editor is no longer
+able to display accurate text. This occurs if the Document&#39;s file is deleted, or in certain
 Document-&gt;editor syncing edge cases that we do not yet support (the latter cause will
-eventually go away).
-</code></pre></li>
-<li>optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener<pre><code>is a string containing the editor option that is changing. The 3rd arg, which can be any
-data type, is the new value for the editor option.
-</code></pre></li>
+eventually go away).</li>
+<li>optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
+is a string containing the editor option that is changing. The 3rd arg, which can be any
+data type, is the new value for the editor option.</li>
 </ul>
 <p>The Editor also dispatches &quot;change&quot; events internally, but you should listen for those on
 Documents, not Editors.</p>
 <p>These are jQuery events, so to listen for them you do something like this:
-   $(editorInstance).on(&quot;eventname&quot;, handler);</p>
+    <code>$(editorInstance).on(&quot;eventname&quot;, handler);</code></p>
 
             </div>
           </section>
@@ -427,11 +427,13 @@ Documents, not Editors.</p>
                 </span>
                 <h4>BOUNDARY_CHECK_NORMAL</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>number</dd>
                 </dl>
-                <div class="description"><p>@type {number}  Constant: ignore upper boundary when centering text</p>
+                <div class="description"><p>Constant: ignore upper boundary when centering text</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var BOUNDARY_CHECK_NORMAL   = 0,
+                <pre class="language-javascript"><code class="language-javascript">    var BOUNDARY_CHECK_NORMAL   = 0,
         BOUNDARY_IGNORE_TOP     = 1;</code></pre>
               </div>
               <div class="member">
@@ -446,7 +448,7 @@ Documents, not Editors.</p>
                 <div class="description"><p>Editor preferences</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var CLOSE_BRACKETS    = &quot;closeBrackets&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var CLOSE_BRACKETS    = &quot;closeBrackets&quot;,
         CLOSE_TAGS        = &quot;closeTags&quot;,
         HIGHLIGHT_MATCHES = &quot;highlightMatches&quot;,
         SCROLL_PAST_END   = &quot;scrollPastEnd&quot;,
@@ -469,11 +471,13 @@ Documents, not Editors.</p>
                 </span>
                 <h4>MIN_SPACE_UNITS</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>number</dd>
                 </dl>
-                <div class="description"><p>@type {number} Constants</p>
+                <div class="description"><p>Constants</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var MIN_SPACE_UNITS         =  0,
+                <pre class="language-javascript"><code class="language-javascript">    var MIN_SPACE_UNITS         =  0,
         MIN_TAB_SIZE            =  1,
         DEFAULT_SPACE_UNITS     =  4,
         DEFAULT_TAB_SIZE        =  4,
@@ -520,12 +524,14 @@ Documents, not Editors.</p>
                 </span>
                 <h4>_duringFocus</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>boolean</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {boolean}  Guard flag to prevent focus() reentrancy (via blur handlers), even across Editors</p>
+                <div class="description"><p>Guard flag to prevent focus() reentrancy (via blur handlers), even across Editors</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _duringFocus = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _duringFocus = false;</code></pre>
               </div>
               <div class="member private">
       
@@ -543,7 +549,7 @@ Documents, not Editors.</p>
 that affect all editors, e.g. tabbing or color scheme settings.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _instances = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _instances = [];</code></pre>
               </div>
               
             </section>
@@ -569,7 +575,7 @@ that affect all editors, e.g. tabbing or color scheme settings.</p>
                   <dd>BOUNDARY_CHECK_NORMAL or BOUNDARY_IGNORE_TOP</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _checkTopBoundary(options) {
+              <pre class="language-javascript"><code class="language-javascript">    function _checkTopBoundary(options) {
         return (options !== BOUNDARY_IGNORE_TOP);
     }
     function _checkBottomBoundary(options) {
@@ -587,7 +593,7 @@ that affect all editors, e.g. tabbing or color scheme settings.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _convertPreferences() {
+              <pre class="language-javascript"><code class="language-javascript">    function _convertPreferences() {
         var rules = {};
         editorOptions.forEach(function (setting) {
             rules[setting] = &quot;user&quot;;
@@ -618,7 +624,7 @@ that affect all editors, e.g. tabbing or color scheme settings.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _copyPos(pos) {
+              <pre class="language-javascript"><code class="language-javascript">    function _copyPos(pos) {
         return new CodeMirror.Pos(pos.line, pos.ch);
     }</code></pre>
             </div>
@@ -642,7 +648,7 @@ if the head is before the anchor.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _normalizeRange(anchorPos, headPos) {
+              <pre class="language-javascript"><code class="language-javascript">    function _normalizeRange(anchorPos, headPos) {
         if (headPos.line &lt; anchorPos.line || (headPos.line === anchorPos.line &amp;&amp; headPos.ch &lt; anchorPos.ch)) {
             return {start: _copyPos(headPos), end: _copyPos(anchorPos), reversed: true};
         } else {
@@ -687,7 +693,7 @@ Document modifiable.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Editor(document, makeMasterEditor, container, range) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Editor(document, makeMasterEditor, container, range) {
         var self = this;
         
         _instances.push(this);
@@ -843,7 +849,7 @@ a few other modules. However, we should try to gradually move most code away fro
 CodeMirror directly.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._codeMirror = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._codeMirror = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -860,7 +866,7 @@ CodeMirror directly.</p>
 events caused by us (vs. change events caused by others, which we need to pay attention to).</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._duringSync = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._duringSync = false;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -876,7 +882,7 @@ A list of objects corresponding to the markers that are hiding lines in the curr
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._hideMarks = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._hideMarks = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -892,7 +898,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._inlineWidgetQueues = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._inlineWidgetQueues = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -907,7 +913,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._inlineWidgets = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._inlineWidgets = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -922,7 +928,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     </dl>
                     <div class="description"></div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._visibleRange = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._visibleRange = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -937,7 +943,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     <div class="description"><p>The Document we&#39;re bound to</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.document = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.document = null;</code></pre>
                   </div>
                   
                 </section>
@@ -966,7 +972,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._addIndentAtEachSelection = function (selections) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._addIndentAtEachSelection = function (selections) {
         var instance = this._codeMirror,
             usingTabs = instance.getOption(&quot;indentWithTabs&quot;),
             indentUnit = instance.getOption(&quot;indentUnit&quot;),
@@ -1001,7 +1007,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._addInlineWidgetInternal = function (pos, inlineWidget, scrollLineIntoView, deferred) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._addInlineWidgetInternal = function (pos, inlineWidget, scrollLineIntoView, deferred) {
         var self = this;
         
         this.removeAllInlineWidgetsForLine(pos.line).done(function () {
@@ -1050,7 +1056,7 @@ Promise queues for inline widgets being added to a given line. </dd>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._autoIndentEachSelection = function (selections) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._autoIndentEachSelection = function (selections) {
         &#x2F;&#x2F; Capture all the line lengths, so we can tell if anything changed.
         &#x2F;&#x2F; Note that this function should only be called if all selections are within a single line.
         var instance = this._codeMirror,
@@ -1099,7 +1105,7 @@ back-indenting it if so.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._checkElectricChars = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._checkElectricChars = function (event) {
         var instance = this._codeMirror,
             keyStr = String.fromCharCode(event.which || event.keyCode);
 
@@ -1140,7 +1146,7 @@ back-indenting it if so.</p>
                       <dd>The line number of the widget or -1 if not found.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._getInlineWidgetLineNumber = function (inlineWidget) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._getInlineWidgetLineNumber = function (inlineWidget) {
         return this._codeMirror.getLineNumber(inlineWidget.info.line);
     };</code></pre>
                   </div>
@@ -1157,9 +1163,12 @@ editors.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">!HTMLDivElement</dd>
+                      <dd>The editor's lineSpace element.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._getLineSpaceElement = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._getLineSpaceElement = function () {
         return $(&quot;.CodeMirror-lines&quot;, this.getScrollerElement()).children().get(0);
     };</code></pre>
                   </div>
@@ -1180,7 +1189,7 @@ Uses &quot;text/plain&quot; if the language does not define a mode</p>
                       <dd>The mode to use</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._getModeFromDocument = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._getModeFromDocument = function () {
         &#x2F;&#x2F; We&#39;d like undefined&#x2F;null&#x2F;&quot;&quot; to mean plain text mode. CodeMirror defaults to plaintext for any
         &#x2F;&#x2F; unrecognized mode, but it complains on the console in that fallback case: so, convert
         &#x2F;&#x2F; here so we&#39;re always explicit, avoiding console noise.
@@ -1206,7 +1215,7 @@ Uses &quot;text/plain&quot; if the language does not define a mode</p>
                       <dd>current value of that pref</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._getOption = function (prefName) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._getOption = function (prefName) {
         return PreferencesManager.get(prefName, this.document.file.fullPath);
     };</code></pre>
                   </div>
@@ -1226,7 +1235,7 @@ Uses &quot;text/plain&quot; if the language does not define a mode</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleCursorActivity = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleCursorActivity = function (event) {
         this._updateStyleActiveLine();
     };</code></pre>
                   </div>
@@ -1250,7 +1259,7 @@ the document an editor change that originated with us</li>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleDocumentChange = function (event, doc, changeList) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleDocumentChange = function (event, doc, changeList) {
         var change;
         
         &#x2F;&#x2F; we&#39;re currently syncing to the Document, so don&#39;t echo back FROM the Document
@@ -1286,7 +1295,7 @@ so we must close.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleDocumentDeleted = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleDocumentDeleted = function (event) {
         &#x2F;&#x2F; Pass the delete event along as the cause (needed in MultiRangeInlineEditor)
         $(this).triggerHandler(&quot;lostContent&quot;, [event]);
     };</code></pre>
@@ -1304,7 +1313,7 @@ so we must close.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleDocumentLanguageChanged = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleDocumentLanguageChanged = function (event) {
         this._codeMirror.setOption(&quot;mode&quot;, this._getModeFromDocument());
     };</code></pre>
                   </div>
@@ -1328,7 +1337,7 @@ to a Document change</li>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleEditorChange = function (changeList) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleEditorChange = function (changeList) {
         &#x2F;&#x2F; we&#39;re currently syncing from the Document, so don&#39;t echo back TO the Document
         if (this._duringSync) {
             return;
@@ -1382,7 +1391,7 @@ to a Document change</li>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleKeypressEvents = function (event) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleKeypressEvents = function (event) {
         this._checkElectricChars(event);
     };</code></pre>
                   </div>
@@ -1405,7 +1414,7 @@ to a Document change</li>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleSoftTabNavigation = function (direction, functionName) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleSoftTabNavigation = function (direction, functionName) {
         var instance = this._codeMirror,
             overallJump = null;
         
@@ -1487,7 +1496,7 @@ to a Document change</li>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._handleTabKey = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._handleTabKey = function () {
         &#x2F;&#x2F; Tab key handling is done as follows:
         &#x2F;&#x2F; 1. If any of the selections are multiline, just add one indent level to the 
         &#x2F;&#x2F;    beginning of all lines that intersect any selection.
@@ -1565,7 +1574,7 @@ to a Document change</li>
                       <dd>The CodeMirror mark object that's hiding the lines</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._hideLines = function (from, to) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._hideLines = function (from, to) {
         if (to &lt;= from) {
             return;
         }
@@ -1597,7 +1606,7 @@ jQuery events on the Editor instance.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._installEditorListeners = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._installEditorListeners = function () {
         var self = this;
         
         &#x2F;&#x2F; Redispatch these CodeMirror key events as jQuery events
@@ -1672,7 +1681,7 @@ the widget has already been removed.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._removeInlineWidgetFromList = function (inlineWidget) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._removeInlineWidgetFromList = function (inlineWidget) {
         var l = this._inlineWidgets.length,
             i;
         for (i = 0; i &lt; l; i++) {
@@ -1699,7 +1708,7 @@ the widget has already been removed.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._removeInlineWidgetInternal = function (inlineWidget) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._removeInlineWidgetInternal = function (inlineWidget) {
         if (!inlineWidget.isClosed) {
             this._removeInlineWidgetFromList(inlineWidget);
             inlineWidget.onClosed();
@@ -1724,7 +1733,7 @@ Semi-private: only Document should call this.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._resetText = function (text) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._resetText = function (text) {
         var perfTimerName = PerfUtils.markStart(&quot;Editor._resetText()\t&quot; + (!this.document || this.document.file.fullPath));
 
         var cursorPos = this.getCursorPos(),
@@ -1759,7 +1768,7 @@ the desired visible range.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._updateHiddenLines = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._updateHiddenLines = function () {
         if (this._visibleRange) {
             var cm = this._codeMirror,
                 self = this;
@@ -1825,7 +1834,7 @@ the desired visible range.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._updateOption = function (prefName) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._updateOption = function (prefName) {
         var oldValue = this._currentOptions[prefName],
             newValue = this._getOption(prefName);
         
@@ -1868,7 +1877,7 @@ the desired visible range.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype._updateStyleActiveLine = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype._updateStyleActiveLine = function () {
         if (this.hasSelection()) {
             if (this._codeMirror.getOption(&quot;styleActiveLine&quot;)) {
                 this._codeMirror.setOption(&quot;styleActiveLine&quot;, false);
@@ -1907,7 +1916,7 @@ line, it is closed without warning.</p>
  still be animating open). Never rejected.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.addInlineWidget = function (pos, inlineWidget, scrollLineIntoView) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.addInlineWidget = function (pos, inlineWidget, scrollLineIntoView) {
         var self = this,
             queue = this._inlineWidgetQueues[pos.line],
             deferred = new $.Deferred();
@@ -1941,7 +1950,7 @@ entirely outside the viewport.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.centerOnCursor = function (centerOptions) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.centerOnCursor = function (centerOptions) {
         var $scrollerElement = $(this.getScrollerElement());
         var editorHeight = $scrollerElement.height();
         
@@ -2004,7 +2013,7 @@ Useful for doing multiple-selection-aware line edits.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.convertToLineSelections = function (selections, options) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.convertToLineSelections = function (selections, options) {
         var self = this;
         options = options || {};
         _.defaults(options, { expandEndAtStartOfLine: false, mergeAdjacent: true });
@@ -2054,7 +2063,7 @@ a read-only string-backed mode.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.destroy = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.destroy = function () {
         &#x2F;&#x2F; CodeMirror docs for getWrapperElement() say all you have to do is &quot;Remove this from your
         &#x2F;&#x2F; tree to delete an editor instance.&quot;
         $(this.getRootElement()).remove();
@@ -2101,7 +2110,7 @@ cursor if space allows, otherwise below.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.displayErrorMessageAtCursor = function (errorMsg) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.displayErrorMessageAtCursor = function (errorMsg) {
         var arrowBelow, cursorPos, cursorCoord, popoverRect,
             top, left, clip, arrowCenter, arrowLeft,
             self = this,
@@ -2235,7 +2244,7 @@ cursor if space allows, otherwise below.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.focus = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.focus = function () {
         &#x2F;&#x2F; Focusing an editor synchronously triggers focus&#x2F;blur handlers. If a blur handler attemps to focus
         &#x2F;&#x2F; another editor, we&#39;ll put CM in a bad state (because CM assumes programmatically focusing itself
         &#x2F;&#x2F; will always succeed, and if you&#39;re in the middle of another focus change that appears to be untrue).
@@ -2276,7 +2285,7 @@ only when the line contains preceding \t chars. Result depends on the current ta
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getCharIndexForColumn = function (lineNum, column) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getCharIndexForColumn = function (lineNum, column) {
         var line    = this._codeMirror.getLine(lineNum),
             tabSize = null,
             iCol    = 0,
@@ -2317,7 +2326,7 @@ when the line contains preceding \t chars. Result depends on the current tab siz
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getColOffset = function (pos) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getColOffset = function (pos) {
         var line    = this._codeMirror.getRange({line: pos.line, ch: 0}, pos),
             tabSize = null,
             column  = 0,
@@ -2365,7 +2374,7 @@ when the line contains preceding \t chars. Result depends on the current tab siz
                       <dd>ch:number}</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getCursorPos = function (expandTabs, which) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getCursorPos = function (expandTabs, which) {
         &#x2F;&#x2F; Translate &quot;start&quot; and &quot;end&quot; to the official CM names (it actually
         &#x2F;&#x2F; supports them as-is, but that isn&#39;t documented and we don&#39;t want to
         &#x2F;&#x2F; rely on it).
@@ -2393,9 +2402,12 @@ when the line contains preceding \t chars. Result depends on the current tab siz
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">number</dd>
+                      <dd>The 0-based index of the first visible line.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getFirstVisibleLine = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getFirstVisibleLine = function () {
         return (this._visibleRange ? this._visibleRange.startLine : 0);
     };</code></pre>
                   </div>
@@ -2416,7 +2428,7 @@ inline&#39;s id, and the data parameter that was passed to addInlineWidget().</p
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getInlineWidgets = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getInlineWidgets = function () {
         return this._inlineWidgets;
     };</code></pre>
                   </div>
@@ -2431,9 +2443,12 @@ inline&#39;s id, and the data parameter that was passed to addInlineWidget().</p
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">number</dd>
+                      <dd>The 0-based index of the last visible line.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getLastVisibleLine = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getLastVisibleLine = function () {
         return (this._visibleRange ? this._visibleRange.endLine : this.lineCount() - 1);
     };</code></pre>
                   </div>
@@ -2453,7 +2468,7 @@ inline&#39;s id, and the data parameter that was passed to addInlineWidget().</p
                       <dd>Object or Name of syntax-highlighting mode; see {@link LanguageManager#getLanguageForPath()} and {@link Language#getMode()}.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getModeForDocument = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getModeForDocument = function () {
         return this._codeMirror.getOption(&quot;mode&quot;);
     };</code></pre>
                   </div>
@@ -2488,7 +2503,7 @@ A-B-A would return A as the mode, not null).</p>
  See {@link LanguageManager#getLanguageForPath()} and {@link Language#getMode()}.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getModeForRange = function (start, end, knownMixed) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getModeForRange = function (start, end, knownMixed) {
         var outerMode = this._codeMirror.getMode(),
             startMode = TokenUtils.getModeAt(this._codeMirror, start),
             endMode = TokenUtils.getModeAt(this._codeMirror, end);
@@ -2524,7 +2539,7 @@ consistent and resolve to the same mode.</p>
  See {@link LanguageManager#getLanguageForPath()} and {@link Language#getMode()}.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getModeForSelection = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getModeForSelection = function () {
         &#x2F;&#x2F; Check for mixed mode info
         var self        = this,
             sels        = this.getSelections(),
@@ -2579,9 +2594,12 @@ consistent and resolve to the same mode.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">!HTMLDivElement</dd>
+                      <dd>The editor's root DOM node.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getRootElement = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getRootElement = function () {
         return this._codeMirror.getWrapperElement();
     };</code></pre>
                   </div>
@@ -2596,9 +2614,12 @@ consistent and resolve to the same mode.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">{x:number,y:number}</dd>
+                      <dd>The x,y scroll position in pixels</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getScrollPos = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getScrollPos = function () {
         var scrollInfo = this._codeMirror.getScrollInfo();
         return { x: scrollInfo.left, y: scrollInfo.top };
     };</code></pre>
@@ -2614,9 +2635,12 @@ consistent and resolve to the same mode.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">!HTMLDivElement</dd>
+                      <dd>scroller</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getScrollerElement = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getScrollerElement = function () {
         return this._codeMirror.getScrollerElement();
     };</code></pre>
                   </div>
@@ -2642,7 +2666,7 @@ default, returns only the contents of the primary selection, unless <code>allSel
                       <dd>The selected text.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getSelectedText = function (allSelections) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getSelectedText = function (allSelections) {
         if (allSelections) {
             return this._codeMirror.getSelection();
         } else {
@@ -2671,7 +2695,7 @@ that would be changed if the user extended the selection) is before the anchor. 
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getSelection = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getSelection = function () {
         return _normalizeRange(this.getCursorPos(false, &quot;anchor&quot;), this.getCursorPos(false, &quot;head&quot;));
     };</code></pre>
                   </div>
@@ -2697,7 +2721,7 @@ If <code>primary</code> is set, then that selection is the primary selection.</p
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getSelections = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getSelections = function () {
         var primarySel = this.getSelection();
         return _.map(this._codeMirror.listSelections(), function (sel) {
             var result = _normalizeRange(sel.anchor, sel.head);
@@ -2722,9 +2746,12 @@ If <code>primary</code> is set, then that selection is the primary selection.</p
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">number</dd>
+                      <dd>Height of the text in pixels</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getTextHeight = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getTextHeight = function () {
         return this._codeMirror.defaultTextHeight();
     };</code></pre>
                   </div>
@@ -2747,7 +2774,7 @@ the top of the virtual scroll area (excluding the top padding).</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.getVirtualScrollAreaTop = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.getVirtualScrollAreaTop = function () {
         var topPadding = this._getLineSpaceElement().offsetTop, &#x2F;&#x2F; padding within mover
             scroller = this.getScrollerElement();
         return $(scroller).offset().top - scroller.scrollTop + topPadding;
@@ -2766,7 +2793,7 @@ the top of the virtual scroll area (excluding the top padding).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.hasFocus = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.hasFocus = function () {
         return this._focused;
     };</code></pre>
                   </div>
@@ -2783,7 +2810,7 @@ the top of the virtual scroll area (excluding the top padding).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.hasSelection = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.hasSelection = function () {
         return this._codeMirror.somethingSelected();
     };</code></pre>
                   </div>
@@ -2806,7 +2833,7 @@ the top of the virtual scroll area (excluding the top padding).</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.indexFromPos = function (coords) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.indexFromPos = function (coords) {
         return this._codeMirror.indexFromPos(coords);
     };</code></pre>
                   </div>
@@ -2824,7 +2851,7 @@ visible, and has a non-zero width/height.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.isFullyVisible = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.isFullyVisible = function () {
         return $(this.getRootElement()).is(&quot;:visible&quot;);
     };</code></pre>
                   </div>
@@ -2847,7 +2874,7 @@ visible, and has a non-zero width/height.</p>
                       <dd>true if the line is fully visible, false otherwise</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.isLineVisible = function (line) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.isLineVisible = function (line) {
         var coords = this._codeMirror.charCoords({line: line, ch: 0}, &quot;local&quot;),
             scrollInfo = this._codeMirror.getScrollInfo(),
             top = scrollInfo.top,
@@ -2870,7 +2897,7 @@ visible, and has a non-zero width/height.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.isTextSubset = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.isTextSubset = function () {
         return Boolean(this._visibleRange);
     };</code></pre>
                   </div>
@@ -2885,9 +2912,12 @@ visible, and has a non-zero width/height.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">!number</dd>
+                      <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.lineCount = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.lineCount = function () {
         return this._codeMirror.lineCount();
     };</code></pre>
                   </div>
@@ -2917,7 +2947,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.posWithinRange = function (pos, start, end, endInclusive) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.posWithinRange = function (pos, start, end, endInclusive) {
         if (start.line &lt;= pos.line &amp;&amp; end.line &gt;= pos.line) {
             if (endInclusive) {
                 return (start.line &lt; pos.line || start.ch &lt;= pos.ch) &amp;&amp;  &#x2F;&#x2F; inclusive
@@ -2944,7 +2974,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.redo = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.redo = function () {
         this._codeMirror.redo();
     };</code></pre>
                   </div>
@@ -2964,7 +2994,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.refresh = function (handleResize) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.refresh = function (handleResize) {
         &#x2F;&#x2F; If focus is currently in a child of the CodeMirror editor (e.g. in an inline widget), but not in
         &#x2F;&#x2F; the CodeMirror input field itself, remember the focused item so we can restore focus after the
         &#x2F;&#x2F; refresh (which might cause the widget to be removed from the display list temporarily).
@@ -2992,7 +3022,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.refreshAll = function (handleResize) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.refreshAll = function (handleResize) {
         this.refresh(handleResize);
         this.getInlineWidgets().forEach(function (inlineWidget) {
             inlineWidget.refresh();
@@ -3012,7 +3042,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.removeAllInlineWidgets = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.removeAllInlineWidgets = function () {
         &#x2F;&#x2F; copy the array because _removeInlineWidgetInternal will modify the original
         var widgets = [].concat(this.getInlineWidgets());
         
@@ -3038,7 +3068,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.removeAllInlineWidgetsForLine = function (lineNum) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.removeAllInlineWidgetsForLine = function (lineNum) {
         var lineInfo = this._codeMirror.lineInfo(lineNum),
             widgetInfos = (lineInfo &amp;&amp; lineInfo.widgets) ? [].concat(lineInfo.widgets) : null,
             self = this;
@@ -3086,7 +3116,7 @@ but overridable via the endInclusive flag).</p>
                       <dd>A promise that is resolved when the inline widget is fully closed and removed from the DOM.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.removeInlineWidget = function (inlineWidget) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.removeInlineWidget = function (inlineWidget) {
         var deferred = new $.Deferred(),
             self = this;
 
@@ -3134,7 +3164,7 @@ but overridable via the endInclusive flag).</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.selectAllNoScroll = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.selectAllNoScroll = function () {
         var cm = this._codeMirror,
             info = this._codeMirror.getScrollInfo();
         
@@ -3164,7 +3194,7 @@ Adapted from selectWordAt() in CodeMirror v2.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.selectWordAt = function (pos) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.selectWordAt = function (pos) {
         var line = this.document.getLine(pos.line),
             start = pos.ch,
             end = pos.ch;
@@ -3208,7 +3238,7 @@ Adapted from selectWordAt() in CodeMirror v2.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setCursorPos = function (line, ch, center, expandTabs) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setCursorPos = function (line, ch, center, expandTabs) {
         if (expandTabs) {
             ch = this.getColOffset({line: line, ch: ch});
         }
@@ -3240,7 +3270,7 @@ Adapted from selectWordAt() in CodeMirror v2.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setInlineWidgetHeight = function (inlineWidget, height, ensureVisible) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setInlineWidgetHeight = function (inlineWidget, height, ensureVisible) {
         var self = this,
             node = inlineWidget.htmlContent,
             oldHeight = (node &amp;&amp; $(node).height()) || 0,
@@ -3313,7 +3343,7 @@ Adapted from selectWordAt() in CodeMirror v2.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setScrollPos = function (x, y) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setScrollPos = function (x, y) {
         this._codeMirror.scrollTo(x, y);
     };</code></pre>
                   </div>
@@ -3348,7 +3378,7 @@ making the selection</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {
         this.setSelections([{start: start, end: end || start}], center, centerOptions, origin);
     };</code></pre>
                   </div>
@@ -3385,7 +3415,7 @@ Optionally centers around the primary selection after making the selection.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setSelections = function (selections, center, centerOptions, origin) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setSelections = function (selections, center, centerOptions, origin) {
         var primIndex = selections.length - 1, options;
         if (origin) {
             options = { origin: origin };
@@ -3420,7 +3450,7 @@ Optionally centers around the primary selection after making the selection.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setSize = function (width, height) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setSize = function (width, height) {
         this._codeMirror.setSize(width, height);
     };
     
@@ -3446,7 +3476,7 @@ become visible.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.setVisible = function (show, refresh) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.setVisible = function (show, refresh) {
         $(this.getRootElement()).css(&quot;display&quot;, (show ? &quot;&quot; : &quot;none&quot;));
         if (show &amp;&amp; (refresh || refresh === undefined)) {
             this.refresh();
@@ -3474,7 +3504,7 @@ become visible.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.toggleOverwrite = function (state) {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.toggleOverwrite = function (state) {
         this._codeMirror.toggleOverwrite(state);
     };</code></pre>
                   </div>
@@ -3489,9 +3519,12 @@ become visible.</p>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">!number</dd>
+                      <dd>height in pixels</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.totalHeight = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.totalHeight = function () {
         return this.getScrollerElement().scrollHeight;
     };</code></pre>
                   </div>
@@ -3508,7 +3541,7 @@ become visible.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Editor.prototype.undo = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Editor.prototype.undo = function () {
         this._codeMirror.undo();
     };</code></pre>
                   </div>

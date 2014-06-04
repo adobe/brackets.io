@@ -389,12 +389,14 @@ the URL for the added/removed style sheet.</p>
                 </span>
                 <h4>_getAllStyleSheetsNotFound</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>boolean</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {boolean} This is undefined until we test for API</p>
+                <div class="description"><p>Is getAllStyleSheets() API defined? - This is undefined until we test for API</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _getAllStyleSheetsNotFound;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _getAllStyleSheetsNotFound;</code></pre>
               </div>
               <div class="member private">
       
@@ -404,12 +406,14 @@ the URL for the added/removed style sheet.</p>
                 </span>
                 <h4>_styleSheetIdToUrl</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Object.&lt;string, string&gt;</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {Object.&lt;string, string&gt;}</p>
+                <div class="description"><p>Map of stylesheet ids to urls</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _styleSheetIdToUrl;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _styleSheetIdToUrl;</code></pre>
               </div>
               <div class="member private">
       
@@ -419,12 +423,14 @@ the URL for the added/removed style sheet.</p>
                 </span>
                 <h4>_urlToStyle</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Object.&lt;string, CSS.CSSStyleSheetHeader&gt;</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {Object.&lt;string, CSS.CSSStyleSheetHeader&gt;}</p>
+                <div class="description"><p>Stylesheet urls</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _urlToStyle = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _urlToStyle = {};</code></pre>
               </div>
               
             </section>
@@ -450,7 +456,7 @@ the URL for the added/removed style sheet.</p>
                   <dd>the URL to canonicalize</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _canonicalize(url) {
+              <pre class="language-javascript"><code class="language-javascript">    function _canonicalize(url) {
         return PathUtils.parseUrl(url).hrefNoSearch;
     }</code></pre>
             </div>
@@ -471,7 +477,7 @@ the URL for the added/removed style sheet.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onFrameNavigated(event, res) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onFrameNavigated(event, res) {
         &#x2F;&#x2F; Clear maps when navigating to a new page
         _urlToStyle = {};
         _styleSheetIdToUrl = {};
@@ -494,7 +500,7 @@ the URL for the added/removed style sheet.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onFrameStoppedLoading(event, res) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onFrameStoppedLoading(event, res) {
         var regexChromeUA,
             userAgent,
             uaMatch;
@@ -544,7 +550,7 @@ the URL for the added/removed style sheet.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _styleSheetAdded(event, res) {
+              <pre class="language-javascript"><code class="language-javascript">    function _styleSheetAdded(event, res) {
         var url = _canonicalize(res.header.sourceURL),
             existing = _urlToStyle[url];
         
@@ -575,7 +581,7 @@ the URL for the added/removed style sheet.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _styleSheetRemoved(event, res) {
+              <pre class="language-javascript"><code class="language-javascript">    function _styleSheetRemoved(event, res) {
         var url = _styleSheetIdToUrl[res.styleSheetId],
             header = url &amp;&amp; _urlToStyle[url];
         
@@ -602,7 +608,7 @@ the URL for the added/removed style sheet.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function clearCSSForDocument(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function clearCSSForDocument(doc) {
         var style = styleForURL(doc.url);
         console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
         return Inspector.CSS.setStyleSheetText(style.styleSheetId, &quot;&quot;);
@@ -619,7 +625,7 @@ the URL for the added/removed style sheet.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function enable() {
+              <pre class="language-javascript"><code class="language-javascript">    function enable() {
         return Inspector.CSS.enable();
     }</code></pre>
             </div>
@@ -635,7 +641,7 @@ Get a list of all loaded stylesheet files by URL</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getStylesheetURLs() {
+              <pre class="language-javascript"><code class="language-javascript">    function getStylesheetURLs() {
         var urls = [], url;
         for (url in _urlToStyle) {
             if (_urlToStyle.hasOwnProperty(url)) {
@@ -656,7 +662,7 @@ Get a list of all loaded stylesheet files by URL</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function load() {
+              <pre class="language-javascript"><code class="language-javascript">    function load() {
         $(Inspector.Page).on(&quot;frameNavigated.CSSAgent&quot;, _onFrameNavigated);
         $(Inspector.CSS).on(&quot;styleSheetAdded.CSSAgent&quot;, _styleSheetAdded);
         $(Inspector.CSS).on(&quot;styleSheetRemoved.CSSAgent&quot;, _styleSheetRemoved);
@@ -681,7 +687,7 @@ Get a list of all loaded stylesheet files by URL</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function reloadCSSForDocument(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function reloadCSSForDocument(doc) {
         var style = styleForURL(doc.url);
         console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
         return Inspector.CSS.setStyleSheetText(style.styleSheetId, doc.getText());
@@ -701,7 +707,7 @@ Get a list of all loaded stylesheet files by URL</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function styleForURL(url) {
+              <pre class="language-javascript"><code class="language-javascript">    function styleForURL(url) {
         return _urlToStyle[_canonicalize(url)];
     }</code></pre>
             </div>
@@ -716,7 +722,7 @@ Get a list of all loaded stylesheet files by URL</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unload() {
+              <pre class="language-javascript"><code class="language-javascript">    function unload() {
         $(Inspector.Page).off(&quot;.CSSAgent&quot;);
         $(Inspector.CSS).off(&quot;.CSSAgent&quot;);
     }

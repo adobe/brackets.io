@@ -357,10 +357,10 @@
             <div>
               <p>The ViewCommandHandlers object dispatches the following event(s):</p>
 <ul>
-<li>fontSizeChange -- Triggered when the font size is changed via the<pre><code>Increase Font Size, Decrease Font Size, or Restore Font Size commands.
+<li>fontSizeChange -- Triggered when the font size is changed via the
+Increase Font Size, Decrease Font Size, or Restore Font Size commands.
 The 2nd arg to the listener is the amount of the change. The 3rd arg
-is a string containing the new font size after applying the change.
-</code></pre></li>
+is a string containing the new font size after applying the change.</li>
 </ul>
 
             </div>
@@ -405,7 +405,7 @@ is a string containing the new font size after applying the change.
                 <div class="description"><p>@const</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var DEFAULT_FONT_SIZE = 12;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var DEFAULT_FONT_SIZE = 12;</code></pre>
               </div>
               <div class="member">
       
@@ -421,7 +421,7 @@ is a string containing the new font size after applying the change.
                 <div class="description"><p>@const</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var DYNAMIC_FONT_STYLE_ID = &quot;codemirror-dynamic-fonts&quot;;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var DYNAMIC_FONT_STYLE_ID = &quot;codemirror-dynamic-fonts&quot;;</code></pre>
               </div>
               <div class="member">
       
@@ -437,7 +437,7 @@ is a string containing the new font size after applying the change.
                 <div class="description"><p>@const</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var MAX_FONT_SIZE = 72;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var MAX_FONT_SIZE = 72;</code></pre>
               </div>
               <div class="member">
       
@@ -453,7 +453,7 @@ is a string containing the new font size after applying the change.
                 <div class="description"><p>@const</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var MIN_FONT_SIZE = 1;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var MIN_FONT_SIZE = 1;</code></pre>
               </div>
               
             </section>
@@ -479,7 +479,7 @@ is a string containing the new font size after applying the change.
                   <dd>A string with the font size and the size unit</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addDynamicFontSize(fontSizeStyle) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addDynamicFontSize(fontSizeStyle) {
         var style = $(&quot;&lt;style type=&#39;text&#x2F;css&#39;&gt;&lt;&#x2F;style&gt;&quot;).attr(&quot;id&quot;, DYNAMIC_FONT_STYLE_ID);
         style.html(&quot;.CodeMirror { font-size: &quot; + fontSizeStyle   + &quot; !important; }&quot;);
         $(&quot;head&quot;).append(style);
@@ -499,7 +499,7 @@ is a string containing the new font size after applying the change.
                   <dd>Negative number to make the font smaller; positive number to make it bigger</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _adjustFontSize(adjustment) {
+              <pre class="language-javascript"><code class="language-javascript">    function _adjustFontSize(adjustment) {
         var fsStyle   = $(&quot;.CodeMirror&quot;).css(&quot;font-size&quot;),
             validFont = &#x2F;^[\d\.]+(px|em)$&#x2F;;
         
@@ -545,7 +545,7 @@ is a string containing the new font size after applying the change.
                   <dd>The value of "fontSizeAdjustment" preference</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _convertToNewViewState(key, value) {
+              <pre class="language-javascript"><code class="language-javascript">    function _convertToNewViewState(key, value) {
         return { &quot;fontSizeStyle&quot;: (DEFAULT_FONT_SIZE + value) + &quot;px&quot; };
     }
     
@@ -587,7 +587,7 @@ is a string containing the new font size after applying the change.
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLinesInView(textHeight, scrollTop, editorHeight) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLinesInView(textHeight, scrollTop, editorHeight) {
         var scrolledTop    = scrollTop &#x2F; textHeight,
             scrolledBottom = (scrollTop + editorHeight) &#x2F; textHeight;
         
@@ -609,7 +609,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleDecreaseFontSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleDecreaseFontSize() {
         _adjustFontSize(-1);
     }</code></pre>
             </div>
@@ -624,7 +624,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleIncreaseFontSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleIncreaseFontSize() {
         _adjustFontSize(1);
     }</code></pre>
             </div>
@@ -639,7 +639,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleRestoreFontSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleRestoreFontSize() {
         _setSizeAndRestoreScroll();
         PreferencesManager.setViewState(&quot;fontSizeStyle&quot;);
     }</code></pre>
@@ -655,7 +655,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleScrollLineDown() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleScrollLineDown() {
         _scrollLine(1);
     }</code></pre>
             </div>
@@ -670,7 +670,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleScrollLineUp() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleScrollLineUp() {
         _scrollLine(-1);
     }</code></pre>
             </div>
@@ -685,7 +685,7 @@ is a string containing the new font size after applying the change.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _removeDynamicFontSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function _removeDynamicFontSize() {
         $(&quot;#&quot; + DYNAMIC_FONT_STYLE_ID).remove();
     }</code></pre>
             </div>
@@ -703,7 +703,7 @@ is a string containing the new font size after applying the change.
                   <dd>-1 to scroll one line up; 1 to scroll one line down.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _scrollLine(direction) {
+              <pre class="language-javascript"><code class="language-javascript">    function _scrollLine(direction) {
         var editor        = EditorManager.getCurrentFullEditor(),
             textHeight    = editor.getTextHeight(),
             cursorPos     = editor.getCursorPos(),
@@ -770,7 +770,7 @@ is a string containing the new font size after applying the change.
                   <dd>A string with the font size and the size unit</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _setSizeAndRestoreScroll(fontSizeStyle) {
+              <pre class="language-javascript"><code class="language-javascript">    function _setSizeAndRestoreScroll(fontSizeStyle) {
         var editor      = EditorManager.getCurrentFullEditor(),
             oldWidth    = editor._codeMirror.defaultCharWidth(),
             oldFontSize = $(&quot;.CodeMirror&quot;).css(&quot;font-size&quot;),
@@ -815,7 +815,7 @@ currently open in the editor.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateUI() {
+              <pre class="language-javascript"><code class="language-javascript">    function _updateUI() {
         if (DocumentManager.getCurrentDocument() !== null) {
             if (!CommandManager.get(Commands.VIEW_INCREASE_FONT_SIZE).getEnabled()) {
                 &#x2F;&#x2F; If one is disabled then they all are disabled, so enable them all
@@ -843,7 +843,7 @@ view state to the new fontSizeStyle, when required</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function restoreFontSize() {
+              <pre class="language-javascript"><code class="language-javascript">    function restoreFontSize() {
         var fsStyle      = PreferencesManager.getViewState(&quot;fontSizeStyle&quot;),
             fsAdjustment = PreferencesManager.getViewState(&quot;fontSizeAdjustment&quot;);
 

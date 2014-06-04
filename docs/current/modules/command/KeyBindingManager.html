@@ -397,7 +397,7 @@
                 <div class="description"><p>Maps commandID to the list of shortcuts that are bound to it.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _commandMap = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _commandMap = {};</code></pre>
               </div>
               <div class="member private">
       
@@ -414,7 +414,7 @@
                 <div class="description"><p>Allow clients to toggle key binding</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _enabled = true;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _enabled = true;</code></pre>
               </div>
               <div class="member private">
       
@@ -431,7 +431,7 @@
                 <div class="description"><p>Stack of registered global keydown hooks.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _globalKeydownHooks = [];</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _globalKeydownHooks = [];</code></pre>
               </div>
               <div class="member private">
       
@@ -448,7 +448,7 @@
                 <div class="description"><p>Maps normalized shortcut descriptor to key binding info.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _keyMap = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _keyMap = {};</code></pre>
               </div>
               
             </section>
@@ -482,7 +482,7 @@
  - undefined indicates all platforms, overridden by platform-specific binding</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addBinding(commandID, keyBinding, platform) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addBinding(commandID, keyBinding, platform) {
         var key,
             result = null,
             normalized,
@@ -653,7 +653,7 @@ builds the keyDescriptor string from the given parts</p>
                   <dd>The key that's pressed</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key) {
+              <pre class="language-javascript"><code class="language-javascript">    function _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key) {
         if (!key) {
             console.log(&quot;KeyBindingManager _buildKeyDescriptor() - No key provided!&quot;);
             return &quot;&quot;;
@@ -702,7 +702,7 @@ builds the keyDescriptor string from the given parts</p>
                   <dd>Newly registered command</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleCommandRegistered(event, command) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleCommandRegistered(event, command) {
         var commandId   = command.getID(),
             defaults    = KeyboardPrefs[commandId];
         
@@ -725,7 +725,7 @@ builds the keyDescriptor string from the given parts</p>
                   <dd>key-description string.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleKey(key) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleKey(key) {
         if (_enabled &amp;&amp; _keyMap[key]) {
             &#x2F;&#x2F; The execute() function returns a promise because some commands are async.
             &#x2F;&#x2F; Generally, commands decide whether they can run or not synchronously,
@@ -753,7 +753,7 @@ deciding to handle it ourselves.</p>
                   <dd>keydown event to handle.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleKeyEvent(event) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleKeyEvent(event) {
         var i, handled = false;
         for (i = _globalKeydownHooks.length - 1; i &gt;= 0; i--) {
             if (_globalKeydownHooks[i](event)) {
@@ -807,7 +807,7 @@ deciding to handle it ourselves.</p>
                   <dd>normalized key-description string.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _isKeyAssigned(key) {
+              <pre class="language-javascript"><code class="language-javascript">    function _isKeyAssigned(key) {
         return (_keyMap[key] !== undefined);
     }</code></pre>
             </div>
@@ -828,7 +828,7 @@ deciding to handle it ourselves.</p>
                   <dd>current best guess at what the key is.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _mapKeycodeToKey(keycode, key) {
+              <pre class="language-javascript"><code class="language-javascript">    function _mapKeycodeToKey(keycode, key) {
         &#x2F;&#x2F; If keycode represents one of the digit keys (0-9), then return the corresponding digit
         &#x2F;&#x2F; by subtracting KeyEvent.DOM_VK_0 from keycode. ie. [48-57] --&gt; [0-9]
         if (keycode &gt;= KeyEvent.DOM_VK_0 &amp;&amp; keycode &lt;= KeyEvent.DOM_VK_9) {
@@ -883,7 +883,7 @@ deciding to handle it ourselves.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _reset() {
+              <pre class="language-javascript"><code class="language-javascript">    function _reset() {
         _keyMap = {};
         _commandMap = {};
         _globalKeydownHooks = [];
@@ -901,7 +901,7 @@ before objects without a platform property.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _sortByPlatform(a, b) {
+              <pre class="language-javascript"><code class="language-javascript">    function _sortByPlatform(a, b) {
         var a1 = (a.platform) ? 1 : 0,
             b1 = (b.platform) ? 1 : 0;
         return b1 - a1;
@@ -918,7 +918,7 @@ before objects without a platform property.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _translateKeyboardEvent(event) {
+              <pre class="language-javascript"><code class="language-javascript">    function _translateKeyboardEvent(event) {
         var hasMacCtrl = (brackets.platform === &quot;mac&quot;) ? (event.ctrlKey) : false,
             hasCtrl = (brackets.platform !== &quot;mac&quot;) ? (event.ctrlKey) : (event.metaKey),
             hasAlt = (event.altKey),
@@ -965,23 +965,23 @@ before objects without a platform property.</p>
                     <span class="label label-non-nullable pull-left">non-nullable</span>
                   <dd class="label label-info pull-left">string, Command</dd>
                   <dd>- A command ID or command object</dd>
-                  <dt>|</dt>
+                  <dt>keyBindings
+</dt>
                     <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">({key: string, displayKey: string</dd>
-                  <dd>Array.<{key: string, displayKey: string, platform: string}>)} keyBindings
- a single key binding or an array of keybindings. Example:
+                  <dd class="label label-info pull-left">({key: string, displayKey: string}, Array.&lt;{key: string, displayKey: string, platform: string}&gt;)</dd>
+                  <dd>A single key binding or an array of keybindings. Example:
  "Shift-Cmd-F". Mac and Win key equivalents are automatically
  mapped to each other. Use displayKey property to display a different
  string (e.g. "CMD+" instead of "CMD=").</dd>
                   <dt>platform</dt>
                     <span class="label label-nullable pull-left">nullable</span>
                   <dd class="label label-info pull-left">string</dd>
-                  <dd>- the target OS of the keyBindings either
+                  <dd>The target OS of the keyBindings either
  "mac", "win" or "linux". If undefined, all platforms not explicitly
  defined will use the key binding.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addBinding(command, keyBindings, platform) {
+              <pre class="language-javascript"><code class="language-javascript">    function addBinding(command, keyBindings, platform) {
         var commandID           = &quot;&quot;,
             results;
         
@@ -1052,7 +1052,7 @@ indicate that it wants to block the other hooks from running.)</p>
                   <dd>The global hook to add.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addGlobalKeydownHook(hook) {
+              <pre class="language-javascript"><code class="language-javascript">    function addGlobalKeydownHook(hook) {
         _globalKeydownHooks.push(hook);
     }</code></pre>
             </div>
@@ -1071,7 +1071,7 @@ indicate that it wants to block the other hooks from running.)</p>
                   <dd>Normalized key descriptor.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function formatKeyDescriptor(descriptor) {
+              <pre class="language-javascript"><code class="language-javascript">    function formatKeyDescriptor(descriptor) {
         var displayStr;
         
         if (brackets.platform === &quot;mac&quot;) {
@@ -1105,7 +1105,7 @@ indicate that it wants to block the other hooks from running.)</p>
                   <dd>- A command ID or command object</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getKeyBindings(command) {
+              <pre class="language-javascript"><code class="language-javascript">    function getKeyBindings(command) {
         var bindings    = [],
             commandID   = &quot;&quot;;
         
@@ -1135,7 +1135,7 @@ indicate that it wants to block the other hooks from running.)</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getKeymap() {
+              <pre class="language-javascript"><code class="language-javascript">    function getKeymap() {
         return $.extend({}, _keyMap);
     }</code></pre>
             </div>
@@ -1153,7 +1153,7 @@ indicate that it wants to block the other hooks from running.)</p>
                   <dd>string for a key descriptor, can be in any order, the result will be Ctrl-Alt-Shift-<Key></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function normalizeKeyDescriptorString(origDescriptor) {
+              <pre class="language-javascript"><code class="language-javascript">    function normalizeKeyDescriptorString(origDescriptor) {
         var hasMacCtrl = false,
             hasCtrl = false,
             hasAlt = false,
@@ -1232,7 +1232,7 @@ indicate that it wants to block the other hooks from running.)</p>
                   <dd>- OS from which to remove the binding (all platforms if unspecified)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function removeBinding(key, platform) {
+              <pre class="language-javascript"><code class="language-javascript">    function removeBinding(key, platform) {
         if (!key || ((platform !== null) &amp;&amp; (platform !== undefined) &amp;&amp; (platform !== brackets.platform))) {
             return;
         }
@@ -1277,7 +1277,7 @@ Does not need to be the most recently added hook.</p>
                   <dd>The global hook to remove.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function removeGlobalKeydownHook(hook) {
+              <pre class="language-javascript"><code class="language-javascript">    function removeGlobalKeydownHook(hook) {
         var index = _globalKeydownHooks.indexOf(hook);
         if (index !== -1) {
             _globalKeydownHooks.splice(index, 1);
@@ -1299,7 +1299,7 @@ global key bindings temporarily.</p>
                   <dd>key-description string.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function setEnabled(value) {
+              <pre class="language-javascript"><code class="language-javascript">    function setEnabled(value) {
         _enabled = value;
     }</code></pre>
             </div>

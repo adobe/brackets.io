@@ -355,28 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>Responsible for coordinating file selection between views by permitting only one view
-to show the current file selection at a time. Currently, only WorkingSetView and 
-ProjectManager can show file selection. In general the WorkingSetView takes higher
-priority until the user selects a file in the ProjectManager.</p>
-<p>Events dispatched:</p>
-<ul>
-<li><p>documentSelectionFocusChange - indicates a document change has caused the focus to 
-change between the working set and file tree.</p>
-</li>
-<li><p>fileViewFocusChange - indicates the selection focus has changed between the working
-set and the project tree, but the document selection has NOT changed</p>
-</li>
-</ul>
-<p>Current file selection rules in views:</p>
-<ul>
-<li>select a file in WorkingSetView &gt; select in WorkingSetView</li>
-<li>add a file to the WorkingSetView &gt; select in WorkingSetView</li>
-<li>select a file in ProjectManager &gt; select in ProjectManager</li>
-<li>open a file from places other than the WorkingSetView or ProjectManager &gt; <pre><code>select file in WorkignSetView if its in the working set, otherwise select in ProjectManager
-</code></pre></li>
-</ul>
-
+              
             </div>
           </section>
     
@@ -417,7 +396,7 @@ set and the project tree, but the document selection has NOT changed</p>
 openAndSelectDocument.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _curDocChangedDueToMe = false;
+                <pre class="language-javascript"><code class="language-javascript">    var _curDocChangedDueToMe = false;
     var WORKING_SET_VIEW = &quot;WorkingSetView&quot;;
     var PROJECT_MANAGER = &quot;ProjectManager&quot;;</code></pre>
               </div>
@@ -435,7 +414,7 @@ openAndSelectDocument.</p>
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _fileSelectionFocus = PROJECT_MANAGER;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _fileSelectionFocus = PROJECT_MANAGER;</code></pre>
               </div>
               
             </section>
@@ -457,7 +436,7 @@ openAndSelectDocument.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _selectCurrentDocument() {
+              <pre class="language-javascript"><code class="language-javascript">    function _selectCurrentDocument() {
         &#x2F;&#x2F; If fullPath corresonds to the current doc being viewed then opening the file won&#39;t
         &#x2F;&#x2F; trigger a currentDocumentChanged event, so we need to trigger a documentSelectionFocusChange 
         &#x2F;&#x2F; in this case to signify the selection focus has changed even though the current document has not.
@@ -492,7 +471,7 @@ and selects it in the WorkingSetView</p>
                   <dd>- insert into the working set list at this 0-based index</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addToWorkingSetAndSelect(fullPath, selectIn, index) {
+              <pre class="language-javascript"><code class="language-javascript">    function addToWorkingSetAndSelect(fullPath, selectIn, index) {
         var result = new $.Deferred(),
             promise = CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, {fullPath: fullPath, index: index});
 
@@ -529,7 +508,7 @@ and selects it in the WorkingSetView</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getFileSelectionFocus() {
+              <pre class="language-javascript"><code class="language-javascript">    function getFileSelectionFocus() {
         return _fileSelectionFocus;
     }
 
@@ -563,7 +542,7 @@ fileSelectionFocus</p>
                   <dd>must be either WORKING_SET_VIEW or PROJECT_MANAGER</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function openAndSelectDocument(fullPath, fileSelectionFocus) {
+              <pre class="language-javascript"><code class="language-javascript">    function openAndSelectDocument(fullPath, fileSelectionFocus) {
         var result;
 
         if (fileSelectionFocus !== PROJECT_MANAGER &amp;&amp; fileSelectionFocus !== WORKING_SET_VIEW) {
@@ -613,7 +592,7 @@ in the working set (the open files) or in the file tree, but not both.</p>
                   <dd>- either PROJECT_MANAGER or WORKING_SET_VIEW</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function setFileViewFocus(fileSelectionFocus) {
+              <pre class="language-javascript"><code class="language-javascript">    function setFileViewFocus(fileSelectionFocus) {
         if (fileSelectionFocus !== PROJECT_MANAGER &amp;&amp; fileSelectionFocus !== WORKING_SET_VIEW) {
             console.error(&quot;Bad parameter passed to FileViewController.setFileViewFocus&quot;);
             return;

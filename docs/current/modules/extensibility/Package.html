@@ -399,7 +399,7 @@ Connects to ExtensionManagerDomain </dd>
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _nodeConnection;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _nodeConnection;</code></pre>
               </div>
               <div class="member private">
       
@@ -413,7 +413,7 @@ Connects to ExtensionManagerDomain </dd>
                 </dl>
                 <div class="description"></div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _nodeConnectionDeferred = $.Deferred();</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _nodeConnectionDeferred = $.Deferred();</code></pre>
               </div>
               <div class="member private">
       
@@ -428,7 +428,7 @@ Connects to ExtensionManagerDomain </dd>
                 <div class="description"><p>@type {number} Used to generate unique download ids</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _uniqueId = 0;
+                <pre class="language-javascript"><code class="language-javascript">    var _uniqueId = 0;
     
     function _extensionManagerCall(callback) {
         if (_nodeConnection.domains.extensionManager) {
@@ -461,7 +461,7 @@ potentially break everything.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getNodeConnectionDeferred() {
+              <pre class="language-javascript"><code class="language-javascript">    function _getNodeConnectionDeferred() {
         return _nodeConnectionDeferred;
     }
     
@@ -513,7 +513,7 @@ if the download has already finished.</p>
                   <dd>Identifier previously passed to download()</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function cancelDownload(downloadId) {
+              <pre class="language-javascript"><code class="language-javascript">    function cancelDownload(downloadId) {
         return _extensionManagerCall(function (extensionManager) {
             return extensionManager.abortDownload(downloadId);
         });
@@ -538,7 +538,7 @@ with an error object.</p>
                   <dd>Unique number to identify this request</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function download(url, downloadId) {
+              <pre class="language-javascript"><code class="language-javascript">    function download(url, downloadId) {
         return _extensionManagerCall(function (extensionManager) {
             var d = new $.Deferred();
             
@@ -590,7 +590,7 @@ with an error object.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function formatError(error) {
+              <pre class="language-javascript"><code class="language-javascript">    function formatError(error) {
         function localize(key) {
             if (Strings[key]) {
                 return Strings[key];
@@ -623,7 +623,7 @@ master ZIP URL already, sets a nicer download filename (both cases use the repo 
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function githubURLFilter(urlInfo) {
+              <pre class="language-javascript"><code class="language-javascript">    function githubURLFilter(urlInfo) {
         if (urlInfo.parsed.hostname === &quot;github.com&quot; || urlInfo.parsed.hostname === &quot;www.github.com&quot;) {
             &#x2F;&#x2F; Is it a URL to the root of a repo? (&#x2F;user&#x2F;repo)
             var match = &#x2F;^\&#x2F;[^\&#x2F;?]+\&#x2F;([^\&#x2F;?]+)(\&#x2F;?)$&#x2F;.exec(urlInfo.parsed.pathname);
@@ -677,7 +677,7 @@ if there are errors. It is null if there was no package.json.</p>
                   <dd>private argument used to signal an update</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function install(path, nameHint, _doUpdate) {
+              <pre class="language-javascript"><code class="language-javascript">    function install(path, nameHint, _doUpdate) {
         return _extensionManagerCall(function (extensionManager) {
             var d                       = new $.Deferred(),
                 destinationDirectory    = ExtensionLoader.getUserExtensionPath(),
@@ -735,7 +735,7 @@ to cancel, the Promise is resolved or rejected normally, as if cancel() had neve
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function installFromURL(url) {
+              <pre class="language-javascript"><code class="language-javascript">    function installFromURL(url) {
         var STATE_DOWNLOADING = 1,
             STATE_INSTALLING = 2,
             STATE_SUCCEEDED = 3,
@@ -829,7 +829,7 @@ and installed packages.</p>
  path's filename if present, and if no package metadata present).</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function installUpdate(path, nameHint) {
+              <pre class="language-javascript"><code class="language-javascript">    function installUpdate(path, nameHint) {
         var d = new $.Deferred();
         install(path, nameHint, true)
             .done(function (result) {
@@ -862,7 +862,7 @@ and installed packages.</p>
                   <dd>The absolute path to the extension to remove.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function remove(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function remove(path) {
         return _extensionManagerCall(function (extensionManager) {
             return extensionManager.remove(path);
         });
@@ -891,7 +891,7 @@ if there are errors or null if the extension did not include package.json.</p>
                   <dd>options</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function validate(path, options) {
+              <pre class="language-javascript"><code class="language-javascript">    function validate(path, options) {
         return _extensionManagerCall(function (extensionManager) {
             var d = new $.Deferred();
             

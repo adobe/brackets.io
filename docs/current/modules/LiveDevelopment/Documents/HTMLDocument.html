@@ -356,12 +356,12 @@
             <h3>Description</h3>
             <div>
               <p>HTMLDocument manages a single HTML source document</p>
-<h1 id="editing">EDITING</h1>
+<p><strong>EDITING</strong></p>
 <p>Editing the document will cause the corresponding node to be updated
 by calling <code>applyChanges</code> on the DOMAgent. This will only work for
 altering text nodes and will break when attempting to change DOM elements
 or inserting or deleting nodes.</p>
-<h1 id="highlighting">HIGHLIGHTING</h1>
+<p><strong>HIGHLIGHTING</strong></p>
 <p>HTMLDocument supports highlighting nodes from the HighlightAgent and
 highlighting the DOMNode corresponding to the cursor position in the
 editor.</p>
@@ -389,33 +389,28 @@ editor.</p>
           </section>
     
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
+          
+          <section class="classes">
+            <h2>Classes</h2>
             
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>HTMLDocument</h4>
-              <div class="description"><p>Constructor</p>
-</div>
-              <dl>
-                  <dt>doc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DocumentManager.Document</dd>
-                  <dd>the source document from Brackets</dd>
-                  <dt>editor</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">editor</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">var HTMLDocument = function HTMLDocument(doc, editor) {
+              <div class="well">
+                <div class="member public">
+                  <span class="pull-right scope">
+                    Constructor
+                  </span>
+                  <h4>HTMLDocument</h4>
+                  <em></em>
+                  <dl>
+                    <dt>doc</dt>
+                    <dd class="label label-info pull-left">Document</dd>
+                    <dd>The source document from Brackets</dd>
+                    <dt>editor</dt>
+                    <dd class="label label-info pull-left">Editor</dd>
+                    <dd>The editor for this document</dd>
+                  </dl>
+                  
+                  <button class="btn btn-small show-code">Show code</button>
+                  <pre class="language-javascript"><code class="language-javascript">    var HTMLDocument = function HTMLDocument(doc, editor) {
         var self = this;
 
         this.doc = doc;
@@ -442,10 +437,359 @@ editor.</p>
             });
         }
     };</code></pre>
-            </div>
+                </div>
+      
+      
+                <section class="methods">
+                  <h3>Methods 
+                    <label class="checkbox">
+                      <input class="toggle-public" type="checkbox"> Show Private Members
+                    </label>
+                  </h3>
+                  
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_compareWithBrowser</h4>
+                    <div class="description"><p>For the given editor change, compare the resulting browser DOM with the
+in-editor DOM. If there are any diffs, a warning is logged to the
+console along with each diff.</p>
+</div>
+                    <dl>
+                      <dt>change</dt>
+                      <dd class="label label-info pull-left">Object</dd>
+                      <dd>CodeMirror editor change data</dd>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype._compareWithBrowser = function (change) {
+        var self = this;
+        
+        RemoteAgent.call(&quot;getSimpleDOM&quot;).done(function (res) {
+            var browserSimpleDOM = JSON.parse(res.result.value),
+                edits,
+                node,
+                result;
+            
+            try {
+                result = HTMLInstrumentation._getBrowserDiff(self.editor, browserSimpleDOM);
+            } catch (err) {
+                console.error(&quot;Error comparing in-browser DOM to in-editor DOM&quot;);
+                console.error(err.stack);
+                return;
+            }
+            
+            edits = result.diff.filter(function (delta) {
+                &#x2F;&#x2F; ignore textDelete in html root element
+                node = result.browser.nodeMap[delta.parentID];
+                
+                if (node &amp;&amp; node.tag === &quot;html&quot; &amp;&amp; delta.type === &quot;textDelete&quot;) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            if (edits.length &gt; 0) {
+                console.warn(&quot;Browser DOM does not match after change: &quot; + JSON.stringify(change));
+                
+                edits.forEach(function (delta) {
+                    console.log(delta);
+                });
+            }
+        });
+    };</code></pre>
+                  </div>
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_onChange</h4>
+                    <div class="description"><p>Triggered on change by the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onChange = function (event, editor, change) {
+        &#x2F;&#x2F; Make sure LiveHTML is turned on
+        if (!this._instrumentationEnabled) {
+            return;
+        }
+
+        &#x2F;&#x2F; Apply DOM edits is async, so previous PerfUtils timer may still be
+        &#x2F;&#x2F; running. PerfUtils does not support running multiple timers with same
+        &#x2F;&#x2F; name, so do not start another timer in this case.
+        var perfTimerName   = &quot;HTMLDocument applyDOMEdits&quot;,
+            isNestedTimer   = PerfUtils.isActive(perfTimerName);
+        if (!isNestedTimer) {
+            PerfUtils.markStart(perfTimerName);
+        }
+        
+        &#x2F;&#x2F; Only handles attribute changes currently.
+        &#x2F;&#x2F; TODO: text changes should be easy to add
+        &#x2F;&#x2F; TODO: if new tags are added, need to instrument them
+        var self                = this,
+            result              = HTMLInstrumentation.getUnappliedEditList(editor, change),
+            applyEditsPromise;
+        
+        if (result.edits) {
+            applyEditsPromise = RemoteAgent.call(&quot;applyDOMEdits&quot;, result.edits);
+    
+            applyEditsPromise.always(function () {
+                if (!isNestedTimer) {
+                    PerfUtils.addMeasurement(perfTimerName);
+                }
+            });
+        }
+
+        this.errors = result.errors || [];
+        $(this).triggerHandler(&quot;statusChanged&quot;, [this]);
+        
+        &#x2F;&#x2F; Debug-only: compare in-memory vs. in-browser DOM
+        &#x2F;&#x2F; edit this file or set a conditional breakpoint at the top of this function:
+        &#x2F;&#x2F;     &quot;this._debug = true, false&quot;
+        if (this._debug) {
+            console.log(&quot;Edits applied to browser were:&quot;);
+            console.log(JSON.stringify(result.edits, null, 2));
+            applyEditsPromise.done(function () {
+                self._compareWithBrowser(change);
+            });
+        }
+        
+&#x2F;&#x2F;        var marker = HTMLInstrumentation._getMarkerAtDocumentPos(
+&#x2F;&#x2F;            this.editor,
+&#x2F;&#x2F;            editor.getCursorPos()
+&#x2F;&#x2F;        );
+&#x2F;&#x2F;
+&#x2F;&#x2F;        if (marker &amp;&amp; marker.tagID) {
+&#x2F;&#x2F;            var range   = marker.find(),
+&#x2F;&#x2F;                text    = marker.doc.getRange(range.from, range.to);
+&#x2F;&#x2F;
+&#x2F;&#x2F;            &#x2F;&#x2F; HACK maintain ID
+&#x2F;&#x2F;            text = text.replace(&quot;&gt;&quot;, &quot; data-brackets-id=&#39;&quot; + marker.tagID + &quot;&#39;&gt;&quot;);
+&#x2F;&#x2F;
+&#x2F;&#x2F;            &#x2F;&#x2F; FIXME incorrectly replaces body elements with content only, missing body element
+&#x2F;&#x2F;            RemoteAgent.remoteElement(marker.tagID).replaceWith(text);
+&#x2F;&#x2F;        }
+
+        &#x2F;&#x2F; if (!this.editor) {
+        &#x2F;&#x2F;     return;
+        &#x2F;&#x2F; }
+        &#x2F;&#x2F; var codeMirror = this.editor._codeMirror;
+        &#x2F;&#x2F; while (change) {
+        &#x2F;&#x2F;     var from = codeMirror.indexFromPos(change.from);
+        &#x2F;&#x2F;     var to = codeMirror.indexFromPos(change.to);
+        &#x2F;&#x2F;     var text = change.text.join(&quot;\n&quot;);
+        &#x2F;&#x2F;     DOMAgent.applyChange(from, to, text);
+        &#x2F;&#x2F;     change = change.next;
+        &#x2F;&#x2F; }
+    };</code></pre>
+                  </div>
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_onCursorActivity</h4>
+                    <div class="description"><p>Triggered on cursor activity by the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onCursorActivity = function (event, editor) {
+        if (!this.editor) {
+            return;
+        }
+        this.updateHighlight();
+    };</code></pre>
+                  </div>
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_onHighlight</h4>
+                    <div class="description"><p>Triggered by the HighlightAgent to highlight a node in the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onHighlight = function (event, node) {
+        if (!node || !node.location || !this.editor) {
+            if (this._highlight) {
+                this._highlight.clear();
+                delete this._highlight;
+            }
+            return;
+        }
+        var codeMirror = this.editor._codeMirror;
+        var to, from = codeMirror.posFromIndex(node.location);
+        if (node.closeLocation) {
+            to = node.closeLocation + node.closeLength;
+        } else {
+            to = node.location + node.length;
+        }
+        to = codeMirror.posFromIndex(to);
+        if (this._highlight) {
+            this._highlight.clear();
+        }
+        this._highlight = codeMirror.markText(from, to, { className: &quot;highlight&quot; });
+    };
+
+    &#x2F;&#x2F; Export the class
+    module.exports = HTMLDocument;
+});</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>close</h4>
+                    <div class="description"><p>Close the document</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype.close = function close() {
+        if (!this.editor) {
+            return;
+        }
+
+        $(this.editor).off(&quot;.HTMLDocument&quot;);
+
+        &#x2F;&#x2F; Experimental code
+        if (LiveDevelopment.config.experimental) {
+            &#x2F;&#x2F; Force highlight teardown
+            this._onHighlight();
+        }
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>getResponseData</h4>
+                    <div class="description"><p>Returns a JSON object with HTTP response overrides</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">{body: string}</dd>
+                      <dd></dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype.getResponseData = function getResponseData(enabled) {
+        var body;
+        if (this._instrumentationEnabled) {
+            body = HTMLInstrumentation.generateInstrumentedHTML(this.editor);
+        }
+        
+        return {
+            body: body || this.doc.getText()
+        };
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>isLiveEditingEnabled</h4>
+                    <div class="description"><p>Returns true if document edits appear live in the connected browser</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">boolean</dd>
+                      <dd></dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype.isLiveEditingEnabled = function () {
+        return this._instrumentationEnabled;
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>setInstrumentationEnabled</h4>
+                    <div class="description"><p>Enable instrumented HTML</p>
+</div>
+                    <dl>
+                      <dt>{boolean}</dt>
+                      <dd class="label label-info pull-left">enabled</dd>
+                      <dd></dd>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype.setInstrumentationEnabled = function setInstrumentationEnabled(enabled) {
+        if (enabled &amp;&amp; !this._instrumentationEnabled) {
+            HTMLInstrumentation.scanDocument(this.doc);
+            HTMLInstrumentation._markText(this.editor);
+        }
+        
+        this._instrumentationEnabled = enabled;
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>updateHighlight</h4>
+                    <div class="description"><p>Update the highlight</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    HTMLDocument.prototype.updateHighlight = function () {
+        var editor = this.editor,
+            codeMirror = editor._codeMirror,
+            ids = [];
+        if (Inspector.config.highlight) {
+            _.each(this.editor.getSelections(), function (sel) {
+                var tagID = HTMLInstrumentation._getTagIDAtDocumentPos(
+                    editor,
+                    sel.reversed ? sel.end : sel.start
+                );
+                if (tagID !== -1) {
+                    ids.push(tagID);
+                }
+            });
+            
+            if (!ids.length) {
+                HighlightAgent.hide();
+            } else {
+                HighlightAgent.domElement(ids);
+            }
+        }
+    };</code></pre>
+                  </div>
+                </section>
+                
+              </div>
             
           </section>
-          
           
         </div>
       </div>

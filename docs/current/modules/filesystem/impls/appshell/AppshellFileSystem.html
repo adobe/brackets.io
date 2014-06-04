@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, appshell, $, window</p>
-
+              
             </div>
           </section>
     
@@ -395,7 +394,7 @@
                 <div class="description"><p>Callback to notify FileSystem of watcher changes</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _changeCallback;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _changeCallback;</code></pre>
               </div>
               <div class="member private">
       
@@ -410,7 +409,7 @@
                 <div class="description"><p>Timeout used to batch up file watcher changes (setTimeout() return value)</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _changeTimeout;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _changeTimeout;</code></pre>
               </div>
               <div class="member private">
       
@@ -427,7 +426,7 @@
                 <div class="description"><p>Callback to notify FileSystem if watchers stop working entirely</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _offlineCallback;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _offlineCallback;</code></pre>
               </div>
               <div class="member private">
       
@@ -445,7 +444,7 @@
 to _changeCallback() for this path.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _pendingChanges = {};
+                <pre class="language-javascript"><code class="language-javascript">    var _pendingChanges = {};
     
     var _bracketsPath   = FileUtils.getNativeBracketsDirectoryPath(),
         _modulePath     = FileUtils.getNativeModuleDirectoryPath(module),
@@ -490,7 +489,7 @@ to _changeCallback() for this path.</p>
                   <dd>Whether or not the eventual change event should include stats</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _enqueueChange(changedPath, needsStats) {
+              <pre class="language-javascript"><code class="language-javascript">    function _enqueueChange(changedPath, needsStats) {
         _pendingChanges[changedPath] = _pendingChanges[changedPath] || needsStats;
 
         if (!_changeTimeout) {
@@ -543,7 +542,7 @@ to _changeCallback() for this path.</p>
                   <dd>The name of the file that changed.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _fileWatcherChange(evt, path, event, filename) {
+              <pre class="language-javascript"><code class="language-javascript">    function _fileWatcherChange(evt, path, event, filename) {
         var change;
 
         if (event === &quot;change&quot;) {
@@ -578,7 +577,7 @@ to _changeCallback() for this path.</p>
                   <dd>An appshell error code</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _mapError(err) {
+              <pre class="language-javascript"><code class="language-javascript">    function _mapError(err) {
         if (!err) {
             return null;
         }
@@ -617,7 +616,7 @@ appshell error code to a FileSystemError string.</p>
                   <dd>A callback that expects an appshell error code</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _wrap(cb) {
+              <pre class="language-javascript"><code class="language-javascript">    function _wrap(cb) {
         return function (err) {
             var args = Array.prototype.slice.call(arguments);
             args[0] = _mapError(args[0]);
@@ -646,7 +645,7 @@ boolean parameter will be false.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function exists(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function exists(path, callback) {
         stat(path, function (err) {
             if (err) {
                 if (err === FileSystemError.NOT_FOUND) {
@@ -689,7 +688,7 @@ cleared when the offlineCallback is called.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function initWatchers(changeCallback, offlineCallback) {
+              <pre class="language-javascript"><code class="language-javascript">    function initWatchers(changeCallback, offlineCallback) {
         _changeCallback = changeCallback;
         _offlineCallback = offlineCallback;
         
@@ -723,7 +722,7 @@ of the created directory is implementation dependent.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function mkdir(path, mode, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function mkdir(path, mode, callback) {
         if (typeof mode === &quot;function&quot;) {
             callback = mode;
             mode = parseInt(&quot;0755&quot;, 8);
@@ -759,7 +758,7 @@ string. Directories will be moved even when non-empty.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function moveToTrash(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function moveToTrash(path, callback) {
         appshell.fs.moveToTrash(path, function (err) {
             callback(_mapError(err));
         });
@@ -793,7 +792,7 @@ If both calls fail, the error from the read call is passed back.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function readFile(path, options, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function readFile(path, options, callback) {
         var encoding = options.encoding || &quot;utf8&quot;;
         
         &#x2F;&#x2F; Execute the read and stat calls in parallel. Callback early if the
@@ -853,7 +852,7 @@ string describing a stat error.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function readdir(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function readdir(path, callback) {
         appshell.fs.readdir(path, function (err, contents) {
             if (err) {
                 callback(_mapError(err));
@@ -901,7 +900,7 @@ asynchronously with a possibly null FileSystemError string.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function rename(oldPath, newPath, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function rename(oldPath, newPath, callback) {
         appshell.fs.rename(oldPath, newPath, _wrap(callback));
     }</code></pre>
             </div>
@@ -937,7 +936,7 @@ the entry or entries selected.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback) {
         appshell.fs.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, _wrap(callback));
     }</code></pre>
             </div>
@@ -966,7 +965,7 @@ the file. If the dialog is cancelled, the path string will be empty.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showSaveDialog(title, initialPath, proposedNewFilename, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function showSaveDialog(title, initialPath, proposedNewFilename, callback) {
         appshell.fs.showSaveDialog(title, initialPath, proposedNewFilename, _wrap(callback));
     }</code></pre>
             </div>
@@ -989,7 +988,7 @@ associated FileSystemStats object.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function stat(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function stat(path, callback) {
         appshell.fs.stat(path, function (err, stats) {
             if (err) {
                 callback(_mapError(err));
@@ -1029,7 +1028,7 @@ Directories will be unlinked even when non-empty.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unlink(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function unlink(path, callback) {
         appshell.fs.unlink(path, function (err) {
             callback(_mapError(err));
         });
@@ -1052,7 +1051,7 @@ FileSystemError string when the operation is complete.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unwatchAll(callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function unwatchAll(callback) {
         _nodeDomain.exec(&quot;unwatchAll&quot;)
             .then(callback, callback);
     }
@@ -1094,7 +1093,7 @@ string when the operation is complete.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unwatchPath(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function unwatchPath(path, callback) {
         _nodeDomain.exec(&quot;unwatchPath&quot;, path)
             .then(callback, callback);
     }</code></pre>
@@ -1122,7 +1121,7 @@ when the recursiveWatch property of this module is true.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function watchPath(path, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function watchPath(path, callback) {
         if (_isRunningOnWindowsXP) {
             callback(FileSystemError.NOT_SUPPORTED);
             return;
@@ -1170,7 +1169,7 @@ disk, a FileSystemError.CONTENTS_MODIFIED error is passed to the callback.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function writeFile(path, data, options, callback) {
+              <pre class="language-javascript"><code class="language-javascript">    function writeFile(path, data, options, callback) {
         var encoding = options.encoding || &quot;utf8&quot;;
         
         function _finishWrite(created) {

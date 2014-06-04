@@ -356,26 +356,26 @@
             <h3>Description</h3>
             <div>
               <p>LiveDevelopment manages the Inspector, all Agents, and the active LiveDocument</p>
-<h1 id="starting">STARTING</h1>
+<p><strong>STARTING</strong></p>
 <p>To start a session call <code>open</code>. This will read the currentDocument from brackets,
 launch the LiveBrowser (currently Chrome) with the remote debugger port open,
 establish the Inspector connection to the remote debugger, and finally load all
 agents.</p>
-<h1 id="stopping">STOPPING</h1>
+<p><strong>STOPPING</strong></p>
 <p>To stop a session call <code>close</code>. This will close the active browser window,
 disconnect the Inspector, unload all agents, and clean up.</p>
-<h1 id="status">STATUS</h1>
+<p><strong>STATUS</strong></p>
 <p>Status updates are dispatched as <code>statusChange</code> jQuery events. The status
 is passed as the first parameter and the reason for the change as the second
 parameter. Currently only the &quot;Inactive&quot; status supports the reason parameter.
 The status codes are:</p>
-<p>-1: Error
+<pre><code>-1: Error
  0: Inactive
  1: Connecting to the remote debugger
  2: Loading agents
  3: Active
- 4: Out of sync</p>
-<p>The reason codes are:</p>
+ 4: Out of sync
+</code></pre><p>The reason codes are:</p>
 <ul>
 <li>null (Unknown reason)</li>
 <li>&quot;explicit_close&quot; (LiveDevelopment.close() was called)</li>
@@ -448,7 +448,7 @@ The status codes are:</p>
                 <div class="description"><p>Promise returned for each call to close()</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _closeDeferred;
+                <pre class="language-javascript"><code class="language-javascript">    var _closeDeferred;
 
     &#x2F;&#x2F; Disallow re-entrancy of loadAgents()
     var _loadAgentsPromise;</code></pre>
@@ -461,12 +461,31 @@ The status codes are:</p>
                 </span>
                 <h4>_liveDocument</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>HTMLDocument</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {HTMLDocument}</p>
+                <div class="description"><p>Live Preview current Document info</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _liveDocument;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _liveDocument;</code></pre>
+              </div>
+              <div class="member private">
+      
+                <span class="pull-right scope">
+                  Private
+                  
+                </span>
+                <h4>_loadedAgentNames</h4>
+                <dl>
+                    <dt>Type</dt>
+                      <dd>string</dd>
+                    <dt>Private</dt>
+                </dl>
+                <div class="description"><p>Store the names (matching property names in the &#39;agent&#39; object) of agents that we&#39;ve loaded</p>
+</div>
+                <button class="btn btn-small show-code">Show code</button>
+                <pre class="language-javascript"><code class="language-javascript">    var _loadedAgentNames = [];</code></pre>
               </div>
               <div class="member private">
       
@@ -483,7 +502,7 @@ The status codes are:</p>
                 <div class="description"><p>Promise returned for each call to open()</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _openDeferred;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _openDeferred;</code></pre>
               </div>
               <div class="member private">
       
@@ -493,12 +512,14 @@ The status codes are:</p>
                 </span>
                 <h4>_relatedDocuments</h4>
                 <dl>
+                    <dt>Type</dt>
+                      <dd>Object.&lt;string: (HTMLDocument, CSSDocument)&gt;</dd>
                     <dt>Private</dt>
                 </dl>
-                <div class="description"><p>@type {Object.&lt;string: {HTMLDocument|CSSDocument}&gt;}</p>
+                <div class="description"><p>Related Live Documents</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _relatedDocuments = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _relatedDocuments = {};</code></pre>
               </div>
               <div class="member private">
       
@@ -515,7 +536,7 @@ The status codes are:</p>
                 <div class="description"><p>Current live preview server</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _server;
+                <pre class="language-javascript"><code class="language-javascript">    var _server;
 
     function _isPromisePending(promise) {
         return promise &amp;&amp; promise.state() === &quot;pending&quot;;
@@ -550,7 +571,7 @@ The status codes are:</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _classForDocument(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _classForDocument(doc) {
         switch (doc.getLanguage().getId()) {
         case &quot;css&quot;:
             return CSSDocument;
@@ -598,7 +619,7 @@ The status codes are:</p>
                   <dd>Optional string key suffix to display to user (see LIVE_DEV_* keys)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _close(doCloseWindow, reason) {
+              <pre class="language-javascript"><code class="language-javascript">    function _close(doCloseWindow, reason) {
         if (_closeDeferred) {
             return _closeDeferred;
         } else {
@@ -621,7 +642,7 @@ The status codes are:</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _closeDocument(liveDocument) {
+              <pre class="language-javascript"><code class="language-javascript">    function _closeDocument(liveDocument) {
         _doClearErrors(liveDocument);
         liveDocument.close();
         
@@ -643,7 +664,7 @@ The status codes are:</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _closeDocuments() {
+              <pre class="language-javascript"><code class="language-javascript">    function _closeDocuments() {
         if (_liveDocument) {
             _closeDocument(_liveDocument);
             _liveDocument = undefined;
@@ -673,7 +694,7 @@ if the related file has been deleted on disk).</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _closeRelatedDocument(liveDoc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _closeRelatedDocument(liveDoc) {
         if (_relatedDocuments[liveDoc.doc.url]) {
             delete _relatedDocuments[liveDoc.doc.url];
         }
@@ -702,7 +723,7 @@ if the related file has been deleted on disk).</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _createDocument(doc, editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function _createDocument(doc, editor) {
         var DocClass        = _classForDocument(doc),
             liveDocument    = new DocClass(doc, editor);
 
@@ -731,7 +752,7 @@ if the related file has been deleted on disk).</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _doClearErrors(liveDocument) {
+              <pre class="language-javascript"><code class="language-javascript">    function _doClearErrors(liveDocument) {
         var lineHandle;
         
         if (!liveDocument.editor ||
@@ -769,7 +790,7 @@ documents and server.</p>
                   <dd>Use true to close the window/tab in the browser</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _doInspectorDisconnect(doCloseWindow) {
+              <pre class="language-javascript"><code class="language-javascript">    function _doInspectorDisconnect(doCloseWindow) {
         var closePromise,
             deferred    = new $.Deferred(),
             connected   = Inspector.connected();
@@ -831,7 +852,7 @@ documents and server.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _docIsOutOfSync(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _docIsOutOfSync(doc) {
         var docClass    = _classForDocument(doc),
             liveDoc     = _server &amp;&amp; _server.get(doc.file.fullPath),
             isLiveEditingEnabled = liveDoc &amp;&amp; liveDoc.isLiveEditingEnabled();
@@ -850,7 +871,7 @@ documents and server.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _enableAgents() {
+              <pre class="language-javascript"><code class="language-javascript">    function _enableAgents() {
         &#x2F;&#x2F; enable agents in parallel
         return Async.doInParallel(
             getEnabledAgents(),
@@ -873,7 +894,7 @@ _adds extension, url and root to the document</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getCurrentDocument() {
+              <pre class="language-javascript"><code class="language-javascript">    function _getCurrentDocument() {
         return DocumentManager.getCurrentDocument();
     }</code></pre>
             </div>
@@ -914,7 +935,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getInitialDocFromCurrent() {
+              <pre class="language-javascript"><code class="language-javascript">    function _getInitialDocFromCurrent() {
         var doc = _getCurrentDocument(),
             refPath,
             i;
@@ -1024,7 +1045,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleLiveDocumentStatusChanged(liveDocument) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleLiveDocumentStatusChanged(liveDocument) {
         var startLine,
             endLine,
             lineInfo,
@@ -1074,7 +1095,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
                   <dd>Method name to call on the agent</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _invokeAgentMethod(name, methodName) {
+              <pre class="language-javascript"><code class="language-javascript">    function _invokeAgentMethod(name, methodName) {
         var oneAgentPromise;
 
         if (agents[name] &amp;&amp; agents[name][methodName]) {
@@ -1118,7 +1139,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onConnect(event) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onConnect(event) {
         &#x2F;&#x2F; When the browser navigates away from the primary live document
         $(Inspector.Page).on(&quot;frameNavigated.livedev&quot;, _onFrameNavigated);
 
@@ -1341,7 +1362,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDirtyFlagChange(event, doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onDirtyFlagChange(event, doc) {
         if (doc &amp;&amp; Inspector.connected() &amp;&amp;
                 _server &amp;&amp; agents.network &amp;&amp; agents.network.wasURLRequested(_server.pathToUrl(doc.file.fullPath))) {
             &#x2F;&#x2F; Set status to out of sync if dirty. Otherwise, set it to active status.
@@ -1376,7 +1397,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDisconnect(event) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onDisconnect(event) {
         _close(false, &quot;closed_unknown_reason&quot;);
     }
 
@@ -1405,7 +1426,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDocumentChange() {
+              <pre class="language-javascript"><code class="language-javascript">    function _onDocumentChange() {
         var doc = _getCurrentDocument();
         
         if (!doc || !Inspector.connected()) {
@@ -1458,7 +1479,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDocumentSaved(event, doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onDocumentSaved(event, doc) {
         if (!Inspector.connected() || !_server) {
             return;
         }
@@ -1499,7 +1520,7 @@ was found in the whole project tree, the promise will be resolved with null.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onError(event, error, msgData) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onError(event, error, msgData) {
         var message;
         
         &#x2F;&#x2F; Sometimes error.message is undefined
@@ -1567,7 +1588,7 @@ interstitial page has finished loading.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onInterstitialPageLoad() {
+              <pre class="language-javascript"><code class="language-javascript">    function _onInterstitialPageLoad() {
 
         Inspector.Runtime.evaluate(&quot;window.navigator.userAgent&quot;, function (uaResponse) {
             Inspector.setUserAgent(uaResponse.result.value);
@@ -1627,7 +1648,7 @@ interstitial page has finished loading.</p>
  user when closing the live development connection (see LIVE_DEV_* keys)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _setStatus(status, closeReason) {
+              <pre class="language-javascript"><code class="language-javascript">    function _setStatus(status, closeReason) {
         &#x2F;&#x2F; Don&#39;t send a notification when the status didn&#39;t actually change
         if (status === exports.status) {
             return;
@@ -1651,7 +1672,7 @@ finished loading.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _waitForInterstitialPageLoad() {
+              <pre class="language-javascript"><code class="language-javascript">    function _waitForInterstitialPageLoad() {
         var deferred    = $.Deferred(),
             keepPolling = true,
             timer       = window.setTimeout(function () {
@@ -1671,7 +1692,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function cleanup() {
+              <pre class="language-javascript"><code class="language-javascript">        function cleanup() {
             &#x2F;&#x2F; Need to do this in order to trigger the corresponding CloseLiveBrowser cleanups required on 
             &#x2F;&#x2F; the native Mac side
             var closeDeferred = (brackets.platform === &quot;mac&quot;) ? NativeApp.closeLiveBrowser() : $.Deferred().resolve();
@@ -1744,7 +1765,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function close() {
+              <pre class="language-javascript"><code class="language-javascript">    function close() {
         return _close(true);
     }</code></pre>
             </div>
@@ -1761,7 +1782,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function disableAgent(name) {
+              <pre class="language-javascript"><code class="language-javascript">    function disableAgent(name) {
         if (_enabledAgentNames.hasOwnProperty(name)) {
             delete _enabledAgentNames[name];
         }
@@ -1780,7 +1801,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function enableAgent(name) {
+              <pre class="language-javascript"><code class="language-javascript">    function enableAgent(name) {
         if (agents.hasOwnProperty(name) &amp;&amp; !_enabledAgentNames.hasOwnProperty(name)) {
             _enabledAgentNames[name] = true;
         }
@@ -1797,7 +1818,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function hideHighlight() {
+              <pre class="language-javascript"><code class="language-javascript">    function hideHighlight() {
         if (Inspector.connected() &amp;&amp; agents.highlight) {
             agents.highlight.hide();
         }
@@ -1814,7 +1835,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function init(theConfig) {
+              <pre class="language-javascript"><code class="language-javascript">    function init(theConfig) {
         exports.config = theConfig;
         
         $(Inspector).on(&quot;error&quot;, _onError);
@@ -1877,7 +1898,7 @@ the status accordingly.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function loadAgents() {
+              <pre class="language-javascript"><code class="language-javascript">    function loadAgents() {
         &#x2F;&#x2F; If we&#39;re already loading agents return same promise
         if (_loadAgentsPromise) {
             return _loadAgentsPromise;
@@ -1958,7 +1979,7 @@ the status accordingly.</p>
                   <dd>true if relaunching and _openDeferred already exists</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function open(restart) {
+              <pre class="language-javascript"><code class="language-javascript">    function open(restart) {
         &#x2F;&#x2F; If close() is still pending, wait for close to finish before opening
         if (_isPromisePending(_closeDeferred)) {
             return _closeDeferred.then(function () {
@@ -2018,7 +2039,7 @@ finished loading; if not, check again until timing out.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function pollInterstitialPage() {
+              <pre class="language-javascript"><code class="language-javascript">        function pollInterstitialPage() {
             if (keepPolling &amp;&amp; Inspector.connected()) {
                 Inspector.Runtime.evaluate(&quot;window.isBracketsLiveDevelopmentInterstitialPageLoaded&quot;, function (response) {
                     var result = response.result;
@@ -2050,7 +2071,7 @@ finished loading; if not, check again until timing out.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function reconnect() {
+              <pre class="language-javascript"><code class="language-javascript">    function reconnect() {
         if (_loadAgentsPromise) {
             &#x2F;&#x2F; Agents are already loading, so don&#39;t unload
             return _loadAgentsPromise;
@@ -2080,7 +2101,7 @@ finished loading; if not, check again until timing out.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function redrawHighlight() {
+              <pre class="language-javascript"><code class="language-javascript">    function redrawHighlight() {
         if (Inspector.connected() &amp;&amp; agents.highlight) {
             agents.highlight.redraw();
         }
@@ -2097,7 +2118,7 @@ finished loading; if not, check again until timing out.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showHighlight() {
+              <pre class="language-javascript"><code class="language-javascript">    function showHighlight() {
         var doc = getLiveDocForEditor(EditorManager.getActiveEditor());
         
         if (doc &amp;&amp; doc.updateHighlight) {
@@ -2116,7 +2137,7 @@ finished loading; if not, check again until timing out.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unloadAgents() {
+              <pre class="language-javascript"><code class="language-javascript">    function unloadAgents() {
         _loadedAgentNames.forEach(function (name) {
             agents[name].unload();
         });

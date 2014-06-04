@@ -386,12 +386,13 @@ the Document (in order to listen to it), you will leak Documents otherwise.</p>
 <p>TextRange dispatches these events:</p>
 <ul>
 <li>change -- When the range boundary line numbers change (due to a Document change)</li>
-<li>contentChange -- When the actual content of the range changes. This might or might not<pre><code>  be accompanied by a change in the boundary line numbers.
-</code></pre></li>
-<li>lostSync -- When the backing Document changes in such a way that the range can no longer<pre><code>  accurately be maintained. Generally, occurs whenever an edit spans a range boundary.
-  After this, startLine &amp; endLine will be unusable (set to null).
-  Also occurs when the document is deleted, though startLine &amp; endLine won&#39;t be modified
-</code></pre>These events only ever occur in response to Document changes, so if you are already listening
+<li>contentChange -- When the actual content of the range changes. This might or might not
+be accompanied by a change in the boundary line numbers.</li>
+<li>lostSync -- When the backing Document changes in such a way that the range can no longer
+accurately be maintained. Generally, occurs whenever an edit spans a range boundary.
+After this, startLine &amp; endLine will be unusable (set to null).
+Also occurs when the document is deleted, though startLine &amp; endLine won&#39;t be modified
+These events only ever occur in response to Document changes, so if you are already listening
 to the Document, you could ignore the TextRange events and just read its updated value in your
 own Document change handler.</li>
 </ul>
@@ -409,7 +410,7 @@ own Document change handler.</li>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function TextRange(document, startLine, endLine) {
+                  <pre class="language-javascript"><code class="language-javascript">    function TextRange(document, startLine, endLine) {
         this.startLine = startLine;
         this.endLine = endLine;
         
@@ -437,11 +438,13 @@ own Document change handler.</li>
                     </span>
                     <h4>document</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>!Document</dd>
                     </dl>
-                    <div class="description"><p>@type {!Document}</p>
+                    <div class="description"><p>Containing document</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype.document = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype.document = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -450,11 +453,13 @@ own Document change handler.</li>
                     </span>
                     <h4>endLine</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>?number</dd>
                     </dl>
-                    <div class="description"><p>@type {?number} Null after &quot;lostSync&quot; is dispatched</p>
+                    <div class="description"><p>Ending Line</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype.endLine = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype.endLine = null;</code></pre>
                   </div>
                   <div class="member">
                     <span class="pull-right scope">
@@ -463,11 +468,13 @@ own Document change handler.</li>
                     </span>
                     <h4>startLine</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>?number</dd>
                     </dl>
-                    <div class="description"><p>@type {?number} Null after &quot;lostSync&quot; is dispatched</p>
+                    <div class="description"><p>Starting Line</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype.startLine = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype.startLine = null;</code></pre>
                   </div>
                   
                 </section>
@@ -494,7 +501,7 @@ range can no longer be accurately maintained.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype._applyChangesToRange = function (changeList) {
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype._applyChangesToRange = function (changeList) {
         var hasChanged = false, hasContentChanged = false;
         var i;
         for (i = 0; i &lt; changeList.length; i++) {
@@ -547,7 +554,7 @@ to this range.</p>
  and/or content has changed.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype._applySingleChangeToRange = function (change) {
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype._applySingleChangeToRange = function (change) {
         &#x2F;&#x2F; console.log(this + &quot; applying change to (&quot; +
         &#x2F;&#x2F;         (change.from &amp;&amp; (change.from.line+&quot;,&quot;+change.from.ch)) + &quot; - &quot; +
         &#x2F;&#x2F;         (change.to &amp;&amp; (change.to.line+&quot;,&quot;+change.to.ch)) + &quot;)&quot;);
@@ -621,7 +628,7 @@ to this range.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype.dispose = function (editor, change) {
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype.dispose = function (editor, change) {
         &#x2F;&#x2F; Disconnect from Document
         this.document.releaseRef();
         $(this.document).off(&quot;change&quot;, this._handleDocumentChange);
@@ -641,7 +648,7 @@ to this range.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">TextRange.prototype.toString = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    TextRange.prototype.toString = function () {
         return &quot;[TextRange &quot; + this.startLine + &quot;-&quot; + this.endLine + &quot; in &quot; + this.document + &quot;]&quot;;
     };
     

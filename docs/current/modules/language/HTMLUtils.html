@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, $</p>
-
+              
             </div>
           </section>
     
@@ -395,7 +394,7 @@ to assure the attribute value we grab is always good</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _extractAttrVal(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _extractAttrVal(ctx) {
         var attrValue = ctx.token.string,
             startChar = attrValue.charAt(0),
             endChar = attrValue.charAt(attrValue.length - 1),
@@ -468,7 +467,7 @@ to assure the attribute value we grab is always good</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _extractTagName(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _extractTagName(ctx) {
         var mode = ctx.editor.getMode(),
             innerModeData = CodeMirror.innerMode(mode, ctx.token.state);
 
@@ -498,7 +497,7 @@ to assure the attribute value we grab is always good</p>
                   <dd>indicates whether we're getting info for a prior attribute</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getTagInfoStartingFromAttrName(ctx, isPriorAttr) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrName(ctx, isPriorAttr) {
         &#x2F;&#x2F;Verify We&#39;re in the attribute name, move forward and try to extract the rest of
         &#x2F;&#x2F;the info. If the user it typing the attr the rest might not be here
         if (isPriorAttr === false &amp;&amp; ctx.token.type !== &quot;attribute&quot;) {
@@ -549,7 +548,7 @@ to assure the attribute value we grab is always good</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getTagInfoStartingFromAttrValue(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrValue(ctx) {
         &#x2F;&#x2F; Assume we in the attr value
         &#x2F;&#x2F; and validate that by going backwards
         var attrInfo = _extractAttrVal(ctx),
@@ -620,7 +619,7 @@ to assure the attribute value we grab is always good</p>
                   <dd>The value of the attribute</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function createTagInfo(tokenType, offset, tagName, attrName, attrValue, valueAssigned, quoteChar, hasEndQuote) {
+              <pre class="language-javascript"><code class="language-javascript">    function createTagInfo(tokenType, offset, tagName, attrName, attrValue, valueAssigned, quoteChar, hasEndQuote) {
         return { tagName: tagName || &quot;&quot;,
                  attr:
                     { name: attrName || &quot;&quot;,
@@ -652,7 +651,7 @@ in the given Editor&#39;s HTML document (assumes the Editor contains HTML text).
                   <dd>- the mode name of the tokens to look for</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findBlocks(editor, modeName) {
+              <pre class="language-javascript"><code class="language-javascript">    function findBlocks(editor, modeName) {
         &#x2F;&#x2F; Start scanning from beginning of file
         var ctx = TokenUtils.getInitialContext(editor._codeMirror, {line: 0, ch: 0}),
             blocks = [],
@@ -711,7 +710,7 @@ the Editor contains HTML text).</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findStyleBlocks(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function findStyleBlocks(editor) {
         return findBlocks(editor, &quot;css&quot;);
     }
     
@@ -748,7 +747,7 @@ the Editor contains HTML text).</p>
                   <dd>A CodeMirror position</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getTagAttributes(editor, pos) {
+              <pre class="language-javascript"><code class="language-javascript">    function getTagAttributes(editor, pos) {
         var attrs       = [],
             backwardCtx = TokenUtils.getInitialContext(editor._codeMirror, pos),
             forwardCtx  = $.extend({}, backwardCtx);
@@ -816,7 +815,7 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                   <dd>A CM pos (likely from editor.getCursorPos())</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getTagInfo(editor, constPos) {
+              <pre class="language-javascript"><code class="language-javascript">    function getTagInfo(editor, constPos) {
         &#x2F;&#x2F; We&#39;re going to be changing pos a lot, but we don&#39;t want to mess up
         &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.	
         var pos = $.extend({}, constPos),

@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>unittests: HTML Instrumentation</p>
-
+              
             </div>
           </section>
     
@@ -395,7 +394,7 @@ tags to close. This mostly comes from the HTML5 spec section on omitted close ta
 This doesn&#39;t handle general content model violations.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var openImpliesClose = {
+                <pre class="language-javascript"><code class="language-javascript">    var openImpliesClose = {
         li      : { li: true },
         dt      : { dd: true, dt: true },
         dd      : { dd: true, dt: true },
@@ -452,7 +451,7 @@ This doesn&#39;t handle general content model violations.</p>
 Mostly taken from <a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements</a></p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var voidElements = {
+                <pre class="language-javascript"><code class="language-javascript">    var voidElements = {
         area: true,
         base: true,
         basefont: true,
@@ -496,7 +495,7 @@ Mostly taken from <a href="http://www.w3.org/html/wg/drafts/html/master/syntax.h
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addPos(pos1, pos2) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addPos(pos1, pos2) {
         return {line: pos1.line + pos2.line, ch: (pos2.line === 0 ? pos1.ch + pos2.ch : pos2.ch)};
     }</code></pre>
             </div>
@@ -514,7 +513,7 @@ Mostly taken from <a href="http://www.w3.org/html/wg/drafts/html/master/syntax.h
                   <dd>root of the tree</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _dumpDOM(root) {
+              <pre class="language-javascript"><code class="language-javascript">    function _dumpDOM(root) {
         var result = &quot;&quot;,
             indent = &quot;&quot;;
         
@@ -559,7 +558,7 @@ pos. Not for general purpose use as it does not account for line boundaries.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _offsetPos(pos, offset) {
+              <pre class="language-javascript"><code class="language-javascript">    function _offsetPos(pos, offset) {
         return {line: pos.line, ch: pos.ch + offset};
     }</code></pre>
             </div>
@@ -581,7 +580,7 @@ will halt as soon as any error is seen and null will be returned.</p>
                   <dd>True for strict parsing</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function build(text, strict) {
+              <pre class="language-javascript"><code class="language-javascript">    function build(text, strict) {
         var builder = new Builder(text);
         return builder.build(strict);
     }</code></pre>
@@ -601,7 +600,7 @@ for convenience when reading a SimpleDOM that is dumped to the console.</p>
                   <dd>new node for which we are generating an ID</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getTextNodeID(textNode) {
+              <pre class="language-javascript"><code class="language-javascript">    function getTextNodeID(textNode) {
         var childIndex = textNode.parent.children.indexOf(textNode);
         if (childIndex === 0) {
             return textNode.parent.tagID + &quot;.0&quot;;
@@ -633,7 +632,7 @@ property. All Elements will have a <code>tagID</code> and text nodes <em>can</em
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function SimpleNode(properties) {
+                  <pre class="language-javascript"><code class="language-javascript">    function SimpleNode(properties) {
         $.extend(this, properties);
     }
     
@@ -666,7 +665,7 @@ The nodes include information about their position in the text provided.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Builder(text, startOffset, startOffsetPos) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Builder(text, startOffset, startOffsetPos) {
         this.stack = [];
         this.text = text;
         this.t = new Tokenizer(text);
@@ -711,7 +710,7 @@ The default implementation just calls <code>getNewID</code>
 and returns a unique ID.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Builder.prototype.getID = Builder.prototype.getNewID;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Builder.prototype.getID = Builder.prototype.getNewID;</code></pre>
                   </div>
                   
                 </section>
@@ -745,7 +744,7 @@ and returns a unique ID.</p>
                       <dd>root of tree or null if parsing failed</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Builder.prototype.build = function (strict, markCache) {
+                    <pre class="language-javascript"><code class="language-javascript">    Builder.prototype.build = function (strict, markCache) {
         var self = this;
         var token, lastClosedTag, lastTextNode, lastIndex = 0;
         var stack = this.stack;
@@ -977,7 +976,7 @@ and returns a unique ID.</p>
                       <dd>unique tag ID</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Builder.prototype.getNewID = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Builder.prototype.getNewID = function () {
         return tagID++;
     };</code></pre>
                   </div>

@@ -390,13 +390,13 @@ of the application.</p>
                 <h4>_commands</h4>
                 <dl>
                     <dt>Type</dt>
-                      <dd>Object.&lt;commandID:</dd>
+                      <dd>Object.&lt;commandID: string, Command&gt;</dd>
                     <dt>Private</dt>
                 </dl>
                 <div class="description"><p>Map of all registered global commands</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _commands = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _commands = {};</code></pre>
               </div>
               <div class="member private">
       
@@ -407,14 +407,14 @@ of the application.</p>
                 <h4>_commandsOriginal</h4>
                 <dl>
                     <dt>Type</dt>
-                      <dd>Object.&lt;commandID:</dd>
+                      <dd>Object.&lt;commandID: string, Command&gt;</dd>
                     <dt>Private</dt>
                 </dl>
                 <div class="description"><p>Temporary copy of commands map for restoring after testing
 TODO (issue #1039): implement separate require contexts for unit tests</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _commandsOriginal = {};</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _commandsOriginal = {};</code></pre>
               </div>
               
             </section>
@@ -438,7 +438,7 @@ they can be restored afterward</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _testReset() {
+              <pre class="language-javascript"><code class="language-javascript">    function _testReset() {
         _commandsOriginal = _commands;
         _commands = {};
     }</code></pre>
@@ -454,7 +454,7 @@ they can be restored afterward</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _testRestore() {
+              <pre class="language-javascript"><code class="language-javascript">    function _testRestore() {
         _commands = _commandsOriginal;
         _commandsOriginal = {};
     }</code></pre>
@@ -473,7 +473,7 @@ they can be restored afterward</p>
                   <dd>The ID of the command to run.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function execute(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function execute(id) {
         var command = _commands[id];
         
         if (command) {
@@ -513,7 +513,7 @@ they can be restored afterward</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function get(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function get(id) {
         return _commands[id];
     }</code></pre>
             </div>
@@ -528,7 +528,7 @@ they can be restored afterward</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getAll() {
+              <pre class="language-javascript"><code class="language-javascript">    function getAll() {
         return Object.keys(_commands);
     }</code></pre>
             </div>
@@ -558,7 +558,7 @@ they can be restored afterward</p>
  CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function register(name, id, commandFn) {
+              <pre class="language-javascript"><code class="language-javascript">    function register(name, id, commandFn) {
         if (_commands[id]) {
             console.log(&quot;Attempting to register an already-registered command: &quot; + id);
             return null;
@@ -599,7 +599,7 @@ they can be restored afterward</p>
  CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function registerInternal(id, commandFn) {
+              <pre class="language-javascript"><code class="language-javascript">    function registerInternal(id, commandFn) {
         if (_commands[id]) {
             console.log(&quot;Attempting to register an already-registered command: &quot; + id);
             return null;
@@ -650,7 +650,7 @@ Events:
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Command(name, id, commandFn) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Command(name, id, commandFn) {
         this._name = name;
         this._id = id;
         this._commandFn = commandFn;
@@ -683,7 +683,7 @@ Events:
                       <dd>a jQuery promise that will be resolved when the command completes.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.execute = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.execute = function () {
         if (!this._enabled) {
             return (new $.Deferred()).reject().promise();
         }
@@ -704,14 +704,17 @@ Events:
                       
                     </span>
                     <h4>getChecked</h4>
-                    <div class="description"><p>@return {boolean}</p>
+                    <div class="description"><p>Is command checked?</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">boolean</dd>
+                      <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.getChecked = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getChecked = function () {
         return this._checked;
     };</code></pre>
                   </div>
@@ -721,14 +724,17 @@ Events:
                       
                     </span>
                     <h4>getEnabled</h4>
-                    <div class="description"><p>@return {boolean}</p>
+                    <div class="description"><p>Is command enabled?</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">boolean</dd>
+                      <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.getEnabled = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getEnabled = function () {
         return this._enabled;
     };</code></pre>
                   </div>
@@ -738,14 +744,17 @@ Events:
                       
                     </span>
                     <h4>getID</h4>
-                    <div class="description"><p>@return {Command}</p>
+                    <div class="description"><p>Get command id</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">string</dd>
+                      <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.getID = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getID = function () {
         return this._id;
     };</code></pre>
                   </div>
@@ -755,14 +764,17 @@ Events:
                       
                     </span>
                     <h4>getName</h4>
-                    <div class="description"><p>@return {string}</p>
+                    <div class="description"><p>Get command name</p>
 </div>
                     <dl>
                     </dl>
                     <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">string</dd>
+                      <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.getName = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getName = function () {
         return this._name;
     };</code></pre>
                   </div>
@@ -783,7 +795,7 @@ when the enabled state changes.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.setChecked = function (checked) {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setChecked = function (checked) {
         var changed = this._checked !== checked;
         this._checked = checked;
 
@@ -809,7 +821,7 @@ when the enabled state changes.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.setEnabled = function (enabled) {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setEnabled = function (enabled) {
         var changed = this._enabled !== enabled;
         this._enabled = enabled;
 
@@ -838,7 +850,7 @@ use \uXXXX instead of an HTML entity.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Command.prototype.setName = function (name) {
+                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setName = function (name) {
         var changed = this._name !== name;
         this._name = name;
 

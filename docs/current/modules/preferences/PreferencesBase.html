@@ -363,10 +363,10 @@ Each Scope holds one level of settings. </p>
 <p>PreferencesManager.js sets up a singleton PreferencesSystem that has the following Scopes:</p>
 <ul>
 <li>default (the default values for any settings that are explicitly registered)</li>
-<li>user (the user&#39;s customized settings – the equivalent of Brackets&#39; old <pre><code>localStorage-based system. This is the settings file that lives in AppData)
-</code></pre></li>
-<li>Additional scopes for each .brackets.json file going upward in the file tree from the<pre><code> current file
-</code></pre></li>
+<li>user (the user&#39;s customized settings – the equivalent of Brackets&#39; old 
+localStorage-based system. This is the settings file that lives in AppData)</li>
+<li>Additional scopes for each .brackets.json file going upward in the file tree from the
+current file</li>
 </ul>
 <p>For example, if spaceUnits has a value set in a .brackets.json file near the open file, 
 then a call to get(&quot;spaceUnits&quot;) would return the value from that file. File values come 
@@ -426,7 +426,7 @@ those nested preferences will take precedence over the main preferences in the S
  file does not exist.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function FileStorage(path, createIfNew) {
+              <pre class="language-javascript"><code class="language-javascript">    function FileStorage(path, createIfNew) {
         this.path = path;
         this.createIfNew = createIfNew;
         this._lineEndings = FileUtils.getPlatformLineEndings();
@@ -450,7 +450,7 @@ This is suitable for single session data or testing.</p>
                   <dd>Initial data for the storage.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function MemoryStorage(data) {
+              <pre class="language-javascript"><code class="language-javascript">    function MemoryStorage(data) {
         this.data = data || {};
     }
     
@@ -470,7 +470,7 @@ This is suitable for single session data or testing.</p>
                   <dd>Error message</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function ParsingError(message) {
+              <pre class="language-javascript"><code class="language-javascript">    function ParsingError(message) {
         this.name = &quot;ParsingError&quot;;
         this.message = message || &quot;&quot;;
     }
@@ -492,7 +492,7 @@ currently edited file wins.</p>
                   <dd>path to the preference file</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function PathLayer(prefFilePath) {
+              <pre class="language-javascript"><code class="language-javascript">    function PathLayer(prefFilePath) {
         this.setPrefFilePath(prefFilePath);
     }
     
@@ -513,7 +513,7 @@ currently edited file wins.</p>
                   <dd>Information about the Preference that is stored on this object</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function Preference(properties) {
+              <pre class="language-javascript"><code class="language-javascript">    function Preference(properties) {
         _.extend(this, properties);
     }
     
@@ -540,7 +540,7 @@ context systems. It can be passed in at construction time or set later.</p>
                   <dd>function that is passed the context used for get or set to adjust for specific PreferencesSystem behavior</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function PreferencesSystem(contextNormalizer) {
+              <pre class="language-javascript"><code class="language-javascript">    function PreferencesSystem(contextNormalizer) {
         this.contextNormalizer = contextNormalizer;
         
         this._knownPrefs = {};
@@ -612,7 +612,7 @@ access always occurring with the given prefix.</p>
                   <dd>Prefix that is used for preferences lookup. Any separator characters should already be added.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function PrefixedPreferencesSystem(base, prefix) {
+              <pre class="language-javascript"><code class="language-javascript">    function PrefixedPreferencesSystem(base, prefix) {
         this.base = base;
         this.prefix = prefix;
         this._listenerInstalled = false;
@@ -636,7 +636,7 @@ that are stored within a single preferences file.</p>
                   <dd>Storage object from which prefs are loaded/saved</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function Scope(storage) {
+              <pre class="language-javascript"><code class="language-javascript">    function Scope(storage) {
         this.storage = storage;
         $(storage).on(&quot;changed&quot;, this.load.bind(this));
         this.data = {};
@@ -665,7 +665,7 @@ that are stored within a single preferences file.</p>
                   <dd>relative filename to match against the globs</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findMatchingGlob(pathData, filename) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findMatchingGlob(pathData, filename) {
         var globs = Object.keys(pathData),
             globCounter;
 
@@ -701,7 +701,7 @@ with &quot;project&quot; as its value.</p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function ProjectLayer() {
+                  <pre class="language-javascript"><code class="language-javascript">    function ProjectLayer() {
         this.projectPath = null;
     }
 

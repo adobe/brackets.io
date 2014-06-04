@@ -357,22 +357,22 @@
             <div>
               <p>Inspector manages the connection to Chrome/Chromium&#39;s remote debugger.
 See inspector.html for the documentation of the remote debugger.</p>
-<h1 id="setup">SETUP</h1>
+<p><strong>SETUP</strong></p>
 <p>To enable remote debugging in Chrome or Chromium open either application
 with the following parameters:</p>
-<p>  --enable-remote-debugger --remote-debugging-port=9222</p>
-<p>This will open an HTTP server on the specified port, which can be used to
+<pre><code>--enable-remote-debugger --remote-debugging-port=9222
+</code></pre><p>This will open an HTTP server on the specified port, which can be used to
 browse the available remote debugger sessions. In general, every open
 browser tab can host an individual remote debugger session. The
 available interfaces can be exported by requesting:</p>
-<p>  <a href="http://127.0.0.1:9222/json">http://127.0.0.1:9222/json</a></p>
-<p>The response is a JSON-formatted array that specifies all available remote
+<pre><code>http://127.0.0.1:9222/json
+</code></pre><p>The response is a JSON-formatted array that specifies all available remote
 debugger sessions including the remote debugging web sockets.</p>
 <p>Inspector can connect directly to a web socket via <code>connect(socketURL)</code>, or
 it can find the web socket that corresponds to the tab at the given URL and
 connect to it via <code>connectToURL(url)</code>. The later returns a promise. To 
 disconnect use <code>disconnect()</code>.</p>
-<h1 id="events">EVENTS</h1>
+<p><strong>EVENTS</strong></p>
 <p>Inspector dispatches several connectivity-related events + all remote debugger
 events (see below). Event handlers are attached via <code>on(event, function)</code> and
 detached via <code>off(event, function)</code>.</p>
@@ -380,8 +380,8 @@ detached via <code>off(event, function)</code>.</p>
   <code>disconnect</code> Inspector did disconnect from the remote debugger
   <code>error</code>      Inspector encountered an error
   <code>message</code>    Inspector received a message from the remote debugger - this
-                 provides a low-level entry point to remote debugger events</p>
-<h1 id="remote-debugger-commands">REMOTE DEBUGGER COMMANDS</h1>
+               provides a low-level entry point to remote debugger events</p>
+<p><strong>REMOTE DEBUGGER COMMANDS</strong></p>
 <p>Commands are executed by calling <code>{Domain}.{Command}()</code> with the parameters
 specified in the order of the remote debugger documentation. These command
 functions are generated automatically at runtime from Inspector.json. The
@@ -389,7 +389,7 @@ actual implementation of these functions is found in
 <code>_send(method, signature, varargs)</code>, which verifies, serializes, and
 transmits the command to the remote debugger. If the last parameter of any
 command function call is a function, it will be used as the callback.</p>
-<h1 id="remote-debugger-events">REMOTE DEBUGGER EVENTS</h1>
+<p><strong>REMOTE DEBUGGER EVENTS</strong></p>
 <p>Debugger events are dispatched as regular events using {Domain}.{Event} as
 the event name. The handler function will be called with a single parameter
 that stores all returned values as an object.</p>
@@ -430,7 +430,7 @@ that stores all returned values as an object.</p>
                 <div class="description"><p>Map message IDs to the callback function and original JSON message</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _messageCallbacks = {};
+                <pre class="language-javascript"><code class="language-javascript">    var _messageCallbacks = {};
 
     var _messageId = 1,     &#x2F;&#x2F; id used for remote method calls, auto-incrementing
         _socket,            &#x2F;&#x2F; remote debugger WebSocket
@@ -458,7 +458,7 @@ that stores all returned values as an object.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onConnect() {
+              <pre class="language-javascript"><code class="language-javascript">    function _onConnect() {
         if (_connectDeferred) {
             _connectDeferred.resolve();
             _connectDeferred = null;
@@ -477,7 +477,7 @@ that stores all returned values as an object.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDisconnect() {
+              <pre class="language-javascript"><code class="language-javascript">    function _onDisconnect() {
         _socket = undefined;
         $exports.triggerHandler(&quot;disconnect&quot;);
     }</code></pre>
@@ -493,7 +493,7 @@ that stores all returned values as an object.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onError(error) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onError(error) {
         if (_connectDeferred) {
             _connectDeferred.reject();
             _connectDeferred = null;
@@ -521,7 +521,7 @@ A message can be one of three things:</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onMessage(message) {
+              <pre class="language-javascript"><code class="language-javascript">    function _onMessage(message) {
         var response    = JSON.parse(message.data),
             msgRecord   = _messageCallbacks[response.id],
             callback    = msgRecord &amp;&amp; msgRecord.callback,
@@ -567,7 +567,7 @@ If the last argument is a function, it is used as the callback function.</p>
                   <dd>method signature</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _send(method, signature, varargs) {
+              <pre class="language-javascript"><code class="language-javascript">    function _send(method, signature, varargs) {
         if (!_socket) {
             console.log(&quot;You must connect to the WebSocket before sending messages.&quot;);
 
@@ -637,7 +637,7 @@ Type checking is complex because of $ref and done on the remote end anyways</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _verifySignature(signature, value) {
+              <pre class="language-javascript"><code class="language-javascript">    function _verifySignature(signature, value) {
         if (value === undefined) {
             console.assert(signature.optional === true, &quot;Missing argument: &quot; + signature.name);
         }
@@ -659,7 +659,7 @@ Clients must listen for the <code>connect</code> event.</p>
                   <dd>URL</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function connect(socketURL) {
+              <pre class="language-javascript"><code class="language-javascript">    function connect(socketURL) {
         disconnect().done(function () {
             _socket = new WebSocket(socketURL);
             _socket.onmessage = _onMessage;
@@ -683,7 +683,7 @@ Clients must listen for the <code>connect</code> event.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function connectToURL(url) {
+              <pre class="language-javascript"><code class="language-javascript">    function connectToURL(url) {
         if (_connectDeferred) {
             &#x2F;&#x2F; reject an existing connection attempt
             _connectDeferred.reject(&quot;CANCEL&quot;);
@@ -720,7 +720,7 @@ Clients must listen for the <code>connect</code> event.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function connected() {
+              <pre class="language-javascript"><code class="language-javascript">    function connected() {
         return _socket !== undefined &amp;&amp; _socket.readyState === WebSocket.OPEN;
     }</code></pre>
             </div>
@@ -735,7 +735,7 @@ Clients must listen for the <code>connect</code> event.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function disconnect() {
+              <pre class="language-javascript"><code class="language-javascript">    function disconnect() {
         var deferred = new $.Deferred(),
             promise = deferred.promise();
 
@@ -783,7 +783,7 @@ Clients must listen for the <code>connect</code> event.</p>
                   <dd>port</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getDebuggableWindows(host, port) {
+              <pre class="language-javascript"><code class="language-javascript">    function getDebuggableWindows(host, port) {
         if (!host) {
             host = &quot;127.0.0.1&quot;;
         }
@@ -817,7 +817,7 @@ Clients must listen for the <code>connect</code> event.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getUserAgent() {
+              <pre class="language-javascript"><code class="language-javascript">    function getUserAgent() {
         return _userAgent;
     }</code></pre>
             </div>
@@ -834,7 +834,7 @@ Read the Inspector.json configuration and define the command objects
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function init(theConfig) {
+              <pre class="language-javascript"><code class="language-javascript">    function init(theConfig) {
         exports.config = theConfig;
 
         var InspectorText = require(&quot;text!LiveDevelopment&#x2F;Inspector&#x2F;Inspector.json&quot;),
@@ -882,7 +882,7 @@ Read the Inspector.json configuration and define the command objects
                   <dd>handler function</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function off(name, handler) {
+              <pre class="language-javascript"><code class="language-javascript">    function off(name, handler) {
         $exports.off(name, handler);
     }</code></pre>
             </div>
@@ -903,7 +903,7 @@ Read the Inspector.json configuration and define the command objects
                   <dd>function</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function on(name, handler) {
+              <pre class="language-javascript"><code class="language-javascript">    function on(name, handler) {
         $exports.on(name, handler);
     }</code></pre>
             </div>
@@ -926,7 +926,7 @@ If the last argument is a function, it is used as the callback function.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function send(domain, command, varargs) {
+              <pre class="language-javascript"><code class="language-javascript">    function send(domain, command, varargs) {
         return _send(domain + &quot;.&quot; + command, null, varargs);
     }</code></pre>
             </div>
@@ -944,7 +944,7 @@ If the last argument is a function, it is used as the callback function.</p>
                   <dd>User agent string returned from Chrome</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function setUserAgent(userAgent) {
+              <pre class="language-javascript"><code class="language-javascript">    function setUserAgent(userAgent) {
         _userAgent = userAgent;
     }</code></pre>
             </div>

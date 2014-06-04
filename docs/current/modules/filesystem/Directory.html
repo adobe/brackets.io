@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define</p>
-
+              
             </div>
           </section>
     
@@ -396,7 +395,7 @@ can throw without preventing other callbacks from being applied.</p>
                   <dd>The arguments to which each callback is applied</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _applyAllCallbacks(callbacks, args) {
+              <pre class="language-javascript"><code class="language-javascript">    function _applyAllCallbacks(callbacks, args) {
         if (callbacks.length &gt; 0) {
             var callback = callbacks.pop();
             try {
@@ -435,7 +434,7 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Directory(fullPath, fileSystem) {
+                  <pre class="language-javascript"><code class="language-javascript">    function Directory(fullPath, fileSystem) {
         this._isDirectory = true;
         FileSystemEntry.call(this, fullPath, fileSystem);
     }
@@ -466,7 +465,7 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
                     <div class="description"><p>The contents of this directory. This &quot;private&quot; property is used by FileSystem.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype._contents = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype._contents = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -483,7 +482,7 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
 corresponds to this._contents[i].</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype._contentsStats = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype._contentsStats = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -499,7 +498,7 @@ corresponds to this._contents[i].</p>
                     <div class="description"><p>The stats errors for the contents of this directory.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype._contentsStatsErrors = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype._contentsStatsErrors = null;</code></pre>
                   </div>
                   
                 </section>
@@ -531,7 +530,7 @@ many of the file within the directory have changed.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype._clearCachedData = function (preserveImmediateChildren) {
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype._clearCachedData = function (preserveImmediateChildren) {
         FileSystemEntry.prototype._clearCachedData.apply(this);
         
         if (!preserveImmediateChildren) {
@@ -573,7 +572,7 @@ many of the file within the directory have changed.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype.create = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype.create = function (callback) {
         callback = callback || function () {};
         
         &#x2F;&#x2F; Block external change events until after the write has finished
@@ -640,7 +639,7 @@ function.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Directory.prototype.getContents = function (callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    Directory.prototype.getContents = function (callback) {
         if (this._contentsCallbacks) {
             &#x2F;&#x2F; There is already a pending call for this directory&#39;s contents.
             &#x2F;&#x2F; Push the new callback onto the stack and return.

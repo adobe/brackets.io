@@ -393,10 +393,10 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 <h4>LEFT_BUTTON</h4>
                 <dl>
                 </dl>
-                <div class="description"><p>@const @type {number} Constants for event.which values</p>
+                <div class="description"><p>Constants for event.which values</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var LEFT_BUTTON = 1,
+                <pre class="language-javascript"><code class="language-javascript">    var LEFT_BUTTON = 1,
         MIDDLE_BUTTON = 2;</code></pre>
               </div>
               <div class="member private">
@@ -412,7 +412,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 <div class="description"><p>Each list item in the working set stores a references to the related document in the list item&#39;s data.<br> Use listItem.data(_FILE_KEY) to get the document reference</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _FILE_KEY = &quot;file&quot;,
+                <pre class="language-javascript"><code class="language-javascript">    var _FILE_KEY = &quot;file&quot;,
         $workingSetHeader,
         $openFilesContainer,
         $openFilesList;</code></pre>
@@ -432,7 +432,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 <div class="description"><p>Internal flag to suppress redrawing the Working Set after a workingSetSort event.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _suppressSortRedraw = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _suppressSortRedraw = false;</code></pre>
               </div>
               
             </section>
@@ -458,7 +458,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                   <dd>- list of Files with the same filename</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addDirectoryNamesToWorkingTreeFiles(filesList) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addDirectoryNamesToWorkingTreeFiles(filesList) {
         &#x2F;&#x2F; filesList must have at least two files in it for this to make sense
         if (filesList.length &lt;= 1) {
             return;
@@ -493,7 +493,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _adjustForScrollbars() {
+              <pre class="language-javascript"><code class="language-javascript">    function _adjustForScrollbars() {
         if ($openFilesContainer[0].scrollHeight &gt; $openFilesContainer[0].clientHeight) {
             if (!$openFilesContainer.hasClass(&quot;vertical-scroll&quot;)) {
                 $openFilesContainer.addClass(&quot;vertical-scroll&quot;);
@@ -515,7 +515,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _checkForDuplicatesInWorkingTree() {
+              <pre class="language-javascript"><code class="language-javascript">    function _checkForDuplicatesInWorkingTree() {
         var map = {},
             fileList = DocumentManager.getWorkingSet();
 
@@ -555,7 +555,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _createNewListItem(file) {
+              <pre class="language-javascript"><code class="language-javascript">    function _createNewListItem(file) {
         var curDoc = DocumentManager.getCurrentDocument();
 
         &#x2F;&#x2F; Create new list item with a link
@@ -600,7 +600,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findListItemFromFile(file) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findListItemFromFile(file) {
         var result = null;
 
         if (file) {
@@ -629,7 +629,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _fireSelectionChanged() {
+              <pre class="language-javascript"><code class="language-javascript">    function _fireSelectionChanged() {
         _scrollSelectedDocIntoView();
 
         &#x2F;&#x2F; redraw selection
@@ -652,7 +652,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleDirtyFlagChanged(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleDirtyFlagChanged(doc) {
         var listItem = _findListItemFromFile(doc.file);
         if (listItem) {
             var canClose = $(listItem).find(&quot;.can-close&quot;).length === 1;
@@ -671,7 +671,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleFileAdded(file, index) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleFileAdded(file, index) {
         if (index === DocumentManager.getWorkingSet().length - 1) {
             &#x2F;&#x2F; Simple case: append item to list
             _createNewListItem(file);
@@ -692,7 +692,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleFileListAdded(files) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleFileListAdded(files) {
         files.forEach(function (file) {
             _createNewListItem(file);
         });
@@ -715,7 +715,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleFileNameChanged(oldName, newName) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleFileNameChanged(oldName, newName) {
         &#x2F;&#x2F; Rebuild the working set if any file or folder name changed.
         &#x2F;&#x2F; We could be smarter about this and only update the
         &#x2F;&#x2F; nodes that changed, if needed...
@@ -794,7 +794,7 @@ and adds a parent directory name to them</p>
                   <dd>If true, suppress redraw</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleFileRemoved(file, suppressRedraw) {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleFileRemoved(file, suppressRedraw) {
         if (!suppressRedraw) {
             var $listItem = _findListItemFromFile(file);
             if ($listItem) {
@@ -834,7 +834,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleWorkingSetSort() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleWorkingSetSort() {
         if (!_suppressSortRedraw) {
             _rebuildWorkingSet(true);
         }
@@ -851,7 +851,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _rebuildWorkingSet(forceRedraw) {
+              <pre class="language-javascript"><code class="language-javascript">    function _rebuildWorkingSet(forceRedraw) {
         $openFilesContainer.find(&quot;ul&quot;).empty();
 
         DocumentManager.getWorkingSet().forEach(function (file) {
@@ -874,7 +874,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _redraw() {
+              <pre class="language-javascript"><code class="language-javascript">    function _redraw() {
         if (DocumentManager.getWorkingSet().length === 0) {
             $openFilesContainer.hide();
             $workingSetHeader.hide();
@@ -906,7 +906,7 @@ and adds a parent directory name to them</p>
                   <dd>- true if reorder was called from the close icon</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _reorderListItem(event, $listItem, fromClose) {
+              <pre class="language-javascript"><code class="language-javascript">    function _reorderListItem(event, $listItem, fromClose) {
         var $prevListItem   = $listItem.prev(),
             $nextListItem   = $listItem.next(),
             selected        = $listItem.hasClass(&quot;selected&quot;),
@@ -1104,7 +1104,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _scrollSelectedDocIntoView() {
+              <pre class="language-javascript"><code class="language-javascript">    function _scrollSelectedDocIntoView() {
         if (FileViewController.getFileSelectionFocus() !== FileViewController.WORKING_SET_VIEW) {
             return;
         }
@@ -1143,7 +1143,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateFileStatusIcon(listElement, isDirty, canClose) {
+              <pre class="language-javascript"><code class="language-javascript">    function _updateFileStatusIcon(listElement, isDirty, canClose) {
         var $fileStatusIcon = listElement.find(&quot;.file-status-icon&quot;);
         var showIcon = isDirty || canClose;
 
@@ -1195,7 +1195,7 @@ and adds a parent directory name to them</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateListItemSelection(listItem, selectedDoc) {
+              <pre class="language-javascript"><code class="language-javascript">    function _updateListItemSelection(listItem, selectedDoc) {
         var shouldBeSelected = (selectedDoc &amp;&amp; $(listItem).data(_FILE_KEY).fullPath === selectedDoc.file.fullPath);
         
         ViewUtils.toggleClass($(listItem), &quot;selected&quot;, shouldBeSelected);
@@ -1217,7 +1217,7 @@ and adds a parent directory name to them</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateListSelection() {
+              <pre class="language-javascript"><code class="language-javascript">    function _updateListSelection() {
         var doc;
         if (FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW) {
             doc = DocumentManager.getCurrentDocument();

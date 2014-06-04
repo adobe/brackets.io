@@ -399,7 +399,7 @@
                 <div class="description"><p>Flag that indicates if we&#39;ve added a click handler to the update notification icon.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _addedClickHandler = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _addedClickHandler = false;</code></pre>
               </div>
               
             </section>
@@ -429,7 +429,7 @@ _versionInfoUrl is used for unit testing.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getUpdateInformation(force, dontCache, _versionInfoUrl) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getUpdateInformation(force, dontCache, _versionInfoUrl) {
         &#x2F;&#x2F; Last time the versionInfoURL was fetched
         var lastInfoURLFetchTime = PreferencesManager.getViewState(&quot;lastInfoURLFetchTime&quot;);
 
@@ -554,7 +554,7 @@ _versionInfoUrl is used for unit testing.</p>
 return {string} the new version update url</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getVersionInfoUrl(locale, removeCountryPartOfLocale) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getVersionInfoUrl(locale, removeCountryPartOfLocale) {
         locale = locale || brackets.getLocale();
 
         if (removeCountryPartOfLocale) {
@@ -575,7 +575,7 @@ return {string} the new version update url</dd>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onRegistryDownloaded() {
+              <pre class="language-javascript"><code class="language-javascript">    function _onRegistryDownloaded() {
         var availableUpdates = ExtensionManager.getAvailableUpdates();
         PreferencesManager.setViewState(&quot;extensionUpdateInfo&quot;, availableUpdates);
         PreferencesManager.setViewState(&quot;lastExtensionRegistryCheckTime&quot;, (new Date()).getTime());
@@ -593,7 +593,7 @@ return {string} the new version update url</dd>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _showUpdateNotificationDialog(updates) {
+              <pre class="language-javascript"><code class="language-javascript">    function _showUpdateNotificationDialog(updates) {
         Dialogs.showModalDialogUsingTemplate(Mustache.render(UpdateDialogTemplate, Strings))
             .done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_DOWNLOAD) {
@@ -622,7 +622,7 @@ Returns null if there is no new version information.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _stripOldVersionInfo(versionInfo, buildNumber) {
+              <pre class="language-javascript"><code class="language-javascript">    function _stripOldVersionInfo(versionInfo, buildNumber) {
         &#x2F;&#x2F; Do a simple linear search. Since we are going in reverse-chronological order, we
         &#x2F;&#x2F; should get through the search quickly.
         var lastIndex = 0;
@@ -657,7 +657,7 @@ Returns null if there is no new version information.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function checkForExtensionsUpdate() {
+              <pre class="language-javascript"><code class="language-javascript">    function checkForExtensionsUpdate() {
         var lastExtensionRegistryCheckTime = PreferencesManager.getViewState(&quot;lastExtensionRegistryCheckTime&quot;),
             timeOfNextCheck = lastExtensionRegistryCheckTime + ONE_DAY,
             currentTime = (new Date()).getTime();
@@ -702,7 +702,7 @@ displayed for newly available updates.</p>
                   <dd>This should only be used for testing purposes. See comments for details.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function checkForUpdate(force, _testValues) {
+              <pre class="language-javascript"><code class="language-javascript">    function checkForUpdate(force, _testValues) {
         &#x2F;&#x2F; This is the last version we notified the user about. If checkForUpdate()
         &#x2F;&#x2F; is called with &quot;false&quot;, only show the update notification dialog if there
         &#x2F;&#x2F; is an update newer than this one. This value is saved in preferences.
@@ -821,7 +821,7 @@ displayed for newly available updates.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function launchAutomaticUpdate() {
+              <pre class="language-javascript"><code class="language-javascript">    function launchAutomaticUpdate() {
         &#x2F;&#x2F; launch immediately and then every 24 hours + 2 minutes
         checkForUpdate();
         checkForExtensionsUpdate();

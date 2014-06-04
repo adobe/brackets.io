@@ -357,57 +357,58 @@
             <div>
               <p>LanguageManager provides access to the languages supported by Brackets</p>
 <p>To find out which languages we support by default, have a look at languages.json.</p>
-<p>To get access to an existing language, call getLanguage():
-    var language = LanguageManager.getLanguage(&quot;&lt;id&gt;&quot;);</p>
-<p>To define your own languages, call defineLanguage():
-    LanguageManager.defineLanguage(&quot;haskell&quot;, {
-        name: &quot;Haskell&quot;,
-        mode: &quot;haskell&quot;,
-        fileExtensions: [&quot;hs&quot;],
-        blockComment: [&quot;{-&quot;, &quot;-}&quot;],
-        lineComment: [&quot;--&quot;]
-    });</p>
-<p>To use that language and its related mode, wait for the returned promise to be resolved:
-    LanguageManager.defineLanguage(&quot;haskell&quot;, definition).done(function (language) {
-        console.log(&quot;Language &quot; + language.getName() + &quot; is now available!&quot;);
-    });</p>
-<p>The extension can also contain dots:
-    LanguageManager.defineLanguage(&quot;literatecoffeescript&quot;, {
-        name: &quot;Literate CoffeeScript&quot;,
-        mode: &quot;coffeescript&quot;,
-        fileExtensions: [&quot;litcoffee&quot;, &quot;coffee.md&quot;]
-    }); </p>
-<p>You can also specify file names:
-    LanguageManager.defineLanguage(&quot;makefile&quot;, {
-        name: &quot;Make&quot;,
-        mode: [&quot;null&quot;, &quot;text/plain&quot;],
-        fileNames: [&quot;Makefile&quot;]
-    });
-You can combine file names and extensions, or not define them at all.</p>
-<p>You can also refine an existing language:
-    var language = LanguageManager.getLanguage(&quot;haskell&quot;);
-    language.setLineCommentSyntax([&quot;--&quot;]);
-    language.setBlockCommentSyntax(&quot;{-&quot;, &quot;-}&quot;);
-    language.addFileExtension(&quot;lhs&quot;);</p>
-<p>Some CodeMirror modes define variations of themselves. They are called MIME modes.
+<p>To get access to an existing language, call getLanguage():</p>
+<pre><code>var language = LanguageManager.getLanguage(&quot;&lt;id&gt;&quot;);
+</code></pre><p>To define your own languages, call defineLanguage():</p>
+<pre><code>LanguageManager.defineLanguage(&quot;haskell&quot;, {
+    name: &quot;Haskell&quot;,
+    mode: &quot;haskell&quot;,
+    fileExtensions: [&quot;hs&quot;],
+    blockComment: [&quot;{-&quot;, &quot;-}&quot;],
+    lineComment: [&quot;--&quot;]
+});
+</code></pre><p>To use that language and its related mode, wait for the returned promise to be resolved:</p>
+<pre><code>LanguageManager.defineLanguage(&quot;haskell&quot;, definition).done(function (language) {
+    console.log(&quot;Language &quot; + language.getName() + &quot; is now available!&quot;);
+});
+</code></pre><p>The extension can also contain dots:</p>
+<pre><code>LanguageManager.defineLanguage(&quot;literatecoffeescript&quot;, {
+    name: &quot;Literate CoffeeScript&quot;,
+    mode: &quot;coffeescript&quot;,
+    fileExtensions: [&quot;litcoffee&quot;, &quot;coffee.md&quot;]
+}); 
+</code></pre><p>You can also specify file names:</p>
+<pre><code>LanguageManager.defineLanguage(&quot;makefile&quot;, {
+    name: &quot;Make&quot;,
+    mode: [&quot;null&quot;, &quot;text/plain&quot;],
+    fileNames: [&quot;Makefile&quot;]
+});
+</code></pre><p>You can combine file names and extensions, or not define them at all.</p>
+<p>You can also refine an existing language:</p>
+<pre><code>var language = LanguageManager.getLanguage(&quot;haskell&quot;);
+language.setLineCommentSyntax([&quot;--&quot;]);
+language.setBlockCommentSyntax(&quot;{-&quot;, &quot;-}&quot;);
+language.addFileExtension(&quot;lhs&quot;);
+</code></pre><p>Some CodeMirror modes define variations of themselves. They are called MIME modes.
 To find existing MIME modes, search for &quot;CodeMirror.defineMIME&quot; in thirdparty/CodeMirror2/mode
 For instance, C++, C# and Java all use the clike (C-like) mode with different settings and a different MIME name.
-You can refine the mode definition by specifying the MIME mode as well:
-    LanguageManager.defineLanguage(&quot;csharp&quot;, {
-        name: &quot;C#&quot;,
-        mode: [&quot;clike&quot;, &quot;text/x-csharp&quot;],
-        ...
-    });
-Defining the base mode is still necessary to know which file to load.
+You can refine the mode definition by specifying the MIME mode as well:</p>
+<pre><code>LanguageManager.defineLanguage(&quot;csharp&quot;, {
+    name: &quot;C#&quot;,
+    mode: [&quot;clike&quot;, &quot;text/x-csharp&quot;],
+    ...
+});
+</code></pre><p>Defining the base mode is still necessary to know which file to load.
 However, language.getMode() will return just the MIME mode if one was
 specified.</p>
-<p>If you need to configure a mode, you can just create a new MIME mode and use that:
-    CodeMirror.defineMIME(&quot;text/x-brackets-html&quot;, {
-        &quot;name&quot;: &quot;htmlmixed&quot;,
-        &quot;scriptTypes&quot;: [{&quot;matches&quot;: /\/x-handlebars-template|\/x-mustache/i,
-                       &quot;mode&quot;: null}]
-    });</p>
-<pre><code>LanguageManager.defineLanguage(&quot;html&quot;, {
+<p>If you need to configure a mode, you can just create a new MIME mode and use that:</p>
+<pre><code>CodeMirror.defineMIME(&quot;text/x-brackets-html&quot;, {
+    &quot;name&quot;: &quot;htmlmixed&quot;,
+    &quot;scriptTypes&quot;: [{&quot;matches&quot;: /\/x-handlebars-template|\/x-mustache/i,
+                   &quot;mode&quot;: null}]
+});
+
+LanguageManager.defineLanguage(&quot;html&quot;, {
     name: &quot;HTML&quot;,
     mode: [&quot;htmlmixed&quot;, &quot;text/x-brackets-html&quot;],
     ...
@@ -418,12 +419,13 @@ If the mode is part of our CodeMirror distribution, it gets loaded automatically
 such as <em>.jpg, </em>.png etc.
 Binary files do not require mode because modes are specific to CodeMirror, which
 only handles text based file types.
-To register a binary language the isBinary flag must be set, i.e.
-    LanguageManager.defineLanguage(&quot;audio&quot;, {
-        name: &quot;Audio&quot;,
-        fileExtensions: [&quot;mp3&quot;, &quot;wav&quot;, &quot;aif&quot;, &quot;aiff&quot;, &quot;ogg&quot;],
-        isBinary: true<br>    });</p>
-
+To register a binary language the isBinary flag must be set, i.e.</p>
+<pre><code>LanguageManager.defineLanguage(&quot;audio&quot;, {
+    name: &quot;Audio&quot;,
+    fileExtensions: [&quot;mp3&quot;, &quot;wav&quot;, &quot;aif&quot;, &quot;aiff&quot;, &quot;ogg&quot;],
+    isBinary: true    
+});
+</code></pre>
             </div>
           </section>
     
@@ -464,7 +466,7 @@ To register a binary language the isBinary flag must be set, i.e.
                   <dd>CodeMirror mode</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLanguageForMode(mode) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLanguageForMode(mode) {
         var language = _modeToLanguageMap[mode];
         if (language) {
             return language;
@@ -487,7 +489,7 @@ We may rely on the tokens provided by some of these modes.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _patchCodeMirror() {
+              <pre class="language-javascript"><code class="language-javascript">    function _patchCodeMirror() {
         var _original_CodeMirror_defineMode = CodeMirror.defineMode;
         function _wrapped_CodeMirror_defineMode(name) {
             if (CodeMirror.modes[name]) {
@@ -516,7 +518,7 @@ We may rely on the tokens provided by some of these modes.</p>
                   <dd>object for the pref that is currently being updated</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _restoreOverriddenDefault(name, state) {
+              <pre class="language-javascript"><code class="language-javascript">    function _restoreOverriddenDefault(name, state) {
         if (state.overridden[name]) {
             var language = getLanguage(state.overridden[name]);
             language[state.add](name);
@@ -543,7 +545,7 @@ We may rely on the tokens provided by some of these modes.</p>
                   <dd>The language to associate with the mode</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _setLanguageForMode(mode, language) {
+              <pre class="language-javascript"><code class="language-javascript">    function _setLanguageForMode(mode, language) {
         if (_modeToLanguageMap[mode]) {
             console.warn(&quot;CodeMirror mode \&quot;&quot; + mode + &quot;\&quot; is already used by language &quot; + _modeToLanguageMap[mode]._name + &quot; - cannot fully register language &quot; + language._name +
                          &quot; using the same mode. Some features will treat all content with this mode as language &quot; + _modeToLanguageMap[mode]._name);
@@ -568,7 +570,7 @@ We may rely on the tokens provided by some of these modes.</p>
                   <dd>The new language</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _triggerLanguageAdded(language) {
+              <pre class="language-javascript"><code class="language-javascript">    function _triggerLanguageAdded(language) {
         &#x2F;&#x2F; finally, store language to _language map
         _languages[language.getId()] = language;
         $(exports).triggerHandler(&quot;languageAdded&quot;, [language]);
@@ -589,7 +591,7 @@ We may rely on the tokens provided by some of these modes.</p>
                   <dd>The modified language</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _triggerLanguageModified(language) {
+              <pre class="language-javascript"><code class="language-javascript">    function _triggerLanguageModified(language) {
         $(exports).triggerHandler(&quot;languageModified&quot;, [language]);
     }</code></pre>
             </div>
@@ -601,20 +603,20 @@ We may rely on the tokens provided by some of these modes.</p>
               <h4>_updateFromPrefs</h4>
               <div class="description"><p>Updates extension and filename mappings from languages based on the current preferences values.</p>
 <p>The preferences look like this in a prefs file:</p>
-<p>Map <em>.foo to javascript, </em>.vm to html
-&quot;language.fileExtensions&quot;: {
+<p>Map <em>.foo to javascript, </em>.vm to html</p>
+<pre><code>&quot;language.fileExtensions&quot;: {
     &quot;foo&quot;: &quot;javascript&quot;,
     &quot;vm&quot;: &quot;html&quot;
-}</p>
-<p>Map &quot;Gemfile&quot; to ruby:
-&quot;language.fileNames&quot;: {
+}
+</code></pre><p>Map &quot;Gemfile&quot; to ruby:</p>
+<pre><code>&quot;language.fileNames&quot;: {
     &quot;Gemfile&quot;: &quot;ruby&quot;
-}</p>
-</div>
+}
+</code></pre></div>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateFromPrefs(pref) {
+              <pre class="language-javascript"><code class="language-javascript">    function _updateFromPrefs(pref) {
         var newMapping = PreferencesManager.get(pref) || {},
             newNames = Object.keys(newMapping),
             state = _prefState[pref],
@@ -759,7 +761,7 @@ Otherwise the deferred is rejected with the error message.</p>
                   <dd>A deferred to reject with the error message in case of an error</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _validateNonEmptyString(value, description, deferred) {
+              <pre class="language-javascript"><code class="language-javascript">    function _validateNonEmptyString(value, description, deferred) {
         var reportError = deferred ? deferred.reject : console.error;
         
         &#x2F;&#x2F; http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;1303646&#x2F;check-whether-variable-is-number-or-string-in-javascript
@@ -814,7 +816,7 @@ Otherwise the deferred is rejected with the error message.</p>
 </dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function defineLanguage(id, definition) {
+              <pre class="language-javascript"><code class="language-javascript">    function defineLanguage(id, definition) {
         var result = new $.Deferred();
         
         if (_pendingLanguages[id]) {
@@ -913,7 +915,7 @@ File names have a higher priority than file extensions. </p>
                   <dd>Identifier for this language: lowercase letters, digits, and _ separators (e.g. "cpp", "foo_bar", "c99")</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getLanguage(id) {
+              <pre class="language-javascript"><code class="language-javascript">    function getLanguage(id) {
         return _languages[id];
     }</code></pre>
             </div>
@@ -932,7 +934,7 @@ File names have a higher priority than file extensions. </p>
                   <dd>Extension that language should be resolved for</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getLanguageForExtension(extension) {
+              <pre class="language-javascript"><code class="language-javascript">    function getLanguageForExtension(extension) {
         return _fileExtensionToLanguageMap[extension.toLowerCase()];
     }</code></pre>
             </div>
@@ -951,7 +953,7 @@ File names have a higher priority than file extensions. </p>
                   <dd>Path to the file to find a language for</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getLanguageForPath(path) {
+              <pre class="language-javascript"><code class="language-javascript">    function getLanguageForPath(path) {
         var fileName = FileUtils.getBaseName(path).toLowerCase(),
             language = _fileNameToLanguageMap[fileName],
             extension,
@@ -1021,7 +1023,7 @@ File names have a higher priority than file extensions. </p>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function Language() {
+                  <pre class="language-javascript"><code class="language-javascript">    function Language() {
         this._fileExtensions    = [];
         this._fileNames         = [];
         this._modeToLanguageMap = {};
@@ -1043,12 +1045,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_blockCommentSyntax</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>{ prefix: string, suffix: string }</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {{ prefix: string, suffix: string }} Block comment syntax</p>
+                    <div class="description"><p>Block comment syntax</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._blockCommentSyntax = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._blockCommentSyntax = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1057,12 +1061,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_fileExtensions</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>Array.&lt;string&gt;</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {Array.&lt;string&gt;} File extensions that use this language</p>
+                    <div class="description"><p>File extensions that use this language</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._fileExtensions = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._fileExtensions = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1071,12 +1077,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_fileNames</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>Array.&lt;string&gt;</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {Array.&lt;string&gt;} File names for extensionless files that use this language</p>
+                    <div class="description"><p>File names for extensionless files that use this language</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._fileNames = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._fileNames = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1085,12 +1093,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_id</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>string</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {string} Identifier for this language</p>
+                    <div class="description"><p>Identifier for this language</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._id = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._id = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1099,12 +1109,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_isBinary</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>boolean</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {boolean} Whether or not the language is binary</p>
+                    <div class="description"><p>Whether or not the language is binary</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._isBinary = false;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._isBinary = false;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1113,12 +1125,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_lineCommentSyntax</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>Array.&lt;string&gt;</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {Array.&lt;string&gt;} Line comment syntax</p>
+                    <div class="description"><p>Line comment syntax</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._lineCommentSyntax = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._lineCommentSyntax = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1127,12 +1141,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_mode</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>string</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {string} CodeMirror mode for this language</p>
+                    <div class="description"><p>CodeMirror mode for this language</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._mode = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._mode = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1141,12 +1157,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_modeToLanguageMap</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>Object.&lt;string, Language&gt;</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {Object.&lt;string,Language&gt;} Which language to use for what CodeMirror mode</p>
+                    <div class="description"><p>Which language to use for what CodeMirror mode</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._modeToLanguageMap = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._modeToLanguageMap = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -1155,12 +1173,14 @@ File names have a higher priority than file extensions. </p>
                     </span>
                     <h4>_name</h4>
                     <dl>
+                      <dt>Type</dt>
+                      <dd>string</dd>
                       <dt>Private</dt>
                     </dl>
-                    <div class="description"><p>@type {string} Human-readable name of this language</p>
+                    <div class="description"><p>Human-readable name of this language</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._name = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._name = null;</code></pre>
                   </div>
                   
                 </section>
@@ -1193,7 +1213,7 @@ File names have a higher priority than file extensions. </p>
                       <dd>A promise object that will be resolved when the mode is loaded and set</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._loadAndSetMode = function (mode) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._loadAndSetMode = function (mode) {
         var result      = new $.Deferred(),
             self        = this,
             mimeMode; &#x2F;&#x2F; Mode can be an array specifying a mode plus a MIME mode defined by that mode [&quot;clike&quot;, &quot;text&#x2F;x-c++src&quot;]
@@ -1261,7 +1281,7 @@ File names have a higher priority than file extensions. </p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._setBinary = function (isBinary) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._setBinary = function (isBinary) {
         this._isBinary = isBinary;
     };</code></pre>
                   </div>
@@ -1284,7 +1304,7 @@ File names have a higher priority than file extensions. </p>
                       <dd>Whether the ID was valid and set or not</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._setId = function (id) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._setId = function (id) {
         if (!_validateNonEmptyString(id, &quot;Language ID&quot;)) {
             return false;
         }
@@ -1322,7 +1342,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether the mode-to-language association was valid and set or not</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._setLanguageForMode = function (mode, language) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._setLanguageForMode = function (mode, language) {
         if (mode === this._mode &amp;&amp; language !== this) {
             console.error(&quot;A language must always map its mode to itself&quot;);
             return false;
@@ -1353,7 +1373,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether the name was valid and set or not</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._setName = function (name) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._setName = function (name) {
         if (!_validateNonEmptyString(name, &quot;name&quot;)) {
             return false;
         }
@@ -1375,7 +1395,7 @@ Used to disambiguate modes used by multiple languages.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype._wasModified = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype._wasModified = function () {
         if (_languages[this._id]) {
             _triggerLanguageModified(this);
         }
@@ -1397,7 +1417,7 @@ Used to disambiguate modes used by multiple languages.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.addFileExtension = function (extension) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.addFileExtension = function (extension) {
         if (Array.isArray(extension)) {
             extension.forEach(this._addFileExtension.bind(this));
         } else {
@@ -1443,7 +1463,7 @@ Used to disambiguate modes used by multiple languages.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.addFileName = function (name) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.addFileName = function (name) {
         if (Array.isArray(name)) {
             name.forEach(this._addFileName.bind(this));
         } else {
@@ -1484,7 +1504,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The prefix</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getBlockCommentPrefix = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getBlockCommentPrefix = function () {
         return this._blockCommentSyntax &amp;&amp; this._blockCommentSyntax.prefix;
     };</code></pre>
                   </div>
@@ -1504,7 +1524,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The suffix</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getBlockCommentSuffix = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getBlockCommentSuffix = function () {
         return this._blockCommentSyntax &amp;&amp; this._blockCommentSyntax.suffix;
     };</code></pre>
                   </div>
@@ -1524,7 +1544,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>File extensions used by this language</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getFileExtensions = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getFileExtensions = function () {
         &#x2F;&#x2F; Use concat to create a copy of this array, preventing external modification
         return this._fileExtensions.concat();
     };</code></pre>
@@ -1545,7 +1565,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Extensionless file names used by this language</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getFileNames = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getFileNames = function () {
         &#x2F;&#x2F; Use concat to create a copy of this array, preventing external modification
         return this._fileNames.concat();
     };</code></pre>
@@ -1566,7 +1586,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The identifier</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getId = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getId = function () {
         return this._id;
     };</code></pre>
                   </div>
@@ -1590,7 +1610,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>This language if it uses the mode, or whatever {@link LanguageManager#_getLanguageForMode} returns</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getLanguageForMode = function (mode) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getLanguageForMode = function (mode) {
         if (mode === this._mode) {
             return this;
         }
@@ -1613,7 +1633,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The prefixes</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getLineCommentPrefixes = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getLineCommentPrefixes = function () {
         return this._lineCommentSyntax;
     };</code></pre>
                   </div>
@@ -1633,7 +1653,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The mode</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getMode = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getMode = function () {
         return this._mode;
     };</code></pre>
                   </div>
@@ -1653,7 +1673,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>The name</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.getName = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.getName = function () {
         return this._name;
     };</code></pre>
                   </div>
@@ -1673,7 +1693,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether block comments are supported</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.hasBlockCommentSyntax = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.hasBlockCommentSyntax = function () {
         return Boolean(this._blockCommentSyntax);
     };</code></pre>
                   </div>
@@ -1693,7 +1713,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether line comments are supported</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.hasLineCommentSyntax = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.hasLineCommentSyntax = function () {
         return this._lineCommentSyntax.length &gt; 0;
     };</code></pre>
                   </div>
@@ -1713,7 +1733,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.isBinary = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.isBinary = function () {
         return this._isBinary;
     };</code></pre>
                   </div>
@@ -1733,7 +1753,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>True if this is the fallback language, false otherwise</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.isFallbackLanguage = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.isFallbackLanguage = function () {
         return this === _fallbackLanguage;
     };</code></pre>
                   </div>
@@ -1753,7 +1773,7 @@ Used to disambiguate modes used by multiple languages.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.removeFileExtension = function (extension) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.removeFileExtension = function (extension) {
         if (Array.isArray(extension)) {
             extension.forEach(this._removeFileExtension.bind(this));
         } else {
@@ -1795,7 +1815,7 @@ Used to disambiguate modes used by multiple languages.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.removeFileName = function (name) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.removeFileName = function (name) {
         if (Array.isArray(name)) {
             name.forEach(this._removeFileName.bind(this));
         } else {
@@ -1838,7 +1858,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether the syntax was valid and set or not</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.setBlockCommentSyntax = function (prefix, suffix) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.setBlockCommentSyntax = function (prefix, suffix) {
         if (!_validateNonEmptyString(prefix, &quot;prefix&quot;) || !_validateNonEmptyString(suffix, &quot;suffix&quot;)) {
             return false;
         }
@@ -1869,7 +1889,7 @@ Used to disambiguate modes used by multiple languages.</p>
                       <dd>Whether the syntax was valid and set or not</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">Language.prototype.setLineCommentSyntax = function (prefix) {
+                    <pre class="language-javascript"><code class="language-javascript">    Language.prototype.setLineCommentSyntax = function (prefix) {
         var prefixes = Array.isArray(prefix) ? prefix : [prefix];
         var i;
         

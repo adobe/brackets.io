@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, $, window, Mustache</p>
-
+              
             </div>
           </section>
     
@@ -411,7 +410,7 @@ given inline editor.</p>
                   <dd>The path to the stylesheet file.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addRule(selectorName, inlineEditor, path) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addRule(selectorName, inlineEditor, path) {
         DocumentManager.getDocumentForPath(path).done(function (styleDoc) {
             var newRuleInfo = CSSUtils.addRuleToDocument(styleDoc, selectorName, Editor.getUseTabChar(path), Editor.getSpaceUnits(path));
             inlineEditor.addAndSelectRange(selectorName, styleDoc, newRuleInfo.range.from.line, newRuleInfo.range.to.line);
@@ -431,7 +430,7 @@ given inline editor.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getNoRulesMsg() {
+              <pre class="language-javascript"><code class="language-javascript">        function _getNoRulesMsg() {
             var result = new $.Deferred();
             _getCSSFilesInProject().done(function (fileInfos) {
                 result.resolve(fileInfos.length ? Strings.CSS_QUICK_EDIT_NO_MATCHES : Strings.CSS_QUICK_EDIT_NO_STYLESHEETS);
@@ -459,7 +458,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getSelectorName(editor, pos) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getSelectorName(editor, pos) {
         var tagInfo = HTMLUtils.getTagInfo(editor, pos),
             selectorName = &quot;&quot;,
             reason;
@@ -523,7 +522,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleNewRule() {
+              <pre class="language-javascript"><code class="language-javascript">    function _handleNewRule() {
         var inlineEditor = MultiRangeInlineEditor.getFocusedMultiRangeInlineEditor();
         if (inlineEditor) {
             var handlerInfo = _.find(_newRuleHandlers, function (entry) {
@@ -546,7 +545,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _handleNewRuleClick(e) {
+              <pre class="language-javascript"><code class="language-javascript">        function _handleNewRuleClick(e) {
             if (!newRuleButton.$button.hasClass(&quot;disabled&quot;)) {
                 if (cssFileInfos.length === 1) {
                     &#x2F;&#x2F; Just go ahead and create the rule.
@@ -570,7 +569,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _onDropdownSelect(event, fileInfo) {
+              <pre class="language-javascript"><code class="language-javascript">        function _onDropdownSelect(event, fileInfo) {
             _addRule(selectorName, cssInlineEditor, fileInfo.fullPath);
         }</code></pre>
             </div>
@@ -585,7 +584,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _prepFileList(fileInfos) {
+              <pre class="language-javascript"><code class="language-javascript">        function _prepFileList(fileInfos) {
             var i, j, firstDupeIndex,
                 displayPaths = [],
                 dupeList = [];
@@ -725,7 +724,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _sortFileInfos(a, b) {
+              <pre class="language-javascript"><code class="language-javascript">        function _sortFileInfos(a, b) {
             var nameComparison = a.name.localeCompare(b.name);
             if (nameComparison !== 0) {
                 return nameComparison;
@@ -744,7 +743,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _stylesheetListRenderer(item) {
+              <pre class="language-javascript"><code class="language-javascript">    function _stylesheetListRenderer(item) {
         var html = &quot;&lt;span class=&#39;stylesheet-name&#39;&gt;&quot; + _.escape(item.name);
         if (item.subDirStr.length) {
             html += &quot;&lt;span class=&#39;stylesheet-dir&#39;&gt; — &quot; + _.escape(item.subDirStr) + &quot;&lt;&#x2F;span&gt;&quot;;
@@ -764,7 +763,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _updateCommands() {
+              <pre class="language-javascript"><code class="language-javascript">        function _updateCommands() {
             _newRuleCmd.setEnabled(cssInlineEditor.hasFocus() &amp;&amp; !newRuleButton.$button.hasClass(&quot;disabled&quot;));
         }</code></pre>
             </div>
@@ -789,7 +788,7 @@ CSS rules and show (one/all of them) in an inline editor.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function htmlToCSSProvider(hostEditor, pos) {
+              <pre class="language-javascript"><code class="language-javascript">    function htmlToCSSProvider(hostEditor, pos) {
 
         &#x2F;&#x2F; Only provide a CSS editor when cursor is in HTML content
         if (hostEditor.getLanguageForSelection().getId() !== &quot;html&quot;) {

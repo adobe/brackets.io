@@ -356,13 +356,13 @@
             <h3>Description</h3>
             <div>
               <p>JSDocument manages a single JavaScript source document</p>
-<h1 id="editing">EDITING</h1>
+<p><strong>EDITING</strong></p>
 <p>Editing the document will cause the script to be reloaded via the
 ScriptAgent, which updates the implementation of all functions without
 loosing any state. To support redrawing canvases, jQuery must be loaded
 and a rerender method must be attached to every canvas that clears and
 renders the canvas.</p>
-<h1 id="highlighting">HIGHLIGHTING</h1>
+<p><strong>HIGHLIGHTING</strong></p>
 <p>JSDocument supports highlighting nodes from the HighlightAgent. Support
 for highlighting the nodes that were created / touched by the current
 line is missing.</p>
@@ -383,28 +383,28 @@ line is missing.</p>
           </section>
     
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
+          
+          <section class="classes">
+            <h2>Classes</h2>
             
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>JSDocument</h4>
-              <div class="description"><p>Constructor</p>
-</div>
-              <dl>
-                  <dt>the</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>source document</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">var JSDocument = function JSDocument(doc, editor) {
+              <div class="well">
+                <div class="member public">
+                  <span class="pull-right scope">
+                    Constructor
+                  </span>
+                  <h4>JSDocument</h4>
+                  <em></em>
+                  <dl>
+                    <dt>doc</dt>
+                    <dd class="label label-info pull-left">Document</dd>
+                    <dd>The source document from Brackets</dd>
+                    <dt>editor</dt>
+                    <dd class="label label-info pull-left">Editor</dd>
+                    <dd>The editor for this document</dd>
+                  </dl>
+                  
+                  <button class="btn btn-small show-code">Show code</button>
+                  <pre class="language-javascript"><code class="language-javascript">    var JSDocument = function JSDocument(doc, editor) {
         if (!editor) {
             return;
         }
@@ -418,10 +418,126 @@ line is missing.</p>
         $(this.editor).on(&quot;cursorActivity&quot;, this.onCursorActivity);
         this.onCursorActivity();
     };</code></pre>
-            </div>
+                </div>
+      
+      
+                <section class="methods">
+                  <h3>Methods 
+                    <label class="checkbox">
+                      <input class="toggle-public" type="checkbox"> Show Private Members
+                    </label>
+                  </h3>
+                  
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>close</h4>
+                    <div class="description"><p>Close the document</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    JSDocument.prototype.close = function close() {
+        if (!this.editor) {
+            return;
+        }
+        $(HighlightAgent).off(&quot;highlight&quot;, this.onHighlight);
+        $(this.editor).off(&quot;change&quot;, this.onChange);
+        $(this.editor).off(&quot;cursorActivity&quot;, this.onCursorActivity);
+        this.onHighlight();
+    };
+
+    JSDocument.prototype.script = function script() {
+        return ScriptAgent.scriptForURL(this.doc.url);
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onChange</h4>
+                    <div class="description"><p>Triggered on change by the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    JSDocument.prototype.onChange = function onChange(event, editor, change) {
+        var src = this.doc.getText();
+        Inspector.Debugger.setScriptSource(this.script().scriptId, src, function onSetScriptSource(res) {
+            Inspector.Runtime.evaluate(&quot;if($)$(\&quot;canvas\&quot;).each(function(i,e){if(e.rerender)e.rerender()})&quot;);
+        }.bind(this));
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onCursorActivity</h4>
+                    <div class="description"><p>Triggered on cursor activity by the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    JSDocument.prototype.onCursorActivity = function onCursorActivity(event, editor) {
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onHighlight</h4>
+                    <div class="description"><p>Triggered by the HighlightAgent to highlight a node in the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    JSDocument.prototype.onHighlight = function onHighlight(event, node) {
+        &#x2F;&#x2F; clear an existing highlight
+        var codeMirror = this.editor._codeMirror;
+        var i;
+        for (i in this._highlight) {
+            codeMirror.removeLineClass(this._highlight[i], &quot;wrap&quot;, &quot;highlight&quot;);
+        }
+        this._highlight = [];
+        if (!node || !node.trace) {
+            return;
+        }
+
+        &#x2F;&#x2F; go through the trace and find highlight the lines of this script
+        var scriptId = this.script().scriptId;
+        var callFrame, line;
+        for (i in node.trace) {
+            callFrame = node.trace[i];
+            if (callFrame.location &amp;&amp; callFrame.location.scriptId === scriptId) {
+                line = callFrame.location.lineNumber;
+                codeMirror.addLineClass(line, &quot;wrap&quot;, &quot;highlight&quot;);
+                this._highlight.push(line);
+            }
+        }
+    };
+
+    &#x2F;&#x2F; Export the class
+    module.exports = JSDocument;
+});</code></pre>
+                  </div>
+                </section>
+                
+              </div>
             
           </section>
-          
           
         </div>
       </div>

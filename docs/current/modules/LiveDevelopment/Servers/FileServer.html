@@ -355,8 +355,7 @@
           <section class="description">
             <h3>Description</h3>
             <div>
-              <p>global define, $, brackets, window</p>
-
+              
             </div>
           </section>
     
@@ -382,19 +381,22 @@
                     Constructor
                   </span>
                   <h4>FileServer</h4>
-                  <em></em>
+                  <em><p>Server for file: URLs</p>
+<p>Configuration parameters for this server:</p>
+<ul>
+<li>baseUrl      - Optional base URL (populated by the current project)</li>
+<li>pathResolver - Function to covert absolute native paths to project relative paths</li>
+<li>root         - Native path to the project root (and base URL)</li>
+</ul>
+</em>
                   <dl>
-                    <dt>config
-</dt>
+                    <dt>config</dt>
                     <dd class="label label-info pull-left">{baseUrl: string, root: string, pathResolver: function(string): string}</dd>
-                    <dd>Configuration parameters for this server:
- baseUrl - Optional base URL (populated by the current project)
- pathResolver - Function to covert absolute native paths to project relative paths
- root - Native path to the project root (and base URL)</dd>
+                    <dd></dd>
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function FileServer(config) {
+                  <pre class="language-javascript"><code class="language-javascript">    function FileServer(config) {
         BaseServer.call(this, config);
     }
     
@@ -429,7 +431,7 @@
                       <dd>true for yes, otherwise false.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileServer.prototype.canServe = function (localPath) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileServer.prototype.canServe = function (localPath) {
         &#x2F;&#x2F; FileServer requires that the base URL is undefined and static HTML files
         return (!this._baseUrl &amp;&amp; FileUtils.isStaticHtmlFileExt(localPath));
     };</code></pre>
@@ -453,7 +455,7 @@
                       <dd>Converts an absolute path within the project root to a file: URL.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileServer.prototype.pathToUrl = function (path) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileServer.prototype.pathToUrl = function (path) {
         return encodeURI(PREFIX + path);
     };
 
@@ -480,7 +482,7 @@
  not a descendant of the project.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileServer.prototype.urlToPath = function (url) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileServer.prototype.urlToPath = function (url) {
         if (url.indexOf(PREFIX) === 0) {
             &#x2F;&#x2F; Convert a file URL to local file path
             return decodeURI(url.slice(PREFIX.length));

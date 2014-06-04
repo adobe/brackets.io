@@ -356,17 +356,19 @@
             <h3>Description</h3>
             <div>
               <p>CSSDocument manages a single CSS source document</p>
-<h1 id="editing">EDITING</h1>
+<p><strong>EDITING</strong></p>
 <p>Editing the document will cause the style sheet to be reloaded via the
 CSSAgent, which immediately updates the appearance of the rendered document.</p>
-<h1 id="highlighting">HIGHLIGHTING</h1>
+<p><strong>HIGHLIGHTING</strong></p>
 <p>CSSDocument supports highlighting nodes from the HighlightAgent and
 highlighting all DOMNode corresponding to the rule at the cursor position
 in the editor.</p>
-<h1 id="events">EVENTS</h1>
-<p>CSSDocument dispatches these events:
- deleted - When the file for the underlying Document has been deleted. The
-     2nd argument to the listener will be this CSSDocument.</p>
+<p><strong>EVENTS</strong></p>
+<p>CSSDocument dispatches these events:</p>
+<ul>
+<li>deleted -- When the file for the underlying Document has been deleted.
+The 2nd argument to the listener will be this CSSDocument.</li>
+</ul>
 
             </div>
           </section>
@@ -387,28 +389,28 @@ in the editor.</p>
           </section>
     
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
+          
+          <section class="classes">
+            <h2>Classes</h2>
             
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>CSSDocument</h4>
-              <div class="description"><p>Constructor</p>
-</div>
-              <dl>
-                  <dt>the</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>source document from Brackets</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">var CSSDocument = function CSSDocument(doc, editor) {
+              <div class="well">
+                <div class="member public">
+                  <span class="pull-right scope">
+                    Constructor
+                  </span>
+                  <h4>CSSDocument</h4>
+                  <em></em>
+                  <dl>
+                    <dt>doc</dt>
+                    <dd class="label label-info pull-left">Document</dd>
+                    <dd>The source document from Brackets</dd>
+                    <dt>editor</dt>
+                    <dd class="label label-info pull-left">Editor</dd>
+                    <dd>The editor for this document</dd>
+                  </dl>
+                  
+                  <button class="btn btn-small show-code">Show code</button>
+                  <pre class="language-javascript"><code class="language-javascript">    var CSSDocument = function CSSDocument(doc, editor) {
         this.doc = doc;
 
         this._highlight = [];
@@ -431,10 +433,354 @@ in the editor.</p>
             this.attachToEditor(editor);
         }
     };</code></pre>
-            </div>
+                </div>
+      
+      
+                <section class="methods">
+                  <h3>Methods 
+                    <label class="checkbox">
+                      <input class="toggle-public" type="checkbox"> Show Private Members
+                    </label>
+                  </h3>
+                  
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_getStyleSheetHeader</h4>
+                    <div class="description"><p>Get the CSSStyleSheetHeader for this document</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype._getStyleSheetHeader = function () {
+        return CSSAgent.styleForURL(this.doc.url);
+    };</code></pre>
+                  </div>
+                  <div class="member private">
+                    <span class="pull-right scope">
+                      Private
+                      
+                    </span>
+                    <h4>_updateBrowser</h4>
+                    <div class="description"><p>Update the style sheet text content and redraw highlights</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype._updateBrowser = function () {
+        var reloadPromise = CSSAgent.reloadCSSForDocument(this.doc);
+
+        if (Inspector.config.highlight) {
+            reloadPromise.done(HighlightAgent.redraw);
+        }
+    };
+
+    CSSDocument.prototype.attachToEditor = function (editor) {
+        this.editor = editor;
+        
+        if (this.editor) {
+            $(HighlightAgent).on(&quot;highlight&quot;, this.onHighlight);
+            $(this.editor).on(&quot;cursorActivity.CSSDocument&quot;, this.onCursorActivity);
+            this.updateHighlight();
+        }
+    };
+    
+    CSSDocument.prototype.detachFromEditor = function () {
+        if (this.editor) {
+            HighlightAgent.hide();
+            $(HighlightAgent).off(&quot;highlight&quot;, this.onHighlight);
+            $(this.editor).off(&quot;.CSSDocument&quot;);
+            this.onHighlight();
+            this.editor = null;
+        }
+    };
+
+    CSSDocument.prototype.updateHighlight = function () {
+        if (Inspector.config.highlight &amp;&amp; this.editor) {
+            var editor = this.editor,
+                codeMirror = editor._codeMirror,
+                selectors = [];
+            _.each(this.editor.getSelections(), function (sel) {
+                var selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
+                if (selector) {
+                    selectors.push(selector);
+                }
+            });
+            if (selectors.length) {
+                HighlightAgent.rule(selectors.join(&quot;,&quot;));
+            } else {
+                HighlightAgent.hide();
+            }
+        }
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>close</h4>
+                    <div class="description"><p>Close the document</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.close = function close() {
+        $(this.doc).off(&quot;.CSSDocument&quot;);
+        $(EditorManager).off(&quot;activeEditorChange&quot;, this.onActiveEditorChange);
+        this.doc.releaseRef();
+        this.detachFromEditor();
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>getResponseData</h4>
+                    <div class="description"><p>Returns a JSON object with HTTP response overrides</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">{body: string}</dd>
+                      <dd></dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.getResponseData = function getResponseData(enabled) {
+        return {
+            body: this.doc.getText()
+        };
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>getSourceFromBrowser</h4>
+                    <div class="description"><p>Get the browser version of the source</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">jQuery.promise</dd>
+                      <dd>Promise resolved with the text content of this CSS document</dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.getSourceFromBrowser = function getSourceFromBrowser() {
+        var deferred = new $.Deferred(),
+            styleSheetId = this._getStyleSheetHeader().styleSheetId,
+            inspectorPromise = Inspector.CSS.getStyleSheetText(styleSheetId);
+        
+        inspectorPromise.then(function (res) {
+            deferred.resolve(res.text);
+        }, deferred.reject);
+        
+        return deferred.promise();
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>getStyleSheetFromBrowser</h4>
+                    <div class="description"><p>@deprecated
+CSSStyleSheetBody was removed in protocol 1.1. This method is unused in Brackets 36.
+Get the browser version of the StyleSheet object</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">jQuery.promise</dd>
+                      <dd></dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.getStyleSheetFromBrowser = function getStyleSheetFromBrowser() {
+        return new $.Deferred().reject().promise();
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>isLiveEditingEnabled</h4>
+                    <div class="description"><p>Returns true if document edits appear live in the connected browser</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                      <dt>Returns: </dt>
+                      <dd class="label label-info pull-left">boolean</dd>
+                      <dd></dd>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.isLiveEditingEnabled = function () {
+        return true;
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onActiveEditorChange</h4>
+                    <div class="description"><p>Triggered when the active editor changes</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.onActiveEditorChange = function (event, newActive, oldActive) {
+        this.detachFromEditor();
+        
+        if (newActive &amp;&amp; newActive.document === this.doc) {
+            this.attachToEditor(newActive);
+        }
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onChange</h4>
+                    <div class="description"><p>Triggered whenever the Document is edited</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.onChange = function onChange(event, editor, change) {
+        this._updateBrowser();
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onCursorActivity</h4>
+                    <div class="description"><p>Triggered on cursor activity of the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.onCursorActivity = function onCursorActivity(event, editor) {
+        this.updateHighlight();
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onDeleted</h4>
+                    <div class="description"><p>Triggered if the Document&#39;s file is deleted</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.onDeleted = function onDeleted(event, editor, change) {
+        &#x2F;&#x2F; clear the CSS
+        CSSAgent.clearCSSForDocument(this.doc);
+
+        &#x2F;&#x2F; shut down, since our Document is now dead
+        this.close();
+        $(this).triggerHandler(&quot;deleted&quot;, [this]);
+    };</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>onHighlight</h4>
+                    <div class="description"><p>Triggered by the HighlightAgent to highlight a node in the editor</p>
+</div>
+                    <dl>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.onHighlight = function onHighlight(event, node) {
+        &#x2F;&#x2F; clear an existing highlight
+        var i;
+        for (i in this._highlight) {
+            this._highlight[i].clear();
+        }
+        this._highlight = [];
+        if (!node || !node.location) {
+            return;
+        }
+
+        &#x2F;&#x2F; WebInspector Command: CSS.getMatchedStylesForNode
+        Inspector.CSS.getMatchedStylesForNode(node.nodeId, function onGetMatchesStyles(res) {
+            &#x2F;&#x2F; res = {matchedCSSRules, pseudoElements, inherited}
+            var codeMirror = this.editor._codeMirror,
+                styleSheetId = this._getStyleSheetHeader().styleSheetId;
+
+            var i, rule, from, to;
+            for (i in res.matchedCSSRules) {
+                rule = res.matchedCSSRules[i];
+                if (rule.ruleId &amp;&amp; rule.ruleId.styleSheetId === styleSheetId) {
+                    from = codeMirror.posFromIndex(rule.selectorRange.start);
+                    to = codeMirror.posFromIndex(rule.style.range.end);
+                    this._highlight.push(codeMirror.markText(from, to, { className: &quot;highlight&quot; }));
+                }
+            }
+        }.bind(this));
+    };
+
+    &#x2F;&#x2F; Export the class
+    module.exports = CSSDocument;
+});</code></pre>
+                  </div>
+                  <div class="member">
+                    <span class="pull-right scope">
+                      
+                      
+                    </span>
+                    <h4>setInstrumentationEnabled</h4>
+                    <div class="description"><p>Enable instrumented CSS</p>
+</div>
+                    <dl>
+                      <dt>{boolean}</dt>
+                      <dd class="label label-info pull-left">enabled</dd>
+                      <dd></dd>
+                    </dl>
+                    <dl>
+                    </dl>
+                    <button class="btn btn-small show-code">Show code</button>
+                    <pre class="language-javascript"><code class="language-javascript">    CSSDocument.prototype.setInstrumentationEnabled = function setInstrumentationEnabled(enabled) {
+        &#x2F;&#x2F; no-op
+        &#x2F;&#x2F; &quot;Instrumentation&quot; is always enabled for CSS, we make no modifications
+    };</code></pre>
+                  </div>
+                </section>
+                
+              </div>
             
           </section>
-          
           
         </div>
       </div>

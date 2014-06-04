@@ -412,7 +412,7 @@ appends those new objects to the given &#39;resultSelectors&#39; Array.</p>
  of the parsed CSS text is not the first line of the sourceDoc.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _addSelectorsToResults(resultSelectors, selectorsToAdd, sourceDoc, lineOffset) {
+              <pre class="language-javascript"><code class="language-javascript">    function _addSelectorsToResults(resultSelectors, selectorsToAdd, sourceDoc, lineOffset) {
         selectorsToAdd.forEach(function (selectorInfo) {
             resultSelectors.push({
                 name: selectorInfo.selector,
@@ -449,7 +449,7 @@ we know the selector applies.</p>
                   <dd>selector to search for</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findAllMatchingSelectorsInText(text, selector) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findAllMatchingSelectorsInText(text, selector) {
         var allSelectors = extractAllSelectors(text);
         var result = [];
         var i;
@@ -495,7 +495,7 @@ we know the selector applies.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findMatchingRulesInCSSFiles(selector, resultSelectors) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findMatchingRulesInCSSFiles(selector, resultSelectors) {
         var result          = new $.Deferred();
         
         &#x2F;&#x2F; Load one CSS file and search its contents
@@ -541,7 +541,7 @@ we know the selector applies.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findMatchingRulesInStyleBlocks(htmlDocument, selector, resultSelectors) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findMatchingRulesInStyleBlocks(htmlDocument, selector, resultSelectors) {
         &#x2F;&#x2F; HTMLUtils requires a real CodeMirror instance; make sure we can give it the right Editor
         var htmlEditor = EditorManager.getCurrentFullEditor();
         if (htmlEditor.document !== htmlDocument) {
@@ -577,7 +577,7 @@ we know the selector applies.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getImportUrlInfo(ctx, editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getImportUrlInfo(ctx, editor) {
         var propNamePos = $.extend({}, ctx.pos),
             backwardPos = $.extend({}, ctx.pos),
             forwardPos  = $.extend({}, ctx.pos),
@@ -649,7 +649,7 @@ we know the selector applies.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getPrecedingPropValues(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getPrecedingPropValues(ctx) {
         var lastValue = &quot;&quot;,
             curValue,
             propValues = [];
@@ -704,7 +704,7 @@ info when we find an invalid one.</p>
                   <dd>context</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getPropNameInfo(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getPropNameInfo(ctx) {
         var propName = &quot;&quot;,
             offset = TokenUtils.offsetInToken(ctx),
             tokenString = ctx.token.string,
@@ -763,7 +763,7 @@ a valid one. </p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getPropNameStartingFromPropValue(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getPropNameStartingFromPropValue(ctx) {
         var ctxClone = $.extend({}, ctx),
             propName = &quot;&quot;;
         do {
@@ -804,7 +804,7 @@ valid property value.</p>
                   <dd>context</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getRangeForPropValue(startCtx, endCtx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getRangeForPropValue(startCtx, endCtx) {
         var range = { &quot;start&quot;: {},
                       &quot;end&quot;: {} };
         
@@ -848,7 +848,7 @@ valid property value.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getRuleInfoStartingFromPropValue(ctx, editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getRuleInfoStartingFromPropValue(ctx, editor) {
         var propNamePos = $.extend({}, ctx.pos),
             backwardPos = $.extend({}, ctx.pos),
             forwardPos  = $.extend({}, ctx.pos),
@@ -949,7 +949,7 @@ valid property value.</p>
                   <dd>The token string at the current cursor position</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getSucceedingPropValues(ctx, currentValue) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getSucceedingPropValues(ctx, currentValue) {
         var lastValue = currentValue,
             curValue,
             propValues = [];
@@ -1006,7 +1006,7 @@ valid property value.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _isInAtRule(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _isInAtRule(ctx) {
         var state;
         if (!ctx || !ctx.token || !ctx.token.state) {
             return false;
@@ -1034,7 +1034,7 @@ valid property value.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _isInPropName(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _isInPropName(ctx) {
         var state,
             lastToken;
         if (!ctx || !ctx.token || !ctx.token.state || ctx.token.type === &quot;comment&quot;) {
@@ -1065,7 +1065,7 @@ valid property value.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _isInPropValue(ctx) {
+              <pre class="language-javascript"><code class="language-javascript">    function _isInPropValue(ctx) {
         
         function isInsideParens(context) {
             if (context.type !== &quot;parens&quot; || !context.prev) {
@@ -1109,7 +1109,7 @@ valid property value.</p>
                   <dd>to reduce</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _removeComments(content) {
+              <pre class="language-javascript"><code class="language-javascript">    function _removeComments(content) {
         return content.replace(&#x2F;\&#x2F;\*(?:(?!\*\&#x2F;)[\s\S])*\*\&#x2F;&#x2F;g, &quot;&quot;);
     }</code></pre>
             </div>
@@ -1128,7 +1128,7 @@ valid property value.</p>
                   <dd>to reduce</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _removeStrings(content) {
+              <pre class="language-javascript"><code class="language-javascript">    function _removeStrings(content) {
         return content.replace(&#x2F;[^\\]\&quot;(.*)[^\\]\&quot;|[^\\]\&#39;(.*)[^\\]\&#39;+&#x2F;g, &quot;&quot;);
     }</code></pre>
             </div>
@@ -1157,7 +1157,7 @@ not include all the inserted text (we insert extra newlines before and after the
                   <dd>If useTabChar is false, how many spaces to indent with.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addRuleToDocument(doc, selector, useTabChar, indentUnit) {
+              <pre class="language-javascript"><code class="language-javascript">    function addRuleToDocument(doc, selector, useTabChar, indentUnit) {
         var newRule = &quot;\n&quot; + selector + &quot; {\n&quot;,
             blankLineOffset;
         if (useTabChar) {
@@ -1198,7 +1198,7 @@ rules. Also, always use the selector group if available instead of the original 
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function consolidateRules(rules) {
+              <pre class="language-javascript"><code class="language-javascript">    function consolidateRules(rules) {
         var newRules = [], lastRule;
         rules.forEach(function (rule) {
             if (rule.selectorGroup) {
@@ -1257,7 +1257,7 @@ rules. Also, always use the selector group if available instead of the original 
                   <dd>A range object with a start position and an end position</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function createInfo(context, offset, name, index, values, isNewItem, range) {
+              <pre class="language-javascript"><code class="language-javascript">    function createInfo(context, offset, name, index, values, isNewItem, range) {
         var ruleInfo = { context: context || &quot;&quot;,
                          offset: offset || 0,
                          name: name || &quot;&quot;,
@@ -1289,7 +1289,7 @@ rules. Also, always use the selector group if available instead of the original 
                   <dd>to extract from</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function extractAllNamedFlows(text) {
+              <pre class="language-javascript"><code class="language-javascript">    function extractAllNamedFlows(text) {
         var namedFlowRegEx = &#x2F;(?:flow\-(into|from)\:\s*)([\w\-]+)(?:\s*;)&#x2F;gi,
             result = [],
             names = {},
@@ -1348,7 +1348,7 @@ Returns an array of selectors. Each selector is an object with the following pro
                   <dd>CSS text to extract from</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function extractAllSelectors(text) {
+              <pre class="language-javascript"><code class="language-javascript">    function extractAllSelectors(text) {
         var selectors = [];
         var mode = CodeMirror.getMode({indentUnit: 2}, &quot;css&quot;);
         var state, lines, lineCount;
@@ -1736,7 +1736,7 @@ but will <em>not</em> match these rules:
                   <dd>An HTML file for context (so we can search <style> blocks)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findMatchingRules(selector, htmlDocument) {
+              <pre class="language-javascript"><code class="language-javascript">    function findMatchingRules(selector, htmlDocument) {
         var result          = new $.Deferred(),
             resultSelectors = [];
         
@@ -1778,7 +1778,7 @@ is not within a style rule.</p>
                   <dd>Position to search</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findSelectorAtDocumentPos(editor, pos) {
+              <pre class="language-javascript"><code class="language-javascript">    function findSelectorAtDocumentPos(editor, pos) {
         var cm = editor._codeMirror;
         var ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
         var selector = &quot;&quot;, inSelector = false, foundChars = false;
@@ -1900,7 +1900,7 @@ is not within a style rule.</p>
                   <dd>A CM pos (likely from editor.getCursorPos())</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getInfoAtPos(editor, constPos) {
+              <pre class="language-javascript"><code class="language-javascript">    function getInfoAtPos(editor, constPos) {
         &#x2F;&#x2F; We&#39;re going to be changing pos a lot, but we don&#39;t want to mess up
         &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.	
         var pos = $.extend({}, constPos),
@@ -1945,7 +1945,7 @@ selector(s) for the first rule.</p>
                   <dd>The range to extract the selector(s) from.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function getRangeSelectors(range) {
+              <pre class="language-javascript"><code class="language-javascript">    function getRangeSelectors(range) {
         &#x2F;&#x2F; There&#39;s currently no immediate way to access a given line in a Document, because it&#39;s just
         &#x2F;&#x2F; stored as a string. Eventually, we should have Documents cache the lines in the document
         &#x2F;&#x2F; as well, or make them use CodeMirror documents which do the same thing.
@@ -2004,7 +2004,7 @@ so that the content can be parsed using a regular expression</p>
                   <dd>to reduce</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function reduceStyleSheetForRegExParsing(content) {
+              <pre class="language-javascript"><code class="language-javascript">    function reduceStyleSheetForRegExParsing(content) {
         return _removeStrings(_removeComments(content));
     }</code></pre>
             </div>

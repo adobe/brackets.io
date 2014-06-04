@@ -396,7 +396,7 @@
                 <div class="description"><p>List of constants</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var DIRECTION_UP    = -1;
+                <pre class="language-javascript"><code class="language-javascript">    var DIRECTION_UP    = -1;
     var DIRECTION_DOWN  = +1;</code></pre>
               </div>
               
@@ -437,7 +437,7 @@ skips all the block comments.</p>
                   <dd>an array of line comment prefixes regular expressions</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _containsNotLineComment(editor, startLine, endLine, lineExp) {
+              <pre class="language-javascript"><code class="language-javascript">    function _containsNotLineComment(editor, startLine, endLine, lineExp) {
         var i, line,
             containsNotLineComment = false;
         
@@ -475,7 +475,7 @@ skips all the block comments.</p>
                   <dd>the block comment suffix</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
+              <pre class="language-javascript"><code class="language-javascript">    function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
         var lineExp = [], escapedPrefix, nothingPushed;
         
         prefixes.forEach(function (prefix) {
@@ -516,7 +516,7 @@ skips all the block comments.</p>
                   <dd>a block comment prefix or suffix</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _createSpecialLineExp(lineSyntax, blockSyntax) {
+              <pre class="language-javascript"><code class="language-javascript">    function _createSpecialLineExp(lineSyntax, blockSyntax) {
         var i, character,
             subExps   = [],
             prevChars = &quot;&quot;;
@@ -578,7 +578,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                   <dd>An array of selections that should be tracked through this edit.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack) {
         var doc            = editor.document,
             ctx            = TokenUtils.getInitialContext(editor._codeMirror, {line: sel.start.line, ch: sel.start.ch}),
             selEndIndex    = editor.indexFromPos(sel.end),
@@ -820,7 +820,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLineCommentEdits(editor, selections) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentEdits(editor, selections) {
         &#x2F;&#x2F; We need to expand line selections in order to coalesce cursors on the same line, but we
         &#x2F;&#x2F; don&#39;t want to merge adjacent line selections.
         var lineSelections = editor.convertToLineSelections(selections, { mergeAdjacent: false }),
@@ -890,7 +890,7 @@ on each line (if any - empty lines might not have one).</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
         var doc         = editor.document,
             sel         = lineSel.selectionForEdit,
             trackedSels = lineSel.selectionsToTrack,
@@ -979,7 +979,7 @@ commented in a block-comment.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel) {
         var sel             = lineSel.selectionForEdit,
             selStart        = sel.start,
             selEnd          = sel.end,
@@ -1020,7 +1020,7 @@ comment prefix that matches the string.</p>
                   <dd>the line comment prefixes</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getLinePrefix(string, expressions, prefixes) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getLinePrefix(string, expressions, prefixes) {
         var result = null;
         expressions.forEach(function (exp, index) {
             if (string.match(exp) &amp;&amp; ((result &amp;&amp; result.length &lt; prefixes[index].length) || !result)) {
@@ -1068,7 +1068,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>an array of line comment prefixes regular expressions</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
+              <pre class="language-javascript"><code class="language-javascript">    function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
         &#x2F;&#x2F; Start searching from the previous token
         var result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
         
@@ -1113,7 +1113,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>what to look</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _matchExpressions(string, expressions) {
+              <pre class="language-javascript"><code class="language-javascript">    function _matchExpressions(string, expressions) {
         return expressions.some(function (exp) {
             return string.match(exp);
         });
@@ -1134,7 +1134,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>The editor to operate on.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addCursorToNextLine(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function addCursorToNextLine(editor) {
         addCursorToSelection(editor, 1);
     }
 
@@ -1175,7 +1175,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>The editor to operate on.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addCursorToPrevLine(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function addCursorToPrevLine(editor) {
         addCursorToSelection(editor, -1);
     }</code></pre>
             </div>
@@ -1197,7 +1197,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>The direction to add - 1 is down, -1 is up.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function addCursorToSelection(editor, dir) {
+              <pre class="language-javascript"><code class="language-javascript">    function addCursorToSelection(editor, dir) {
         editor = editor || EditorManager.getFocusedEditor();
         if (editor) {
             var origSels = editor.getSelections(),
@@ -1245,7 +1245,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
                   <dd>If unspecified, applies to the currently focused editor</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function blockComment(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function blockComment(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1296,7 +1296,7 @@ token context will be moved backwards a lot, it is better to pass a new context.
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function deleteCurrentLines(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function deleteCurrentLines(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1348,7 +1348,7 @@ on the second copy.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function duplicateText(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function duplicateText(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1401,7 +1401,7 @@ menu items can be created.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function ignoreCommand() {
+              <pre class="language-javascript"><code class="language-javascript">    function ignoreCommand() {
         &#x2F;&#x2F; Do nothing. The shell will call the native handler for the command.
         return (new $.Deferred()).reject().promise();
     }
@@ -1455,7 +1455,7 @@ menu items can be created.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function indentText() {
+              <pre class="language-javascript"><code class="language-javascript">    function indentText() {
         var editor = EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1479,7 +1479,7 @@ menu items can be created.</p>
                   <dd>If unspecified, applies to the currently focused editor</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function lineComment(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function lineComment(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1506,7 +1506,7 @@ moves with the line/lines.</p>
                   <dd>- direction of the move (-1,+1) => (Up,Down)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function moveLine(editor, direction) {
+              <pre class="language-javascript"><code class="language-javascript">    function moveLine(editor, direction) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1620,7 +1620,7 @@ moves with the line/lines.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function moveLineDown(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function moveLineDown(editor) {
         moveLine(editor, DIRECTION_DOWN);
     }</code></pre>
             </div>
@@ -1636,7 +1636,7 @@ moves with the line/lines.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function moveLineUp(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function moveLineUp(editor) {
         moveLine(editor, DIRECTION_UP);
     }</code></pre>
             </div>
@@ -1658,7 +1658,7 @@ The cursor is moved in the new line.</p>
                   <dd>- direction where to place the new line (-1,+1) => (Up,Down)</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function openLine(editor, direction) {
+              <pre class="language-javascript"><code class="language-javascript">    function openLine(editor, direction) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1748,7 +1748,7 @@ The cursor is moved in the new line.</p>
                   <dd>- target editor</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function openLineAbove(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function openLineAbove(editor) {
         openLine(editor, DIRECTION_UP);
     }</code></pre>
             </div>
@@ -1767,7 +1767,7 @@ The cursor is moved in the new line.</p>
                   <dd>- target editor</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function openLineBelow(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function openLineBelow(editor) {
         openLine(editor, DIRECTION_DOWN);
     }</code></pre>
             </div>
@@ -1786,7 +1786,7 @@ The cursor is moved in the new line.</p>
                   <dd>The editor to operate on.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function splitSelIntoLines(editor) {
+              <pre class="language-javascript"><code class="language-javascript">    function splitSelIntoLines(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (editor) {
             editor._codeMirror.execCommand(&quot;splitSelectionByLine&quot;);
@@ -1804,7 +1804,7 @@ The cursor is moved in the new line.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function unindentText() {
+              <pre class="language-javascript"><code class="language-javascript">    function unindentText() {
         var editor = EditorManager.getFocusedEditor();
         if (!editor) {
             return;

@@ -384,28 +384,32 @@ to meet these requirements)</li>
 </ul>
 <p>FileSystem dispatches the following events:
 (NOTE: attach to these events via <code>FileSystem.on()</code> - not <code>$(FileSystem).on()</code>)</p>
-<p>   change - Sent whenever there is a change in the file system. The handler
-         is passed up to three arguments: the changed entry and, if that changed entry 
-         is a Directory, a list of entries added to the directory and a list of entries 
-         removed from the Directory. The entry argument can be:</p>
-<pre><code>     *  a File - the contents of the file have changed, and should be reloaded.
-     *  a Directory - an immediate child of the directory has been added, removed,
-        or renamed/moved. Not triggered for &quot;grandchildren&quot;.
-          - If the added &amp; removed arguments are null, we don&#39;t know what was added/removed:
-            clients should assume the whole subtree may have changed.
-          - If the added &amp; removed arguments are 0-length, there&#39;s no net change in the set
-            of files but a file may have been replaced: clients should assume the contents
-            of any immediate child file may have changed.
-     *  null - a &#39;wholesale&#39; change happened, and you should assume everything may
-        have changed.
-     For changes made externally, there may be a significant delay before a &quot;change&quot; event
-     is dispatched.
-</code></pre><p>   rename - Sent whenever a File or Directory is renamed. All affected File and Directory
-         objects have been updated to reflect the new path by the time this event is dispatched.
-         This event should be used to trigger any UI updates that may need to occur when a path
-         has changed. Note that these events will only be sent for rename operations that happen
-         within the filesystem. If a file is renamed externally, a change event on the parent
-         directory will be sent instead.</p>
+<p><strong>change</strong> - Sent whenever there is a change in the file system. The handler
+  is passed up to three arguments: the changed entry and, if that changed entry 
+  is a Directory, a list of entries added to the directory and a list of entries 
+  removed from the Directory. The entry argument can be:</p>
+<ul>
+<li>a File - the contents of the file have changed, and should be reloaded.</li>
+<li>a Directory - an immediate child of the directory has been added, removed,
+or renamed/moved. Not triggered for &quot;grandchildren&quot;.<ul>
+<li>If the added &amp; removed arguments are null, we don&#39;t know what was added/removed:
+clients should assume the whole subtree may have changed.</li>
+<li>If the added &amp; removed arguments are 0-length, there&#39;s no net change in the set
+of files but a file may have been replaced: clients should assume the contents
+of any immediate child file may have changed.</li>
+</ul>
+</li>
+<li>null - a &#39;wholesale&#39; change happened, and you should assume everything may
+have changed.
+For changes made externally, there may be a significant delay before a &quot;change&quot; event
+is dispatched.</li>
+</ul>
+<p><strong>rename</strong> - Sent whenever a File or Directory is renamed. All affected File and Directory
+  objects have been updated to reflect the new path by the time this event is dispatched.
+  This event should be used to trigger any UI updates that may need to occur when a path
+  has changed. Note that these events will only be sent for rename operations that happen
+  within the filesystem. If a file is renamed externally, a change event on the parent
+  directory will be sent instead.</p>
 <p>FileSystem may perform caching. But it guarantees:</p>
 <ul>
 <li>File contents &amp; metadata - reads are guaranteed to be up to date (cached data is not used
@@ -456,7 +460,7 @@ worry about the underlying storage, which could be a local filesystem or a remot
                 <div class="description"><p>Matches continguous groups of forward slashes</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _DUPLICATED_SLASH_RE = &#x2F;\&#x2F;{2,}&#x2F;g;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _DUPLICATED_SLASH_RE = &#x2F;\&#x2F;{2,}&#x2F;g;</code></pre>
               </div>
               
             </section>
@@ -477,7 +481,7 @@ worry about the underlying storage, which could be a local filesystem or a remot
                   </dl>
                   
                   <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">function FileSystem() {
+                  <pre class="language-javascript"><code class="language-javascript">    function FileSystem() {
         &#x2F;&#x2F; Create a file index
         this._index = new FileIndex();
         
@@ -517,7 +521,7 @@ events are complete. (This is important for distinguishing rename from
 an unrelated delete-add pair).</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._activeChangeCount = 0;
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._activeChangeCount = 0;
     
     &#x2F;&#x2F; For unit testing only
     FileSystem.prototype._getActiveChangeCount = function () {
@@ -539,7 +543,7 @@ an unrelated delete-add pair).</p>
 once _activeChangeCount drops to zero.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._externalChanges = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._externalChanges = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -554,7 +558,7 @@ once _activeChangeCount drops to zero.</p>
 This is set in the init() function and cannot be changed.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._impl = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._impl = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -568,7 +572,7 @@ This is set in the init() function and cannot be changed.</p>
                     <div class="description"><p>The FileIndex used by this object. This is initialized in the constructor.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._index = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._index = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -584,7 +588,7 @@ This is set in the init() function and cannot be changed.</p>
                     <div class="description"><p>The queue of pending watch/unwatch requests.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._watchRequests = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchRequests = null;</code></pre>
                   </div>
                   <div class="member private">
                     <span class="pull-right scope">
@@ -600,7 +604,7 @@ objects which contain a file entry, filter function, and an indication of
 whether the watched root is inactive, starting up or fully active.</p>
 </div>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._watchedRoots = null;</code></pre>
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchedRoots = null;</code></pre>
                   </div>
                   
                 </section>
@@ -635,7 +639,7 @@ _beginChange and must end with a call to _endChange.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._beginChange = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._beginChange = function () {
         this._activeChangeCount++;
         &#x2F;&#x2F;console.log(&quot;&gt; beginChange  -&gt; &quot; + this._activeChangeCount);
     };</code></pre>
@@ -653,7 +657,7 @@ _beginChange and must end with a call to _endChange.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._dequeueWatchRequest = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._dequeueWatchRequest = function () {
         if (this._watchRequests.length &gt; 0) {
             var request = this._watchRequests[0];
             
@@ -685,7 +689,7 @@ FileSystem._beginChange above.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._endChange = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._endChange = function () {
         this._activeChangeCount--;
         &#x2F;&#x2F;console.log(&quot;&lt; endChange    -&gt; &quot; + this._activeChangeCount);
         
@@ -719,7 +723,7 @@ processing.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._enqueueExternalChange = function (path, stat) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueExternalChange = function (path, stat) {
         this._externalChanges.push({path: path, stat: stat});
         if (!this._activeChangeCount) {
             this._triggerExternalChangesNow();
@@ -746,7 +750,7 @@ processing.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._enqueueWatchRequest = function (fn, cb) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueWatchRequest = function (fn, cb) {
         &#x2F;&#x2F; Enqueue the given watch&#x2F;unwatch request
         this._watchRequests.push({fn: fn, cb: cb});
 
@@ -770,7 +774,7 @@ watched root does not exist.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
         var watchedRoot = null;
         
         Object.keys(this._watchedRoots).some(function (watchedPath) {
@@ -807,7 +811,7 @@ watched root does not exist.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._fireChangeEvent = function (entry, added, removed) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._fireChangeEvent = function (entry, added, removed) {
         $(this).trigger(&quot;change&quot;, [entry, added, removed]);
     };</code></pre>
                   </div>
@@ -830,7 +834,7 @@ watched root does not exist.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._fireRenameEvent = function (oldPath, newPath) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._fireRenameEvent = function (oldPath, newPath) {
         $(this).trigger(&quot;rename&quot;, [oldPath, newPath]);
     };</code></pre>
                   </div>
@@ -860,7 +864,7 @@ should be either File or Directory.</p>
  yet exist on disk.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._getEntryForPath = function (EntryConstructor, path) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._getEntryForPath = function (EntryConstructor, path) {
         var isDirectory = EntryConstructor === Directory;
         path = this._normalizePath(path, isDirectory);
         var entry = this._index.getEntry(path);
@@ -898,7 +902,7 @@ internal change event.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._handleDirectoryChange = function (directory, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleDirectoryChange = function (directory, callback) {
         var oldContents = directory._contents;
         
         directory._clearCachedData();
@@ -979,7 +983,7 @@ whenever a directory or file is changed. </p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._handleExternalChange = function (path, stat) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleExternalChange = function (path, stat) {
 
         if (!path) {
             &#x2F;&#x2F; This is a &quot;wholesale&quot; change event; clear all caches
@@ -1039,7 +1043,7 @@ whenever a directory or file is changed. </p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._handleRename = function (oldFullPath, newFullPath, isDirectory) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleRename = function (oldFullPath, newFullPath, isDirectory) {
         &#x2F;&#x2F; Update all affected entries in the index
         this._index.entryRenamed(oldFullPath, newFullPath, isDirectory);
     };</code></pre>
@@ -1067,7 +1071,7 @@ of this filtering - but they will not be watched if the watch-root&#39;s filter 
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._indexFilter = function (path, name) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._indexFilter = function (path, name) {
         var parentRoot = this._findWatchedRootForPath(path);
                 
         if (parentRoot) {
@@ -1103,7 +1107,7 @@ and directories guaranteed to end in a trailing &quot;/&quot;</p>
                       <dd></dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._normalizePath = function (path, isDirectory) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._normalizePath = function (path, isDirectory) {
         
         if (!FileSystem.isAbsolutePath(path)) {
             throw new Error(&quot;Paths must be absolute: &#39;&quot; + path + &quot;&#39;&quot;);  &#x2F;&#x2F; expect only absolute paths
@@ -1156,7 +1160,7 @@ and directories guaranteed to end in a trailing &quot;/&quot;</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._triggerExternalChangesNow = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._triggerExternalChangesNow = function () {
         this._externalChanges.forEach(function (info) {
             this._handleExternalChange(info.path, info.stat);
         }, this);
@@ -1177,7 +1181,7 @@ watched root and ignores errors.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._unwatchAll = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchAll = function () {
         console.warn(&quot;File watchers went offline!&quot;);
         
         Object.keys(this._watchedRoots).forEach(function (path) {
@@ -1247,7 +1251,7 @@ watched root and ignores errors.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._unwatchEntry = function (entry, watchedRoot, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchEntry = function (entry, watchedRoot, callback) {
         this._watchOrUnwatchEntry(entry, watchedRoot, function (err) {
             &#x2F;&#x2F; Make sure to clear cached data for all unwatched entries because
             &#x2F;&#x2F; entries always return cached data if it exists!
@@ -1287,7 +1291,7 @@ watched root and ignores errors.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._watchEntry = function (entry, watchedRoot, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchEntry = function (entry, watchedRoot, callback) {
         this._watchOrUnwatchEntry(entry, watchedRoot, callback, true);
     };</code></pre>
                   </div>
@@ -1320,7 +1324,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype._watchOrUnwatchEntry = function (entry, watchedRoot, callback, shouldWatch) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchOrUnwatchEntry = function (entry, watchedRoot, callback, shouldWatch) {
         var impl = this._impl,
             recursiveWatch = impl.recursiveWatch,
             commandName = shouldWatch ? &quot;watchPath&quot; : &quot;unwatchPath&quot;;
@@ -1402,7 +1406,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.close = function () {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.close = function () {
         this._impl.unwatchAll();
         this._index.clear();
     };</code></pre>
@@ -1427,7 +1431,7 @@ watchedRoot.</p>
                       <dd>The Directory object. This directory may not yet exist on disk.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.getDirectoryForPath = function (path) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.getDirectoryForPath = function (path) {
         return this._getEntryForPath(Directory, path);
     };</code></pre>
                   </div>
@@ -1451,7 +1455,7 @@ watchedRoot.</p>
                       <dd>The File object. This file may not yet exist on disk.</dd>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.getFileForPath = function (path) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.getFileForPath = function (path) {
         return this._getEntryForPath(File, path);
     };</code></pre>
                   </div>
@@ -1472,7 +1476,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.init = function (impl) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.init = function (impl) {
         console.assert(!this._impl, &quot;This FileSystem has already been initialized!&quot;);
         
         var changeCallback = this._enqueueExternalChange.bind(this),
@@ -1502,7 +1506,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.resolve = function (path, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.resolve = function (path, callback) {
         var normalizedPath = this._normalizePath(path, false),
             item = this._index.getEntry(normalizedPath);
 
@@ -1581,7 +1585,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
                             chooseDirectories,
                             title,
                             initialPath,
@@ -1621,7 +1625,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.showSaveDialog = function (title, initialPath, proposedNewFilename, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.showSaveDialog = function (title, initialPath, proposedNewFilename, callback) {
         this._impl.showSaveDialog(title, initialPath, proposedNewFilename, callback);
     };</code></pre>
                   </div>
@@ -1647,7 +1651,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.unwatch = function (entry, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.unwatch = function (entry, callback) {
         var fullPath = entry.fullPath,
             watchedRoot = this._watchedRoots[fullPath];
         
@@ -1708,7 +1712,7 @@ watchedRoot.</p>
                     <dl>
                     </dl>
                     <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">FileSystem.prototype.watch = function (entry, filter, callback) {
+                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.watch = function (entry, filter, callback) {
         var fullPath = entry.fullPath;
         
         callback = callback || function () {};

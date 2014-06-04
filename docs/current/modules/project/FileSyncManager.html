@@ -412,7 +412,7 @@ DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to 
                 <div class="description"><p>Guard to spot re-entrancy while syncOpenDocuments() is still in progress</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _alreadyChecking = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _alreadyChecking = false;</code></pre>
               </div>
               <div class="member private">
       
@@ -430,7 +430,7 @@ DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to 
 comments in syncOpenDocuments() for how this works.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _restartPending = false;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _restartPending = false;</code></pre>
               </div>
               <div class="member">
       
@@ -444,7 +444,7 @@ comments in syncOpenDocuments() for how this works.</p>
                 <div class="description"><p>@type {Array.&lt;{doc: Document, fileTime: number}&gt;}</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var deleteConflicts;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var deleteConflicts;</code></pre>
               </div>
               <div class="member">
       
@@ -458,7 +458,7 @@ comments in syncOpenDocuments() for how this works.</p>
                 <div class="description"><p>@type {Array.&lt;{doc: Document, fileTime: number}&gt;}</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var editConflicts;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var editConflicts;</code></pre>
               </div>
               <div class="member">
       
@@ -472,7 +472,7 @@ comments in syncOpenDocuments() for how this works.</p>
                 <div class="description"><p>@type {Array.&lt;Document&gt;}</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var toClose;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var toClose;</code></pre>
               </div>
               <div class="member">
       
@@ -486,7 +486,7 @@ comments in syncOpenDocuments() for how this works.</p>
                 <div class="description"><p>@type {Array.&lt;Document&gt;}</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var toReload;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var toReload;</code></pre>
               </div>
               
             </section>
@@ -509,7 +509,7 @@ comments in syncOpenDocuments() for how this works.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function closeDeletedDocs() {
+              <pre class="language-javascript"><code class="language-javascript">    function closeDeletedDocs() {
         toClose.forEach(function (doc) {
             DocumentManager.notifyFileDeleted(doc.file);
         });
@@ -535,7 +535,7 @@ populating the corresponding arrays:
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findExternalChanges(docs) {
+              <pre class="language-javascript"><code class="language-javascript">    function findExternalChanges(docs) {
 
         toReload = [];
         toClose = [];
@@ -623,7 +623,7 @@ prompt is not shown until after the reload has completed.</p>
                   <dd>Title of the dialog.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function presentConflicts(title) {
+              <pre class="language-javascript"><code class="language-javascript">    function presentConflicts(title) {
         
         var allConflicts = editConflicts.concat(deleteConflicts);
         
@@ -749,7 +749,7 @@ in parallel.</p>
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function reloadChangedDocs() {
+              <pre class="language-javascript"><code class="language-javascript">    function reloadChangedDocs() {
         &#x2F;&#x2F; Reload each doc in turn, and once all are (async) done, signal that we&#39;re done
         return Async.doInParallel(toReload, reloadDoc, false);
     }</code></pre>
@@ -769,7 +769,7 @@ in parallel.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function reloadDoc(doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function reloadDoc(doc) {
         
         var promise = FileUtils.readAsText(doc.file);
         
@@ -797,7 +797,7 @@ in parallel.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function showReloadError(error, doc) {
+              <pre class="language-javascript"><code class="language-javascript">    function showReloadError(error, doc) {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.ERROR_RELOADING_FILE_TITLE,
@@ -826,7 +826,7 @@ the user.</p>
                   <dd>Title to use for document. Default is "External Changes".</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function syncOpenDocuments(title) {
+              <pre class="language-javascript"><code class="language-javascript">    function syncOpenDocuments(title) {
         
         title = title || Strings.EXT_MODIFIED_TITLE;
         
@@ -933,7 +933,7 @@ by findExternalChanges()). If any were deleted on disk, removes them from the wo
               <dl>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function syncUnopenWorkingSet() {
+              <pre class="language-javascript"><code class="language-javascript">    function syncUnopenWorkingSet() {
         &#x2F;&#x2F; We only care about working set entries that have never been open (have no Document).
         var unopenWorkingSetFiles = DocumentManager.getWorkingSet().filter(function (wsFile) {
             return !DocumentManager.getOpenDocumentForPath(wsFile.fullPath);

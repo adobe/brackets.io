@@ -401,7 +401,7 @@
                 <div class="description"><p>Tracks dirty documents between invocations of findMatchingFunctions.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _changedDocumentTracker = new ChangedDocumentTracker();</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _changedDocumentTracker = new ChangedDocumentTracker();</code></pre>
               </div>
               <div class="member private">
       
@@ -422,7 +422,7 @@
 RegExp matches any sequence of characters that is not whitespace.</p>
 </div>
                 <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">var _functionRegExp = &#x2F;(function\s+([$_A-Za-z\u007F-\uFFFF][$_A-Za-z0-9\u007F-\uFFFF]*)\s*(\([^)]*\)))|(([$_A-Za-z\u007F-\uFFFF][$_A-Za-z0-9\u007F-\uFFFF]*)\s*[:=]\s*function\s*(\([^)]*\)))&#x2F;g;</code></pre>
+                <pre class="language-javascript"><code class="language-javascript">    var _functionRegExp = &#x2F;(function\s+([$_A-Za-z\u007F-\uFFFF][$_A-Za-z0-9\u007F-\uFFFF]*)\s*(\([^)]*\)))|(([$_A-Za-z\u007F-\uFFFF][$_A-Za-z0-9\u007F-\uFFFF]*)\s*[:=]\s*function\s*(\([^)]*\)))&#x2F;g;</code></pre>
               </div>
               
             </section>
@@ -461,7 +461,7 @@ RegExp matches any sequence of characters that is not whitespace.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _computeOffsets(doc, functionName, functions, rangeResults) {
+              <pre class="language-javascript"><code class="language-javascript">    function _computeOffsets(doc, functionName, functions, rangeResults) {
         var text    = doc.getText(),
             lines   = StringUtils.getLines(text);
         
@@ -501,7 +501,7 @@ Offset info is an array, since multiple functions of the same name can exist.</p
                   <dd>Document text</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _findAllFunctionsInText(text) {
+              <pre class="language-javascript"><code class="language-javascript">    function _findAllFunctionsInText(text) {
         var results = {},
             functionName,
             match;
@@ -608,7 +608,7 @@ function names with offsets for the specified file. Results may be cached.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getFunctionsForFile(fileInfo) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getFunctionsForFile(fileInfo) {
         var result = new $.Deferred();
             
         _shouldGetFromCache(fileInfo)
@@ -632,7 +632,7 @@ function names with offsets for the specified file. Results may be cached.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getFunctionsInFiles(fileInfos) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getFunctionsInFiles(fileInfos) {
         var result          = new $.Deferred(),
             docEntries      = [];
         
@@ -685,7 +685,7 @@ function names with offsets for the specified file. Results may be cached.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _getOffsetsForFunction(docEntries, functionName) {
+              <pre class="language-javascript"><code class="language-javascript">    function _getOffsetsForFunction(docEntries, functionName) {
         &#x2F;&#x2F; Filter for documents that contain the named function
         var result              = new $.Deferred(),
             matchedDocuments    = [],
@@ -746,7 +746,7 @@ function names with offsets for the specified file. Results may be cached.</p>
                   <dd>Deferred to resolve with all functions found and the document</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _readFile(fileInfo, result) {
+              <pre class="language-javascript"><code class="language-javascript">    function _readFile(fileInfo, result) {
         DocumentManager.getDocumentForPath(fileInfo.fullPath)
             .done(function (doc) {
                 var allFunctions = _findAllFunctionsInText(doc.getText());
@@ -777,7 +777,7 @@ function names with offsets for the specified file. Results may be cached.</p>
                   <dd></dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function _shouldGetFromCache(fileInfo) {
+              <pre class="language-javascript"><code class="language-javascript">    function _shouldGetFromCache(fileInfo) {
         var result = new $.Deferred(),
             isChanged = _changedDocumentTracker.isPathChanged(fileInfo.fullPath);
         
@@ -825,7 +825,7 @@ Returns an Array of Objects with start and end properties.</p>
                   <dd>function name to search for</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findAllMatchingFunctionsInText(text, searchName) {
+              <pre class="language-javascript"><code class="language-javascript">    function findAllMatchingFunctionsInText(text, searchName) {
         var allFunctions = _findAllFunctionsInText(text);
         var result = [];
         var lines = text.split(&quot;\n&quot;);
@@ -878,7 +878,7 @@ Returns an Array of Objects with start and end properties.</p>
                   <dd>If true, don't ignore non-javascript files.</dd>
               </dl>
               <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">function findMatchingFunctions(functionName, fileInfos, keepAllFiles) {
+              <pre class="language-javascript"><code class="language-javascript">    function findMatchingFunctions(functionName, fileInfos, keepAllFiles) {
         var result          = new $.Deferred(),
             jsFiles         = [],
             docEntries      = [];
