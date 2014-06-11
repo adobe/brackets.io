@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>CommandManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>CommandManager</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,132 +346,144 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Manages global application commands that can be called from menu items, key bindings, or subparts
+<h1>CommandManager</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>Manages global application commands that can be called from menu items, key bindings, or subparts
 of the application.</p>
 <p>This module dispatches these event(s):</p>
 <ul>
 <li>commandRegistered  -- when a new command is registered</li>
 <li>beforeExecuteCommand -- before dispatching a command</li>
 </ul>
-
-            </div>
-          </section>
-    
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            
-            <span class="alert alert-info">This module has no dependencies</span>
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_commands</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;commandID: string, Command&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Map of all registered global commands</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _commands = {};</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_commandsOriginal</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;commandID: string, Command&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Temporary copy of commands map for restoring after testing
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+
+    <span class="alert alert-info">This module has no dependencies</span>
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_commands</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;commandID: string, Command&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Map of all registered global commands</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _commands = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_commandsOriginal</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;commandID: string, Command&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Temporary copy of commands map for restoring after testing
 TODO (issue #1039): implement separate require contexts for unit tests</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _commandsOriginal = {};</code></pre>
-              </div>
-              
-            </section>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _commandsOriginal = {};</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_testReset</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_testReset</h4>
-              <div class="description"><p>Clear all commands for unit testing, but first make copy of commands so that
+    <div class="description"><p>Clear all commands for unit testing, but first make copy of commands so that
 they can be restored afterward</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _testReset() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _testReset() {
         _commandsOriginal = _commands;
         _commands = {};
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_testRestore</h4>
-              <div class="description"><p>Restore original commands after test and release copy</p>
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_testRestore</h4>
+
+    
+    <div class="description"><p>Restore original commands after test and release copy</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _testRestore() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _testRestore() {
         _commands = _commandsOriginal;
         _commandsOriginal = {};
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>execute</h4>
-              <div class="description"><p>Looks up and runs a global command. Additional arguments are passed to the command.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>execute</h4>
+
+    
+    <div class="description"><p>Looks up and runs a global command. Additional arguments are passed to the command.</p>
 </div>
-              <dl>
-                  <dt>id</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The ID of the command to run.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function execute(id) {
+    
+<dl>
+    <dt>id</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The ID of the command to run.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved when the command completes.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function execute(id) {
         var command = _commands[id];
         
         if (command) {
@@ -497,68 +507,77 @@ they can be restored afterward</p>
     exports.getAll              = getAll;
     exports._testReset          = _testReset;
     exports._testRestore        = _testRestore;
-});</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>get</h4>
-              <div class="description"><p>Retrieves a Command object by id</p>
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>get</h4>
+
+    
+    <div class="description"><p>Retrieves a Command object by id</p>
 </div>
-              <dl>
-                  <dt>id</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function get(id) {
+    
+<dl>
+    <dt>id</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Command</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function get(id) {
         return _commands[id];
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getAll</h4>
-              <div class="description"><p>Returns the ids of all registered commands</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getAll</h4>
+
+    
+    <div class="description"><p>Returns the ids of all registered commands</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getAll() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getAll() {
         return Object.keys(_commands);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>register</h4>
-              <div class="description"><p>Registers a global command.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>register</h4>
+
+    
+    <div class="description"><p>Registers a global command.</p>
 </div>
-              <dl>
-                  <dt>name</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- text that will be displayed in the UI to represent command</dd>
-                  <dt>id</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- unique identifier for command.
- Core commands in Brackets use a simple command title as an id, for example "open.file".
- Extensions should use the following format: "author.myextension.mycommandname".
- For example, "lschmitt.csswizard.format.css".</dd>
-                  <dt>commandFn</dt>
-                  <dd class="label label-info pull-left">function(...)</dd>
-                  <dd>- the function to call when the command is executed. Any arguments passed to
- execute() (after the id) are passed as arguments to the function. If the function is asynchronous,
- it must return a jQuery promise that is resolved when the command completes. Otherwise, the
- CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function register(name, id, commandFn) {
+    
+<dl>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- text that will be displayed in the UI to represent command</dd>
+    <dt>id</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- unique identifier for command. Core commands in Brackets use a simple command title as an id, for example "open.file". Extensions should use the following format: "author.myextension.mycommandname". For example, "lschmitt.csswizard.format.css".</dd>
+    <dt>commandFn</dt>
+    <dd class="label label-info pull-left">function(...)</dd>
+    <dd>- the function to call when the command is executed. Any arguments passed to execute() (after the id) are passed as arguments to the function. If the function is asynchronous, it must return a jQuery promise that is resolved when the command completes. Otherwise, the CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Command</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function register(name, id, commandFn) {
         if (_commands[id]) {
             console.log(&quot;Attempting to register an already-registered command: &quot; + id);
             return null;
@@ -574,32 +593,31 @@ they can be restored afterward</p>
         $(exports).triggerHandler(&quot;commandRegistered&quot;, [command]);
         
         return command;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>registerInternal</h4>
-              <div class="description"><p>Registers a global internal only command.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>registerInternal</h4>
+
+    
+    <div class="description"><p>Registers a global internal only command.</p>
 </div>
-              <dl>
-                  <dt>id</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- unique identifier for command.
- Core commands in Brackets use a simple command title as an id, for example "app.abort_quit".
- Extensions should use the following format: "author.myextension.mycommandname".
- For example, "lschmitt.csswizard.format.css".</dd>
-                  <dt>commandFn</dt>
-                  <dd class="label label-info pull-left">function(...)</dd>
-                  <dd>- the function to call when the command is executed. Any arguments passed to
- execute() (after the id) are passed as arguments to the function. If the function is asynchronous,
- it must return a jQuery promise that is resolved when the command completes. Otherwise, the
- CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function registerInternal(id, commandFn) {
+    
+<dl>
+    <dt>id</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- unique identifier for command. Core commands in Brackets use a simple command title as an id, for example "app.abort_quit". Extensions should use the following format: "author.myextension.mycommandname". For example, "lschmitt.csswizard.format.css".</dd>
+    <dt>commandFn</dt>
+    <dd class="label label-info pull-left">function(...)</dd>
+    <dd>- the function to call when the command is executed. Any arguments passed to execute() (after the id) are passed as arguments to the function. If the function is asynchronous, it must return a jQuery promise that is resolved when the command completes. Otherwise, the CommandManager will assume it is synchronous, and return a promise that is already resolved.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Command</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerInternal(id, commandFn) {
         if (_commands[id]) {
             console.log(&quot;Attempting to register an already-registered command: &quot; + id);
             return null;
@@ -615,75 +633,77 @@ they can be restored afterward</p>
         $(exports).triggerHandler(&quot;commandRegistered&quot;, [command]);
         
         return command;
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          <section class="classes">
-            <h2>Classes</h2>
-            
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>Command</h4>
-                  <em></em>
-                  <dl>
-                    <dt>name</dt>
-                    <dd class="label label-info pull-left">string</dd>
-                    <dd>- text that will be displayed in the UI to represent command</dd>
-                    <dt>id</dt>
-                    <dd class="label label-info pull-left">string</dd>
-                    <dd></dd>
-                    <dt>commandFn</dt>
-                    <dd class="label label-info pull-left">function</dd>
-                    <dd>- the function that is called when the command is executed.
+    }</code></pre></div>
+</section>
 
-TODO: where should this be triggered, The Command or Exports?
-Events:
- enabledStateChange
- checkedStateChange
- keyBindingAdded
- keyBindingRemoved</dd>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function Command(name, id, commandFn) {
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>Command</h4>
+            <em><p>Events:</p>
+<ul>
+<li>enabledStateChange</li>
+<li>checkedStateChange</li>
+<li>keyBindingAdded</li>
+<li>keyBindingRemoved</li>
+</ul>
+</em>
+            
+            <dl>
+                <dt>name</dt>
+                <dd class="label label-info pull-left">string</dd>
+                <dd>- text that will be displayed in the UI to represent command</dd>
+                <dt>id</dt>
+                <dd class="label label-info pull-left">string</dd>
+                <dd></dd>
+                <dt>commandFn</dt>
+                <dd class="label label-info pull-left">function</dd>
+                <dd>- the function that is called when the command is executed. TODO: where should this be triggered, The Command or Exports?</dd>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function Command(name, id, commandFn) {
         this._name = name;
         this._id = id;
         this._commandFn = commandFn;
         this._checked = undefined;
         this._enabled = true;
     }</code></pre>
-                </div>
-      
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>execute</h4>
-                    <div class="description"><p>Executes the command. Additional arguments are passed to the executing function</p>
+        </div>
+        
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>execute</h4>
+
+    
+    <div class="description"><p>Executes the command. Additional arguments are passed to the executing function</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">$.Promise</dd>
-                      <dd>a jQuery promise that will be resolved when the command completes.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.execute = function () {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved when the command completes.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.execute = function () {
         if (!this._enabled) {
             return (new $.Deferred()).reject().promise();
         }
@@ -696,175 +716,173 @@ Events:
         } else {
             return result;
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>getChecked</h4>
-                    <div class="description"><p>Is command checked?</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getChecked</h4>
+
+    
+    <div class="description"><p>Is command checked?</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getChecked = function () {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.getChecked = function () {
         return this._checked;
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>getEnabled</h4>
-                    <div class="description"><p>Is command enabled?</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getEnabled</h4>
+
+    
+    <div class="description"><p>Is command enabled?</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getEnabled = function () {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.getEnabled = function () {
         return this._enabled;
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>getID</h4>
-                    <div class="description"><p>Get command id</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getID</h4>
+
+    
+    <div class="description"><p>Get command id</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getID = function () {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.getID = function () {
         return this._id;
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>getName</h4>
-                    <div class="description"><p>Get command name</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getName</h4>
+
+    
+    <div class="description"><p>Get command name</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.getName = function () {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.getName = function () {
         return this._name;
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setChecked</h4>
-                    <div class="description"><p>Sets enabled state of Command and dispatches &quot;checkedStateChange&quot;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setChecked</h4>
+
+    
+    <div class="description"><p>Sets enabled state of Command and dispatches &quot;checkedStateChange&quot;
 when the enabled state changes.</p>
 </div>
-                    <dl>
-                      <dt>checked</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setChecked = function (checked) {
+    
+<dl>
+    <dt>checked</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.setChecked = function (checked) {
         var changed = this._checked !== checked;
         this._checked = checked;
 
         if (changed) {
             $(this).triggerHandler(&quot;checkedStateChange&quot;);
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setEnabled</h4>
-                    <div class="description"><p>Sets enabled state of Command and dispatches &quot;enabledStateChange&quot;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setEnabled</h4>
+
+    
+    <div class="description"><p>Sets enabled state of Command and dispatches &quot;enabledStateChange&quot;
 when the enabled state changes.</p>
 </div>
-                    <dl>
-                      <dt>enabled</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setEnabled = function (enabled) {
+    
+<dl>
+    <dt>enabled</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.setEnabled = function (enabled) {
         var changed = this._enabled !== enabled;
         this._enabled = enabled;
 
         if (changed) {
             $(this).triggerHandler(&quot;enabledStateChange&quot;);
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setName</h4>
-                    <div class="description"><p>Sets the name of the Command and dispatches &quot;nameChange&quot; so that
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setName</h4>
+
+    
+    <div class="description"><p>Sets the name of the Command and dispatches &quot;nameChange&quot; so that
 UI that reflects the command name can update.</p>
 <p>Note, a Command name can appear in either HTML or native UI
 so HTML tags should not be used. To add a Unicode character,
 use \uXXXX instead of an HTML entity.</p>
 </div>
-                    <dl>
-                      <dt>name</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    Command.prototype.setName = function (name) {
+    
+<dl>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Command.prototype.setName = function (name) {
         var changed = this._name !== name;
         this._name = name;
 
         if (changed) {
             $(this).triggerHandler(&quot;nameChange&quot;);
         }
-    };</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

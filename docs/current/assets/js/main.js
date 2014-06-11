@@ -8,16 +8,6 @@ $(function () {
             $(this).html("Show code");
         }
     });
-    $("#toggle-other-modules").click(function(){
-        var block = $("#other-module");
-        block.toggle();
-        $(this).find("i").removeClass();
-        if (block.is(":visible")) {
-            $(this).find("i").addClass("icon-folder-open");
-        } else {
-            $(this).find("i").addClass("icon-folder-close");
-        }
-    });
     $("input.toggle-public").click(function(){
         var section = $(this).parents("section:eq(0)");
         if($(this).is(":checked")){

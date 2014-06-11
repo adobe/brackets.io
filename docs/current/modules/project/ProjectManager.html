@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>ProjectManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>ProjectManager</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>ProjectManager is the model for the set of currently open project. It is responsible for
+<h1>ProjectManager</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>ProjectManager is the model for the set of currently open project. It is responsible for
 creating and updating the project tree when projects are opened and when changes occur to
 the file tree.</p>
 <p>This module dispatches these events:</p>
@@ -370,435 +370,426 @@ a project being opened (e.g. from the Refresh command)</li>
 </ul>
 <p>These are jQuery events, so to listen for them you do something like this:
    $(ProjectManager).on(&quot;eventname&quot;, handler);</p>
+</div>
+</section>
 
-            </div>
-          </section>
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
+        <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/jstree_pre1.0_fix_1/jquery.jstree.html">jquery.jstree</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
+        <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/i18n!nls/urls.html">urls</a></li>
+        <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-              <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-              <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
-              <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/project/FileSyncManager.html">FileSyncManager</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
-              <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
-              <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/jstree_pre1.0_fix_1/jquery.jstree.html">jquery.jstree</a></li>
-              <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
-              <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-              <li><a href="..&#x2F;../modules/i18n!nls/urls.html">urls</a></li>
-              <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
-            </ul>
-            
-            
-          </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>$projectTreeContainer</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Reference to the tree control container div. Initialized by
-htmlReady handler</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var $projectTreeContainer;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>$projectTreeList</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>DOMElement</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Reference to the tree control UL element</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var $projectTreeList;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>SETTINGS_FILENAME</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Filename to use for project settings files.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var SETTINGS_FILENAME = &quot;.&quot; + PreferencesManager.SETTINGS_FILENAME;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_allFilesCachePromise</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?jQuery.Promise.&lt;Array&lt;File&gt;&gt;}
-A promise that is resolved with an array of all project files. Used by 
-ProjectManager.getAllFiles(). </dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _allFilesCachePromise = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_dirFirst</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean}
-Current sort order for the tree, true if directories are first. This is
-initialized in _generateSortPrefixes. </dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _dirFirst;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_exclusionListRegEx</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>RegExp</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>File and folder names which are not displayed or searched
-TODO: We should add the rest of the file names that TAR excludes:
-   <a href="http://www.gnu.org/software/tar/manual/html_section/exclude.html">http://www.gnu.org/software/tar/manual/html_section/exclude.html</a>
-TODO: This should be user configurable
-   <a href="https://github.com/adobe/brackets/issues/6781">https://github.com/adobe/brackets/issues/6781</a></p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _exclusionListRegEx = &#x2F;\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$&#x2F;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_fileSystemChange</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Forward declaration for the _fileSystemChange and _fileSystemRename functions to make JSLint happy.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _fileSystemChange,
-        _fileSystemRename;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_illegalFilenamesRegEx</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>RegEx to validate if a filename is not allowed even if the system allows it.
-This is done to prevent cross-platform issues.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">            
+</span>
+    <h4>$projectTreeContainer</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $projectTreeContainer;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>$projectTreeList</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>DOMElement</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $projectTreeList;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>SETTINGS_FILENAME</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var SETTINGS_FILENAME = &quot;.&quot; + PreferencesManager.SETTINGS_FILENAME;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_allFilesCachePromise</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?jQuery.Promise.&lt;Array&lt;File&gt;&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _allFilesCachePromise = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_dirFirst</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _dirFirst;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_exclusionListRegEx</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>RegExp</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _exclusionListRegEx = &#x2F;\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$&#x2F;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_fileSystemChange</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _fileSystemChange,
+        _fileSystemRename;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_illegalFilenamesRegEx</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">            
     var _illegalFilenamesRegEx = &#x2F;^(\.+|com[1-9]|lpt[1-9]|nul|con|prn|aux|)$|\.+$&#x2F;i;
     
-    var suppressToggleOpen = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_invalidChars</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>A string containing all invalid characters for a specific platform.
-This will be used to construct a regular expression for checking invalid filenames.
-When a filename with one of these invalid characters are detected, then it is 
-also used to substitute the place holder of the error message.</p>
+    var suppressToggleOpen = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_invalidChars</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _invalidChars;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_lastSelected</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>DOMElement</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _lastSelected = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectBaseUrl</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectBaseUrl = &quot;&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectInitialLoad</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectInitialLoad = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectRoot</h4>
+
+    
+<dl>
+    <dt>See</dt>
+    <dd><a href='#'>getProjectRoot()</a></dd>
+    <dt>Type</dt>
+    <dd>Directory</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectRoot = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectTree</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectTree = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectTreeSortComparator</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>A memoized comparator of DOM nodes for use with jsTree</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _invalidChars;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_lastSelected</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>DOMElement</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Reference to previous selected jstree leaf node when ProjectManager had
-selection focus from FileViewController.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _lastSelected = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_projectBaseUrl</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Encoded URL</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _projectBaseUrl = &quot;&quot;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_projectInitialLoad</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Used to initialize jstree state</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _projectInitialLoad = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_projectRoot</h4>
-                <dl>
-                    <dt>See</dt>
-                      <dd><a href='#'>getProjectRoot()</a></dd>
-                    <dt>Type</dt>
-                      <dd>Directory</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _projectRoot = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_projectTree</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Reference to the tree control</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _projectTree = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_projectTreeSortComparator</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>A memoized comparator of DOM nodes for use with jsTree</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _projectTreeSortComparator = _.memoize(function (a, b) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectTreeSortComparator = _.memoize(function (a, b) {
         var a1 = $(a).data(&quot;compareString&quot;),
             b1 = $(b).data(&quot;compareString&quot;);
         
         return FileUtils.compareFilenames(a1, b1, false);
     }, function (a, b) {
         return $(a).data(&quot;compareString&quot;) + &quot;:&quot; + $(b).data(&quot;compareString&quot;);
-    });</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_refreshDelay</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>number</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>@const</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _refreshDelay = 1000;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_refreshFileTreePromise</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?jQuery.Promise</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _refreshFileTreePromise = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_refreshPending</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>@type {boolean} If refreshFileTree is called before _refreshFileTreePromise
-     has resolved then _refreshPending is set, which indicates that 
-     refreshFileTree should be called again once the promise resolves.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _refreshPending = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_sortPrefixDir</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>File tree sorting for mac-specific sorting behavior</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _sortPrefixDir,
-        _sortPrefixFile;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_suppressSelectionChange</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Internal flag to suppress firing of selectionChanged event.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _suppressSelectionChange = false;</code></pre>
-              </div>
-              
-            </section>
+    });</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_checkForValidFilename</h4>
-              <div class="description"><p>Check a filename for illegal characters. If any are found, show an error
-dialog and return false. If no illegal characters are found, return true.
-Although Mac and Linux allow ?*| characters, we still cannot allow them
-since these have special meaning for all file systems.</p>
-</div>
-              <dl>
-                  <dt>filename</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _checkForValidFilename(filename, isFolder) {
+</span>
+    <h4>_refreshDelay</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _refreshDelay = 1000;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_refreshFileTreePromise</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?jQuery.Promise</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _refreshFileTreePromise = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_refreshPending</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _refreshPending = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_sortPrefixDir</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _sortPrefixDir,
+        _sortPrefixFile;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_suppressSelectionChange</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _suppressSelectionChange = false;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_checkForValidFilename</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>filename</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Returns true if no illegal characters are found</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _checkForValidFilename(filename, isFolder) {
         &#x2F;&#x2F; Validate file name
         &#x2F;&#x2F; Checks for valid Windows filenames:
         &#x2F;&#x2F; See http:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;library&#x2F;windows&#x2F;desktop&#x2F;aa365247(v=vs.85).aspx
@@ -812,26 +803,27 @@ since these have special meaning for all file systems.</p>
             return false;
         }
         return true;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_checkPreferencePrefix</h4>
-              <div class="description"><p>Examine each preference key for migration of project tree states.
-If the key has a prefix of &quot;projectTreeState_/&quot;, then it is a project tree states
-preference from old preference model.</p>
-</div>
-              <dl>
-                  <dt>key</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The key of the preference to be examined
- for migration of project tree states.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_checkPreferencePrefix</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>key</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The key of the preference to be examined for migration of project tree states.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?string</dd>
+    <dd>- the scope to which the preference is to be migrated</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
         var pathPrefix = &quot;projectTreeState_&quot;,
             projectPath;
         if (key.indexOf(pathPrefix) === 0) {
@@ -910,27 +902,27 @@ preference from old preference model.</p>
     exports.refreshFileTree          = refreshFileTree;
     exports.getAllFiles              = getAllFiles;
     exports.getLanguageFilter        = getLanguageFilter;
-});</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_convertEntriesToJSON</h4>
-              <div class="description"><p>Given an array of file system entries, returns a JSON array representing them in the format
-required by jsTree. Saves the corresponding Entry object as metadata (which jsTree will store in
-the DOM via $.data()).</p>
-<p>Does NOT recursively traverse the file system: folders are marked as expandable but are given no
-children initially.</p>
-</div>
-              <dl>
-                  <dt>entries</dt>
-                  <dd class="label label-info pull-left">Array.&lt;FileSystemEntry&gt;</dd>
-                  <dd>Array of FileSystemEntry entry objects.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _convertEntriesToJSON(entries) {
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_convertEntriesToJSON</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>entries</dt>
+    <dd class="label label-info pull-left">Array.&lt;FileSystemEntry&gt;</dd>
+    <dd>Array of FileSystemEntry entry objects.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array</dd>
+    <dd>jsTree node data: array of JSON objects</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _convertEntriesToJSON(entries) {
         var jsonEntryList = [],
             entry,
             entryI,
@@ -941,40 +933,41 @@ children initially.</p>
         }
         
         return jsonEntryList;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_createNode</h4>
-              <div class="description"><p>Add a new node (existing FileSystemEntry or untitled file) to the project tree</p>
-</div>
-              <dl>
-                  <dt>$target</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd>Parent or sibling node</dd>
-                  <dt>position</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">number, string</dd>
-                  <dd>Position to insert</dd>
-                  <dt>arr</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Object, Array.&lt;Object&gt;</dd>
-                  <dd>Node data or array of node data</dd>
-                  <dt>skipRename</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-                  <dt>skipRedraw</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _createNode($target, position, arr, skipRename, skipRedraw) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createNode</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>$target</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd>Parent or sibling node</dd>
+    <dt>position</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">number, string</dd>
+    <dd>Position to insert</dd>
+    <dt>arr</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Object, Array.&lt;Object&gt;</dd>
+    <dd>Node data or array of node data</dd>
+    <dt>skipRename</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+    <dt>skipRedraw</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createNode($target, position, arr, skipRename, skipRedraw) {
         if (typeof arr === &quot;string&quot;) {
             arr = [{ data: arr }];
         } else if (!Array.isArray(arr)) {
@@ -1000,26 +993,27 @@ children initially.</p>
         if (!skipRedraw) {
             _redraw(true);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_deleteTreeNode</h4>
-              <div class="description"><p>Deletes a node from jstree. Does not make assumptions on file existence.</p>
-</div>
-              <dl>
-                  <dt>target</dt>
-                  <dd class="label label-info pull-left">FileSystemEntry,Array.&lt;FileSystemEntry&gt;</dd>
-                  <dd>Entry or array of entries to delete</dd>
-                  <dt>skipRedraw</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _deleteTreeNode(target, skipRedraw) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_deleteTreeNode</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>target</dt>
+    <dd class="label label-info pull-left">FileSystemEntry,Array.&lt;FileSystemEntry&gt;</dd>
+    <dd>Entry or array of entries to delete</dd>
+    <dt>skipRedraw</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _deleteTreeNode(target, skipRedraw) {
         var arr = !Array.isArray(target) ? [target] : target,
             oldSuppressToggleOpen = suppressToggleOpen,
             treeAPI = $.jstree._reference(_projectTree);
@@ -1080,69 +1074,77 @@ children initially.</p>
                 EditorManager.notifyPathDeleted(entry.fullPath);
             }
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_deleteTreeNodeCache</h4>
-              <div class="description"><p>Delete a path from the fullPath-to-DOM ID cache</p>
-</div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(FileSystemEntry, string)</dd>
-                  <dd>Entry or full path to remove from cache</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _deleteTreeNodeCache(entry) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_deleteTreeNodeCache</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(FileSystemEntry, string)</dd>
+    <dd>Entry or full path to remove from cache</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _deleteTreeNodeCache(entry) {
         var fullPath = entry.fullPath || entry;
         delete _projectInitialLoad.fullPathToIdMap[fullPath];
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_ensureTrailingSlash</h4>
-              <div class="description"><p>Although Brackets is generally standardized on folder paths with a trailing &quot;/&quot;, some APIs here
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_ensureTrailingSlash</h4>
+
+    
+    <div class="description"><p>Although Brackets is generally standardized on folder paths with a trailing &quot;/&quot;, some APIs here
 receive project paths without &quot;/&quot; due to legacy preference storage formats, etc.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path that may or may not end in "/"</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _ensureTrailingSlash(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path that may or may not end in "/"</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd>Path that ends in "/"</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _ensureTrailingSlash(fullPath) {
         if (fullPath[fullPath.length - 1] !== &quot;&#x2F;&quot;) {
             return fullPath + &quot;&#x2F;&quot;;
         }
         return fullPath;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_entryToJSON</h4>
-              <div class="description"><p>Create JSON object for a jstree node. Insert mapping from full path to
-jstree node ID.</p>
-<p>For more info on jsTree&#39;s JSON format see: <a href="http://www.jstree.com/documentation/json_data">http://www.jstree.com/documentation/json_data</a></p>
-</div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">FileSystemEntry</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _entryToJSON(entry) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_entryToJSON</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">data: string,attr: {id: string},metadata: {entry: FileSystemEntry},children: Array.&lt;Object&gt;,state: string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _entryToJSON(entry) {
         if (!shouldShow(entry)) {
             return null;
         }
@@ -1168,25 +1170,30 @@ jstree node ID.</p>
         _insertTreeNodeCache(entry, jsonEntry.attr.id);
         
         return jsonEntry;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_findTreeNode</h4>
-              <div class="description"><p>Finds the tree node corresponding to the given file/folder (rejected if the path lies
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_findTreeNode</h4>
+
+    
+    <div class="description"><p>Finds the tree node corresponding to the given file/folder (rejected if the path lies
 outside the project, or if it doesn&#39;t exist).</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(File, Directory)</dd>
-                  <dd>File or Directory to find</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _findTreeNode(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(File, Directory)</dd>
+    <dd>File or Directory to find</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved with jQ obj for the jsTree tree node; or rejected if not found</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _findTreeNode(entry) {
         var result = new $.Deferred(),
             $renderedNode = _getTreeNode(entry);
         
@@ -1251,19 +1258,21 @@ outside the project, or if it doesn&#39;t exist).</p>
         findInSubtree(topLevelNodes, 0);
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_forceSelection</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _forceSelection(current, target) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_forceSelection</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _forceSelection(current, target) {
         &#x2F;&#x2F; select_node will force the target to be revealed. Instead,
         &#x2F;&#x2F; keep the scroller position stable.
         var savedScrollTop = $projectTreeContainer.get(0).scrollTop;
@@ -1279,45 +1288,54 @@ outside the project, or if it doesn&#39;t exist).</p>
         $projectTreeContainer.get(0).scrollTop = savedScrollTop;
         
         _redraw(true, false);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_generateSortPrefixes</h4>
-              <div class="description"><p>Generates the prefixes used for sorting the files in the project tree</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _generateSortPrefixes() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_generateSortPrefixes</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if the sort prefixes have changed</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _generateSortPrefixes() {
         var previousDirFirst  = _dirFirst;
         _dirFirst             = PreferencesManager.get(&quot;sortDirectoriesFirst&quot;);
         _sortPrefixDir        = _dirFirst ? &quot;0&quot; : &quot;&quot;;
         _sortPrefixFile       = _dirFirst ? &quot;1&quot; : &quot;&quot;;
         
         return previousDirFirst !== _dirFirst;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getAllFilesCache</h4>
-              <div class="description"><p>Returns a promise that resolves with a cached copy of all project files.
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getAllFilesCache</h4>
+
+    
+    <div class="description"><p>Returns a promise that resolves with a cached copy of all project files.
 Used by ProjectManager.getAllFiles(). Ensures that at most one un-cached
 directory traversal is active at a time, which is useful at project load
 time when watchers (and hence filesystem-level caching) has not finished
 starting up. The cache is cleared on every filesystem change event, and
 also on project load and unload.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getAllFilesCache() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise.&lt;Array.&lt;File&gt;&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getAllFilesCache() {
         if (!_allFilesCachePromise) {
             var deferred = new $.Deferred(),
                 allFiles = [],
@@ -1344,24 +1362,28 @@ also on project load and unload.</p>
         }
         
         return _allFilesCachePromise;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getTreeNode</h4>
-              <div class="description"><p>Lookup jQuery node for a given FileSystem Entry</p>
-</div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File, Directory, string</dd>
-                  <dd>String or File/Directory entry to find in the tree</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getTreeNode(entry) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getTreeNode</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File, Directory, string</dd>
+    <dd>String or File/Directory entry to find in the tree</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?jQuery</dd>
+    <dd>The jQuery node for this entry or null if not found</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getTreeNode(entry) {
         &#x2F;&#x2F; Special case if the entry matches the project root
         if (entry === getProjectRoot()) {
             return $projectTreeList;
@@ -1376,41 +1398,51 @@ also on project load and unload.</p>
         }
         
         return node;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getTreeSelectedItem</h4>
-              <div class="description"><p>Returns the File or Directory corresponding to the item selected in the file tree, or null
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getTreeSelectedItem</h4>
+
+    
+    <div class="description"><p>Returns the File or Directory corresponding to the item selected in the file tree, or null
 if no item is selected in the tree (though the working set may still have a selection; use
 getSelectedItem() to get the selection regardless of whether it&#39;s in the tree or working set).</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getTreeSelectedItem() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?(File,Directory)</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getTreeSelectedItem() {
         var selected = _projectTree.jstree(&quot;get_selected&quot;);
         if (selected) {
             return selected.data(&quot;entry&quot;);
         }
         return null;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getWelcomeProjectPath</h4>
-              <div class="description"><p>Returns the full path to the welcome project, which we open on first launch.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getWelcomeProjectPath</h4>
+
+    
+    <div class="description"><p>Returns the full path to the welcome project, which we open on first launch.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getWelcomeProjectPath() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd>fullPath reference</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getWelcomeProjectPath() {
         var initialPath = FileUtils.getNativeBracketsDirectoryPath(),
             sampleUrl = Urls.GETTING_STARTED;
         if (sampleUrl) {
@@ -1420,83 +1452,94 @@ getSelectedItem() to get the selection regardless of whether it&#39;s in the tre
         }
 
         return _ensureTrailingSlash(initialPath); &#x2F;&#x2F; paths above weren&#39;t canonical
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_hasFileSelectionFocus</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _hasFileSelectionFocus() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_hasFileSelectionFocus</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _hasFileSelectionFocus() {
         return FileViewController.getFileSelectionFocus() === FileViewController.PROJECT_MANAGER;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_insertTreeNodeCache</h4>
-              <div class="description"><p>Insert a path in the fullPath-to-DOM ID cache</p>
-</div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(FileSystemEntry, string)</dd>
-                  <dd>Entry or full path to add to cache</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _insertTreeNodeCache(entry, id) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_insertTreeNodeCache</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(FileSystemEntry, string)</dd>
+    <dd>Entry or full path to add to cache</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _insertTreeNodeCache(entry, id) {
         var fullPath = entry.fullPath || entry;
         _projectInitialLoad.fullPathToIdMap[fullPath] = id;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_isInRename</h4>
-              <div class="description"><p>Returns false when the event occured without any input present in the li closest to the DOM object</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_isInRename</h4>
+
+    
+    <div class="description"><p>Returns false when the event occured without any input present in the li closest to the DOM object</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">event</dd>
-                  <dd>to check</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _isInRename(element) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">event</dd>
+    <dd>to check</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if an input field is present</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isInRename(element) {
         return ($(element).closest(&quot;li&quot;).find(&quot;input&quot;).length &gt; 0);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_loadProject</h4>
-              <div class="description"><p>Loads the given folder as a project. Normally, you would call openProject() instead to let the
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_loadProject</h4>
+
+    
+    <div class="description"><p>Loads the given folder as a project. Normally, you would call openProject() instead to let the
 user choose a folder.</p>
 </div>
-              <dl>
-                  <dt>rootPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Absolute path to the root folder of the project.
- A trailing "/" on the path is optional (unlike many Brackets APIs that assume a trailing "/").</dd>
-                  <dt>isUpdating</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, indicates we're just updating the tree;
- if false, a different project is being loaded.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _loadProject(rootPath, isUpdating) {
+    
+<dl>
+    <dt>rootPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Absolute path to the root folder of the project. A trailing "/" on the path is optional (unlike many Brackets APIs that assume a trailing "/").</dd>
+    <dt>isUpdating</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, indicates we're just updating the tree; if false, a different project is being loaded.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved when the project is loaded and tree is rendered, or rejected if the project path fails to load.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _loadProject(rootPath, isUpdating) {
         var result = new $.Deferred(),
             startLoad = new $.Deferred(),
             resultRenderTree;
@@ -1538,34 +1581,41 @@ user choose a folder.</p>
 
             &#x2F;&#x2F; Clear project path map
             _projectInitialLoad = {
-                previous        : [],</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_projectSettings</h4>
-              <div class="description"><p>Invoke project settings dialog.</p>
+                previous        : [],</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectSettings</h4>
+
+    
+    <div class="description"><p>Invoke project settings dialog.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _projectSettings() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _projectSettings() {
         return PreferencesDialogs.showProjectPreferencesDialog(getBaseUrl()).getPromise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_redraw</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _redraw(selectionChanged, reveal) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_redraw</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _redraw(selectionChanged, reveal) {
         reveal = (reveal === undefined) ? true : reveal;
         
         &#x2F;&#x2F; redraw selection
@@ -1583,23 +1633,28 @@ user choose a folder.</p>
             &#x2F;&#x2F; a new file is added and removed (causing a new selection) from the working set
             _projectTree.triggerHandler(&quot;contentChanged&quot;);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_refreshFileTreeInternal</h4>
-              <div class="description"><p>Internal function to refresh the project&#39;s file tree, maintaining the
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_refreshFileTreeInternal</h4>
+
+    
+    <div class="description"><p>Internal function to refresh the project&#39;s file tree, maintaining the
 current selection. This function is expensive and not concurrency-safe,
 so most callers should use the synchronized and throttled version below,
 refreshFileTree.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _refreshFileTreeInternal() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved when the project tree is reloaded, or rejected if the project path fails to reload. If the previous selected entry is not found, the promise is still resolved.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _refreshFileTreeInternal() {
         var selectedEntry,
             deferred = new $.Deferred();
 
@@ -1623,20 +1678,21 @@ refreshFileTree.</p>
             }, deferred.reject);
 
         return deferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_reloadProjectPreferencesScope</h4>
-              <div class="description"><p>Reloads the project preferences.</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _reloadProjectPreferencesScope() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_reloadProjectPreferencesScope</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _reloadProjectPreferencesScope() {
         var root = getProjectRoot();
         if (root) {
             &#x2F;&#x2F; Alias the &quot;project&quot; Scope to the path Scope for the project-level settings file
@@ -1644,23 +1700,21 @@ refreshFileTree.</p>
         } else {
             PreferencesManager._setProjectSettingsFile();
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_renderTree</h4>
-              <div class="description"><p>Given an input to jsTree&#39;s json_data.data setting, display the data in the file tree UI
-(replacing any existing file tree that was previously displayed). This input could be
-raw JSON data, or it could be a dataprovider function. See jsTree docs for details:
-<a href="http://www.jstree.com/documentation/json_data">http://www.jstree.com/documentation/json_data</a></p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _renderTree(treeDataProvider) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_renderTree</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _renderTree(treeDataProvider) {
         var result = new $.Deferred();
 
         &#x2F;&#x2F; For #1542, make sure the tree is scrolled to the top before refreshing.
@@ -1857,29 +1911,27 @@ raw JSON data, or it could be a dataprovider function. See jsTree docs for detai
         });
 
         return Async.withTimeout(result.promise(), 1000);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_reopenNodes</h4>
-              <div class="description"><p>Reopens a set of nodes in the tree by ID.</p>
-</div>
-              <dl>
-                  <dt>nodesByDepth</dt>
-                  <dd class="label label-info pull-left">Array.&lt;Array.&lt;string&gt;&gt;</dd>
-                  <dd>An array of arrays of node ids to reopen. The ids within
- each sub-array are reopened in parallel, and the sub-arrays are reopened in order, so they should
- be sorted by depth within the tree.</dd>
-                  <dt>resultDeferred</dt>
-                  <dd class="label label-info pull-left">$.Deferred</dd>
-                  <dd>A Deferred that will be resolved when all nodes have been fully
- reopened.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _reopenNodes(nodesByDepth, resultDeferred) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_reopenNodes</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>nodesByDepth</dt>
+    <dd class="label label-info pull-left">Array.&lt;Array.&lt;string&gt;&gt;</dd>
+    <dd>An array of arrays of node ids to reopen. The ids within each sub-array are reopened in parallel, and the sub-arrays are reopened in order, so they should be sorted by depth within the tree.</dd>
+    <dt>resultDeferred</dt>
+    <dd class="label label-info pull-left">$.Deferred</dd>
+    <dd>A Deferred that will be resolved when all nodes have been fully reopened.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _reopenNodes(nodesByDepth, resultDeferred) {
         if (nodesByDepth.length === 0) {
             &#x2F;&#x2F; All paths are opened and fully rendered.
             resultDeferred.resolve();
@@ -1911,20 +1963,21 @@ raw JSON data, or it could be a dataprovider function. See jsTree docs for detai
                 _reopenNodes(nodesByDepth, resultDeferred);
             });
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_savePreferences</h4>
-              <div class="description"><p>Save ProjectManager project path and tree state.</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _savePreferences() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_savePreferences</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _savePreferences() {
         
         &#x2F;&#x2F; save the current project
         PreferencesManager.setViewState(&quot;projectPath&quot;, _projectRoot.fullPath);
@@ -1966,35 +2019,41 @@ raw JSON data, or it could be a dataprovider function. See jsTree docs for detai
 
         &#x2F;&#x2F; Store the open nodes by their full path and persist to storage
         PreferencesManager.setViewState(&quot;project.treeState&quot;, openNodes, context);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_shouldShowName</h4>
-              <div class="description"><p>See shouldShow</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _shouldShowName(name) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_shouldShowName</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _shouldShowName(name) {
         return !name.match(_exclusionListRegEx);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_showMaxFilesDialog</h4>
-              <div class="description"><p>Error dialog when max files in index is hit</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showMaxFilesDialog</h4>
+
+    
+    <div class="description"><p>Error dialog when max files in index is hit</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showMaxFilesDialog() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Dialog</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showMaxFilesDialog() {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.ERROR_MAX_FILES_TITLE,
@@ -2016,49 +2075,52 @@ raw JSON data, or it could be a dataprovider function. See jsTree docs for detai
         
         &#x2F;&#x2F; Reset allFiles cache
         _allFilesCachePromise = null;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_toCompareString</h4>
-              <div class="description"><p>Generate a string suitable for sorting</p>
-</div>
-              <dl>
-                  <dt>name</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _toCompareString(name, isFolder) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_toCompareString</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _toCompareString(name, isFolder) {
         return (isFolder ? _sortPrefixDir : _sortPrefixFile) + name;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_treeDataProvider</h4>
-              <div class="description"><p>Called by jsTree when the user has expanded a node that has never been expanded before. We call
-jsTree back asynchronously with the node&#39;s immediate children data once the subfolder is done
-being fetched.</p>
-</div>
-              <dl>
-                  <dt>$treeNode</dt>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd>jQ object for the DOM node being expanded</dd>
-                  <dt>jsTreeCallback</dt>
-                  <dd class="label label-info pull-left">function(Array)</dd>
-                  <dd>jsTree callback to provide children to</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _treeDataProvider($treeNode, jsTreeCallback) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_treeDataProvider</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>$treeNode</dt>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd>jQ object for the DOM node being expanded</dd>
+    <dt>jsTreeCallback</dt>
+    <dd class="label label-info pull-left">function(Array)</dd>
+    <dd>jsTree callback to provide children to</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _treeDataProvider($treeNode, jsTreeCallback) {
         var dirEntry, isProjectRoot = false, deferred = new $.Deferred();
         
         function processEntries(entries) {
@@ -2127,20 +2189,24 @@ being fetched.</p>
                 processEntries(contents);
             }
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_unwatchProjectRoot</h4>
-              <div class="description"><p>Close the file system and remove listeners.</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _unwatchProjectRoot() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_unwatchProjectRoot</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the root is unwatched. Rejected if there is no project root or if the unwatch fails.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _unwatchProjectRoot() {
         var result = new $.Deferred();
         if (!_projectRoot) {
             result.reject();
@@ -2162,20 +2228,22 @@ being fetched.</p>
         }
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>addWelcomeProjectPath</h4>
-              <div class="description"><p>Adds the path to the list of welcome projects we&#39;ve ever seen, if not on the list already.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>addWelcomeProjectPath</h4>
+
+    
+    <div class="description"><p>Adds the path to the list of welcome projects we&#39;ve ever seen, if not on the list already.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addWelcomeProjectPath(path) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addWelcomeProjectPath(path) {
         var pathNoSlash = FileUtils.stripTrailingSlash(path);  &#x2F;&#x2F; &quot;welcomeProjects&quot; pref has standardized on no trailing &quot;&#x2F;&quot;
         
         var welcomeProjects = PreferencesManager.getViewState(&quot;welcomeProjects&quot;) || [];
@@ -2183,33 +2251,37 @@ being fetched.</p>
             welcomeProjects.push(pathNoSlash);
             PreferencesManager.setViewState(&quot;welcomeProjects&quot;, welcomeProjects);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>createNewItem</h4>
-              <div class="description"><p>Create a new item in the current project.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>createNewItem</h4>
+
+    
+    <div class="description"><p>Create a new item in the current project.</p>
 </div>
-              <dl>
-                  <dt>{string|Directory}</dt>
-                  <dd class="label label-info pull-left">baseDir</dd>
-                  <dd>Full path of the directory where the item should go.
- Defaults to the project root if the entry is not valid or not within the project.</dd>
-                  <dt>{string}</dt>
-                  <dd class="label label-info pull-left">initialName</dd>
-                  <dd>Initial name for the item</dd>
-                  <dt>{boolean}</dt>
-                  <dd class="label label-info pull-left">skipRename</dd>
-                  <dd>If true, don't allow the user to rename the item</dd>
-                  <dt>{boolean}</dt>
-                  <dd class="label label-info pull-left">isFolder</dd>
-                  <dd>If true, create a folder instead of a file</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function createNewItem(baseDir, initialName, skipRename, isFolder) {
+    
+<dl>
+    <dt>{string|Directory}</dt>
+    <dd class="label label-info pull-left">baseDir</dd>
+    <dd>Full path of the directory where the item should go. Defaults to the project root if the entry is not valid or not within the project.</dd>
+    <dt>{string}</dt>
+    <dd class="label label-info pull-left">initialName</dd>
+    <dd>Initial name for the item</dd>
+    <dt>{boolean}</dt>
+    <dd class="label label-info pull-left">skipRename</dd>
+    <dd>If true, don't allow the user to rename the item</dd>
+    <dt>{boolean}</dt>
+    <dd class="label label-info pull-left">isFolder</dd>
+    <dd>If true, create a folder instead of a file</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved with the File of the created object, or rejected if the user cancelled or entered an illegal filename.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createNewItem(baseDir, initialName, skipRename, isFolder) {
         &#x2F;&#x2F; We assume the parent directory exists
         var entry               = (typeof baseDir === &quot;string&quot;) ? FileSystem.getDirectoryForPath(baseDir) : baseDir,
             baseDirEntry        = isWithinProject(entry) ? entry : getProjectRoot(),
@@ -2370,24 +2442,26 @@ being fetched.</p>
         }
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>deleteItem</h4>
-              <div class="description"><p>Delete file or directore from project</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>deleteItem</h4>
+
+    
+    <div class="description"><p>Delete file or directore from project</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(File, Directory)</dd>
-                  <dd>File or Directory to delete</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function deleteItem(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(File, Directory)</dd>
+    <dd>File or Directory to delete</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function deleteItem(entry) {
         var result = new $.Deferred();
 
         entry.moveToTrash(function (err) {
@@ -2411,49 +2485,53 @@ being fetched.</p>
         });
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>forceFinishRename</h4>
-              <div class="description"><p>Forces createNewItem() to complete by removing focus from the rename field which causes
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>forceFinishRename</h4>
+
+    
+    <div class="description"><p>Forces createNewItem() to complete by removing focus from the rename field which causes
 the new file to be written to disk</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function forceFinishRename() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function forceFinishRename() {
         $(&quot;.jstree-rename-input&quot;).blur();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getAllFiles</h4>
-              <div class="description"><p>Returns an Array of all files for this project, optionally including
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getAllFiles</h4>
+
+    
+    <div class="description"><p>Returns an Array of all files for this project, optionally including
 files in the working set that are <em>not</em> under the project root. Files filtered
 out by shouldShow().</p>
 </div>
-              <dl>
-                  <dt>filter</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">function (File, number):boolean</dd>
-                  <dd>Optional function to filter
- the file list (does not filter directory traversal). API matches Array.filter().</dd>
-                  <dt>includeWorkingSet</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, include files in the working set
- that are not under the project root (*except* for untitled documents).
-</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getAllFiles(filter, includeWorkingSet) {
+    
+<dl>
+    <dt>filter</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">function (File, number):boolean</dd>
+    <dd>Optional function to filter the file list (does not filter directory traversal). API matches Array.filter().</dd>
+    <dt>includeWorkingSet</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, include files in the working set that are not under the project root (*except* for untitled documents). </dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Promise that is resolved with an Array of File objects.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getAllFiles(filter, includeWorkingSet) {
         &#x2F;&#x2F; The filter and includeWorkingSet params are both optional.
         &#x2F;&#x2F; Handle the case where filter is omitted but includeWorkingSet is
         &#x2F;&#x2F; specified.
@@ -2492,92 +2570,114 @@ out by shouldShow().</p>
         });
         
         return filteredFilesDeferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getBaseUrl</h4>
-              <div class="description"><p>Returns the encoded Base URL of the currently loaded project, or empty string if no project
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getBaseUrl</h4>
+
+    
+    <div class="description"><p>Returns the encoded Base URL of the currently loaded project, or empty string if no project
 is open (during startup, or running outside of app shell).</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getBaseUrl() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">String</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getBaseUrl() {
         return _projectBaseUrl;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getInitialProjectPath</h4>
-              <div class="description"><p>Initial project path is stored in prefs, which defaults to the welcome project on
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getInitialProjectPath</h4>
+
+    
+    <div class="description"><p>Initial project path is stored in prefs, which defaults to the welcome project on
 first launch.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getInitialProjectPath() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getInitialProjectPath() {
         return updateWelcomeProjectPath(PreferencesManager.getViewState(&quot;projectPath&quot;));
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getLanguageFilter</h4>
-              <div class="description"><p>Returns a filter for use with getAllFiles() that filters files based on LanguageManager language id</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getLanguageFilter</h4>
+
+    
+    <div class="description"><p>Returns a filter for use with getAllFiles() that filters files based on LanguageManager language id</p>
 </div>
-              <dl>
-                  <dt>languageId</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getLanguageFilter(languageId) {
+    
+<dl>
+    <dt>languageId</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!function(File):boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getLanguageFilter(languageId) {
         return function languageFilter(file) {
             return (LanguageManager.getLanguageForPath(file.fullPath).getId() === languageId);
         };
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getProjectRoot</h4>
-              <div class="description"><p>Returns the root folder of the currently loaded project, or null if no project is open (during
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getProjectRoot</h4>
+
+    
+    <div class="description"><p>Returns the root folder of the currently loaded project, or null if no project is open (during
 startup, or running outside of app shell).</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getProjectRoot() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Directory</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getProjectRoot() {
         return _projectRoot;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getSelectedItem</h4>
-              <div class="description"><p>Returns the File or Directory corresponding to the item selected in the sidebar panel, whether in
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getSelectedItem</h4>
+
+    
+    <div class="description"><p>Returns the File or Directory corresponding to the item selected in the sidebar panel, whether in
 the file tree OR in the working set; or null if no item is selected anywhere in the sidebar.
 May NOT be identical to the current Document - a folder may be selected in the sidebar, or the sidebar may not
 have the current document visible in the tree &amp; working set.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getSelectedItem() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?(File,Directory)</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getSelectedItem() {
         &#x2F;&#x2F; Prefer file tree selection, else use working set selection
         var selectedEntry = _getTreeSelectedItem();
         if (!selectedEntry) {
@@ -2626,112 +2726,132 @@ have the current document visible in the tree &amp; working set.</p>
         }
         
         _redraw(true);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>isBinaryFile</h4>
-              <div class="description"><p>@deprecated Use LanguageManager.getLanguageForPath(fullPath).isBinary()
-Returns true if fileName&#39;s extension doesn&#39;t belong to binary (e.g. archived)</p>
+    }</code></pre></div><div class="member public deprecated">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>isBinaryFile</h4>
+
+<div class="alert alert-error">Use LanguageManager.getLanguageForPath(fullPath).isBinary()</div>
+    
+    <div class="description"><p>Returns true if fileName&#39;s extension doesn&#39;t belong to binary (e.g. archived)</p>
 </div>
-              <dl>
-                  <dt>fileName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function isBinaryFile(fileName) {
+    
+<dl>
+    <dt>fileName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isBinaryFile(fileName) {
         DeprecationWarning.deprecationWarning(&quot;ProjectManager.isBinaryFile() called for &quot; + fileName + &quot;. Use LanguageManager.getLanguageForPath(fileName).isBinary() instead.&quot;);
         return LanguageManager.getLanguageForPath(fileName).isBinary();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>isWelcomeProjectPath</h4>
-              <div class="description"><p>Returns true if the given path is the same as one of the welcome projects we&#39;ve previously opened,
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>isWelcomeProjectPath</h4>
+
+    
+    <div class="description"><p>Returns true if the given path is the same as one of the welcome projects we&#39;ve previously opened,
 or the one for the current build.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function isWelcomeProjectPath(path) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isWelcomeProjectPath(path) {
         if (path === _getWelcomeProjectPath()) {
             return true;
         }
         var pathNoSlash = FileUtils.stripTrailingSlash(path);  &#x2F;&#x2F; &quot;welcomeProjects&quot; pref has standardized on no trailing &quot;&#x2F;&quot;
         var welcomeProjects = PreferencesManager.getViewState(&quot;welcomeProjects&quot;) || [];
         return welcomeProjects.indexOf(pathNoSlash) !== -1;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>isWithinProject</h4>
-              <div class="description"><p>Returns true if absPath lies within the project, false otherwise.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>isWithinProject</h4>
+
+    
+    <div class="description"><p>Returns true if absPath lies within the project, false otherwise.
 Does not support paths containing &quot;..&quot;</p>
 </div>
-              <dl>
-                  <dt>absPathOrEntry</dt>
-                  <dd class="label label-info pull-left">string,FileSystemEntry</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function isWithinProject(absPathOrEntry) {
+    
+<dl>
+    <dt>absPathOrEntry</dt>
+    <dd class="label label-info pull-left">string,FileSystemEntry</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isWithinProject(absPathOrEntry) {
         var absPath = absPathOrEntry.fullPath || absPathOrEntry;
         return (_projectRoot &amp;&amp; absPath.indexOf(_projectRoot.fullPath) === 0);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>makeProjectRelativeIfPossible</h4>
-              <div class="description"><p>If absPath lies within the project, returns a project-relative path. Else returns absPath
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>makeProjectRelativeIfPossible</h4>
+
+    
+    <div class="description"><p>If absPath lies within the project, returns a project-relative path. Else returns absPath
 unmodified.
 Does not support paths containing &quot;..&quot;</p>
 </div>
-              <dl>
-                  <dt>absPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function makeProjectRelativeIfPossible(absPath) {
+    
+<dl>
+    <dt>absPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function makeProjectRelativeIfPossible(absPath) {
         if (isWithinProject(absPath)) {
             return absPath.slice(_projectRoot.fullPath.length);
         }
         return absPath;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>openProject</h4>
-              <div class="description"><p>Open a new project. Currently, Brackets must always have a project open, so
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>openProject</h4>
+
+    
+    <div class="description"><p>Open a new project. Currently, Brackets must always have a project open, so
 this method handles both closing the current project and opening a new project.</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Optional absolute path to the root folder of the project.
- If path is undefined or null, displays a dialog where the user can choose a
- folder to load. If the user cancels the dialog, nothing more happens.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function openProject(path) {
+    
+<dl>
+    <dt>path</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Optional absolute path to the root folder of the project. If path is undefined or null, displays a dialog where the user can choose a folder to load. If the user cancels the dialog, nothing more happens.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved when the project is loaded and tree is rendered, or rejected if the project path fails to load.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openProject(path) {
 
         var result = new $.Deferred();
 
@@ -2771,20 +2891,25 @@ this method handles both closing the current project and opening a new project.<
 
         &#x2F;&#x2F; if fail, don&#39;t open new project: user canceled (or we failed to save its unsaved changes)
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>refreshFileTree</h4>
-              <div class="description"><p>Refresh the project&#39;s file tree, maintaining the current selection.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>refreshFileTree</h4>
+
+    
+    <div class="description"><p>Refresh the project&#39;s file tree, maintaining the current selection.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function refreshFileTree() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved when the project tree is reloaded, or rejected if the project path fails to reload. If the previous selected entry is not found, the promise is still resolved.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function refreshFileTree() {
         if (!_refreshFileTreePromise) {
             var internalRefreshPromise  = _refreshFileTreeInternal(),
                 deferred                = new $.Deferred();
@@ -2809,27 +2934,32 @@ this method handles both closing the current project and opening a new project.<
         }
 
         return _refreshFileTreePromise;
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>renameItem</h4>
-              <div class="description"><p>Rename a file/folder. This will update the project tree data structures
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>renameItem</h4>
+
+    
+    <div class="description"><p>Rename a file/folder. This will update the project tree data structures
 and send notifications about the rename.</p>
 </div>
-              <dl>
-                  <dt>newName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>New item name</dd>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>True if item is a folder; False if it is a file.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function renameItem(oldName, newName, isFolder) {
+    
+<dl>
+    <dt>newName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>New item name</dd>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>True if item is a folder; False if it is a file.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved or rejected when the rename is finished.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function renameItem(oldName, newName, isFolder) {
         var result = new $.Deferred();
         
         if (oldName === newName) {
@@ -2867,25 +2997,27 @@ and send notifications about the rename.</p>
         });
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>renameItemInline</h4>
-              <div class="description"><p>Initiates a rename of the selected item in the project tree, showing an inline editor
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>renameItemInline</h4>
+
+    
+    <div class="description"><p>Initiates a rename of the selected item in the project tree, showing an inline editor
 for input. Silently no-ops if the entry lies outside the tree or doesn&#39;t exist.</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(File, Directory)</dd>
-                  <dd>File or Directory to rename</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function renameItemInline(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(File, Directory)</dd>
+    <dd>File or Directory to rename</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function renameItemInline(entry) {
         &#x2F;&#x2F; First make sure the item in the tree is visible - jsTree&#39;s rename API doesn&#39;t do anything to ensure inline input is visible
         showInTree(entry)
             .done(function ($selected) {
@@ -2964,23 +3096,25 @@ for input. Silently no-ops if the entry lies outside the tree or doesn&#39;t exi
                 }
             });
         &#x2F;&#x2F; No fail handler: silently no-op if file doesn&#39;t exist in tree
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>setBaseUrl</h4>
-              <div class="description"><p>Sets the encoded Base URL of the currently loaded project.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>setBaseUrl</h4>
+
+    
+    <div class="description"><p>Sets the encoded Base URL of the currently loaded project.</p>
 </div>
-              <dl>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">String</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function setBaseUrl(projectBaseUrl) {
+    
+<dl>
+    <dt></dt>
+    <dd class="label label-info pull-left">String</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setBaseUrl(projectBaseUrl) {
         var context = { location : { scope: &quot;user&quot;,
                                      layer: &quot;project&quot;,
                                      layerID: _projectRoot.fullPath} };
@@ -2994,73 +3128,82 @@ for input. Silently no-ops if the entry lies outside the tree or doesn&#39;t exi
         }
 
         PreferencesManager.setViewState(&quot;project.baseUrl&quot;, _projectBaseUrl, context);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>shouldShow</h4>
-              <div class="description"><p>Returns false for files and directories that are not commonly useful to display.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>shouldShow</h4>
+
+    
+    <div class="description"><p>Returns false for files and directories that are not commonly useful to display.</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                  <dd class="label label-info pull-left">FileSystemEntry</dd>
-                  <dd>File or directory to filter</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function shouldShow(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>File or directory to filter</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if the file should be displayed</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function shouldShow(entry) {
         return _shouldShowName(entry.name);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>showInTree</h4>
-              <div class="description"><p>Expands tree nodes to show the given file or folder and selects it. Silently no-ops if the
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>showInTree</h4>
+
+    
+    <div class="description"><p>Expands tree nodes to show the given file or folder and selects it. Silently no-ops if the
 path lies outside the project, or if it doesn&#39;t exist.</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">(File, Directory)</dd>
-                  <dd>File or Directory to show</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function showInTree(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">(File, Directory)</dd>
+    <dd>File or Directory to show</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved when done; or rejected if not found</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showInTree(entry) {
         return _findTreeNode(entry)
             .done(function ($node) {
                 &#x2F;&#x2F; jsTree will automatically expand parent nodes to ensure visible
                 _projectTree.jstree(&quot;select_node&quot;, $node, false);
             });
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>updateWelcomeProjectPath</h4>
-              <div class="description"><p>If the provided path is to an old welcome project, returns the current one instead.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>updateWelcomeProjectPath</h4>
+
+    
+    <div class="description"><p>If the provided path is to an old welcome project, returns the current one instead.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function updateWelcomeProjectPath(path) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function updateWelcomeProjectPath(path) {
         if (isWelcomeProjectPath(path)) {
             return _getWelcomeProjectPath();
         } else {
             return path;
         }
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>QuickOpen - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>QuickOpen</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,162 +346,171 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              
-            </div>
-          </section>
+<h1>QuickOpen</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/widgets/ModalBar.html">ModalBar</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringMatch.html">StringMatch</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-              <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
-            </ul>
-            
-            
-          </section>
+    <div></div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/widgets/ModalBar.html">ModalBar</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringMatch.html">StringMatch</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>CURSOR_POS_EXP</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>The regular expression to check the cursor position</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var CURSOR_POS_EXP = new RegExp(&quot;:([^,]+)?(,(.+)?)?&quot;);</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_curDialog</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Dialog</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>The currently open quick open dialog.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _curDialog;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>currentPlugin</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>QuickOpenPlugin</dd>
-                </dl>
-                <div class="description"><p>Current plugin</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var currentPlugin = null;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>fileList</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;FileInfo&gt;</dd>
-                </dl>
-                <div class="description"><p>List of files</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var fileList;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>fileListPromise</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>$.Promise</dd>
-                </dl>
-                <div class="description"><p>File list promise</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var fileListPromise;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>plugins</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;QuickOpenPlugin&gt;</dd>
-                </dl>
-                <div class="description"><p>List of plugins</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var plugins = [];</code></pre>
-              </div>
-              
-            </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>QuickOpenPlugin</h4>
-              <div class="description"><p>Defines API for new QuickOpen plug-ins</p>
+    
+</span>
+    <h4>CURSOR_POS_EXP</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>The regular expression to check the cursor position</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function QuickOpenPlugin(name, languageIds, done, search, match, itemFocus, itemSelect, resultsFormatter, matcherOptions, label) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var CURSOR_POS_EXP = new RegExp(&quot;:([^,]+)?(,(.+)?)?&quot;);</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_curDialog</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Dialog</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>The currently open quick open dialog.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _curDialog;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>currentPlugin</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>QuickOpenPlugin</dd>
+</dl>
+    <div class="description"><p>Current plugin</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var currentPlugin = null;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>fileList</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;FileInfo&gt;</dd>
+</dl>
+    <div class="description"><p>List of files</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var fileList;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>fileListPromise</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Promise</dd>
+</dl>
+    <div class="description"><p>File list promise</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var fileListPromise;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>plugins</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;QuickOpenPlugin&gt;</dd>
+</dl>
+    <div class="description"><p>List of plugins</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var plugins = [];</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>QuickOpenPlugin</h4>
+
+    
+    <div class="description"><p>Defines API for new QuickOpen plug-ins</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function QuickOpenPlugin(name, languageIds, done, search, match, itemFocus, itemSelect, resultsFormatter, matcherOptions, label) {
         this.name = name;
         this.languageIds = languageIds;
         this.done = done;
@@ -514,54 +521,25 @@
         this.resultsFormatter = resultsFormatter;
         this.matcherOptions = matcherOptions;
         this.label = label;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>addQuickOpenPlugin</h4>
-              <div class="description"><p>Creates and registers a new QuickOpenPlugin</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>addQuickOpenPlugin</h4>
+
+    
+    <div class="description"><p>Creates and registers a new QuickOpenPlugin</p>
 </div>
-              <dl>
-                  <dt>pluginDef
-
-Parameter</dt>
-                  <dd class="label label-info pull-left"> name: string,
- languageIds: Array.&lt;string&gt;,
- done: ?function(),
- search: function(string,!StringMatch.StringMatcher):Array.&lt;SearchResult,string&gt;,
- match: function(string):boolean,
- itemFocus: ?function(?SearchResult,string),
- itemSelect: function(?SearchResult,string),
- resultsFormatter: ?function(SearchResult,string,string):string,
- matcherOptions: ?Object,
- label: ?string
- </dd>
-                  <dd>Documentation:
-
-name - plug-in name, **must be unique**
-languageIds - language Ids array. Example: ["javascript", "css", "html"]. To allow any language, pass []. Required.
-done - called when quick open is complete. Plug-in should clear its internal state. Optional.
-search - takes a query string and a StringMatcher (the use of which is optional but can speed up your searches) and returns an array of strings that match the query. Required.
-match - takes a query string and returns true if this plug-in wants to provide
- results for this query. Required.
-itemFocus - performs an action when a result has been highlighted (via arrow keys, mouseover, etc.).
- The highlighted search result item (as returned by search()) is passed as an argument. Optional.
-itemSelect - performs an action when a result is chosen.
- The selected search result item (as returned by search()) is passed as an argument. Required.
-resultsFormatter - takes a query string and an item string and returns 
- a <LI> item to insert into the displayed search results. Optional.
-matcherOptions - options to pass along to the StringMatcher (see StringMatch.StringMatcher
- for available options). Optional.
-label - if provided, the label to show before the query field. Optional.
-
-If itemFocus() makes changes to the current document or cursor/scroll position and then the user
-cancels Quick Open (via Esc), those changes are automatically reverted.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addQuickOpenPlugin(pluginDef) {
+    
+<dl>
+    <dt>pluginDef</dt>
+    <dd class="label label-info pull-left"> name: string,languageIds: Array.&lt;string&gt;,done: ?function(),search: function(string,!StringMatch.StringMatcher):Array.&lt;SearchResult,string&gt;,match: function(string):boolean,itemFocus: ?function(?SearchResult,string),itemSelect: function(?SearchResult,string),resultsFormatter: ?function(SearchResult,string,string):string,matcherOptions: ?Object,label: ?string </dd>
+    <dd>Parameter Documentation: name - plug-in name, **must be unique** languageIds - language Ids array. Example: ["javascript", "css", "html"]. To allow any language, pass []. Required. done - called when quick open is complete. Plug-in should clear its internal state. Optional. search - takes a query string and a StringMatcher (the use of which is optional but can speed up your searches) and returns an array of strings that match the query. Required. match - takes a query string and returns true if this plug-in wants to provide results for this query. Required. itemFocus - performs an action when a result has been highlighted (via arrow keys, mouseover, etc.). The highlighted search result item (as returned by search()) is passed as an argument. Optional. itemSelect - performs an action when a result is chosen. The selected search result item (as returned by search()) is passed as an argument. Required. resultsFormatter - takes a query string and an item string and returns a <LI> item to insert into the displayed search results. Optional. matcherOptions - options to pass along to the StringMatcher (see StringMatch.StringMatcher for available options). Optional. label - if provided, the label to show before the query field. Optional. If itemFocus() makes changes to the current document or cursor/scroll position and then the user cancels Quick Open (via Esc), those changes are automatically reverted.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addQuickOpenPlugin(pluginDef) {
         &#x2F;&#x2F; Backwards compatibility (for now) for old fileTypes field, if newer languageIds not specified
         if (pluginDef.fileTypes &amp;&amp; !pluginDef.languageIds) {
             console.warn(&quot;Using fileTypes for QuickOpen plugins is deprecated. Use languageIds instead.&quot;);
@@ -583,29 +561,31 @@ cancels Quick Open (via Esc), those changes are automatically reverted.</dd>
             pluginDef.matcherOptions,
             pluginDef.label
         ));
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>beginSearch</h4>
-              <div class="description"><p>Opens the Quick Open bar prepopulated with the given prefix (to select a mode) and optionally
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>beginSearch</h4>
+
+    
+    <div class="description"><p>Opens the Quick Open bar prepopulated with the given prefix (to select a mode) and optionally
 with the given query text too. Updates text field contents if Quick Open already open.</p>
 </div>
-              <dl>
-                  <dt>prefix</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>initialString</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function beginSearch(prefix, initialString) {
+    
+<dl>
+    <dt>prefix</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>initialString</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function beginSearch(prefix, initialString) {
         function createDialog() {
             _curDialog = new QuickNavigateDialog();
             _curDialog.showDialog(prefix, initialString);
@@ -666,23 +646,28 @@ with the given query text too. Updates text field contents if Quick Open already
     exports.SearchResult            = StringMatch.SearchResult;
     exports.basicMatchSort          = StringMatch.basicMatchSort;
     exports.multiFieldSort          = StringMatch.multiFieldSort;
-});</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>domItemToSearchResult</h4>
-              <div class="description"><p>Converts from list item DOM node to search provider list object</p>
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>domItemToSearchResult</h4>
+
+    
+    <div class="description"><p>Converts from list item DOM node to search provider list object</p>
 </div>
-              <dl>
-                  <dt>domItem</dt>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function domItemToSearchResult(domItem) {
+    
+<dl>
+    <dt>domItem</dt>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">SearchResult,string</dd>
+    <dd>value returned from search()</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function domItemToSearchResult(domItem) {
         if (!domItem) {
             return null;
         }
@@ -693,24 +678,29 @@ with the given query text too. Updates text field contents if Quick Open already
         
         var lastFilterResult = getLastFilterResult();
         return lastFilterResult[index];
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>extractCursorPos</h4>
-              <div class="description"><p>Attempts to extract a line number from the query where the line number
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>extractCursorPos</h4>
+
+    
+    <div class="description"><p>Attempts to extract a line number from the query where the line number
 is followed by a colon. Callers should explicitly test result with isNaN()</p>
 </div>
-              <dl>
-                  <dt>query</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>string to extract line number from</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function extractCursorPos(query) {
+    
+<dl>
+    <dt>query</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>string to extract line number from</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{query: string,local: boolean,line: number,ch: number}</dd>
+    <dd>An object with the extracted line and column numbers, and two additional fields: query with the original position string and local indicating if the cursor position should be applied to the current file. Or null if the query is invalid</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function extractCursorPos(query) {
         var regInfo = query.match(CURSOR_POS_EXP),
             result;
         
@@ -727,50 +717,57 @@ is followed by a colon. Callers should explicitly test result with isNaN()</p>
             line:   regInfo[1] - 1 || 0,
             ch:     regInfo[3] - 1 || 0
         };
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>getLastFilterResult</h4>
-              <div class="description"><p>Returns the last return value of _filterCallback(), which Smart Autocomplete helpfully caches</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getLastFilterResult</h4>
+
+    
+    <div class="description"><p>Returns the last return value of _filterCallback(), which Smart Autocomplete helpfully caches</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getLastFilterResult() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getLastFilterResult() {
         var cachedResult = $(&quot;input#quickOpenSearch&quot;).data(&quot;smart-autocomplete&quot;).rawResults;
         return cachedResult || [];
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>highlightMatch</h4>
-              <div class="description"><p>Formats item&#39;s label as properly escaped HTML text, highlighting sections that match &#39;query&#39;.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>highlightMatch</h4>
+
+    
+    <div class="description"><p>Formats item&#39;s label as properly escaped HTML text, highlighting sections that match &#39;query&#39;.
 If item is a SearchResult generated by stringMatch(), uses its metadata about which string ranges
 matched; else formats the label with no highlighting.</p>
 </div>
-              <dl>
-                  <dt>item</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string, SearchResult</dd>
-                  <dd></dd>
-                  <dt>matchClass</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>CSS class for highlighting matched text</dd>
-                  <dt>rangeFilter</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">function(boolean, string):string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function highlightMatch(item, matchClass, rangeFilter) {
+    
+<dl>
+    <dt>item</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string, SearchResult</dd>
+    <dd></dd>
+    <dt>matchClass</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>CSS class for highlighting matched text</dd>
+    <dt>rangeFilter</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">function(boolean, string):string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd>bolded, HTML-escaped result</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function highlightMatch(item, matchClass, rangeFilter) {
         var label = item.label || item;
         matchClass = matchClass || &quot;quicksearch-namematch&quot;;
         
@@ -830,26 +827,31 @@ matched; else formats the label with no highlighting.</p>
         var displayPath = highlightMatch(item, &quot;quicksearch-pathmatch&quot;);
         
         return &quot;&lt;li&gt;&quot; + displayName + &quot;&lt;br &#x2F;&gt;&lt;span class=&#39;quick-open-path&#39;&gt;&quot; + displayPath + &quot;&lt;&#x2F;span&gt;&lt;&#x2F;li&gt;&quot;;
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>queryIsStale</h4>
-              <div class="description"><p>Returns true if the query string doesn&#39;t match the query text field. This can happen when _handleFilter()
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>queryIsStale</h4>
+
+    
+    <div class="description"><p>Returns true if the query string doesn&#39;t match the query text field. This can happen when _handleFilter()
 runs slow (either synchronously or async as in searchFileList()). Several key events queue up before filtering
 is done, and each sets a timeout. After all the key events are handled, we wind up with a queue of timeouts
 waiting to run, once per key event. All but the last one reflect a stale value of the text field.</p>
 </div>
-              <dl>
-                  <dt>query</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function queryIsStale(query) {
+    
+<dl>
+    <dt>query</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function queryIsStale(query) {
         var currentQuery = $(&quot;input#quickOpenSearch&quot;).val();
         return currentQuery !== query;
     }
@@ -901,27 +903,27 @@ waiting to run, once per key event. All but the last one reflect a stale value o
         StringMatch.multiFieldSort(filteredList, { matchGoodness: 0, filenameWithoutExtension: 1, label: 2, fullPath: 3 });
 
         return filteredList;
-    }</code></pre>
-            </div>
+    }</code></pre></div>
+</section>
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
             
-          </section>
-          
-          <section class="classes">
-            <h2>Classes</h2>
+            <span class="pull-right scope">Constructor</span>
             
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>QuickNavigateDialog</h4>
-                  <em><p>QuickNavigateDialog class</p>
+            <h4>QuickNavigateDialog</h4>
+            <em><p>QuickNavigateDialog class</p>
 </em>
-                  <dl>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function QuickNavigateDialog() {
+            
+            <dl>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function QuickNavigateDialog() {
         this.$searchField = undefined; &#x2F;&#x2F; defined when showDialog() is called
         
         &#x2F;&#x2F; Bind event handlers
@@ -943,99 +945,101 @@ waiting to run, once per key event. All but the last one reflect a stale value o
         });
         this._matchers                  = {};
     }</code></pre>
-                </div>
-      
-                <section class="properties ">
-                  <h3>Properties 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_closeDeferred</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>$.Deferred</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>If the dialog is closing, this will contain a deferred that is resolved
-when it&#39;s done closing.</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._closeDeferred = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_filenameMatcher</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>StringMatch.StringMatcher</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Handles caching of filename search information for the lifetime of a 
-QuickNavigateDialog (a single search until the dialog is dismissed)</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filenameMatcher = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_matchers</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>Object.&lt;string, StringMatch.StringMatcher&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>StringMatcher caches for each QuickOpen plugin that keep track of search
-information for the lifetime of a QuickNavigateDialog (a single search
-until the dialog is dismissed)</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._matchers = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_origDocPath</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>?string</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Remembers the current document that was displayed when showDialog() was called.
-TODO: in the future, if focusing an item can switch documents, need to restore this on Escape.</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origDocPath = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_origScrollPos</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>?{x:number, y:number}</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Remembers the scroll position in origDocPath when showDialog() was called (see origSelection above).</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origScrollPos = null;
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_closeDeferred</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Deferred</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._closeDeferred = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_filenameMatcher</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>StringMatch.StringMatcher</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filenameMatcher = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_matchers</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, StringMatch.StringMatcher&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._matchers = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_origDocPath</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origDocPath = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_origScrollPos</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?{x:number, y:number}</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origScrollPos = null;
 
     function _filenameFromPath(path, includeExtension) {
         var end;
@@ -1048,72 +1052,73 @@ TODO: in the future, if focusing an item can switch documents, need to restore t
             }
         }
         return path.slice(path.lastIndexOf(&quot;&#x2F;&quot;) + 1, end);
-    }</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_origSelections</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>?Array.&lt;{{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean}}&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Remembers the selection state in origDocPath that was present when showDialog() was called. Focusing on an
-item can change the selection; we restore this original selection if the user presses Escape. Null if
-no document was open when Quick Open was invoked.</p>
-</div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origSelections = null;</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>isOpen</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>boolean</dd>
-                    </dl>
-                    <div class="description"><p>True if the dialog is currently open. Note that this is set to false immediately
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_origSelections</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Array.&lt;{{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean}}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._origSelections = null;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>isOpen</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+</dl>
+    <div class="description"><p>True if the dialog is currently open. Note that this is set to false immediately
 when the dialog starts closing; it doesn&#39;t wait for the ModalBar animation to finish.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.isOpen = false;</code></pre>
-                  </div>
-                  
-                </section>
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_filterCallback</h4>
-                    <div class="description"><p>Handles changes to the current query in the search field.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.isOpen = false;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_filterCallback</h4>
+
+    
+    <div class="description"><p>Handles changes to the current query in the search field.</p>
 </div>
-                    <dl>
-                      <dt>query</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The new query.</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">Array</dd>
-                      <dd>The filtered list of results.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filterCallback = function (query) {
+    
+<dl>
+    <dt>query</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The new query.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array</dd>
+    <dd>The filtered list of results.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filterCallback = function (query) {
         &#x2F;&#x2F; If previous filter calls ran slow, we may have accumulated several query change events in the meantime.
         &#x2F;&#x2F; Only respond to the one that&#39;s current. Note that this only works because we&#39;re called on a timeout after
         &#x2F;&#x2F; the key event; checking DURING the key event itself would never yield a future value for the input field.
@@ -1160,41 +1165,41 @@ when the dialog starts closing; it doesn&#39;t wait for the ModalBar animation t
         &#x2F;&#x2F; No matching plugin: use default file search mode
         currentPlugin = null;
         return searchFileList(query, this._filenameMatcher);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleBlur</h4>
-                    <div class="description"><p>Close the dialog when it loses focus.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleBlur</h4>
+
+    
+    <div class="description"><p>Close the dialog when it loses focus.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleBlur = function (e) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleBlur = function (e) {
         this.close();
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleDocumentMouseDown</h4>
-                    <div class="description"><p>Close the dialog when the user clicks outside of it. Smart-autocomplete listens for this and automatically closes its popup,
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleDocumentMouseDown</h4>
+
+    
+    <div class="description"><p>Close the dialog when the user clicks outside of it. Smart-autocomplete listens for this and automatically closes its popup,
 but we want to close the whole search &quot;dialog.&quot; (And we can&#39;t just piggyback on the popup closing event, since there are cases
 where the popup closes that we want the dialog to remain open (e.g. deleting search term via backspace).</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleDocumentMouseDown = function (e) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleDocumentMouseDown = function (e) {
         if (this.modalBar.getRoot().find(e.target).length === 0 &amp;&amp; $(&quot;.smart_autocomplete_container&quot;).find(e.target).length === 0) {
             this.close();
         } else {
@@ -1205,23 +1210,23 @@ where the popup closes that we want the dialog to remain open (e.g. deleting sea
                 e.stopPropagation();
             }
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleItemFocus</h4>
-                    <div class="description"><p>Opens the file specified by selected item if there is no current plug-in, otherwise defers handling
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleItemFocus</h4>
+
+    
+    <div class="description"><p>Opens the file specified by selected item if there is no current plug-in, otherwise defers handling
 to the currentPlugin</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemFocus = function (e, selectedDOMItem) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemFocus = function (e, selectedDOMItem) {
         var selectedItem = domItemToSearchResult(selectedDOMItem);
         
         if (currentPlugin &amp;&amp; currentPlugin.itemFocus) {
@@ -1229,26 +1234,26 @@ to the currentPlugin</p>
         }
         &#x2F;&#x2F; TODO: Disable opening files on focus for now since this causes focus related bugs between 
         &#x2F;&#x2F; the editor and the search field. 
-        &#x2F;&#x2F; Also, see related code in _handleItemFocus</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleItemSelect</h4>
-                    <div class="description"><p>Navigates to the appropriate file and file location given the selected item 
+        &#x2F;&#x2F; Also, see related code in _handleItemFocus</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleItemSelect</h4>
+
+    
+    <div class="description"><p>Navigates to the appropriate file and file location given the selected item 
 and closes the dialog.</p>
 <p>Note, if selectedItem is null quick search should inspect $searchField for text
 that may have not matched anything in in the list, but may have information
 for carrying out an action (e.g. go to line).</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemSelect = function (e, selectedDOMItem) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleItemSelect = function (e, selectedDOMItem) {
 
         &#x2F;&#x2F; This is a work-around to select first item when a selection event occurs
         &#x2F;&#x2F; (usually from pressing the enter key) and no item is selected in the list.
@@ -1296,23 +1301,23 @@ for carrying out an action (e.g. go to line).</p>
             this.close();
             EditorManager.focusEditor();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleKeyUp</h4>
-                    <div class="description"><p>Called before Smart Autocomplete processes the key, but after the DOM textfield ($searchField) updates its value.
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleKeyUp</h4>
+
+    
+    <div class="description"><p>Called before Smart Autocomplete processes the key, but after the DOM textfield ($searchField) updates its value.
 After this, Smart Autocomplete doesn&#39;t call _handleFilter() &amp; re-render the list until a setTimeout(0) later.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleKeyUp = function (e) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleKeyUp = function (e) {
         &#x2F;&#x2F; Cancel the search on Esc key, and finish the search on Enter key
         if (e.keyCode === KeyEvent.DOM_VK_RETURN || e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
             &#x2F;&#x2F; Smart Autocomplete also handles Enter; but it does so without a timeout, which causes #1855.
@@ -1337,72 +1342,72 @@ After this, Smart Autocomplete doesn&#39;t call _handleFilter() &amp; re-render 
             }, 0);
             
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleResultsReady</h4>
-                    <div class="description"><p>Called synchronously after _handleFilter(), but before the cached &quot;last result&quot; is updated and before the DOM
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleResultsReady</h4>
+
+    
+    <div class="description"><p>Called synchronously after _handleFilter(), but before the cached &quot;last result&quot; is updated and before the DOM
 list items are re-rendered. Both happen synchronously just after we return. Called even when results is empty.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleResultsReady = function (e, results) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleResultsReady = function (e, results) {
         &#x2F;&#x2F; Give visual clue when there are no results (unless we&#39;re in &quot;Go To Line&quot; mode, where there
         &#x2F;&#x2F; are never results, or we&#39;re in file search mode and waiting for the index to get rebuilt)
         var hasNoResults = (results.length === 0 &amp;&amp; (fileList || currentPlugin) &amp;&amp; !this._isValidLineNumberQuery(this.$searchField.val()));
         
         ViewUtils.toggleClass(this.$searchField, &quot;no-results&quot;, hasNoResults);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleShowResults</h4>
-                    <div class="description"><p>Called synchronously after all other processing is done (_handleFilter(), updating cached &quot;last result&quot; and
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleShowResults</h4>
+
+    
+    <div class="description"><p>Called synchronously after all other processing is done (_handleFilter(), updating cached &quot;last result&quot; and
 re-rendering DOM list items). NOT called if the last filter action had 0 results.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleShowResults = function (e, results) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._handleShowResults = function (e, results) {
         &#x2F;&#x2F; Scroll to top result (unless some other item has been highlighted by user)
         if ($(&quot;.smart_autocomplete_highlight&quot;).length === 0) {
             this._handleItemFocus(null, $(&quot;.smart_autocomplete_container &gt; li:first-child&quot;).get(0));
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_isValidLineNumberQuery</h4>
-                    <div class="description"><p>Checks if the given query string is a line number query that is either empty (the number hasn&#39;t been typed yet)
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_isValidLineNumberQuery</h4>
+
+    
+    <div class="description"><p>Checks if the given query string is a line number query that is either empty (the number hasn&#39;t been typed yet)
 or is a valid line number within the visible range of the current full editor.</p>
 </div>
-                    <dl>
-                      <dt>query</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The query to check.</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>true if the given query is a valid line number query.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._isValidLineNumberQuery = function (query) {
+    
+<dl>
+    <dt>query</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The query to check.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if the given query is a valid line number query.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._isValidLineNumberQuery = function (query) {
         &#x2F;&#x2F; Empty query returns NaN from extractLineNumber, but we want to treat it as valid for UI purposes.
         if (query === &quot;:&quot;) {
             return true;
@@ -1413,28 +1418,28 @@ or is a valid line number within the visible range of the current full editor.</
         
         &#x2F;&#x2F; We could just use 0 and lineCount() here, but in future we might want this logic to work for inline editors as well.
         return (cursorPos &amp;&amp; editor &amp;&amp; cursorPos.line &gt;= editor.getFirstVisibleLine() &amp;&amp; cursorPos.line &lt;= editor.getLastVisibleLine());
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_resultsFormatterCallback</h4>
-                    <div class="description"><p>Formats the entry for the given item to be displayed in the dropdown.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_resultsFormatterCallback</h4>
+
+    
+    <div class="description"><p>Formats the entry for the given item to be displayed in the dropdown.</p>
 </div>
-                    <dl>
-                      <dt>item</dt>
-                      <dd class="label label-info pull-left">Object</dd>
-                      <dd>The item to be displayed.</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The HTML to be displayed.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._resultsFormatterCallback = function (item) {
+    
+<dl>
+    <dt>item</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The item to be displayed.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The HTML to be displayed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._resultsFormatterCallback = function (item) {
         var query = this.$searchField.val();
         
         var formatter;
@@ -1447,28 +1452,28 @@ or is a valid line number within the visible range of the current full editor.</
             formatter = _filenameResultsFormatter;
         }
         return formatter(item, query);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_updateDialogLabel</h4>
-                    <div class="description"><p>Sets the dialog label based on the current plugin (if any) and the current query.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateDialogLabel</h4>
+
+    
+    <div class="description"><p>Sets the dialog label based on the current plugin (if any) and the current query.</p>
 </div>
-                    <dl>
-                      <dt>plugin</dt>
-                      <dd class="label label-info pull-left">Object</dd>
-                      <dd>The current Quick Open plugin, or none if there is none.</dd>
-                      <dt>query</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The user's current query.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._updateDialogLabel = function (plugin, query) {
+    
+<dl>
+    <dt>plugin</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The current Quick Open plugin, or none if there is none.</dd>
+    <dt>query</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The user's current query.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._updateDialogLabel = function (plugin, query) {
         var dialogLabel = &quot;&quot;;
         if (plugin &amp;&amp; plugin.label) {
             dialogLabel = plugin.label;
@@ -1489,34 +1494,33 @@ or is a valid line number within the visible range of the current full editor.</
             }
         }
         $(&quot;.find-dialog-label&quot;, this.dialog).text(dialogLabel);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>close</h4>
-                    <div class="description"><p>Closes the search dialog and notifies all quick open plugins that
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>close</h4>
+
+    
+    <div class="description"><p>Closes the search dialog and notifies all quick open plugins that
 searching is done.</p>
 </div>
-                    <dl>
-                      <dt>scrollPos</dt>
-                      <dd class="label label-info pull-left">{x: number, y: number}</dd>
-                      <dd>If specified, scroll to the given
- position when closing the ModalBar.</dd>
-                      <dt>ch:number},</dt>
-                      <dd class="label label-info pull-left">Array.&lt;{{start:{line:number,</dd>
-                      <dd>end:{line:number, ch:number}, primary:boolean, reversed:boolean}}>
- selections If specified, restore the given selections when closing the ModalBar.</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">$.Promise</dd>
-                      <dd>Resolved when the search bar is entirely closed.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.close = function (scrollPos, selections) {
+    
+<dl>
+    <dt>scrollPos</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">{x: number, y: number}</dd>
+    <dd>If specified, scroll to the given position when closing the ModalBar.</dd>
+    <dt>ch:number},</dt>
+    <dd class="label label-info pull-left">Array.&lt;{{start:{line:number,</dd>
+    <dd>end:{line:number, ch:number}, primary:boolean, reversed:boolean}}> selections If specified, restore the given selections when closing the ModalBar.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved when the search bar is entirely closed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.close = function (scrollPos, selections) {
         if (!this.isOpen) {
             return this._closeDeferred.promise();
         }
@@ -1566,30 +1570,29 @@ searching is done.</p>
         $(window.document).off(&quot;mousedown&quot;, this._handleDocumentMouseDown);
         
         return this._closeDeferred.promise();
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setSearchFieldValue</h4>
-                    <div class="description"><p>Sets the value in the search field, updating the current mode and label based on the
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setSearchFieldValue</h4>
+
+    
+    <div class="description"><p>Sets the value in the search field, updating the current mode and label based on the
 given prefix.</p>
 </div>
-                    <dl>
-                      <dt>prefix</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The prefix that determines which mode we're in: must be empty (for file search),
- "@" for go to definition, or ":" for go to line.</dd>
-                      <dt>initialString</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The query string to search for (without the prefix).</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.setSearchFieldValue = function (prefix, initialString) {
+    
+<dl>
+    <dt>prefix</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The prefix that determines which mode we're in: must be empty (for file search), "@" for go to definition, or ":" for go to line.</dd>
+    <dt>initialString</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The query string to search for (without the prefix).</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.setSearchFieldValue = function (prefix, initialString) {
         prefix = prefix || &quot;&quot;;
         initialString = initialString || &quot;&quot;;
         initialString = prefix + initialString;
@@ -1601,22 +1604,22 @@ given prefix.</p>
         &#x2F;&#x2F; Kick smart-autocomplete to update (it only listens for keyboard events)
         &#x2F;&#x2F; (due to #1855, this will only pop up results list; it won&#39;t auto-&quot;focus&quot; the first result)
         $field.trigger(&quot;keyIn&quot;, [initialString]);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>showDialog</h4>
-                    <div class="description"><p>Shows the search dialog and initializes the auto suggestion list with filenames from the current project</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>showDialog</h4>
+
+    
+    <div class="description"><p>Shows the search dialog and initializes the auto suggestion list with filenames from the current project</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.showDialog = function (prefix, initialString) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype.showDialog = function (prefix, initialString) {
         if (this.isOpen) {
             return;
         }
@@ -1691,14 +1694,12 @@ given prefix.</p>
     function getCurrentEditorSelectedText() {
         var currentEditor = EditorManager.getActiveEditor();
         return (currentEditor &amp;&amp; currentEditor.getSelectedText()) || &quot;&quot;;
-    }</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    }</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

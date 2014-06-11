@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>CSSAgent - Brackets API</title>
     <link rel="stylesheet" href="../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../../index.html"> API</a>
+            <a class="brand" href="../../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>CSSAgent</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../../modules/strings.html">strings</a></li>
               <li><a href="../../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,159 +346,170 @@
               <li><a href="../../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>CSSAgent keeps track of loaded style sheets and allows reloading them
+<h1>CSSAgent</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>CSSAgent keeps track of loaded style sheets and allows reloading them
 from a {Document}.</p>
 <p>CSSAgent dispatches styleSheetAdded and styleSheetRemoved events, passing
 the URL for the added/removed style sheet.</p>
+</div>
+</section>
 
-            </div>
-          </section>
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/path-utils/path-utils.min.html">path-utils.min</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
-              <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/path-utils/path-utils.min.html">path-utils.min</a></li>
-            </ul>
-            
-            
-          </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_getAllStyleSheetsNotFound</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Is getAllStyleSheets() API defined? - This is undefined until we test for API</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _getAllStyleSheetsNotFound;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_styleSheetIdToUrl</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;string, string&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Map of stylesheet ids to urls</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _styleSheetIdToUrl;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_urlToStyle</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;string, CSS.CSSStyleSheetHeader&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Stylesheet urls</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _urlToStyle = {};</code></pre>
-              </div>
-              
-            </section>
+</span>
+    <h4>_getAllStyleSheetsNotFound</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_canonicalize</h4>
-              <div class="description"><p>Create a canonicalized version of the given URL, stripping off query strings and hashes.</p>
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Is getAllStyleSheets() API defined? - This is undefined until we test for API</p>
 </div>
-              <dl>
-                  <dt>url</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the URL to canonicalize</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _canonicalize(url) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _getAllStyleSheetsNotFound;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_styleSheetIdToUrl</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, string&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Map of stylesheet ids to urls</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _styleSheetIdToUrl;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_urlToStyle</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, CSS.CSSStyleSheetHeader&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Stylesheet urls</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _urlToStyle = {};</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_canonicalize</h4>
+
+    
+    <div class="description"><p>Create a canonicalized version of the given URL, stripping off query strings and hashes.</p>
+</div>
+    
+<dl>
+    <dt>url</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the URL to canonicalize</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">the</dd>
+    <dd>canonicalized URL</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _canonicalize(url) {
         return PathUtils.parseUrl(url).hrefNoSearch;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onFrameNavigated</h4>
-              <div class="description"><p>WebInspector Event: Page.frameNavigated</p>
-</div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">jQuery.Event</dd>
-                  <dd></dd>
-                  <dt>res</dt>
-                  <dd class="label label-info pull-left">frame: Frame</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onFrameNavigated(event, res) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onFrameNavigated</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">jQuery.Event</dd>
+    <dd></dd>
+    <dt>res</dt>
+    <dd class="label label-info pull-left">frame: Frame</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onFrameNavigated(event, res) {
         &#x2F;&#x2F; Clear maps when navigating to a new page
         _urlToStyle = {};
         _styleSheetIdToUrl = {};
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onFrameStoppedLoading</h4>
-              <div class="description"><p>Attempt to use deleted API CSS.getAllStyleSheets</p>
-</div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">jQuery.Event</dd>
-                  <dd></dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">frameId: Network.FrameId</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onFrameStoppedLoading(event, res) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onFrameStoppedLoading</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">jQuery.Event</dd>
+    <dd></dd>
+    <dt></dt>
+    <dd class="label label-info pull-left">frameId: Network.FrameId</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onFrameStoppedLoading(event, res) {
         var regexChromeUA,
             userAgent,
             uaMatch;
@@ -532,25 +541,27 @@ the URL for the added/removed style sheet.</p>
             _getAllStyleSheetsNotFound = (err.code === -32601);
             $(Inspector.Page).off(&quot;frameStoppedLoading.CSSAgent&quot;, _onFrameStoppedLoading);
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_styleSheetAdded</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">jQuery.Event</dd>
-                  <dd></dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">header: CSSStyleSheetHeader</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _styleSheetAdded(event, res) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_styleSheetAdded</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">jQuery.Event</dd>
+    <dd></dd>
+    <dt></dt>
+    <dd class="label label-info pull-left">header: CSSStyleSheetHeader</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _styleSheetAdded(event, res) {
         var url = _canonicalize(res.header.sourceURL),
             existing = _urlToStyle[url];
         
@@ -563,25 +574,27 @@ the URL for the added/removed style sheet.</p>
         _styleSheetIdToUrl[res.header.styleSheetId] = url;
         
         $(exports).triggerHandler(&quot;styleSheetAdded&quot;, [url, res.header]);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_styleSheetRemoved</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">jQuery.Event</dd>
-                  <dd></dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">styleSheetId: StyleSheetId</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _styleSheetRemoved(event, res) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_styleSheetRemoved</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">jQuery.Event</dd>
+    <dd></dd>
+    <dt></dt>
+    <dd class="label label-info pull-left">styleSheetId: StyleSheetId</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _styleSheetRemoved(event, res) {
         var url = _styleSheetIdToUrl[res.styleSheetId],
             header = url &amp;&amp; _urlToStyle[url];
         
@@ -592,56 +605,65 @@ the URL for the added/removed style sheet.</p>
         delete _styleSheetIdToUrl[res.styleSheetId];
         
         $(exports).triggerHandler(&quot;styleSheetRemoved&quot;, [url, header]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>clearCSSForDocument</h4>
-              <div class="description"><p>Empties a CSS style sheet given a document that has been deleted</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>clearCSSForDocument</h4>
+
+    
+    <div class="description"><p>Empties a CSS style sheet given a document that has been deleted</p>
 </div>
-              <dl>
-                  <dt>document</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function clearCSSForDocument(doc) {
+    
+<dl>
+    <dt>document</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function clearCSSForDocument(doc) {
         var style = styleForURL(doc.url);
         console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
         return Inspector.CSS.setStyleSheetText(style.styleSheetId, &quot;&quot;);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>enable</h4>
-              <div class="description"><p>Enable the domain</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>enable</h4>
+
+    
+    <div class="description"><p>Enable the domain</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function enable() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function enable() {
         return Inspector.CSS.enable();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getStylesheetURLs</h4>
-              <div class="description"><p>@deprecated Use styleSheetAdded and styleSheetRemoved events
-Get a list of all loaded stylesheet files by URL</p>
+    }</code></pre></div><div class="member public deprecated">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>getStylesheetURLs</h4>
+
+    
+    <div class="description"><p>Use styleSheetAdded and styleSheetRemoved events.
+Get a list of all loaded stylesheet files by URL.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getStylesheetURLs() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getStylesheetURLs() {
         var urls = [], url;
         for (url in _urlToStyle) {
             if (_urlToStyle.hasOwnProperty(url)) {
@@ -649,20 +671,22 @@ Get a list of all loaded stylesheet files by URL</p>
             }
         }
         return urls;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>load</h4>
-              <div class="description"><p>Initialize the agent</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>load</h4>
+
+    
+    <div class="description"><p>Initialize the agent</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function load() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function load() {
         $(Inspector.Page).on(&quot;frameNavigated.CSSAgent&quot;, _onFrameNavigated);
         $(Inspector.CSS).on(&quot;styleSheetAdded.CSSAgent&quot;, _styleSheetAdded);
         $(Inspector.CSS).on(&quot;styleSheetRemoved.CSSAgent&quot;, _styleSheetRemoved);
@@ -671,58 +695,70 @@ Get a list of all loaded stylesheet files by URL</p>
         if (!_getAllStyleSheetsNotFound) {
             $(Inspector.Page).on(&quot;frameStoppedLoading.CSSAgent&quot;, _onFrameStoppedLoading);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>reloadCSSForDocument</h4>
-              <div class="description"><p>Reload a CSS style sheet from a document</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>reloadCSSForDocument</h4>
+
+    
+    <div class="description"><p>Reload a CSS style sheet from a document</p>
 </div>
-              <dl>
-                  <dt>document</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function reloadCSSForDocument(doc) {
+    
+<dl>
+    <dt>document</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function reloadCSSForDocument(doc) {
         var style = styleForURL(doc.url);
         console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
         return Inspector.CSS.setStyleSheetText(style.styleSheetId, doc.getText());
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>styleForURL</h4>
-              <div class="description"><p>Get a style sheet for a url</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>styleForURL</h4>
+
+    
+    <div class="description"><p>Get a style sheet for a url</p>
 </div>
-              <dl>
-                  <dt>url</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function styleForURL(url) {
+    
+<dl>
+    <dt>url</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">CSS.CSSStyleSheetHeader</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function styleForURL(url) {
         return _urlToStyle[_canonicalize(url)];
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>unload</h4>
-              <div class="description"><p>Clean up</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>unload</h4>
+
+    
+    <div class="description"><p>Clean up</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function unload() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function unload() {
         $(Inspector.Page).off(&quot;.CSSAgent&quot;);
         $(Inspector.CSS).off(&quot;.CSSAgent&quot;);
     }
@@ -735,12 +771,9 @@ Get a list of all loaded stylesheet files by URL</p>
     exports.clearCSSForDocument = clearCSSForDocument;
     exports.load = load;
     exports.unload = unload;
-});</code></pre>
-            </div>
-            
-          </section>
-          
-          
+});</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

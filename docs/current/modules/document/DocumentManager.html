@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>DocumentManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>DocumentManager</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>DocumentManager maintains a list of currently &#39;open&#39; Documents. It also owns the list of files in
+<h1>DocumentManager</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>DocumentManager maintains a list of currently &#39;open&#39; Documents. It also owns the list of files in
 the working set, and the notion of which Document is currently shown in the main editor UI area.</p>
 <p>Document is the model for a file&#39;s contents; it dispatches events whenever those contents change.
 To transiently inspect a file&#39;s content, simply get a Document and call getText() on it. However,
@@ -408,186 +408,190 @@ The 3rd arg is the new name.</p>
 <p>These are jQuery events, so to listen for them you do something like this:
    $(DocumentManager).on(&quot;eventname&quot;, handler);</p>
 <p>Document objects themselves also dispatch some events - see Document docs for details.</p>
+</div>
+</section>
 
-            </div>
-          </section>
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/Document.html">Document</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/document/Document.html">Document</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/project/FileSyncManager.html">FileSyncManager</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-            </ul>
-            
-            
-          </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentDocument</h4>
-                <dl>
-                    <dt>See</dt>
-                      <dd><a href='#'>DocumentManager.getCurrentDocument()</a></dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentDocument = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_documentNavPending</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>While true, the MRU order is frozen</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _documentNavPending = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_openDocuments</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;string, Document&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>All documents with refCount &gt; 0. Maps Document.file.id -&gt; Document.</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _openDocuments = {};</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_untitledDocumentPath</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Random path prefix for untitled documents</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _untitledDocumentPath = &quot;&#x2F;_brackets_&quot; + _.random(10000000, 99999999);</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_workingSet</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;File&gt;</dd>
-                    <dt>See</dt>
-                      <dd><a href='#'>DocumentManager.getWorkingSet()</a></dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _workingSet = [];</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_workingSetAddedOrder</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;File&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Contains the same set of items as _workingSet, but ordered in the way they where added to _workingSet (0 = last added).</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _workingSetAddedOrder = [];</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_workingSetMRUOrder</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;File&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Contains the same set of items as _workingSet, but ordered by how recently they were _currentDocument (0 = most recent).</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _workingSetMRUOrder = [];</code></pre>
-              </div>
-              
-            </section>
+</span>
+    <h4>_currentDocument</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_checkPreferencePrefix</h4>
-              <div class="description"><p>Examine each preference key for migration of the working set files.
-If the key has a prefix of &quot;files_/&quot;, then it is a working set files 
-preference from old preference model.</p>
+<dl>
+    <dt>See</dt>
+    <dd><a href='#'>DocumentManager.getCurrentDocument()</a></dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentDocument = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_documentNavPending</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>While true, the MRU order is frozen</p>
 </div>
-              <dl>
-                  <dt>key</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The key of the preference to be examined
- for migration of working set files.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _documentNavPending = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_openDocuments</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, Document&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>All documents with refCount &gt; 0. Maps Document.file.id -&gt; Document.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _openDocuments = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_untitledDocumentPath</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _untitledDocumentPath = &quot;&#x2F;_brackets_&quot; + _.random(10000000, 99999999);</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_workingSet</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;File&gt;</dd>
+    <dt>See</dt>
+    <dd><a href='#'>DocumentManager.getWorkingSet()</a></dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _workingSet = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_workingSetAddedOrder</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;File&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _workingSetAddedOrder = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_workingSetMRUOrder</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;File&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _workingSetMRUOrder = [];</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_checkPreferencePrefix</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>key</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The key of the preference to be examined for migration of working set files.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?string</dd>
+    <dd>- the scope to which the preference is to be migrated</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
         var pathPrefix = &quot;files_&quot;;
         if (key.indexOf(pathPrefix) === 0) {
             &#x2F;&#x2F; Get the project path from the old preference key by stripping &quot;files_&quot;.
@@ -647,20 +651,22 @@ preference from old preference model.</p>
     &#x2F;&#x2F; Handle Language change events
     $(LanguageManager).on(&quot;languageAdded&quot;, _handleLanguageAdded);
     $(LanguageManager).on(&quot;languageModified&quot;, _handleLanguageModified);
-});</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_clearCurrentDocument</h4>
-              <div class="description"><p>Changes currentDocument to null, causing no full Editor to be shown in the UI</p>
+});</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_clearCurrentDocument</h4>
+
+    
+    <div class="description"><p>Changes currentDocument to null, causing no full Editor to be shown in the UI</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _clearCurrentDocument() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _clearCurrentDocument() {
         &#x2F;&#x2F; If editor already blank, do nothing
         if (!_currentDocument) {
             return;
@@ -671,23 +677,25 @@ preference from old preference model.</p>
             &#x2F;&#x2F; (this event triggers EditorManager to actually clear the editor UI)
             $(exports).triggerHandler(&quot;currentDocumentChange&quot;, [_currentDocument, previousDocument]);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_gcDocuments</h4>
-              <div class="description"><p>Cleans up any loose Documents whose only ref is its own master Editor, and that Editor is not
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_gcDocuments</h4>
+
+    
+    <div class="description"><p>Cleans up any loose Documents whose only ref is its own master Editor, and that Editor is not
 rooted in the UI anywhere. This can happen if the Editor is auto-created via Document APIs that
 trigger _ensureMasterEditor() without making it dirty. E.g. a command invoked on the focused
 inline editor makes no-op edits or does a read-only operation.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _gcDocuments() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _gcDocuments() {
         getAllOpenDocuments().forEach(function (doc) {
             &#x2F;&#x2F; Is the only ref to this document its own master Editor?
             if (doc._refCount === 1 &amp;&amp; doc._masterEditor) {
@@ -695,40 +703,42 @@ inline editor makes no-op edits or does a read-only operation.</p>
                 EditorManager._destroyEditorIfUnneeded(doc);
             }
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_handleLanguageAdded</h4>
-              <div class="description"><p>Update document</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _handleLanguageAdded(event, language) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleLanguageAdded</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleLanguageAdded(event, language) {
         _.forEach(_openDocuments, function (doc, key) {
             &#x2F;&#x2F; No need to look at the new language if this document has one already
             if (doc.getLanguage().isFallbackLanguage()) {
                 doc._updateLanguage();
             }
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_handleLanguageModified</h4>
-              <div class="description"><p>Update document</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _handleLanguageModified(event, language) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleLanguageModified</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleLanguageModified(event, language) {
         _.forEach(_openDocuments, function (doc, key) {
             var docLanguage = doc.getLanguage();
             &#x2F;&#x2F; A modified language can affect a document
@@ -771,43 +781,46 @@ inline editor makes no-op edits or does a read-only operation.</p>
         })
         .on(&quot;_documentSaved&quot;, function (event, doc) {
             $(exports).triggerHandler(&quot;documentSaved&quot;, doc);
-        });</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_markMostRecent</h4>
-              <div class="description"><p>Moves document to the front of the MRU list, IF it&#39;s in the working set; no-op otherwise.</p>
+        });</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_markMostRecent</h4>
+
+    
+    <div class="description"><p>Moves document to the front of the MRU list, IF it&#39;s in the working set; no-op otherwise.</p>
 </div>
-              <dl>
-                  <dt></dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _markMostRecent(doc) {
+    
+<dl>
+    <dt></dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _markMostRecent(doc) {
         var mruI = findInWorkingSet(doc.file.fullPath, _workingSetMRUOrder);
         if (mruI !== -1) {
             _workingSetMRUOrder.splice(mruI, 1);
             _workingSetMRUOrder.unshift(doc.file);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_projectOpen</h4>
-              <div class="description"><p>Initializes the working set.</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _projectOpen(e) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_projectOpen</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _projectOpen(e) {
         &#x2F;&#x2F; file root is appended for each project
         var projectRoot = ProjectManager.getProjectRoot(),
             files = [],
@@ -852,20 +865,22 @@ inline editor makes no-op edits or does a read-only operation.</p>
             &#x2F;&#x2F; Add this promise to the event&#39;s promises to signal that this handler isn&#39;t done yet
             e.promises.push(promise);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_removeAllFromWorkingSet</h4>
-              <div class="description"><p>Removes all files from the working set list.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_removeAllFromWorkingSet</h4>
+
+    
+    <div class="description"><p>Removes all files from the working set list.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _removeAllFromWorkingSet() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _removeAllFromWorkingSet() {
         var fileList = _workingSet;
 
         &#x2F;&#x2F; Remove all
@@ -875,20 +890,21 @@ inline editor makes no-op edits or does a read-only operation.</p>
 
         &#x2F;&#x2F; Dispatch event
         $(exports).triggerHandler(&quot;workingSetRemoveList&quot;, [fileList]);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_savePreferences</h4>
-              <div class="description"><p>Preferences callback. Saves the state of the working set.</p>
-</div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _savePreferences() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_savePreferences</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _savePreferences() {
         &#x2F;&#x2F; save the working set file paths
         var files        = [],
             isActive     = false,
@@ -922,29 +938,31 @@ inline editor makes no-op edits or does a read-only operation.</p>
 
         &#x2F;&#x2F; Writing out working set files using the project layer specified in &#39;context&#39;.
         PreferencesManager.setViewState(&quot;project.files&quot;, files, context);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>addListToWorkingSet</h4>
-              <div class="description"><p>Adds the given file list to the end of the working set list.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>addListToWorkingSet</h4>
+
+    
+    <div class="description"><p>Adds the given file list to the end of the working set list.
 If a file in the list has its own custom viewer, then it 
 is not added into the working set.
 Does not change which document is currently open in the editor.
 More efficient than calling addToWorkingSet() (in a loop) for
 a list of files because there&#39;s only 1 redraw at the end</p>
 </div>
-              <dl>
-                  <dt>fileList</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addListToWorkingSet(fileList) {
+    
+<dl>
+    <dt>fileList</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addListToWorkingSet(fileList) {
         var uniqueFileList = [];
 
         &#x2F;&#x2F; Process only files not already in working set
@@ -973,35 +991,36 @@ a list of files because there&#39;s only 1 redraw at the end</p>
 
         &#x2F;&#x2F; Dispatch event
         $(exports).triggerHandler(&quot;workingSetAddList&quot;, [uniqueFileList]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>addToWorkingSet</h4>
-              <div class="description"><p>Adds the given file to the end of the working set list, if it is not already in the list
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>addToWorkingSet</h4>
+
+    
+    <div class="description"><p>Adds the given file to the end of the working set list, if it is not already in the list
 and it does not have a custom viewer.
 Does not change which document is currently open in the editor. Completes synchronously.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd></dd>
-                  <dt>index</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>Position to add to list (defaults to last); -1 is ignored</dd>
-                  <dt>forceRedraw</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, a working set change notification is always sent
- (useful if suppressRedraw was used with removeFromWorkingSet() earlier)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addToWorkingSet(file, index, forceRedraw) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd></dd>
+    <dt>index</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Position to add to list (defaults to last); -1 is ignored</dd>
+    <dt>forceRedraw</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, a working set change notification is always sent (useful if suppressRedraw was used with removeFromWorkingSet() earlier)</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addToWorkingSet(file, index, forceRedraw) {
         var indexRequested = (index !== undefined &amp;&amp; index !== null &amp;&amp; index !== -1);
         
         &#x2F;&#x2F; If the file has a custom viewer, then don&#39;t add it to the working set.
@@ -1044,39 +1063,43 @@ Does not change which document is currently open in the editor. Completes synchr
             index = _workingSet.length - 1;
         }
         $(exports).triggerHandler(&quot;workingSetAdd&quot;, [file, index]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>beginDocumentNavigation</h4>
-              <div class="description"><p>Indicate that changes to currentDocument are temporary for now, and should not update the MRU
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>beginDocumentNavigation</h4>
+
+    
+    <div class="description"><p>Indicate that changes to currentDocument are temporary for now, and should not update the MRU
 ordering of the working set. Useful for next/previous keyboard navigation (until Ctrl is released)
 or for incremental-search style document preview like Quick Open will eventually have.
 Can be called any number of times, and ended by a single finalizeDocumentNavigation() call.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function beginDocumentNavigation() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function beginDocumentNavigation() {
         _documentNavPending = true;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>closeAll</h4>
-              <div class="description"><p>Equivalent to calling closeFullEditor() for all Documents. Same caveat: this discards any
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>closeAll</h4>
+
+    
+    <div class="description"><p>Equivalent to calling closeFullEditor() for all Documents. Same caveat: this discards any
 unsaved changes, so the UI should confirm with the user before calling this.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function closeAll() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function closeAll() {
         _clearCurrentDocument();
         _removeAllFromWorkingSet();
     }
@@ -1105,31 +1128,33 @@ unsaved changes, so the UI should confirm with the user before calling this.</p>
         });
         
         $(exports).triggerHandler(&quot;workingSetRemoveList&quot;, [fileList]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>closeFullEditor</h4>
-              <div class="description"><p>Warning: low level API - use FILE_CLOSE command in most cases.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>closeFullEditor</h4>
+
+    
+    <div class="description"><p>Warning: low level API - use FILE_CLOSE command in most cases.
 Closes the full editor for the given file (if there is one), and removes it from the working
 set. Any other editors for this Document remain open. Discards any unsaved changes without prompting.</p>
 <p>Changes currentDocument if this file was the current document (may change to null).</p>
 <p>This is a subset of notifyFileDeleted(). Use this for the user-facing Close command.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd></dd>
-                  <dt>skipAutoSelect</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- if true, don't automatically open and select the next document</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function closeFullEditor(file, skipAutoSelect) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd></dd>
+    <dt>skipAutoSelect</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- if true, don't automatically open and select the next document</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function closeFullEditor(file, skipAutoSelect) {
         &#x2F;&#x2F; If this was the current document shown in the editor UI, we&#39;re going to switch to a
         &#x2F;&#x2F; different document (or none if working set has no other options)
         if (_currentDocument &amp;&amp; _currentDocument.file.fullPath === file.fullPath) {
@@ -1165,118 +1190,139 @@ set. Any other editors for this Document remain open. Discards any unsaved chang
         &#x2F;&#x2F; Note: EditorManager will dispose the closed document&#39;s now-unneeded editor either in
         &#x2F;&#x2F; response to the editor-swap call above, or the removeFromWorkingSet() call, depending on
         &#x2F;&#x2F; circumstances. See notes in EditorManager for more.
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>createUntitledDocument</h4>
-              <div class="description"><p>Creates an untitled document. The associated File has a fullPath that
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>createUntitledDocument</h4>
+
+    
+    <div class="description"><p>Creates an untitled document. The associated File has a fullPath that
 looks like /some-random-string/Untitled-counter.fileExt.</p>
 </div>
-              <dl>
-                  <dt>counter</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>- used in the name of the new Document's File</dd>
-                  <dt>fileExt</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- file extension of the new Document's File, including "."</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function createUntitledDocument(counter, fileExt) {
+    
+<dl>
+    <dt>counter</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>- used in the name of the new Document's File</dd>
+    <dt>fileExt</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- file extension of the new Document's File, including "."</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>- a new untitled Document</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createUntitledDocument(counter, fileExt) {
         var filename = Strings.UNTITLED + &quot;-&quot; + counter + fileExt,
             fullPath = _untitledDocumentPath + &quot;&#x2F;&quot; + filename,
             now = new Date(),
             file = new InMemoryFile(fullPath, FileSystem);
         
         return new DocumentModule.Document(file, now, &quot;&quot;);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>finalizeDocumentNavigation</h4>
-              <div class="description"><p>Un-freezes the MRU list after one or more beginDocumentNavigation() calls. Whatever document is
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>finalizeDocumentNavigation</h4>
+
+    
+    <div class="description"><p>Un-freezes the MRU list after one or more beginDocumentNavigation() calls. Whatever document is
 current is bumped to the front of the MRU list.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function finalizeDocumentNavigation() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function finalizeDocumentNavigation() {
         if (_documentNavPending) {
             _documentNavPending = false;
             
             _markMostRecent(_currentDocument);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>findInWorkingSet</h4>
-              <div class="description"><p>Returns the index of the file matching fullPath in the working set.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>findInWorkingSet</h4>
+
+    
+    <div class="description"><p>Returns the index of the file matching fullPath in the working set.
 Returns -1 if not found.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>list</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
-                  <dd>Pass this arg to search a different array of files. Internal
- use only.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function findInWorkingSet(fullPath, list) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>list</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd>Pass this arg to search a different array of files. Internal use only.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>index</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findInWorkingSet(fullPath, list) {
         list = list || _workingSet;
         
         return _.findIndex(list, function (file, i) {
             return file.fullPath === fullPath;
         });
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>findInWorkingSetAddedOrder</h4>
-              <div class="description"><p>Returns the index of the file matching fullPath in _workingSetAddedOrder.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>findInWorkingSetAddedOrder</h4>
+
+    
+    <div class="description"><p>Returns the index of the file matching fullPath in _workingSetAddedOrder.
 Returns -1 if not found.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function findInWorkingSetAddedOrder(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>index</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findInWorkingSetAddedOrder(fullPath) {
         return findInWorkingSet(fullPath, _workingSetAddedOrder);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getAllOpenDocuments</h4>
-              <div class="description"><p>Returns all Documents that are &#39;open&#39; in the UI somewhere (for now, this means open in an
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getAllOpenDocuments</h4>
+
+    
+    <div class="description"><p>Returns all Documents that are &#39;open&#39; in the UI somewhere (for now, this means open in an
 inline editor and/or a full-size editor). Only these Documents can be modified, and only
 these Documents are synced with external changes on disk.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getAllOpenDocuments() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;Document&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getAllOpenDocuments() {
         var result = [];
         var id;
         for (id in _openDocuments) {
@@ -1285,32 +1331,38 @@ these Documents are synced with external changes on disk.</p>
             }
         }
         return result;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getCurrentDocument</h4>
-              <div class="description"><p>Returns the Document that is currently open in the editor UI. May be null.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getCurrentDocument</h4>
+
+    
+    <div class="description"><p>Returns the Document that is currently open in the editor UI. May be null.
 When this changes, DocumentManager dispatches a &quot;currentDocumentChange&quot; event. The current
 document always has a backing Editor (Document._masterEditor != null) and is thus modifiable.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getCurrentDocument() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Document</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getCurrentDocument() {
         return _currentDocument;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getDocumentForPath</h4>
-              <div class="description"><p>Gets an existing open Document for the given file, or creates a new one if the Document is
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDocumentForPath</h4>
+
+    
+    <div class="description"><p>Gets an existing open Document for the given file, or creates a new one if the Document is
 not currently open (&#39;open&#39; means referenced by the UI somewhere). Always use this method to
 get Documents; do not call the Document constructor directly. This method is safe to call
 in parallel.</p>
@@ -1320,14 +1372,18 @@ and listen for changes on it. (Note: opening the Document in an Editor automatic
 refs and listeners for that Editor UI).</p>
 <p>If all you need is the Document&#39;s getText() value, use the faster getDocumentText() instead.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise object that will be resolved with the Document, or rejected with a FileSystemError if the file is not yet open and can't be read from disk.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath) {
         var doc = getOpenDocumentForPath(fullPath);
 
         if (doc) {
@@ -1383,15 +1439,16 @@ refs and listeners for that Editor UI).</p>
                 return promise;
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getDocumentText</h4>
-              <div class="description"><p>Gets the text of a Document (including any unsaved changes), or would-be Document if the
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDocumentText</h4>
+
+    
+    <div class="description"><p>Gets the text of a Document (including any unsaved changes), or would-be Document if the
 file is not actually open. More efficient than getDocumentForPath(). Use when you&#39;re reading
 document(s) but don&#39;t need to hang onto a Document object.</p>
 <p>If the file is open this is equivalent to calling getOpenDocumentForPath().getText(). If the
@@ -1399,14 +1456,18 @@ file is NOT open, this is like calling getDocumentForPath()...getText() but more
 Differs from plain FileUtils.readAsText() in two ways: (a) line endings are still normalized
 as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getDocumentText(file) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getDocumentText(file) {
         var result = new $.Deferred(),
             doc = getOpenDocumentForPath(file.fullPath);
         if (doc) {
@@ -1424,24 +1485,29 @@ as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
             });
         }
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getNextPrevFile</h4>
-              <div class="description"><p>Get the next or previous file in the working set, in MRU order (relative to currentDocument). May
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getNextPrevFile</h4>
+
+    
+    <div class="description"><p>Get the next or previous file in the working set, in MRU order (relative to currentDocument). May
 return currentDocument itself if working set is length 1.</p>
 </div>
-              <dl>
-                  <dt>inc</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>-1 for previous, +1 for next; no other values allowed</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getNextPrevFile(inc) {
+    
+<dl>
+    <dt>inc</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>-1 for previous, +1 for next; no other values allowed</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?File</dd>
+    <dd>null if working set empty</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNextPrevFile(inc) {
         if (inc !== -1 &amp;&amp; inc !== +1) {
             console.error(&quot;Illegal argument: inc = &quot; + inc);
             return null;
@@ -1469,26 +1535,31 @@ return currentDocument itself if working set is length 1.</p>
         
         &#x2F;&#x2F; If no doc open or working set empty, there is no &quot;next&quot; file
         return null;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getOpenDocumentForPath</h4>
-              <div class="description"><p>Returns the existing open Document for the given file, or null if the file is not open (&#39;open&#39;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getOpenDocumentForPath</h4>
+
+    
+    <div class="description"><p>Returns the existing open Document for the given file, or null if the file is not open (&#39;open&#39;
 means referenced by the UI somewhere). If you will hang onto the Document, you must addRef()
 it; see {@link getDocumentForPath()} for details.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getOpenDocumentForPath(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Document</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getOpenDocumentForPath(fullPath) {
         var id;
         
         &#x2F;&#x2F; Need to walk all open documents and check for matching path. We can&#39;t
@@ -1502,35 +1573,41 @@ it; see {@link getDocumentForPath()} for details.</p>
             }
         }
         return null;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getWorkingSet</h4>
-              <div class="description"><p>Returns a list of items in the working set in UI list order. May be 0-length, but never null.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getWorkingSet</h4>
+
+    
+    <div class="description"><p>Returns a list of items in the working set in UI list order. May be 0-length, but never null.</p>
 <p>When a file is added this list, DocumentManager dispatches a &quot;workingSetAdd&quot; event.
 When a file is removed from list, DocumentManager dispatches a &quot;workingSetRemove&quot; event.
 To listen for ALL changes to this list, you must listen for both events.</p>
 <p>Which items belong in the working set is managed entirely by DocumentManager. Callers cannot
 (yet) change this collection on their own.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getWorkingSet() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getWorkingSet() {
         return _.clone(_workingSet);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>notifyFileDeleted</h4>
-              <div class="description"><p>Reacts to a file being deleted: if there is a Document for this file, causes it to dispatch a
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>notifyFileDeleted</h4>
+
+    
+    <div class="description"><p>Reacts to a file being deleted: if there is a Document for this file, causes it to dispatch a
 &quot;deleted&quot; event; ensures it&#39;s not the currentDocument; and removes this file from the working
 set. These actions in turn cause all open editors for this file to close. Discards any unsaved
 changes - it is expected that the UI has already confirmed with the user before calling.</p>
@@ -1538,17 +1615,18 @@ changes - it is expected that the UI has already confirmed with the user before 
 <p>FUTURE: Instead of an explicit notify, we should eventually listen for deletion events on some
 sort of &quot;project file model,&quot; making this just a private event handler.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd></dd>
-                  <dt>skipAutoSelect</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- if true, don't automatically open/select the next document</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function notifyFileDeleted(file, skipAutoSelect) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd></dd>
+    <dt>skipAutoSelect</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- if true, don't automatically open/select the next document</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyFileDeleted(file, skipAutoSelect) {
         &#x2F;&#x2F; First ensure it&#39;s not currentDocument, and remove from working set
         closeFullEditor(file, skipAutoSelect);
         
@@ -1562,47 +1640,51 @@ sort of &quot;project file model,&quot; making this just a private event handler
         if (doc &amp;&amp; doc._refCount &gt; 0) {
             console.log(&quot;WARNING: deleted Document still has &quot; + doc._refCount + &quot; references. Did someone addRef() without listening for &#39;deleted&#39;?&quot;);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>notifyPathDeleted</h4>
-              <div class="description"><p>Called after a file or folder has been deleted. This function is responsible
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>notifyPathDeleted</h4>
+
+    
+    <div class="description"><p>Called after a file or folder has been deleted. This function is responsible
 for updating underlying model data and notifying all views of the change.</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The path of the file/folder that has been deleted</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function notifyPathDeleted(path) {</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>notifyPathNameChanged</h4>
-              <div class="description"><p>Called after a file or folder name has changed. This function is responsible
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The path of the file/folder that has been deleted</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyPathDeleted(path) {</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>notifyPathNameChanged</h4>
+
+    
+    <div class="description"><p>Called after a file or folder name has changed. This function is responsible
 for updating underlying model data and notifying all views of the change.</p>
 </div>
-              <dl>
-                  <dt>oldName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The old name of the file/folder</dd>
-                  <dt>newName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The new name of the file/folder</dd>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>True if path is a folder; False if it is a file.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function notifyPathNameChanged(oldName, newName, isFolder) {
+    
+<dl>
+    <dt>oldName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The old name of the file/folder</dd>
+    <dt>newName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The new name of the file/folder</dd>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>True if path is a folder; False if it is a file.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyPathNameChanged(oldName, newName, isFolder) {
         &#x2F;&#x2F; Notify all open documents 
         _.forEach(_openDocuments, function (doc, id) {
             &#x2F;&#x2F; TODO: Only notify affected documents? For now _notifyFilePathChange 
@@ -1613,30 +1695,32 @@ for updating underlying model data and notifying all views of the change.</p>
         
         &#x2F;&#x2F; Send a &quot;fileNameChanged&quot; event. This will trigger the views to update.
         $(exports).triggerHandler(&quot;fileNameChange&quot;, [oldName, newName]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>removeFromWorkingSet</h4>
-              <div class="description"><p>Warning: low level API - use FILE_CLOSE command in most cases.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>removeFromWorkingSet</h4>
+
+    
+    <div class="description"><p>Warning: low level API - use FILE_CLOSE command in most cases.
 Removes the given file from the working set list, if it was in the list. Does not change
 the current editor even if it&#39;s for this file. Does not prompt for unsaved changes.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd></dd>
-                  <dt>true</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>to suppress redraw after removal</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function removeFromWorkingSet(file, suppressRedraw) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd></dd>
+    <dt>true</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>to suppress redraw after removal</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeFromWorkingSet(file, suppressRedraw) {
         &#x2F;&#x2F; If doc isn&#39;t in working set, do nothing
         var index = findInWorkingSet(file.fullPath);
         if (index === -1) {
@@ -1650,27 +1734,28 @@ the current editor even if it&#39;s for this file. Does not prompt for unsaved c
         
         &#x2F;&#x2F; Dispatch event
         $(exports).triggerHandler(&quot;workingSetRemove&quot;, [file, suppressRedraw]);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>setCurrentDocument</h4>
-              <div class="description"><p>Changes currentDocument to the given Document, firing currentDocumentChange, which in turn
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>setCurrentDocument</h4>
+
+    
+    <div class="description"><p>Changes currentDocument to the given Document, firing currentDocumentChange, which in turn
 causes this Document&#39;s main editor UI to be shown in the editor pane, updates the selection
 in the file tree / working set UI, etc. This call may also add the item to the working set.</p>
 </div>
-              <dl>
-                  <dt>document</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>The Document to make current. May or may not already be in the
- working set.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function setCurrentDocument(doc) {
+    
+<dl>
+    <dt>document</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>The Document to make current. May or may not already be in the working set.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setCurrentDocument(doc) {
         
         &#x2F;&#x2F; If this doc is already current, do nothing
         if (_currentDocument === doc) {
@@ -1697,49 +1782,49 @@ in the file tree / working set UI, etc. This call may also add the item to the w
         &#x2F;&#x2F; (this event triggers EditorManager to actually switch editors in the UI)
         
         PerfUtils.addMeasurement(perfTimerName);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>sortWorkingSet</h4>
-              <div class="description"><p>Sorts _workingSet using the compare function</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>sortWorkingSet</h4>
+
+    
+    <div class="description"><p>Sorts _workingSet using the compare function</p>
 </div>
-              <dl>
-                  <dt>compareFn</dt>
-                  <dd class="label label-info pull-left">function(File,File): number</dd>
-                  <dd>The function that will be used inside JavaScript's
- sort function. The return a value should be >0 (sort a to a lower index than b), =0 (leaves a and b
- unchanged with respect to each other) or <0 (sort b to a lower index than a) and must always returns
- the same value when given a specific pair of elements a and b as its two arguments.
- Documentation: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/sort</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function sortWorkingSet(compareFn) {
+    
+<dl>
+    <dt>compareFn</dt>
+    <dd class="label label-info pull-left">function(File,File): number</dd>
+    <dd>The function that will be used inside JavaScript's sort function. The return a value should be >0 (sort a to a lower index than b), =0 (leaves a and b unchanged with respect to each other) or <0 (sort b to a lower index than a) and must always returns the same value when given a specific pair of elements a and b as its two arguments. Documentation: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/sort</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function sortWorkingSet(compareFn) {
         _workingSet.sort(compareFn);
         $(exports).triggerHandler(&quot;workingSetSort&quot;);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>swapWorkingSetIndexes</h4>
-              <div class="description"><p>Mutually exchanges the files at the indexes passed by parameters.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>swapWorkingSetIndexes</h4>
+
+    
+    <div class="description"><p>Mutually exchanges the files at the indexes passed by parameters.</p>
 </div>
-              <dl>
-                  <dt>index</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>Old file index</dd>
-                  <dt>index</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>New file index</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function swapWorkingSetIndexes(index1, index2) {
+    
+<dl>
+    <dt>index</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Old file index</dd>
+    <dt>index</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>New file index</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function swapWorkingSetIndexes(index1, index2) {
         var length = _workingSet.length - 1;
         var temp;
         
@@ -1751,12 +1836,9 @@ in the file tree / working set UI, etc. This call may also add the item to the w
             $(exports).triggerHandler(&quot;workingSetSort&quot;);
             $(exports).triggerHandler(&quot;workingSetDisableAutoSorting&quot;);
         }
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

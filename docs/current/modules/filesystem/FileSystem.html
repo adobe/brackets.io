@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>FileSystem - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>FileSystem</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>FileSystem is a model object representing a complete file system. This object creates
+<h1>FileSystem</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>FileSystem is a model object representing a complete file system. This object creates
 and manages File and Directory instances, dispatches events when the file system changes,
 and provides methods for showing &#39;open&#39; and &#39;save&#39; dialogs.</p>
 <p>FileSystem automatically initializes when loaded. It depends on a pluggable &quot;impl&quot; layer, which
@@ -421,67 +421,67 @@ reflected immediately, as soon as the change operation&#39;s callback signals su
 <p>The FileSystem doesn&#39;t directly read or write contents--this work is done by a low-level
 implementation object. This allows client code to use the FileSystem API without having to
 worry about the underlying storage, which could be a local filesystem or a remote server.</p>
-
-            </div>
-          </section>
-    
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/filesystem/Directory.html">Directory</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/File.html">File</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileIndex.html">FileIndex</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-              <li><a href="..&#x2F;../modules/fileSystemImpl.html">fileSystemImpl</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
-            </ul>
-            
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_DUPLICATED_SLASH_RE</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Matches continguous groups of forward slashes</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _DUPLICATED_SLASH_RE = &#x2F;\&#x2F;{2,}&#x2F;g;</code></pre>
-              </div>
-              
-            </section>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/filesystem/Directory.html">Directory</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/File.html">File</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileIndex.html">FileIndex</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/fileSystemImpl.html">fileSystemImpl</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          
-          <section class="classes">
-            <h2>Classes</h2>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_DUPLICATED_SLASH_RE</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Matches continguous groups of forward slashes</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _DUPLICATED_SLASH_RE = &#x2F;\&#x2F;{2,}&#x2F;g;</code></pre></div>
+</section>
+
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
             
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>FileSystem</h4>
-                  <em><p>The FileSystem is not usable until init() signals its callback.</p>
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>FileSystem</h4>
+            <em><p>The FileSystem is not usable until init() signals its callback.</p>
 </em>
-                  <dl>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function FileSystem() {
+            
+            <dl>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function FileSystem() {
         &#x2F;&#x2F; Create a file index
         this._index = new FileIndex();
         
@@ -494,135 +494,150 @@ worry about the underlying storage, which could be a local filesystem or a remot
         &#x2F;&#x2F; Initialize the queue of pending external changes
         this._externalChanges = [];
     }</code></pre>
-                </div>
-      
-                <section class="properties ">
-                  <h3>Properties 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_activeChangeCount</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>number</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Refcount of any pending filesystem mutation operations (e.g., writes,
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_activeChangeCount</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Refcount of any pending filesystem mutation operations (e.g., writes,
 unlinks, etc.). Used to ensure that external change events aren&#39;t processed
 until after index fixups, operation-specific callbacks, and internal change
 events are complete. (This is important for distinguishing rename from
 an unrelated delete-add pair).</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._activeChangeCount = 0;
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._activeChangeCount = 0;
     
     &#x2F;&#x2F; For unit testing only
     FileSystem.prototype._getActiveChangeCount = function () {
         return this._activeChangeCount;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_externalChanges</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>!Array.&lt;{path:?string, stat:FileSystemStats=}&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Queue of arguments with which to invoke _handleExternalChanges(); triggered
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_externalChanges</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>!Array.&lt;{path:?string, stat:FileSystemStats=}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Queue of arguments with which to invoke _handleExternalChanges(); triggered
 once _activeChangeCount drops to zero.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._externalChanges = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_impl</h4>
-                    <dl>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>The low-level file system implementation used by this object. 
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._externalChanges = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_impl</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>The low-level file system implementation used by this object. 
 This is set in the init() function and cannot be changed.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._impl = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_index</h4>
-                    <dl>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>The FileIndex used by this object. This is initialized in the constructor.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._impl = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_index</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>The FileIndex used by this object. This is initialized in the constructor.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._index = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_watchRequests</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>Array.&lt;{fn: function(), cb: function()}&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>The queue of pending watch/unwatch requests.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._index = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_watchRequests</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{fn: function(), cb: function()}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>The queue of pending watch/unwatch requests.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchRequests = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_watchedRoots</h4>
-                    <dl>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>The set of watched roots, encoded as a mapping from full paths to WatchedRoot
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._watchRequests = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_watchedRoots</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>The set of watched roots, encoded as a mapping from full paths to WatchedRoot
 objects which contain a file entry, filter function, and an indication of
 whether the watched root is inactive, starting up or fully active.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchedRoots = null;</code></pre>
-                  </div>
-                  
-                </section>
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_beginChange</h4>
-                    <div class="description"><p>Indicates that a filesystem-mutating operation has begun. As long as there
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._watchedRoots = null;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_beginChange</h4>
+
+    
+    <div class="description"><p>Indicates that a filesystem-mutating operation has begun. As long as there
 are changes taking place, change events from the external watchers are
 blocked and queued, to be handled once changes have finished. This is done
 because for mutating operations that originate from within the filesystem,
@@ -634,30 +649,29 @@ simultaneous addition and deletion.</p>
 <p>All operations that mutate the file system MUST begin with a call to 
 _beginChange and must end with a call to _endChange.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._beginChange = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._beginChange = function () {
         this._activeChangeCount++;
         &#x2F;&#x2F;console.log(&quot;&gt; beginChange  -&gt; &quot; + this._activeChangeCount);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_dequeueWatchRequest</h4>
-                    <div class="description"><p>Dequeue and process all pending watch/unwatch requests</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_dequeueWatchRequest</h4>
+
+    
+    <div class="description"><p>Dequeue and process all pending watch/unwatch requests</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._dequeueWatchRequest = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._dequeueWatchRequest = function () {
         if (this._watchRequests.length &gt; 0) {
             var request = this._watchRequests[0];
             
@@ -673,23 +687,23 @@ _beginChange and must end with a call to _endChange.</p>
                 }
             }.bind(this));
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_endChange</h4>
-                    <div class="description"><p>Indicates that a filesystem-mutating operation has completed. See 
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_endChange</h4>
+
+    
+    <div class="description"><p>Indicates that a filesystem-mutating operation has completed. See 
 FileSystem._beginChange above.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._endChange = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._endChange = function () {
         this._activeChangeCount--;
         &#x2F;&#x2F;console.log(&quot;&lt; endChange    -&gt; &quot; + this._activeChangeCount);
         
@@ -700,57 +714,58 @@ FileSystem._beginChange above.</p>
         if (!this._activeChangeCount) {
             this._triggerExternalChangesNow();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_enqueueExternalChange</h4>
-                    <div class="description"><p>Receives a result from the impl&#39;s watcher callback, and either processes it
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_enqueueExternalChange</h4>
+
+    
+    <div class="description"><p>Receives a result from the impl&#39;s watcher callback, and either processes it
 immediately (if _activeChangeCount is 0) or otherwise stores it for later
 processing.</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The fullPath of the changed entry</dd>
-                      <dt>stat</dt>
-                      <dd class="label label-info pull-left">FileSystemStats</dd>
-                      <dd>An optional stat object for the changed entry</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueExternalChange = function (path, stat) {
+    
+<dl>
+    <dt>path</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The fullPath of the changed entry</dd>
+    <dt>stat</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">FileSystemStats</dd>
+    <dd>An optional stat object for the changed entry</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueExternalChange = function (path, stat) {
         this._externalChanges.push({path: path, stat: stat});
         if (!this._activeChangeCount) {
             this._triggerExternalChangesNow();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_enqueueWatchRequest</h4>
-                    <div class="description"><p>Enqueue a new watch/unwatch request.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_enqueueWatchRequest</h4>
+
+    
+    <div class="description"><p>Enqueue a new watch/unwatch request.</p>
 </div>
-                    <dl>
-                      <dt>fn</dt>
-                      <dd class="label label-info pull-left">function()</dd>
-                      <dd>- The watch/unwatch request function.</dd>
-                      <dt>cb</dt>
-                      <dd class="label label-info pull-left">callback()</dd>
-                      <dd>- The callback for the provided watch/unwatch
- request function.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueWatchRequest = function (fn, cb) {
+    
+<dl>
+    <dt>fn</dt>
+    <dd class="label label-info pull-left">function()</dd>
+    <dd>- The watch/unwatch request function.</dd>
+    <dt>cb</dt>
+    <dd class="label label-info pull-left">callback()</dd>
+    <dd>- The callback for the provided watch/unwatch request function.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._enqueueWatchRequest = function (fn, cb) {
         &#x2F;&#x2F; Enqueue the given watch&#x2F;unwatch request
         this._watchRequests.push({fn: fn, cb: cb});
 
@@ -758,23 +773,23 @@ processing.</p>
         if (this._watchRequests.length === 1) {
             this._dequeueWatchRequest();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_findWatchedRootForPath</h4>
-                    <div class="description"><p>Finds a parent watched root for a given path, or returns null if a parent
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_findWatchedRootForPath</h4>
+
+    
+    <div class="description"><p>Finds a parent watched root for a given path, or returns null if a parent
 watched root does not exist.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
         var watchedRoot = null;
         
         Object.keys(this._watchedRoots).some(function (watchedPath) {
@@ -785,86 +800,84 @@ watched root does not exist.</p>
         }, this);
         
         return watchedRoot;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_fireChangeEvent</h4>
-                    <div class="description"><p>Fire a change event. Clients listen for these events using FileSystem.on.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_fireChangeEvent</h4>
+
+    
+    <div class="description"><p>Fire a change event. Clients listen for these events using FileSystem.on.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">File,Directory</dd>
-                      <dd>The entry that has changed</dd>
-                      <dt>added</dt>
-                      <dd class="label label-info pull-left">Array&lt;File, Directory&gt;</dd>
-                      <dd>If the entry is a directory, this
- is a set of new entries in the directory.</dd>
-                      <dt>removed</dt>
-                      <dd class="label label-info pull-left">Array&lt;File, Directory&gt;</dd>
-                      <dd>If the entry is a directory, this
- is a set of removed entries from the directory.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._fireChangeEvent = function (entry, added, removed) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">File,Directory</dd>
+    <dd>The entry that has changed</dd>
+    <dt>added</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Array&lt;File, Directory&gt;</dd>
+    <dd>If the entry is a directory, this is a set of new entries in the directory.</dd>
+    <dt>removed</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Array&lt;File, Directory&gt;</dd>
+    <dd>If the entry is a directory, this is a set of removed entries from the directory.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._fireChangeEvent = function (entry, added, removed) {
         $(this).trigger(&quot;change&quot;, [entry, added, removed]);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_fireRenameEvent</h4>
-                    <div class="description"><p>Fire a rename event. Clients listen for these events using FileSystem.on.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_fireRenameEvent</h4>
+
+    
+    <div class="description"><p>Fire a rename event. Clients listen for these events using FileSystem.on.</p>
 </div>
-                    <dl>
-                      <dt>oldPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The entry's previous fullPath</dd>
-                      <dt>newPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The entry's current fullPath</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._fireRenameEvent = function (oldPath, newPath) {
+    
+<dl>
+    <dt>oldPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The entry's previous fullPath</dd>
+    <dt>newPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The entry's current fullPath</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._fireRenameEvent = function (oldPath, newPath) {
         $(this).trigger(&quot;rename&quot;, [oldPath, newPath]);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_getEntryForPath</h4>
-                    <div class="description"><p>Return a (strict subclass of a) FileSystemEntry object for the specified
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getEntryForPath</h4>
+
+    
+    <div class="description"><p>Return a (strict subclass of a) FileSystemEntry object for the specified
 path using the provided constuctor. For now, the provided constructor
 should be either File or Directory.</p>
 </div>
-                    <dl>
-                      <dt>EntryConstructor</dt>
-                      <dd class="label label-info pull-left">function(string,FileSystem)</dd>
-                      <dd>Constructor with
- which to initialize new FileSystemEntry objects.</dd>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Absolute path of file. </dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">File,Directory</dd>
-                      <dd>The File or Directory object. This file may not
- yet exist on disk.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._getEntryForPath = function (EntryConstructor, path) {
+    
+<dl>
+    <dt>EntryConstructor</dt>
+    <dd class="label label-info pull-left">function(string,FileSystem)</dd>
+    <dd>Constructor with which to initialize new FileSystemEntry objects.</dd>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Absolute path of file. </dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">File,Directory</dd>
+    <dd>The File or Directory object. This file may not yet exist on disk.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._getEntryForPath = function (EntryConstructor, path) {
         var isDirectory = EntryConstructor === Directory;
         path = this._normalizePath(path, isDirectory);
         var entry = this._index.getEntry(path);
@@ -875,34 +888,32 @@ should be either File or Directory.</p>
         }
                 
         return entry;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleDirectoryChange</h4>
-                    <div class="description"><p>Notify the filesystem that the given directory has changed. Updates the filesystem&#39;s
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleDirectoryChange</h4>
+
+    
+    <div class="description"><p>Notify the filesystem that the given directory has changed. Updates the filesystem&#39;s
 internal state as a result of the change, and calls back with the set of added and
 removed entries. Mutating FileSystemEntry operations should call this method before
 applying the operation&#39;s callback, and pass along the resulting change sets in the
 internal change event.</p>
 </div>
-                    <dl>
-                      <dt>directory</dt>
-                      <dd class="label label-info pull-left">Directory</dd>
-                      <dd>The directory that has changed.</dd>
-                      <dt>callback
-</dt>
-                      <dd class="label label-info pull-left">function(Array&lt;File,Directory&gt;=,Array&lt;File,Directory&gt;=)</dd>
-                      <dd>The callback that will be applied to a set of added and a set of removed
- FileSystemEntry objects.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleDirectoryChange = function (directory, callback) {
+    
+<dl>
+    <dt>directory</dt>
+    <dd class="label label-info pull-left">Directory</dd>
+    <dd>The directory that has changed.</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function(Array&lt;File,Directory&gt;=,Array&lt;File,Directory&gt;=)</dd>
+    <dd>The callback that will be applied to a set of added and a set of removed FileSystemEntry objects.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._handleDirectoryChange = function (directory, callback) {
         var oldContents = directory._contents;
         
         directory._clearCachedData();
@@ -960,30 +971,28 @@ internal change event.</p>
                 }, this);
             }
         }.bind(this));
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleExternalChange</h4>
-                    <div class="description"><p>Processes a result from the file/directory watchers. Watch results are sent from the low-level implementation
-whenever a directory or file is changed. </p>
-</div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The path that changed. This could be a file or a directory.</dd>
-                      <dt>stat</dt>
-                      <dd class="label label-info pull-left">FileSystemStats</dd>
-                      <dd>Optional stat for the item that changed. This param is not always
- passed.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleExternalChange = function (path, stat) {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleExternalChange</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The path that changed. This could be a file or a directory.</dd>
+    <dt>stat</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">FileSystemStats</dd>
+    <dd>Optional stat for the item that changed. This param is not always passed.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._handleExternalChange = function (path, stat) {
 
         if (!path) {
             &#x2F;&#x2F; This is a &quot;wholesale&quot; change event; clear all caches
@@ -1019,59 +1028,58 @@ whenever a directory or file is changed. </p>
                 }.bind(this));
             }
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_handleRename</h4>
-                    <div class="description"><p>Notify the system when an entry name has changed.</p>
-</div>
-                    <dl>
-                      <dt>oldFullPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd></dd>
-                      <dt>newFullPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd></dd>
-                      <dt>isDirectory</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._handleRename = function (oldFullPath, newFullPath, isDirectory) {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleRename</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>oldFullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>newFullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>isDirectory</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._handleRename = function (oldFullPath, newFullPath, isDirectory) {
         &#x2F;&#x2F; Update all affected entries in the index
         this._index.entryRenamed(oldFullPath, newFullPath, isDirectory);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_indexFilter</h4>
-                    <div class="description"><p>Returns true if the given path should be automatically added to the index &amp; watch list when one of its ancestors
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_indexFilter</h4>
+
+    
+    <div class="description"><p>Returns true if the given path should be automatically added to the index &amp; watch list when one of its ancestors
 is a watch-root. (Files are added automatically when the watch-root is first established, or later when a new
 directory is created and its children enumerated).</p>
 <p>Entries explicitly created via FileSystem.getFile/DirectoryForPath() are <em>always</em> added to the index regardless
 of this filtering - but they will not be watched if the watch-root&#39;s filter excludes them.</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Full path</dd>
-                      <dt>name</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Name portion of the path</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._indexFilter = function (path, name) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Full path</dd>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Name portion of the path</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._indexFilter = function (path, name) {
         var parentRoot = this._findWatchedRootForPath(path);
                 
         if (parentRoot) {
@@ -1082,32 +1090,34 @@ of this filtering - but they will not be watched if the watch-root&#39;s filter 
         &#x2F;&#x2F; that would break usage of appFileSystem for &#39;system&#39;-level things like enumerating extensions.
         &#x2F;&#x2F; (Or in general, Directory.getContents() for any Directory outside the watch roots).
         return true;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_normalizePath</h4>
-                    <div class="description"><p>Returns a canonical version of the path: no duplicated &quot;/&quot;es, no &quot;..&quot;s,
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_normalizePath</h4>
+
+    
+    <div class="description"><p>Returns a canonical version of the path: no duplicated &quot;/&quot;es, no &quot;..&quot;s,
 and directories guaranteed to end in a trailing &quot;/&quot;</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Absolute path, using "/" as path separator</dd>
-                      <dt>isDirectory</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">!string</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._normalizePath = function (path, isDirectory) {
+    
+<dl>
+    <dt>path</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Absolute path, using "/" as path separator</dd>
+    <dt>isDirectory</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._normalizePath = function (path, isDirectory) {
         
         if (!FileSystem.isAbsolutePath(path)) {
             throw new Error(&quot;Paths must be absolute: &#39;&quot; + path + &quot;&#39;&quot;);  &#x2F;&#x2F; expect only absolute paths
@@ -1145,43 +1155,43 @@ and directories guaranteed to end in a trailing &quot;/&quot;</p>
         }
         
         return path;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_triggerExternalChangesNow</h4>
-                    <div class="description"><p>Process all queued watcher results, by calling _handleExternalChange() on each</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_triggerExternalChangesNow</h4>
+
+    
+    <div class="description"><p>Process all queued watcher results, by calling _handleExternalChange() on each</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._triggerExternalChangesNow = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._triggerExternalChangesNow = function () {
         this._externalChanges.forEach(function (info) {
             this._handleExternalChange(info.path, info.stat);
         }, this);
         this._externalChanges.length = 0;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_unwatchAll</h4>
-                    <div class="description"><p>Unwatch all watched roots. Calls unwatch on the underlying impl for each
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_unwatchAll</h4>
+
+    
+    <div class="description"><p>Unwatch all watched roots. Calls unwatch on the underlying impl for each
 watched root and ignores errors.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchAll = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchAll = function () {
         console.warn(&quot;File watchers went offline!&quot;);
         
         Object.keys(this._watchedRoots).forEach(function (path) {
@@ -1225,33 +1235,31 @@ watched root and ignores errors.</p>
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
     
     &#x2F;&#x2F; For testing only
-    exports._getActiveChangeCount = _wrap(FileSystem.prototype._getActiveChangeCount);</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_unwatchEntry</h4>
-                    <div class="description"><p>Unwatch a filesystem entry beneath a given watchedRoot.</p>
+    exports._getActiveChangeCount = _wrap(FileSystem.prototype._getActiveChangeCount);</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_unwatchEntry</h4>
+
+    
+    <div class="description"><p>Unwatch a filesystem entry beneath a given watchedRoot.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">FileSystemEntry</dd>
-                      <dd>- The FileSystemEntry to watch. Must be a
- non-strict descendent of watchedRoot.entry.</dd>
-                      <dt>watchedRoot</dt>
-                      <dd class="label label-info pull-left">WatchedRoot</dd>
-                      <dd>- See FileSystem._watchedRoots.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function(?string)</dd>
-                      <dd>- A function that is called once the
- watch is complete, possibly with a FileSystemError string.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchEntry = function (entry, watchedRoot, callback) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>- The FileSystemEntry to watch. Must be a non-strict descendent of watchedRoot.entry.</dd>
+    <dt>watchedRoot</dt>
+    <dd class="label label-info pull-left">WatchedRoot</dd>
+    <dd>- See FileSystem._watchedRoots.</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function(?string)</dd>
+    <dd>- A function that is called once the watch is complete, possibly with a FileSystemError string.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchEntry = function (entry, watchedRoot, callback) {
         this._watchOrUnwatchEntry(entry, watchedRoot, function (err) {
             &#x2F;&#x2F; Make sure to clear cached data for all unwatched entries because
             &#x2F;&#x2F; entries always return cached data if it exists!
@@ -1265,66 +1273,61 @@ watched root and ignores errors.</p>
             
             callback(err);
         }.bind(this), false);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_watchEntry</h4>
-                    <div class="description"><p>Watch a filesystem entry beneath a given watchedRoot.</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_watchEntry</h4>
+
+    
+    <div class="description"><p>Watch a filesystem entry beneath a given watchedRoot.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">FileSystemEntry</dd>
-                      <dd>- The FileSystemEntry to watch. Must be a
- non-strict descendent of watchedRoot.entry.</dd>
-                      <dt>watchedRoot</dt>
-                      <dd class="label label-info pull-left">WatchedRoot</dd>
-                      <dd>- See FileSystem._watchedRoots.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function(?string)</dd>
-                      <dd>- A function that is called once the
- watch is complete, possibly with a FileSystemError string.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchEntry = function (entry, watchedRoot, callback) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>- The FileSystemEntry to watch. Must be a non-strict descendent of watchedRoot.entry.</dd>
+    <dt>watchedRoot</dt>
+    <dd class="label label-info pull-left">WatchedRoot</dd>
+    <dd>- See FileSystem._watchedRoots.</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function(?string)</dd>
+    <dd>- A function that is called once the watch is complete, possibly with a FileSystemError string.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._watchEntry = function (entry, watchedRoot, callback) {
         this._watchOrUnwatchEntry(entry, watchedRoot, callback, true);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_watchOrUnwatchEntry</h4>
-                    <div class="description"><p>Helper function to watch or unwatch a filesystem entry beneath a given
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_watchOrUnwatchEntry</h4>
+
+    
+    <div class="description"><p>Helper function to watch or unwatch a filesystem entry beneath a given
 watchedRoot.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">FileSystemEntry</dd>
-                      <dd>- The FileSystemEntry to watch. Must be a
- non-strict descendent of watchedRoot.entry.</dd>
-                      <dt>watchedRoot</dt>
-                      <dd class="label label-info pull-left">WatchedRoot</dd>
-                      <dd>- See FileSystem._watchedRoots.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function(?string)</dd>
-                      <dd>- A function that is called once the
- watch is complete, possibly with a FileSystemError string.</dd>
-                      <dt>shouldWatch</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>- Whether the entry should be watched (true)
- or unwatched (false).</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype._watchOrUnwatchEntry = function (entry, watchedRoot, callback, shouldWatch) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>- The FileSystemEntry to watch. Must be a non-strict descendent of watchedRoot.entry.</dd>
+    <dt>watchedRoot</dt>
+    <dd class="label label-info pull-left">WatchedRoot</dd>
+    <dd>- See FileSystem._watchedRoots.</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function(?string)</dd>
+    <dd>- A function that is called once the watch is complete, possibly with a FileSystemError string.</dd>
+    <dt>shouldWatch</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- Whether the entry should be watched (true) or unwatched (false).</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._watchOrUnwatchEntry = function (entry, watchedRoot, callback, shouldWatch) {
         var impl = this._impl,
             recursiveWatch = impl.recursiveWatch,
             commandName = shouldWatch ? &quot;watchPath&quot; : &quot;unwatchPath&quot;;
@@ -1391,92 +1394,89 @@ watchedRoot.</p>
                 impl.unwatchPath(entry.fullPath, requestCb);
             }, callback);
         }
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>close</h4>
-                    <div class="description"><p>Close a file system. Clear all caches, indexes, and file watchers.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>close</h4>
+
+    
+    <div class="description"><p>Close a file system. Clear all caches, indexes, and file watchers.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.close = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.close = function () {
         this._impl.unwatchAll();
         this._index.clear();
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>getDirectoryForPath</h4>
-                    <div class="description"><p>Return a Directory object for the specified path.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDirectoryForPath</h4>
+
+    
+    <div class="description"><p>Return a Directory object for the specified path.</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Absolute path of directory.
-</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">Directory</dd>
-                      <dd>The Directory object. This directory may not yet exist on disk.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.getDirectoryForPath = function (path) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Absolute path of directory. </dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Directory</dd>
+    <dd>The Directory object. This directory may not yet exist on disk.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.getDirectoryForPath = function (path) {
         return this._getEntryForPath(Directory, path);
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>getFileForPath</h4>
-                    <div class="description"><p>Return a File object for the specified path.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFileForPath</h4>
+
+    
+    <div class="description"><p>Return a File object for the specified path.</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Absolute path of file. 
-</dd>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">File</dd>
-                      <dd>The File object. This file may not yet exist on disk.</dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.getFileForPath = function (path) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Absolute path of file. </dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">File</dd>
+    <dd>The File object. This file may not yet exist on disk.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.getFileForPath = function (path) {
         return this._getEntryForPath(File, path);
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>init</h4>
-                    <div class="description"><p>Initialize this FileSystem instance.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>init</h4>
+
+    
+    <div class="description"><p>Initialize this FileSystem instance.</p>
 </div>
-                    <dl>
-                      <dt>impl</dt>
-                      <dd class="label label-info pull-left">FileSystemImpl</dd>
-                      <dd>The back-end implementation for this
- FileSystem instance.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.init = function (impl) {
+    
+<dl>
+    <dt>impl</dt>
+    <dd class="label label-info pull-left">FileSystemImpl</dd>
+    <dd>The back-end implementation for this FileSystem instance.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.init = function (impl) {
         console.assert(!this._impl, &quot;This FileSystem has already been initialized!&quot;);
         
         var changeCallback = this._enqueueExternalChange.bind(this),
@@ -1484,29 +1484,28 @@ watchedRoot.</p>
                 
         this._impl = impl;
         this._impl.initWatchers(changeCallback, offlineCallback);
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>resolve</h4>
-                    <div class="description"><p>Resolve a path.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>resolve</h4>
+
+    
+    <div class="description"><p>Resolve a path.</p>
 </div>
-                    <dl>
-                      <dt>path</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The path to resolve</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function (?string,FileSystemEntry=,FileSystemStats=)</dd>
-                      <dd>Callback resolved
- with a FileSystemError string or with the entry for the provided path.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.resolve = function (path, callback) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The path to resolve</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function (?string,FileSystemEntry=,FileSystemStats=)</dd>
+    <dd>Callback resolved with a FileSystemError string or with the entry for the provided path.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.resolve = function (path, callback) {
         var normalizedPath = this._normalizePath(path, false),
             item = this._index.getEntry(normalizedPath);
 
@@ -1544,48 +1543,41 @@ watchedRoot.</p>
                 callback(null, item, stat);
             }.bind(this));
         }
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>showOpenDialog</h4>
-                    <div class="description"><p>Show an &quot;Open&quot; dialog and return the file(s)/directories selected by the user.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>showOpenDialog</h4>
+
+    
+    <div class="description"><p>Show an &quot;Open&quot; dialog and return the file(s)/directories selected by the user.</p>
 </div>
-                    <dl>
-                      <dt>allowMultipleSelection</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>Allows selecting more than one file at a time</dd>
-                      <dt>chooseDirectories</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>Allows directories to be opened</dd>
-                      <dt>title</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The title of the dialog</dd>
-                      <dt>initialPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The folder opened inside the window initially. If initialPath
- is not set, or it doesn't exist, the window would show the last
- browsed folder depending on the OS preferences</dd>
-                      <dt>fileTypes</dt>
-                      <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
-                      <dd>(Currently *ignored* except on Mac - https://trello.com/c/430aXkpq)
- List of extensions that are allowed to be opened, without leading ".".
- Null or empty array allows all files to be selected. Not applicable
- when chooseDirectories = true.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function (?string,Array.&lt;string&gt;=)</dd>
-                      <dd>Callback resolved with a FileSystemError
- string or the selected file(s)/directories. If the user cancels the
- open dialog, the error will be falsy and the file/directory array will
- be empty.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
+    
+<dl>
+    <dt>allowMultipleSelection</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Allows selecting more than one file at a time</dd>
+    <dt>chooseDirectories</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Allows directories to be opened</dd>
+    <dt>title</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The title of the dialog</dd>
+    <dt>initialPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The folder opened inside the window initially. If initialPath is not set, or it doesn't exist, the window would show the last browsed folder depending on the OS preferences</dd>
+    <dt>fileTypes</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>(Currently *ignored* except on Mac - https://trello.com/c/430aXkpq) List of extensions that are allowed to be opened, without leading ".". Null or empty array allows all files to be selected. Not applicable when chooseDirectories = true.</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function (?string,Array.&lt;string&gt;=)</dd>
+    <dd>Callback resolved with a FileSystemError string or the selected file(s)/directories. If the user cancels the open dialog, the error will be falsy and the file/directory array will be empty.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
                             chooseDirectories,
                             title,
                             initialPath,
@@ -1593,65 +1585,58 @@ watchedRoot.</p>
                             callback) {
         
         this._impl.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback);
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>showSaveDialog</h4>
-                    <div class="description"><p>Show a &quot;Save&quot; dialog and return the path of the file to save.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>showSaveDialog</h4>
+
+    
+    <div class="description"><p>Show a &quot;Save&quot; dialog and return the path of the file to save.</p>
 </div>
-                    <dl>
-                      <dt>title</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The title of the dialog.</dd>
-                      <dt>initialPath</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The folder opened inside the window initially. If initialPath
- is not set, or it doesn't exist, the window would show the last
- browsed folder depending on the OS preferences.</dd>
-                      <dt>proposedNewFilename</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>Provide a new file name for the user. This could be based on
- on the current file name plus an additional suffix</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function (?string,string=)</dd>
-                      <dd>Callback that is resolved with a FileSystemError
- string or the name of the file to save. If the user cancels the save,
- the error will be falsy and the name will be empty.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.showSaveDialog = function (title, initialPath, proposedNewFilename, callback) {
+    
+<dl>
+    <dt>title</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The title of the dialog.</dd>
+    <dt>initialPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The folder opened inside the window initially. If initialPath is not set, or it doesn't exist, the window would show the last browsed folder depending on the OS preferences.</dd>
+    <dt>proposedNewFilename</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Provide a new file name for the user. This could be based on on the current file name plus an additional suffix</dd>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function (?string,string=)</dd>
+    <dd>Callback that is resolved with a FileSystemError string or the name of the file to save. If the user cancels the save, the error will be falsy and the name will be empty.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.showSaveDialog = function (title, initialPath, proposedNewFilename, callback) {
         this._impl.showSaveDialog(title, initialPath, proposedNewFilename, callback);
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>unwatch</h4>
-                    <div class="description"><p>Stop watching a filesystem root entry.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>unwatch</h4>
+
+    
+    <div class="description"><p>Stop watching a filesystem root entry.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">FileSystemEntry</dd>
-                      <dd>- The root entry to stop watching. The unwatch will
- if the entry is not currently being watched.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function(?string)</dd>
-                      <dd>- A function that is called when the unwatch has
- completed. If the unwatch fails, the function will have a non-null FileSystemError
- string parameter.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.unwatch = function (entry, callback) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>- The root entry to stop watching. The unwatch will if the entry is not currently being watched.</dd>
+    <dt>callback</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">function(?string)</dd>
+    <dd>- A function that is called when the unwatch has completed. If the unwatch fails, the function will have a non-null FileSystemError string parameter.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.unwatch = function (entry, callback) {
         var fullPath = entry.fullPath,
             watchedRoot = this._watchedRoots[fullPath];
         
@@ -1683,36 +1668,32 @@ watchedRoot.</p>
 
             callback(null);
         }.bind(this));
-    };</code></pre>
-                  </div>
-                  <div class="member public">
-                    <span class="pull-right scope">
-                      
-                      Public API
-                    </span>
-                    <h4>watch</h4>
-                    <div class="description"><p>Start watching a filesystem root entry.</p>
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>watch</h4>
+
+    
+    <div class="description"><p>Start watching a filesystem root entry.</p>
 </div>
-                    <dl>
-                      <dt>entry</dt>
-                      <dd class="label label-info pull-left">FileSystemEntry</dd>
-                      <dd>- The root entry to watch. If entry is a directory,
- all subdirectories that aren't explicitly filtered will also be watched.</dd>
-                      <dt>filter</dt>
-                      <dd class="label label-info pull-left">function(string): boolean</dd>
-                      <dd>- Returns true if a particular item should
- be watched, given its name (not full path). Items that are ignored are also
- filtered from Directory.getContents() results within this subtree.</dd>
-                      <dt>callback</dt>
-                      <dd class="label label-info pull-left">function(?string)</dd>
-                      <dd>- A function that is called when the watch has
- completed. If the watch fails, the function will have a non-null FileSystemError
- string parametr.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    FileSystem.prototype.watch = function (entry, filter, callback) {
+    
+<dl>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dd>- The root entry to watch. If entry is a directory, all subdirectories that aren't explicitly filtered will also be watched.</dd>
+    <dt>filter</dt>
+    <dd class="label label-info pull-left">function(string): boolean</dd>
+    <dd>- Returns true if a particular item should be watched, given its name (not full path). Items that are ignored are also filtered from Directory.getContents() results within this subtree.</dd>
+    <dt>callback</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">function(?string)</dd>
+    <dd>- A function that is called when the watch has completed. If the watch fails, the function will have a non-null FileSystemError string parametr.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.watch = function (entry, filter, callback) {
         var fullPath = entry.fullPath;
         
         callback = callback || function () {};
@@ -1759,14 +1740,12 @@ watchedRoot.</p>
             
             callback(null);
         }.bind(this));
-    };</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

@@ -3,16 +3,21 @@
 
 body {
   margin: 0;
-  font-family: source-sans-pro, Helvetica, Arial, sans-serif;
+  font-family: source-sans-pro, Helvetica, Arial, sans-serif !imporant;
   font-size: 14px;
-  font-weight: 300;
-  line-height: 20px;
-  color: #454545;
+  font-weight: 400;
+  color: #555;
   background-color: #F8F8F8;
+  -webkit-font-smoothing: antialiased;
+}
+
+.module, .left-section {
+    overflow-y: auto;
+    height: calc(100vh - 95px);
 }
 
 a {
-  color: #0083e8;    
+  color: #137cd4;
 }
 
 a:focus {
@@ -28,6 +33,7 @@ p {
 
 code,
 pre {
+  padding: 20px;
   font-family: source-code-pro, Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 12px;
   color: #454545;
@@ -36,8 +42,12 @@ pre {
           border-radius: 3px;
 }
 
-pre {
-    padding: 20px;
+p code,
+p pre,
+li code,
+li pre {
+    border-radius: 2px;
+    padding: 0;
 }
 
 h1,
@@ -46,7 +56,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 10px 0;
+  margin: 10px 0 0;
   font-weight: 300;
   line-height: 20px;
   color: #000;
@@ -65,19 +75,21 @@ h6 small {
 h1,
 h2,
 h3 {
-  line-height: 40px;
+  line-height: 1.3em;
 }
 
 h1 {
-  font-size: 38.5px;
+  font-size: 40px;
+  font-weight: 400;
+  margin-top: 30px;
 }
 
 h2 {
-  font-size: 31.5px;
+  font-size: 30px;
 }
 
 h3 {
-  font-size: 24.5px;
+  font-size: 27px;
 }
 
 h4 {
@@ -131,19 +143,19 @@ textarea {
   line-height: 20px;
   color: #454545;
   text-align: center;
-  text-shadow: 0 1px 1px #fff;
+  text-shadow: none;
   background-color: #e5e9e9;
   *background-color: #e5e9e9;
   background-image: none;
 
-  border: 1px solid #9c9e9e;
+  border: 1px solid #cdcdcd;
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
           
-  -webkit-box-shadow: inset 0 1px 0 #fff;
-     -moz-box-shadow: inset 0 1px 0 #fff;
-          box-shadow: inset 0 1px 0 #fff;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
 }
 
 .btn:hover,
@@ -178,14 +190,14 @@ textarea {
 }
 
 .btn:focus {
-  border: 1px solid #0940fd; 
+  border: 1px solid #2893ef;
   outline: 0;
   outline: thin dotted \9;
   /* IE6-9 */
 
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1;
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1;
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1; 
+  -webkit-box-shadow: 0 0 0 1px #94ceff;
+     -moz-box-shadow: 0 0 0 1px #94ceff;
+          box-shadow: 0 0 0 1px #94ceff;
 }
 
 .btn.active,
@@ -349,21 +361,21 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 .uneditable-input:focus {
-  border-color: #0940fd;
+  border-color: #2893ef;
   outline: 0;
   outline: thin dotted \9;
   /* IE6-9 */
 
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1;
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1;
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px #6fb5f1;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 1px #94ceff;
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 1px #94ceff;
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 1px #94ceff;
 }
 
 .nav > li > a:hover,
 .nav > li > a:focus {
   background-color: #e0f0fa;
   border-radius: 3px;
-  color: #0083e8;     
+  color: #137cd4;
   text-decoration: none;
 }
 
@@ -384,7 +396,12 @@ input[type="color"]:focus,
 
 .nav-list > li > a,
 .nav-list .nav-header {
-  text-shadow: none;
+    text-shadow: none;
+}
+
+.nav-header a,
+.nav-header a:hover {
+    color: #000 !important;
 }
 
 .navbar .brand {
@@ -479,7 +496,37 @@ input[type="color"]:focus,
   position: relative;
   bottom: -19px;
 }
-    
+
+.alert {
+    padding: 4px 7px;
+}
+
+.alert-info {
+    color: #000;
+    background-color: #e0f0fa;
+    border-color: #d9eaf4;
+    border-radius: 3px;
+    font-size: 12px;
+    text-shadow: none;
+}
+
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -15px;
+}
+
+.label-info,
+.badge-info {
+    background-color: #eee;
+    color: #000;
+    font-weight: 300;
+    text-shadow: none;
+}
+
+.well {
+    padding: 19px 19px 0;
+}
 
     
     
@@ -492,8 +539,16 @@ input[type="color"]:focus,
 }
 body{
     padding-bottom: 40px;
-    padding-top: 40px;
+    padding-top: 70px;
 }
+
+.number-of-modules {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5em;
+    margin: 20px 0 0;
+}
+
 #other-module{
     display: none;
     overflow: scroll;
@@ -504,28 +559,24 @@ body{
 .nav-header{
 }
 
-.module > .description {
-    font-size: 16px;
+#description {
+    font-size: 14px;
     line-height: 22px;
-}
-
-.module > .description > h3 {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  border: 0;
 }
 
 section > h2,
 section > h3{
-    font-size: 24px;
-    line-height: 24px;
-    margin-bottom: 20px;
+    font-size: 30px;
+    line-height: 30px;
+    margin-bottom: 15px;
     margin-top: 40px;
+    text-indent: 2px;
+}
+.methods > h3{
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 15px;
+    margin-top: 30px;
     text-indent: 2px;
 }
 h3 .checkbox{
@@ -535,33 +586,33 @@ h3 .checkbox{
     vertical-align: middle;
     width: auto;
 }
-.module > .dependencies ul{
+#dependencies ul{
     margin: 0;
     padding: 0;
 }
-.module > .dependencies ul li {
+#dependencies ul li {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 3px 8px;
     margin-bottom: 10px;
-    margin-left: 5px;
+    margin-right: 5px;
     font-size: 14px;
     line-height: 20px;
     color: #454545;
     text-align: center;
     background-color: #e0f0fa;
     *background-color: #e0f0fa;
+    border: 1px solid #d9eaf4;
     background-image: none;
-    
-    border: none;
+
     -webkit-border-radius: 3px;
        -moz-border-radius: 3px;
             border-radius: 3px;
 }
-.module > .dependencies ul li a {
+#dependencies ul li a {
     padding-top:0;
     padding-bottom:0;
 }
-.module > .dependencies ul li a:hover {
+#dependencies ul li a:hover {
     background: transparent;
 }
 .member{
@@ -569,10 +620,10 @@ h3 .checkbox{
     color: #454545;
     margin-bottom: 20px;
     overflow: hidden; /* clearfix */
-    padding: 20px;
+    padding: 20px 17px;
     border-radius: 4px;
-    border: 1px solid #eaeaea;
-    border-top: 1px solid transparent;
+    border: 1px solid #dedede;
+    border-top: 1px solid #eee;
 }
 /*.member:last-of-type{*/
     /*margin-bottom: 0;*/
@@ -582,24 +633,23 @@ h3 .checkbox{
     font-weight: 400;
     padding-bottom: 10px;
     margin-top: -10px;
-
+    margin-bottom: 10px;
 }
-.member pre[class*="language-"]{
+.member .code,
+.member .code {
     background: #f9f9f9;
     border: 1px solid #eee;
     border-top: 1px solid #e7e7e7;
     display: none;
+    margin-top: 0;
     margin-bottom: 0;
 }
 .member.private{
     display: none;
-    background: #f6f6f6;
+    background: #fff;
 }
 .show-private .member.private{
     display: block;
-}
-.member .description {
-    font-style: italic;
 }
 .member .scope{
     color: #888;
@@ -608,9 +658,21 @@ h3 .checkbox{
     margin-top: -10px;
 }
 
+.deprecated {
+    background: #EBEBEB;
+    background-image: repeating-linear-gradient(135deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+}
+
+.deprecated .label-deprecated {
+    margin-right: 10px;
+}
+
+.deprecated .scope {
+    text-decoration: line-through;
+}
+
 .show-code {
     float: right;
-    margin: 10px;
 }
 
 /* Typeahead styles (Bootstrap conflicts) */
