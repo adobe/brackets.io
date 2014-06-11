@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>Async - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>Async</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,80 +346,87 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Utilities for working with Deferred, Promise, and other asynchronous processes.</p>
+<h1>Async</h1>
 
-            </div>
-          </section>
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            
-            <span class="alert alert-info">This module has no dependencies</span>
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member public">
-      
-                <span class="pull-right scope">
-                  
-                  Public API
-                </span>
-                <h4>ERROR_TIMEOUT</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Value passed to fail() handlers that have been triggered due to withTimeout()&#39;s timeout</p>
+    <div><p>Utilities for working with Deferred, Promise, and other asynchronous processes.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var ERROR_TIMEOUT = {};</code></pre>
-              </div>
-              
-            </section>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+
+    <span class="alert alert-info">This module has no dependencies</span>
+</section>
+<section id="variables">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>chain</h4>
-              <div class="description"><p>Chains a series of synchronous and asynchronous (jQuery promise-returning) functions 
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>ERROR_TIMEOUT</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Value passed to fail() handlers that have been triggered due to withTimeout()&#39;s timeout</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var ERROR_TIMEOUT = {};</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>chain</h4>
+
+    
+    <div class="description"><p>Chains a series of synchronous and asynchronous (jQuery promise-returning) functions 
 together, using the result of each successive function as the argument(s) to the next. 
 A promise is returned that resolves with the result of the final call if all calls 
 resolve or return normally. Otherwise, if any of the functions reject or throw, the 
 computation is halted immediately and the promise is rejected with this halting error.</p>
 </div>
-              <dl>
-                  <dt>functions</dt>
-                  <dd class="label label-info pull-left">Array.&lt;function(*)&gt;</dd>
-                  <dd>Functions to be chained</dd>
-                  <dt>args</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Array</dd>
-                  <dd>Arguments to call the first function with</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function chain(functions, args) {
+    
+<dl>
+    <dt>functions</dt>
+    <dd class="label label-info pull-left">Array.&lt;function(*)&gt;</dd>
+    <dd>Functions to be chained</dd>
+    <dt>args</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Array</dd>
+    <dd>Arguments to call the first function with</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dd>A promise that resolves with the result of the final call, or rejects with the first error.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function chain(functions, args) {
         var deferred = $.Deferred();
         
         function chainHelper(index, args) {
@@ -451,15 +456,16 @@ computation is halted immediately and the promise is rejected with this halting 
         chainHelper(0, args || []);
         
         return deferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>doInParallel</h4>
-              <div class="description"><p>Executes a series of tasks in parallel, returning a &quot;master&quot; Promise that is resolved once
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>doInParallel</h4>
+
+    
+    <div class="description"><p>Executes a series of tasks in parallel, returning a &quot;master&quot; Promise that is resolved once
 all the tasks have resolved. If one or more tasks fail, behavior depends on the failFast
 flag:</p>
 <ul>
@@ -492,22 +498,26 @@ Promise before beginProcessItem() returns it.</p>
 <p>Note: don&#39;t use this if individual tasks (or their done/fail handlers) could ever show a user-
 visible dialog: because they run in parallel, you could show multiple dialogs atop each other.</p>
 </div>
-              <dl>
-                  <dt>items</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
-                  <dd></dd>
-                  <dt>beginProcessItem</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function(*, number):Promise</dd>
-                  <dd></dd>
-                  <dt>failFast</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function doInParallel(items, beginProcessItem, failFast) {
+    
+<dl>
+    <dt>items</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
+    <dd></dd>
+    <dt>beginProcessItem</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function(*, number):Promise</dd>
+    <dd></dd>
+    <dt>failFast</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doInParallel(items, beginProcessItem, failFast) {
         var promises = [];
         var masterDeferred = new $.Deferred();
         
@@ -544,15 +554,16 @@ visible dialog: because they run in parallel, you could show multiple dialogs at
         }
         
         return masterDeferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>doInParallel_aggregateErrors</h4>
-              <div class="description"><p>Executes a series of tasks in parallel, saving up error info from any that fail along the way.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>doInParallel_aggregateErrors</h4>
+
+    
+    <div class="description"><p>Executes a series of tasks in parallel, saving up error info from any that fail along the way.
 Returns a Promise that is only resolved/rejected once all tasks are complete. This is
 essentially a wrapper around doInParallel(..., false).</p>
 <p>If one or more tasks failed, the entire &quot;master&quot; promise is rejected at the end - with one
@@ -562,18 +573,22 @@ argument: an array objects, one per failed task. Each error object contains:</p>
 <li>error -- the first argument passed to the fail() handler when the task failed</li>
 </ul>
 </div>
-              <dl>
-                  <dt>items</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
-                  <dd></dd>
-                  <dt>beginProcessItem</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function(*, number):Promise</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function doInParallel_aggregateErrors(items, beginProcessItem) {
+    
+<dl>
+    <dt>items</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
+    <dd></dd>
+    <dt>beginProcessItem</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function(*, number):Promise</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doInParallel_aggregateErrors(items, beginProcessItem) {
         var errors = [];
         
         var masterDeferred = new $.Deferred();
@@ -599,15 +614,16 @@ argument: an array objects, one per failed task. Each error object contains:</p>
             });
         
         return masterDeferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>doSequentially</h4>
-              <div class="description"><p>Executes a series of tasks in serial (task N does not begin until task N-1 has completed).
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>doSequentially</h4>
+
+    
+    <div class="description"><p>Executes a series of tasks in serial (task N does not begin until task N-1 has completed).
 Returns a &quot;master&quot; Promise that is resolved once all the tasks have resolved. If one or more
 tasks fail, behavior depends on the failAndStopFast flag:</p>
 <ul>
@@ -636,22 +652,26 @@ tasks are never started (the serial sequence is stopped).</li>
 <p>To perform task-specific work after an individual task completes, attach handlers to each
 Promise before beginProcessItem() returns it.</p>
 </div>
-              <dl>
-                  <dt>items</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
-                  <dd></dd>
-                  <dt>beginProcessItem</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function(*, number):Promise</dd>
-                  <dd></dd>
-                  <dt>failAndStopFast</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function doSequentially(items, beginProcessItem, failAndStopFast) {
+    
+<dl>
+    <dt>items</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
+    <dd></dd>
+    <dt>beginProcessItem</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function(*, number):Promise</dd>
+    <dd></dd>
+    <dt>failAndStopFast</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSequentially(items, beginProcessItem, failAndStopFast) {
 
         var masterDeferred = new $.Deferred(),
             hasFailed = false;
@@ -685,37 +705,42 @@ Promise before beginProcessItem() returns it.</p>
         doItem(0);
         
         return masterDeferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>doSequentiallyInBackground</h4>
-              <div class="description"><p>Executes a series of synchronous tasks sequentially spread over time-slices less than maxBlockingTime.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>doSequentiallyInBackground</h4>
+
+    
+    <div class="description"><p>Executes a series of synchronous tasks sequentially spread over time-slices less than maxBlockingTime.
 Processing yields by idleTime between time-slices.</p>
 </div>
-              <dl>
-                  <dt>items</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
-                  <dd></dd>
-                  <dt>fnProcessItem</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function(*, number)</dd>
-                  <dd>Function that synchronously processes one item</dd>
-                  <dt>maxBlockingTime</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd></dd>
-                  <dt>idleTime</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function doSequentiallyInBackground(items, fnProcessItem, maxBlockingTime, idleTime) {
+    
+<dl>
+    <dt>items</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
+    <dd></dd>
+    <dt>fnProcessItem</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function(*, number)</dd>
+    <dd>Function that synchronously processes one item</dd>
+    <dt>maxBlockingTime</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>idleTime</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSequentiallyInBackground(items, fnProcessItem, maxBlockingTime, idleTime) {
         
         maxBlockingTime = maxBlockingTime || 15;
         idleTime = idleTime || 30;
@@ -742,15 +767,16 @@ Processing yields by idleTime between time-slices.</p>
 
             return result;
         }, false);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>waitForAll</h4>
-              <div class="description"><p>Allows waiting for all the promises to be either resolved or rejected.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>waitForAll</h4>
+
+    
+    <div class="description"><p>Allows waiting for all the promises to be either resolved or rejected.
 Unlike $.when(), it does not call .fail() or .always() handlers on first
 reject. The caller should take all the precaution to make sure all the
 promises passed to this function are completed to avoid blocking.</p>
@@ -761,23 +787,26 @@ successfully resolved.</p>
 <p>If timeout is specified, the promise will be rejected on timeout as per
 Async.withTimeout.</p>
 </div>
-              <dl>
-                  <dt>promises</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;$.Promise&gt;</dd>
-                  <dd>Array of promises to wait for</dd>
-                  <dt>failOnReject</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>Whether to reject or not if one of the promises has been rejected.</dd>
-                  <dt>timeout</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>Number of milliseconds to wait until rejecting the promise
-</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function waitForAll(promises, failOnReject, timeout) {
+    
+<dl>
+    <dt>promises</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;$.Promise&gt;</dd>
+    <dd>Array of promises to wait for</dd>
+    <dt>failOnReject</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether to reject or not if one of the promises has been rejected.</dd>
+    <dt>timeout</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Number of milliseconds to wait until rejecting the promise </dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Promise which will be completed once al the</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function waitForAll(promises, failOnReject, timeout) {
         var masterDeferred = new $.Deferred(),
             count = 0,
             sawRejects = false;
@@ -812,35 +841,40 @@ Async.withTimeout.</p>
         });
         
         return masterDeferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>withTimeout</h4>
-              <div class="description"><p>Adds timeout-driven termination to a Promise: returns a new Promise that is resolved/rejected when
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>withTimeout</h4>
+
+    
+    <div class="description"><p>Adds timeout-driven termination to a Promise: returns a new Promise that is resolved/rejected when
 the given original Promise is resolved/rejected, OR is resolved/rejected after the given delay -
 whichever happens first.</p>
 <p>If the original Promise is resolved/rejected first, done()/fail() handlers receive arguments
 piped from the original Promise. If the timeout occurs first instead, then resolve() or
 fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p>
 </div>
-              <dl>
-                  <dt>promise</dt>
-                  <dd class="label label-info pull-left">$.Promise</dd>
-                  <dd></dd>
-                  <dt>timeout</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd></dd>
-                  <dt>resolveTimeout</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, then resolve deferred on timeout, otherwise reject. Default is false.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function withTimeout(promise, timeout, resolveTimeout) {
+    
+<dl>
+    <dt>promise</dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+    <dt>timeout</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>resolveTimeout</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, then resolve deferred on timeout, otherwise reject. Default is false.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function withTimeout(promise, timeout, resolveTimeout) {
         var wrapper = new $.Deferred();
         
         var timer = window.setTimeout(function () {
@@ -859,98 +893,100 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p
         promise.then(wrapper.resolve, wrapper.reject);
         
         return wrapper.promise();
-    }</code></pre>
-            </div>
+    }</code></pre></div>
+</section>
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
             
-          </section>
-          
-          <section class="classes">
-            <h2>Classes</h2>
+            <span class="pull-right scope">Constructor</span>
             
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>PromiseQueue</h4>
-                  <em><p>Creates a queue of async operations that will be executed sequentially. Operations can be added to the
+            <h4>PromiseQueue</h4>
+            <em><p>Creates a queue of async operations that will be executed sequentially. Operations can be added to the
 queue at any time. If the queue is empty and nothing is currently executing when an operation is added, 
 it will execute immediately. Otherwise, it will execute when the last operation currently in the queue 
 has finished.</p>
 </em>
-                  <dl>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function PromiseQueue() {
+            
+            <dl>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function PromiseQueue() {
         this._queue = [];
     }</code></pre>
-                </div>
-      
-                <section class="properties ">
-                  <h3>Properties 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_curPromise</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>$.Promise}
-The promise we&#x27;re currently waiting on, or null if there&#x27;s nothing currently executing. </dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"></div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._curPromise = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_queue</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>Array.&lt;function(): $.Promise&gt;}
-The queue of operations to execute sequentially. Note that even if this array is empty, there might
-still be an operation we need to wait on; that operation&#x27;s promise is stored in _curPromise. </dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"></div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._queue = null;</code></pre>
-                  </div>
-                  
-                </section>
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_doNext</h4>
-                    <div class="description"><p>Pulls the next operation off the queue and executes it.</p>
-</div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype._doNext = function () {
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_curPromise</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Promise</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    PromiseQueue.prototype._curPromise = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_queue</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;function(): $.Promise&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    PromiseQueue.prototype._queue = null;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doNext</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    PromiseQueue.prototype._doNext = function () {
         var self = this;
         if (this._queue.length) {
             var op = this._queue.shift();
@@ -972,30 +1008,30 @@ still be an operation we need to wait on; that operation&#x27;s promise is store
     exports.ERROR_TIMEOUT  = ERROR_TIMEOUT;
     exports.chain          = chain;
     exports.PromiseQueue   = PromiseQueue;
-});</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>add</h4>
-                    <div class="description"><p>Adds an operation to the queue. If nothing is currently executing, it will execute immediately (and
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>add</h4>
+
+    
+    <div class="description"><p>Adds an operation to the queue. If nothing is currently executing, it will execute immediately (and
 the next operation added to the queue will wait for it to complete). Otherwise, it will wait until
 the last operation in the queue (or the currently executing operation if nothing is in the queue) is
 finished. The operation must return a promise that will be resolved or rejected when it&#39;s finished;
 the queue will continue with the next operation regardless of whether the current operation&#39;s promise
 is resolved or rejected.</p>
 </div>
-                    <dl>
-                      <dt>op</dt>
-                      <dd class="label label-info pull-left">function(): $.Promise</dd>
-                      <dd>The operation to add to the queue.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype.add = function (op) {
+    
+<dl>
+    <dt>op</dt>
+    <dd class="label label-info pull-left">function(): $.Promise</dd>
+    <dd>The operation to add to the queue.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    PromiseQueue.prototype.add = function (op) {
         this._queue.push(op);
 
         &#x2F;&#x2F; If something is currently executing, then _doNext() will get called when it&#39;s done. If nothing
@@ -1004,31 +1040,29 @@ is resolved or rejected.</p>
         if (!this._curPromise) {
             this._doNext();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>removeAll</h4>
-                    <div class="description"><p>Removes all pending promises from the queue.</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>removeAll</h4>
+
+    
+    <div class="description"><p>Removes all pending promises from the queue.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    PromiseQueue.prototype.removeAll = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    PromiseQueue.prototype.removeAll = function () {
         this._queue = [];
-    };</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

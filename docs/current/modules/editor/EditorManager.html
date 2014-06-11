@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>EditorManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>EditorManager</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>EditorManager owns the UI for the editor area. This essentially mirrors the &#39;current document&#39;
+<h1>EditorManager</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>EditorManager owns the UI for the editor area. This essentially mirrors the &#39;current document&#39;
 property maintained by DocumentManager&#39;s model.</p>
 <p>Note that there is a little bit of unusual overlap between EditorManager and DocumentManager:
 because the Document state is actually stored in the CodeMirror editor UI, DocumentManager is
@@ -375,349 +375,368 @@ NOTE (#1257): <code>getFocusedEditor()</code> sometimes lags behind this event. 
 should use the arguments or call <code>getActiveEditor()</code> to reliably see which Editor 
 just gained focus.</li>
 </ul>
+</div>
+</section>
 
-            </div>
-          </section>
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
+        <li><a href="..&#x2F;../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/view/PanelManager.html">PanelManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
-              <li><a href="..&#x2F;../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/view/PanelManager.html">PanelManager</a></li>
-              <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-            </ul>
-            
-            
-          </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member public">
-      
-                <span class="pull-right scope">
-                  
-                  Public API
-                </span>
-                <h4>REFRESH_FORCE</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                </dl>
-                <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to always force refresh.</p>
+    Public API
+</span>
+    <h4>REFRESH_FORCE</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl>
+    <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to always force refresh.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var REFRESH_FORCE = &quot;force&quot;;</code></pre>
-              </div>
-              <div class="member public">
-      
-                <span class="pull-right scope">
-                  
-                  Public API
-                </span>
-                <h4>REFRESH_SKIP</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                </dl>
-                <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to never refresh.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var REFRESH_FORCE = &quot;force&quot;;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>REFRESH_SKIP</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl>
+    <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to never refresh.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var REFRESH_SKIP = &quot;skip&quot;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_$currentCustomViewer</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?JQuery</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>DOM node representing UI of custom view  </p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var REFRESH_SKIP = &quot;skip&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$currentCustomViewer</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?JQuery</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>DOM node representing UI of custom view  </p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _$currentCustomViewer = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentEditor</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?Editor</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Currently visible full-size Editor, or null if no editors open</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _$currentCustomViewer = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_currentEditor</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Editor</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Currently visible full-size Editor, or null if no editors open</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentEditor = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentEditorsDocument</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?Document</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Document in current editor</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentEditor = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_currentEditorsDocument</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Document</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Document in current editor</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentEditorsDocument = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentViewProvider</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?Object</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>view provider</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentEditorsDocument = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_currentViewProvider</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Object</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>view provider</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentViewProvider = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentlyViewedPath</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?string</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>full path to file</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentViewProvider = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_currentlyViewedPath</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>full path to file</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentlyViewedPath = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_customViewerRegistry</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?Object</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>view provider registry</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentlyViewedPath = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_customViewerRegistry</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Object</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>view provider registry</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _customViewerRegistry = {};</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_editorHolder</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>DOM node that contains all editors (visible and hidden alike)</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _customViewerRegistry = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_editorHolder</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>DOM node that contains all editors (visible and hidden alike)</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _editorHolder = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_inlineDocsProviders</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Registered inline documentation widget providers sorted descending by priority.
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _editorHolder = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_inlineDocsProviders</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Registered inline documentation widget providers sorted descending by priority.
 See {@link #registerInlineDocsProvider()}.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _inlineDocsProviders = [];</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_inlineEditProviders</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Registered inline-editor widget providers sorted descending by priority. 
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _inlineDocsProviders = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_inlineEditProviders</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Registered inline-editor widget providers sorted descending by priority. 
 See {@link #registerInlineEditProvider()}.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _inlineEditProviders = [];</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_jumpToDefProviders</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Array.&lt;function(...)&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Registered jump-to-definition providers. See {@link #registerJumpToDefProvider()}.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _inlineEditProviders = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_jumpToDefProviders</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;function(...)&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Registered jump-to-definition providers. See {@link #registerJumpToDefProvider()}.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _jumpToDefProviders = [];</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_lastEditorWidth</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Last known editor area width, used to detect when the window is resized horizontally.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _jumpToDefProviders = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_lastEditorWidth</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Last known editor area width, used to detect when the window is resized horizontally.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _lastEditorWidth = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_lastFocusedEditor</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>?Editor</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Currently focused Editor (full-size, inline, or otherwise)</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _lastEditorWidth = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_lastFocusedEditor</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?Editor</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Currently focused Editor (full-size, inline, or otherwise)</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _lastFocusedEditor = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_viewStateCache</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object&lt;string, {scrollPos:{x:number, y:number}, selection:{start:{line:number, ch:number}, end:{line:number, ch:number}}}&gt;</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Maps full path to scroll pos &amp; cursor/selection info. Not kept up to date while an editor is current.
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _lastFocusedEditor = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_viewStateCache</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object&lt;string, {scrollPos:{x:number, y:number}, selection:{start:{line:number, ch:number}, end:{line:number, ch:number}}}&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Maps full path to scroll pos &amp; cursor/selection info. Not kept up to date while an editor is current.
 Only updated when switching / closing editor, or when requested explicitly via _getViewState().</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _viewStateCache = {};</code></pre>
-              </div>
-              
-            </section>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _viewStateCache = {};</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_closeCustomViewer</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_closeCustomViewer</h4>
-              <div class="description"><p>Closes the customViewer currently displayed, shows the NoEditor view
+    <div class="description"><p>Closes the customViewer currently displayed, shows the NoEditor view
 and notifies the ProjectManager to update the file selection</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _closeCustomViewer() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _closeCustomViewer() {
         _removeCustomViewer();
         _setCurrentlyViewedPath();
         _showNoEditor();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_createEditorForDocument</h4>
-              <div class="description"><p>Creates a new Editor bound to the given Document.
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createEditorForDocument</h4>
+
+    
+    <div class="description"><p>Creates a new Editor bound to the given Document.
 The editor is appended to the given container as a visible child.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>Document for the Editor's content</dd>
-                  <dt>makeMasterEditor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, the Editor will set itself as the private "master"
- Editor for the Document. If false, the Editor will attach to the Document as a "slave."</dd>
-                  <dt>container</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd>Container to add the editor to.</dd>
-                  <dt>range</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">{startLine: number, endLine: number}</dd>
-                  <dd>If specified, range of lines within the document
- to display in this editor. Inclusive.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _createEditorForDocument(doc, makeMasterEditor, container, range) {
+    
+<dl>
+    <dt>doc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>Document for the Editor's content</dd>
+    <dt>makeMasterEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, the Editor will set itself as the private "master" Editor for the Document. If false, the Editor will attach to the Document as a "slave."</dd>
+    <dt>container</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd>Container to add the editor to.</dd>
+    <dt>range</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">{startLine: number, endLine: number}</dd>
+    <dd>If specified, range of lines within the document to display in this editor. Inclusive.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>the newly created editor.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createEditorForDocument(doc, makeMasterEditor, container, range) {
         var editor = new Editor(doc, makeMasterEditor, container, range);
 
         $(editor).on(&quot;focus&quot;, function () {
@@ -725,40 +744,39 @@ The editor is appended to the given container as a visible child.</p>
         });
         
         return editor;
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_createFullEditorForDocument</h4>
-              <div class="description"><p>Creates a new &quot;full-size&quot; (not inline) Editor for the given Document, and sets it as the
-Document&#39;s master backing editor. The editor is not yet visible; to show it, use
-DocumentManager.setCurrentDocument().
-Semi-private: should only be called within this module or by Document.</p>
-</div>
-              <dl>
-                  <dt>document</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>Document whose main/full Editor to create</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document) {
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_createFullEditorForDocument</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>document</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>Document whose main/full Editor to create</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document) {
         &#x2F;&#x2F; Create editor; make it initially invisible
         var container = _editorHolder.get(0);
         var editor = _createEditorForDocument(document, true, container);
         editor.setVisible(false);
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_destroyEditorIfUnneeded</h4>
-              <div class="description"><p>Disposes the given Document&#39;s full-size editor if the doc is no longer &quot;open&quot; from the user&#39;s
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_destroyEditorIfUnneeded</h4>
+
+    
+    <div class="description"><p>Disposes the given Document&#39;s full-size editor if the doc is no longer &quot;open&quot; from the user&#39;s
 standpoint - not in the working set and not currentDocument).</p>
 <p>Destroying the full-size editor releases ONE ref to the Document; if inline editors or other
 UI elements are still referencing the Document it will still be &#39;open&#39; (kept alive) from
@@ -767,14 +785,15 @@ DocumentManager&#39;s standpoint. However, destroying the full-size editor does 
 currentDocument change triggers <code>_createFullEditorForDocument()</code> full-size editor again.</p>
 <p>In certain edge cases, this is called directly by DocumentManager; see <code>_gcDocuments()</code> for details.</p>
 </div>
-              <dl>
-                  <dt>document</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>Document whose "master" editor we may destroy</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _destroyEditorIfUnneeded(document) {
+    
+<dl>
+    <dt>document</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>Document whose "master" editor we may destroy</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _destroyEditorIfUnneeded(document) {
         var editor = document._masterEditor;
 
         if (!editor) {
@@ -797,20 +816,25 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
                 _currentEditor = null;
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_doJumpToDef</h4>
-              <div class="description"><p>Asynchronously asks providers to handle jump-to-definition.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doJumpToDef</h4>
+
+    
+    <div class="description"><p>Asynchronously asks providers to handle jump-to-definition.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doJumpToDef() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!Promise</dd>
+    <dd>Resolved when the provider signals that it's done; rejected if no provider responded or the provider that responded failed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doJumpToDef() {
         var providers = _jumpToDefProviders;
         var promise,
             i,
@@ -913,19 +937,21 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
     exports.getCustomViewerForPath        = getCustomViewerForPath;
     exports.notifyPathDeleted             = notifyPathDeleted;
     exports.showingCustomViewerForPath    = showingCustomViewerForPath;
-});</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_doShow</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doShow(document) {
+});</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_doShow</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doShow(document) {
         &#x2F;&#x2F; Show new editor
         _currentEditorsDocument = document;
         _currentEditor = document._masterEditor;
@@ -937,66 +963,75 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
         &#x2F;&#x2F; Resize and refresh the editor, since it might have changed size or had other edits applied
         &#x2F;&#x2F; since it was last visible.
         PanelManager._notifyLayoutChange(REFRESH_FORCE);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getFocusedInlineEditor</h4>
-              <div class="description"><p>Returns the focused Editor within an inline text editor, or null if something else has focus</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getFocusedInlineEditor</h4>
+
+    
+    <div class="description"><p>Returns the focused Editor within an inline text editor, or null if something else has focus</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getFocusedInlineEditor() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Editor</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getFocusedInlineEditor() {
         var focusedWidget = getFocusedInlineWidget();
         if (focusedWidget instanceof InlineTextEditor) {
             return focusedWidget.getFocusedEditor();
         }
         return null;
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_getViewState</h4>
-              <div class="description"><p>Returns up-to-date view state for the given file, or null if file not open and no state cached</p>
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_getViewState</h4>
+
+    
+    <div class="description"><p>Returns up-to-date view state for the given file, or null if file not open and no state cached</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getViewState(fullPath) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getViewState(fullPath) {
         if (_currentEditorsDocument &amp;&amp; _currentEditorsDocument.file.fullPath === fullPath) {
             _saveEditorViewState(_currentEditor);
         }
         return _viewStateCache[fullPath];
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_insertProviderSorted</h4>
-              <div class="description"><p>Inserts a prioritized provider object into the array in sorted (descending) order.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_insertProviderSorted</h4>
+
+    
+    <div class="description"><p>Inserts a prioritized provider object into the array in sorted (descending) order.</p>
 </div>
-              <dl>
-                  <dt>array</dt>
-                  <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
-                  <dd></dd>
-                  <dt>priority</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd></dd>
-                  <dt>provider</dt>
-                  <dd class="label label-info pull-left">function(...)</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _insertProviderSorted(array, provider, priority) {
+    
+<dl>
+    <dt>array</dt>
+    <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
+    <dd></dd>
+    <dt>priority</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">function(...)</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _insertProviderSorted(array, provider, priority) {
         var index,
             prioritizedProvider = {
                 priority: priority,
@@ -1010,23 +1045,25 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
         }
         
         array.splice(index, 0, prioritizedProvider);
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_notifyActiveEditorChanged</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>current</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _notifyActiveEditorChanged(current) {
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_notifyActiveEditorChanged</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>current</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _notifyActiveEditorChanged(current) {
         &#x2F;&#x2F; Skip if the Editor that gained focus was already the most recently focused editor.
         &#x2F;&#x2F; This may happen e.g. if the window loses then regains focus.
         if (_lastFocusedEditor === current) {
@@ -1036,22 +1073,24 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
         _lastFocusedEditor = current;
         
         $(exports).triggerHandler(&quot;activeEditorChange&quot;, [current, previous]);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_nullifyEditor</h4>
-              <div class="description"><p>Resets editor state to make sure <code>getFocusedEditor()</code>, <code>getActiveEditor()</code>,
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_nullifyEditor</h4>
+
+    
+    <div class="description"><p>Resets editor state to make sure <code>getFocusedEditor()</code>, <code>getActiveEditor()</code>,
 and <code>getCurrentFullEditor()</code> return null when an image or the NoEditor 
 placeholder is displayed.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _nullifyEditor() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _nullifyEditor() {
         if (_currentEditor) {
             _saveEditorViewState(_currentEditor);
             
@@ -1082,20 +1121,22 @@ placeholder is displayed.</p>
             &#x2F;&#x2F; No other Editor is gaining focus, so in this one special case we must trigger event manually
             _notifyActiveEditorChanged(null);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onCurrentDocumentChange</h4>
-              <div class="description"><p>Handles changes to DocumentManager.getCurrentDocument()</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onCurrentDocumentChange</h4>
+
+    
+    <div class="description"><p>Handles changes to DocumentManager.getCurrentDocument()</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onCurrentDocumentChange() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onCurrentDocumentChange() {
         var doc = DocumentManager.getCurrentDocument(),
             container = _editorHolder.get(0);
         
@@ -1114,32 +1155,32 @@ placeholder is displayed.</p>
         }
 
         PerfUtils.addMeasurement(perfTimerName);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onEditorAreaResize</h4>
-              <div class="description"><p>Update the current CodeMirror editor&#39;s size. Must be called any time the contents of the editor area
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onEditorAreaResize</h4>
+
+    
+    <div class="description"><p>Update the current CodeMirror editor&#39;s size. Must be called any time the contents of the editor area
 are swapped or any time the editor-holder area has changed height. EditorManager calls us in the swap
 case. PanelManager calls us in the most common height-change cases (panel and/or window resize), but
 some other cases are handled by external code calling <code>resizeEditor()</code> (e.g. ModalBar hide/show).</p>
 </div>
-              <dl>
-                  <dt>editorAreaHt</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd></dd>
-                  <dt>refreshFlag</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>For internal use. Set to "force" to ensure the editor will refresh, 
- "skip" to ensure the editor does not refresh, or leave undefined to let `_onEditorAreaResize()`
- determine whether it needs to refresh.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onEditorAreaResize(event, editorAreaHt, refreshFlag) {
+    
+<dl>
+    <dt>editorAreaHt</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>refreshFlag</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>For internal use. Set to "force" to ensure the editor will refresh, "skip" to ensure the editor does not refresh, or leave undefined to let `_onEditorAreaResize()` determine whether it needs to refresh.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onEditorAreaResize(event, editorAreaHt, refreshFlag) {
         if (_currentEditor) {
             var curRoot = _currentEditor.getRootElement(),
                 curWidth = $(curRoot).width();
@@ -1161,37 +1202,41 @@ some other cases are handled by external code calling <code>resizeEditor()</code
                 _currentEditor.refreshAll(true);
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onFileNameChange</h4>
-              <div class="description"><p>Update file name if necessary</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onFileNameChange</h4>
+
+    
+    <div class="description"><p>Update file name if necessary</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onFileNameChange(e, oldName, newName) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onFileNameChange(e, oldName, newName) {
         if (_currentlyViewedPath === oldName) {
             _setCurrentlyViewedPath(newName);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onWorkingSetRemove</h4>
-              <div class="description"><p>Handles removals from DocumentManager&#39;s working set list</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onWorkingSetRemove</h4>
+
+    
+    <div class="description"><p>Handles removals from DocumentManager&#39;s working set list</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onWorkingSetRemove(event, removedFile) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onWorkingSetRemove(event, removedFile) {
         &#x2F;&#x2F; There&#39;s one case where an editor should be disposed even though the current document
         &#x2F;&#x2F; didn&#39;t change: removing a document from the working set (via the &quot;X&quot; button). (This may
         &#x2F;&#x2F; also cover the case where the document WAS current, if the editor-swap happens before the
@@ -1207,33 +1252,35 @@ some other cases are handled by external code calling <code>resizeEditor()</code
         removedFiles.forEach(function (removedFile) {
             _onWorkingSetRemove(event, removedFile);
         });
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_openInlineWidget</h4>
-              <div class="description"><p>Finds an inline widget provider from the given list that can offer a widget for the current cursor
-position, and once the widget has been created inserts it into the editor.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The host editor</dd>
-                  <dt>providers</dt>
-                  <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
-                  <dd>
- prioritized list of providers</dd>
-                  <dt>defaultErrorMsg</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Default message to display if no providers return non-null</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _openInlineWidget(editor, providers, defaultErrorMsg) {
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_openInlineWidget</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The host editor</dd>
+    <dt>providers</dt>
+    <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
+    <dd>prioritized list of providers</dd>
+    <dt>defaultErrorMsg</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Default message to display if no providers return non-null</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that will be resolved when an InlineWidget is created or rejected if no inline providers have offered one.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _openInlineWidget(editor, providers, defaultErrorMsg) {
         PerfUtils.markStart(PerfUtils.INLINE_WIDGET_OPEN);
         
         &#x2F;&#x2F; Run through inline-editor providers until one responds
@@ -1289,20 +1336,22 @@ position, and once the widget has been created inserts it into the editor.</p>
         }
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_removeCustomViewer</h4>
-              <div class="description"><p>Remove existing custom view if present</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_removeCustomViewer</h4>
+
+    
+    <div class="description"><p>Remove existing custom view if present</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _removeCustomViewer() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _removeCustomViewer() {
         
         if (_$currentCustomViewer) {
             _$currentCustomViewer.remove();
@@ -1312,35 +1361,39 @@ position, and once the widget has been created inserts it into the editor.</p>
         }
         _$currentCustomViewer = null;
         _currentViewProvider = null;
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_resetViewStates</h4>
-              <div class="description"><p>Removes all cached view state info and replaces it with the given mapping</p>
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_resetViewStates</h4>
+
+    
+    <div class="description"><p>Removes all cached view state info and replaces it with the given mapping</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _resetViewStates(viewStates) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _resetViewStates(viewStates) {
         _viewStateCache = viewStates;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_restoreEditorViewState</h4>
-              <div class="description"><p>Updates the given editor&#39;s actual state from _viewStateCache, if any state stored</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_restoreEditorViewState</h4>
+
+    
+    <div class="description"><p>Updates the given editor&#39;s actual state from _viewStateCache, if any state stored</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _restoreEditorViewState(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _restoreEditorViewState(editor) {
         &#x2F;&#x2F; We want to ignore the current state of the editor, so don&#39;t call _getViewState()
         var viewState = _viewStateCache[editor.document.file.fullPath];
         if (viewState) {
@@ -1356,46 +1409,50 @@ position, and once the widget has been created inserts it into the editor.</p>
                 editor.setScrollPos(viewState.scrollPos.x, viewState.scrollPos.y);
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_saveEditorViewState</h4>
-              <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_saveEditorViewState</h4>
+
+    
+    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _saveEditorViewState(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _saveEditorViewState(editor) {
         _viewStateCache[editor.document.file.fullPath] = {
             selections: editor.getSelections(),
             scrollPos: editor.getScrollPos()
         };
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_showCustomViewer</h4>
-              <div class="description"><p>Append custom view to editor-holder</p>
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_showCustomViewer</h4>
+
+    
+    <div class="description"><p>Append custom view to editor-holder</p>
 </div>
-              <dl>
-                  <dt>provider</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>custom view provider</dd>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>path to the file displayed in the custom view</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showCustomViewer(provider, fullPath) {
+    
+<dl>
+    <dt>provider</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>custom view provider</dd>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>path to the file displayed in the custom view</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showCustomViewer(provider, fullPath) {
         &#x2F;&#x2F; Don&#39;t show the same custom view again if file path
         &#x2F;&#x2F; and view provider are still the same.
         if (_currentlyViewedPath === fullPath &amp;&amp;
@@ -1417,25 +1474,27 @@ position, and once the widget has been created inserts it into the editor.</p>
         _$currentCustomViewer = provider.render(fullPath, $(&quot;#editor-holder&quot;));
         
         _setCurrentlyViewedPath(fullPath);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_showEditor</h4>
-              <div class="description"><p>Make the given document&#39;s editor visible in the UI, hiding whatever was
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showEditor</h4>
+
+    
+    <div class="description"><p>Make the given document&#39;s editor visible in the UI, hiding whatever was
 visible before. Creates a new editor if none is assigned.</p>
 </div>
-              <dl>
-                  <dt>document</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showEditor(document) {
+    
+<dl>
+    <dt>document</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showEditor(document) {
         &#x2F;&#x2F; Hide whatever was visible before
         if (!_currentEditor) {
             $(&quot;#not-editor&quot;).css(&quot;display&quot;, &quot;none&quot;);
@@ -1465,20 +1524,22 @@ visible before. Creates a new editor if none is assigned.</p>
         if (createdNewEditor) {
             _restoreEditorViewState(document._masterEditor);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_showNoEditor</h4>
-              <div class="description"><p>Hide the currently visible editor and show a placeholder UI in its place</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showNoEditor</h4>
+
+    
+    <div class="description"><p>Hide the currently visible editor and show a placeholder UI in its place</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showNoEditor() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showNoEditor() {
         $(&quot;#not-editor&quot;).css(&quot;display&quot;, &quot;&quot;);
         _nullifyEditor();
     }
@@ -1495,28 +1556,32 @@ visible before. Creates a new editor if none is assigned.</p>
     function _setCurrentlyViewedPath(fullPath) {
         _currentlyViewedPath = fullPath;
         $(exports).triggerHandler(&quot;currentlyViewedFileChange&quot;);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_toggleInlineWidget</h4>
-              <div class="description"><p>Closes any focused inline widget. Else, asynchronously asks providers to create one.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_toggleInlineWidget</h4>
+
+    
+    <div class="description"><p>Closes any focused inline widget. Else, asynchronously asks providers to create one.</p>
 </div>
-              <dl>
-                  <dt>providers</dt>
-                  <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
-                  <dd>
- prioritized list of providers</dd>
-                  <dt>errorMsg</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Default message to display if no providers return non-null</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _toggleInlineWidget(providers, errorMsg) {
+    
+<dl>
+    <dt>providers</dt>
+    <dd class="label label-info pull-left">Array.&lt;{priority:number,provider:function(...)}&gt;</dd>
+    <dd>prioritized list of providers</dd>
+    <dt>errorMsg</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Default message to display if no providers return non-null</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!Promise</dd>
+    <dd>A promise resolved with true if an inline widget is opened or false when closed. Rejected if there is neither an existing widget to close nor a provider willing to create a widget (or if no editor is open).</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _toggleInlineWidget(providers, errorMsg) {
         var result = new $.Deferred();
         
         if (_currentEditor) {
@@ -1544,29 +1609,34 @@ visible before. Creates a new editor if none is assigned.</p>
         }
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>closeInlineWidget</h4>
-              <div class="description"><p>Removes the given widget UI from the given hostEditor (agnostic of what the widget&#39;s content
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>closeInlineWidget</h4>
+
+    
+    <div class="description"><p>Removes the given widget UI from the given hostEditor (agnostic of what the widget&#39;s content
 is). The widget&#39;s onClosed() callback will be run as a result.</p>
 </div>
-              <dl>
-                  <dt>hostEditor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor containing the widget.</dd>
-                  <dt>inlineWidget</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">InlineWidget</dd>
-                  <dd>The inline widget to close.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function closeInlineWidget(hostEditor, inlineWidget) {
+    
+<dl>
+    <dt>hostEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor containing the widget.</dd>
+    <dt>inlineWidget</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">InlineWidget</dd>
+    <dd>The inline widget to close.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the widget is fully closed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function closeInlineWidget(hostEditor, inlineWidget) {
         &#x2F;&#x2F; If widget has focus, return it to the hostEditor &amp; move the cursor to where the inline used to be
         if (inlineWidget.hasFocus()) {
             &#x2F;&#x2F; Place cursor back on the line just above the inline (the line from which it was opened)
@@ -1581,37 +1651,40 @@ is). The widget&#39;s onClosed() callback will be run as a result.</p>
         }
         
         return hostEditor.removeInlineWidget(inlineWidget);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>createInlineEditorForDocument</h4>
-              <div class="description"><p>Creates a new inline Editor instance for the given Document.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>createInlineEditorForDocument</h4>
+
+    
+    <div class="description"><p>Creates a new inline Editor instance for the given Document.
 The editor is not yet visible or attached to a host editor.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>Document for the Editor's content</dd>
-                  <dt>range</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{startLine:Number, endLine:Number}</dd>
-                  <dd>If specified, all lines outside the given
- range are hidden from the editor. Range is inclusive. Line numbers start at 0.</dd>
-                  <dt>inlineContent</dt>
-                  <dd class="label label-info pull-left">HTMLDivContainer</dd>
-                  <dd></dd>
-                  <dt>closeThisInline
-</dt>
-                  <dd class="label label-info pull-left">function(inlineWidget)</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function createInlineEditorForDocument(doc, range, inlineContent) {
+    
+<dl>
+    <dt>doc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>Document for the Editor's content</dd>
+    <dt>range</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{startLine:Number, endLine:Number}</dd>
+    <dd>If specified, all lines outside the given range are hidden from the editor. Range is inclusive. Line numbers start at 0.</dd>
+    <dt>inlineContent</dt>
+    <dd class="label label-info pull-left">HTMLDivContainer</dd>
+    <dd></dd>
+    <dt>closeThisInline</dt>
+    <dd class="label label-info pull-left">function(inlineWidget)</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{content:DOMElement,editor:Editor}</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createInlineEditorForDocument(doc, range, inlineContent) {
         &#x2F;&#x2F; Hide the container for the editor before creating it so that CodeMirror doesn&#39;t do extra work
         &#x2F;&#x2F; when initializing the document. When we construct the editor, we have to set its text and then
         &#x2F;&#x2F; set the (small) visible range that we show in the editor. If the editor is visible, CM has to
@@ -1622,99 +1695,118 @@ The editor is not yet visible or attached to a host editor.</p>
         $(inlineContent).show();
         
         return { content: inlineContent, editor: inlineEditor };
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>focusEditor</h4>
-              <div class="description"><p>Returns focus to the last visible editor that had focus. If no editor visible, does nothing.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>focusEditor</h4>
+
+    
+    <div class="description"><p>Returns focus to the last visible editor that had focus. If no editor visible, does nothing.
 This function should be called to restore editor focus after it has been temporarily
 removed. For example, after a dialog with editable text is closed.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function focusEditor() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function focusEditor() {
         if (_lastFocusedEditor) {
             _lastFocusedEditor.focus();
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getActiveEditor</h4>
-              <div class="description"><p>Returns the current active editor (full-sized OR inline editor). This editor may not 
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getActiveEditor</h4>
+
+    
+    <div class="description"><p>Returns the current active editor (full-sized OR inline editor). This editor may not 
 have focus at the moment, but it is visible and was the last editor that was given 
 focus. Returns null if no editors are active.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getActiveEditor() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Editor</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getActiveEditor() {
         return _lastFocusedEditor;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getCurrentFullEditor</h4>
-              <div class="description"><p>Returns the visible full-size Editor corresponding to DocumentManager.getCurrentDocument()</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getCurrentFullEditor</h4>
+
+    
+    <div class="description"><p>Returns the visible full-size Editor corresponding to DocumentManager.getCurrentDocument()</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getCurrentFullEditor() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getCurrentFullEditor() {
         &#x2F;&#x2F; This *should* always be equivalent to DocumentManager.getCurrentDocument()._masterEditor
         return _currentEditor;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getCustomViewerForPath</h4>
-              <div class="description"><p>Return the provider of a custom viewer for the given path if one exists.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getCustomViewerForPath</h4>
+
+    
+    <div class="description"><p>Return the provider of a custom viewer for the given path if one exists.
 Otherwise, return null.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- file path to be checked for a custom viewer</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getCustomViewerForPath(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- file path to be checked for a custom viewer</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Object</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getCustomViewerForPath(fullPath) {
         var lang = LanguageManager.getLanguageForPath(fullPath);
         
         return _customViewerRegistry[lang.getId()];
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getFocusedEditor</h4>
-              <div class="description"><p>Returns the currently focused editor instance (full-sized OR inline editor).
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFocusedEditor</h4>
+
+    
+    <div class="description"><p>Returns the currently focused editor instance (full-sized OR inline editor).
 This function is similar to getActiveEditor(), with one main difference: this
 function will only return editors that currently have focus, whereas 
 getActiveEditor() will return the last visible editor that was given focus (but
 may not currently have focus because, for example, a dialog with editable text
 is open).</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getFocusedEditor() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Editor</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFocusedEditor() {
         if (_currentEditor) {
             
             &#x2F;&#x2F; See if any inlines have focus
@@ -1730,20 +1822,25 @@ is open).</p>
         }
         
         return null;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getFocusedInlineWidget</h4>
-              <div class="description"><p>Returns the currently focused inline widget, if any.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFocusedInlineWidget</h4>
+
+    
+    <div class="description"><p>Returns the currently focused inline widget, if any.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getFocusedInlineWidget() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?InlineWidget</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFocusedInlineWidget() {
         var result = null;
         
         if (_currentEditor) {
@@ -1755,25 +1852,28 @@ is open).</p>
         }
         
         return result;
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>getInlineEditors</h4>
-              <div class="description"><p>Given a host editor, return a list of all Editors in all its open inline widgets. (Ignoring
-any other inline widgets that might be open but don&#39;t contain Editors).</p>
-</div>
-              <dl>
-                  <dt>hostEditor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getInlineEditors(hostEditor) {
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>getInlineEditors</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>hostEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;Editor&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getInlineEditors(hostEditor) {
         var inlineEditors = [];
         
         if (hostEditor) {
@@ -1785,29 +1885,31 @@ any other inline widgets that might be open but don&#39;t contain Editors).</p>
         }
 
         return inlineEditors;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>notifyPathDeleted</h4>
-              <div class="description"><p>Clears custom viewer for a file with a given path and displays 
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>notifyPathDeleted</h4>
+
+    
+    <div class="description"><p>Clears custom viewer for a file with a given path and displays 
 an alternate file or the no editor view. 
 If no param fullpath is passed an alternate file will be opened 
 regardless of the current value of _currentlyViewedPath.
 If param fullpath is provided then only if fullpath matches 
 the currently viewed file an alternate file will be opened.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- file path of deleted file.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function notifyPathDeleted(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- file path of deleted file.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyPathDeleted(fullPath) {
         function openAlternateFile() {
             var fileToOpen = DocumentManager.getNextPrevFile(1);
             if (fileToOpen) {
@@ -1821,15 +1923,16 @@ the currently viewed file an alternate file will be opened.</p>
         if (!fullPath || _currentlyViewedPath === fullPath) {
             openAlternateFile();
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>registerCustomViewer</h4>
-              <div class="description"><p>Registers a new custom viewer provider. To create an extension 
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>registerCustomViewer</h4>
+
+    
+    <div class="description"><p>Registers a new custom viewer provider. To create an extension 
 that enables Brackets to view files that cannot be shown as<br>text such as binary files, use this method to register a CustomViewer.</p>
 <p>A CustomViewer, such as ImageViewer in Brackets core needs to 
 implement and export two methods: </p>
@@ -1849,136 +1952,138 @@ in LanguageManager JSDocs.
 The second argument is an instance of the custom viewer that is ready to display 
 files.</p>
 </div>
-              <dl>
-                  <dt>languageId,</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">String</dd>
-                  <dd>i.e. string such as image, audio, etc to 
- identify a language known to LanguageManager </dd>
-                  <dt>provider</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>custom view provider instance</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function registerCustomViewer(langId, provider) {
+    
+<dl>
+    <dt>languageId,</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">String</dd>
+    <dd>i.e. string such as image, audio, etc to identify a language known to LanguageManager </dd>
+    <dt>provider</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>custom view provider instance</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerCustomViewer(langId, provider) {
         if (!_customViewerRegistry[langId]) {
             _customViewerRegistry[langId] = provider;
         } else {
             console.error(&quot;There already is a custom viewer registered for language id  \&quot;&quot; + langId + &quot;\&quot;&quot;);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>registerInlineDocsProvider</h4>
-              <div class="description"><p>Registers a new inline docs provider. When Quick Docs is invoked each registered provider is
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>registerInlineDocsProvider</h4>
+
+    
+    <div class="description"><p>Registers a new inline docs provider. When Quick Docs is invoked each registered provider is
 asked if it wants to provide inline docs given the current editor and cursor location.
 An optional priority parameter is used to give providers with higher priority an opportunity
 to provide an inline editor before providers with lower priority.</p>
 </div>
-              <dl>
-                  <dt>provider</dt>
-                  <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?($.Promise,string)</dd>
-                  <dd></dd>
-                  <dt>priority</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>
-The provider returns a promise that will be resolved with an InlineWidget, or returns a string
-indicating why the provider cannot respond to this case (or returns null to indicate no reason).</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function registerInlineDocsProvider(provider, priority) {
+    
+<dl>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?($.Promise,string)</dd>
+    <dd></dd>
+    <dt>priority</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The provider returns a promise that will be resolved with an InlineWidget, or returns a string indicating why the provider cannot respond to this case (or returns null to indicate no reason).</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerInlineDocsProvider(provider, priority) {
         if (priority === undefined) {
             priority = 0;
         }
         _insertProviderSorted(_inlineDocsProviders, provider, priority);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>registerInlineEditProvider</h4>
-              <div class="description"><p>Registers a new inline editor provider. When Quick Edit is invoked each registered provider is
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>registerInlineEditProvider</h4>
+
+    
+    <div class="description"><p>Registers a new inline editor provider. When Quick Edit is invoked each registered provider is
 asked if it wants to provide an inline editor given the current editor and cursor location.
 An optional priority parameter is used to give providers with higher priority an opportunity
 to provide an inline editor before providers with lower priority.</p>
 </div>
-              <dl>
-                  <dt>provider</dt>
-                  <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?($.Promise,string)</dd>
-                  <dd></dd>
-                  <dt>priority</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>
-The provider returns a promise that will be resolved with an InlineWidget, or returns a string
-indicating why the provider cannot respond to this case (or returns null to indicate no reason).</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function registerInlineEditProvider(provider, priority) {
+    
+<dl>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?($.Promise,string)</dd>
+    <dd></dd>
+    <dt>priority</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The provider returns a promise that will be resolved with an InlineWidget, or returns a string indicating why the provider cannot respond to this case (or returns null to indicate no reason).</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerInlineEditProvider(provider, priority) {
         if (priority === undefined) {
             priority = 0;
         }
         _insertProviderSorted(_inlineEditProviders, provider, priority);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>registerJumpToDefProvider</h4>
-              <div class="description"><p>Registers a new jump-to-definition provider. When jump-to-definition is invoked each
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>registerJumpToDefProvider</h4>
+
+    
+    <div class="description"><p>Registers a new jump-to-definition provider. When jump-to-definition is invoked each
 registered provider is asked if it wants to provide jump-to-definition results, given
 the current editor and cursor location. </p>
 </div>
-              <dl>
-                  <dt>provider
-The</dt>
-                  <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?$.Promise</dd>
-                  <dd>provider returns a promise that is resolved whenever it's done handling the operation,
-or returns null to indicate the provider doesn't want to respond to this case. It is entirely
-up to the provider to open the file containing the definition, select the appropriate text, etc.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function registerJumpToDefProvider(provider) {
+    
+<dl>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">function(!Editor,!{line:number,ch:number}):?$.Promise</dd>
+    <dd>The provider returns a promise that is resolved whenever it's done handling the operation, or returns null to indicate the provider doesn't want to respond to this case. It is entirely up to the provider to open the file containing the definition, select the appropriate text, etc.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerJumpToDefProvider(provider) {
         _jumpToDefProviders.push(provider);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>resizeEditor</h4>
-              <div class="description"><p>Must be called whenever the size/visibility of editor area siblings is changed without going through
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>resizeEditor</h4>
+
+    
+    <div class="description"><p>Must be called whenever the size/visibility of editor area siblings is changed without going through
 PanelManager or Resizer. Resizable panels created via PanelManager do not require this manual call.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function resizeEditor() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function resizeEditor() {
         if (!_editorHolder) {
             return;  &#x2F;&#x2F; still too early during init
         }
         &#x2F;&#x2F; PanelManager computes the correct editor-holder size &amp; calls us back with it, via _onEditorAreaResize()
         PanelManager._notifyLayoutChange();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>setEditorHolder</h4>
-              <div class="description"><p>Note: there are several paths that can lead to an editor getting destroyed</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>setEditorHolder</h4>
+
+    
+    <div class="description"><p>Note: there are several paths that can lead to an editor getting destroyed</p>
 <ul>
 <li>file was in working set, but not in current editor; then closed (via working set &quot;X&quot; button)
   --&gt; handled by _onWorkingSetRemove()</li>
@@ -1995,14 +2100,15 @@ Designates the DOM node that will contain the currently active editor instance. 
 will own the content of this DOM node.</li>
 </ul>
 </div>
-              <dl>
-                  <dt>holder</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function setEditorHolder(holder) {
+    
+<dl>
+    <dt>holder</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setEditorHolder(holder) {
         if (_currentEditor) {
             console.error(&quot;Cannot change editor area after an editor has already been created!&quot;);
             return;
@@ -2011,31 +2117,33 @@ will own the content of this DOM node.</li>
         _editorHolder = holder;
         
         resizeEditor();  &#x2F;&#x2F; if no files open at startup, we won&#39;t get called back later to resize the &quot;no-editor&quot; placeholder
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>showingCustomViewerForPath</h4>
-              <div class="description"><p>Check whether the given file is currently open in a custom viewer.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>showingCustomViewerForPath</h4>
+
+    
+    <div class="description"><p>Check whether the given file is currently open in a custom viewer.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>file path to check</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function showingCustomViewerForPath(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>file path to check</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if we have a custom viewer showing and the given file path matches the one in the custom viewer, false otherwise.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showingCustomViewerForPath(fullPath) {
         return (_currentViewProvider &amp;&amp; _currentlyViewedPath === fullPath);
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

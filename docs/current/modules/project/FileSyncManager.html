@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>FileSyncManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>FileSyncManager</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>FileSyncManager is a set of utilities to help track external modifications to the files and folders
+<h1>FileSyncManager</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>FileSyncManager is a set of utilities to help track external modifications to the files and folders
 in the currently open project.</p>
 <p>Currently, we detect external changes purely by checking file timestamps against the last-sync
 timestamp recorded on Document. Brackets triggers this check whenever an external change was detected
@@ -365,177 +365,193 @@ notified. If watchers/caching are disabled, we&#39;ll essentially check only on 
 the disk to check every open Document&#39;s timestamp every time.</p>
 <p>FUTURE: Whenever we have a &#39;project file tree model,&#39; we should manipulate that instead of notifying
 DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to that model for changes.</p>
-
-            </div>
-          </section>
-    
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-              <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-            </ul>
-            
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_alreadyChecking</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Guard to spot re-entrancy while syncOpenDocuments() is still in progress</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _alreadyChecking = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_restartPending</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>If true, we should bail from the syncOpenDocuments() process and then re-run it. See
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_alreadyChecking</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Guard to spot re-entrancy while syncOpenDocuments() is still in progress</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _alreadyChecking = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_restartPending</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>If true, we should bail from the syncOpenDocuments() process and then re-run it. See
 comments in syncOpenDocuments() for how this works.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _restartPending = false;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>deleteConflicts</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>@type {Array.&lt;{doc: Document, fileTime: number}&gt;}</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var deleteConflicts;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>editConflicts</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>@type {Array.&lt;{doc: Document, fileTime: number}&gt;}</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var editConflicts;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>toClose</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>@type {Array.&lt;Document&gt;}</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var toClose;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>toReload</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>@type {Array.&lt;Document&gt;}</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var toReload;</code></pre>
-              </div>
-              
-            </section>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _restartPending = false;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>closeDeletedDocs</h4>
-              <div class="description"><p>Closes all the documents in &quot;toClose&quot; silently (no prompts). Completes synchronously.</p>
+    
+</span>
+    <h4>deleteConflicts</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{doc: Document, fileTime: number}&gt;</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var deleteConflicts;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>editConflicts</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{doc: Document, fileTime: number}&gt;</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var editConflicts;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>toClose</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;Document&gt;</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var toClose;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>toReload</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;Document&gt;</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var toReload;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>closeDeletedDocs</h4>
+
+    
+    <div class="description"><p>Closes all the documents in &quot;toClose&quot; silently (no prompts). Completes synchronously.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function closeDeletedDocs() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function closeDeletedDocs() {
         toClose.forEach(function (doc) {
             DocumentManager.notifyFileDeleted(doc.file);
         });
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>findExternalChanges</h4>
-              <div class="description"><p>Scans all the given Documents for changes on disk, and sorts them into four buckets,
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>findExternalChanges</h4>
+
+    
+    <div class="description"><p>Scans all the given Documents for changes on disk, and sorts them into four buckets,
 populating the corresponding arrays:
  toReload        - changed on disk; unchanged within Brackets
  toClose         - deleted on disk; unchanged within Brackets
  editConflicts   - changed on disk; also dirty in Brackets
  deleteConflicts - deleted on disk; also dirty in Brackets</p>
 </div>
-              <dl>
-                  <dt>docs</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;Document&gt;</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function findExternalChanges(docs) {
+    
+<dl>
+    <dt>docs</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;Document&gt;</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved when all scanning done, or rejected immediately if there's any error while reading file timestamps. Errors are logged but no UI is shown.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findExternalChanges(docs) {
 
         toReload = [];
         toClose = [];
@@ -605,25 +621,30 @@ populating the corresponding arrays:
         &#x2F;&#x2F; Check all docs in parallel
         &#x2F;&#x2F; (fail fast b&#x2F;c we won&#39;t continue syncing if there was any error fetching timestamps)
         return Async.doInParallel(docs, checkDoc, true);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>presentConflicts</h4>
-              <div class="description"><p>Walks through all the documents in &quot;editConflicts&quot; &amp; &quot;deleteConflicts&quot; and prompts the user
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>presentConflicts</h4>
+
+    
+    <div class="description"><p>Walks through all the documents in &quot;editConflicts&quot; &amp; &quot;deleteConflicts&quot; and prompts the user
 about each one. Processing is sequential: if the user chooses to reload a document, the next
 prompt is not shown until after the reload has completed.</p>
 </div>
-              <dl>
-                  <dt>title</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Title of the dialog.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function presentConflicts(title) {
+    
+<dl>
+    <dt>title</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Title of the dialog.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved/rejected after all documents have been prompted and (if applicable) reloaded (and any resulting error UI has been dismissed). Rejected if any one reload failed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function presentConflicts(title) {
         
         var allConflicts = editConflicts.concat(deleteConflicts);
         
@@ -735,41 +756,51 @@ prompt is not shown until after the reload has completed.</p>
         
         &#x2F;&#x2F; Begin walking through the conflicts, one at a time
         return Async.doSequentially(allConflicts, presentConflict, false);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>reloadChangedDocs</h4>
-              <div class="description"><p>Reloads all the documents in &quot;toReload&quot; silently (no prompts). The operations are all run
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>reloadChangedDocs</h4>
+
+    
+    <div class="description"><p>Reloads all the documents in &quot;toReload&quot; silently (no prompts). The operations are all run
 in parallel.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function reloadChangedDocs() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved/rejected after all reloads done; will be rejected if any one file's reload failed. Errors are logged (by reloadDoc()) but no UI is shown.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function reloadChangedDocs() {
         &#x2F;&#x2F; Reload each doc in turn, and once all are (async) done, signal that we&#39;re done
         return Async.doInParallel(toReload, reloadDoc, false);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>reloadDoc</h4>
-              <div class="description"><p>Reloads the Document&#39;s contents from disk, discarding any unsaved changes in the editor.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>reloadDoc</h4>
+
+    
+    <div class="description"><p>Reloads the Document&#39;s contents from disk, discarding any unsaved changes in the editor.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function reloadDoc(doc) {
+    
+<dl>
+    <dt>doc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>Resolved after editor has been refreshed; rejected if unable to load the file's new content. Errors are logged but no UI is shown.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function reloadDoc(doc) {
         
         var promise = FileUtils.readAsText(doc.file);
         
@@ -780,24 +811,31 @@ in parallel.</p>
             console.log(&quot;Error reloading contents of &quot; + doc.file.fullPath, error);
         });
         return promise;
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>showReloadError</h4>
-              <div class="description"><p>@param {FileError} error</p>
-</div>
-              <dl>
-                  <dt>doc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function showReloadError(error, doc) {
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>showReloadError</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>error</dt>
+    <dd class="label label-info pull-left">FileError</dd>
+    <dd></dd>
+    <dt>doc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Dialog</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showReloadError(error, doc) {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.ERROR_RELOADING_FILE_TITLE,
@@ -807,26 +845,28 @@ in parallel.</p>
                 FileUtils.getFileErrorString(error)
             )
         );
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>syncOpenDocuments</h4>
-              <div class="description"><p>Check to see whether any open files have been modified by an external app since the last time
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>syncOpenDocuments</h4>
+
+    
+    <div class="description"><p>Check to see whether any open files have been modified by an external app since the last time
 Brackets synced up with the copy on disk (either by loading or saving the file). For clean
 files, we silently upate the editor automatically. For files with unsaved changes, we prompt
 the user.</p>
 </div>
-              <dl>
-                  <dt>title</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Title to use for document. Default is "External Changes".</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function syncOpenDocuments(title) {
+    
+<dl>
+    <dt>title</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Title to use for document. Default is "External Changes".</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function syncOpenDocuments(title) {
         
         title = title || Strings.EXT_MODIFIED_TITLE;
         
@@ -919,21 +959,23 @@ the user.</p>
     
     &#x2F;&#x2F; Define public API
     exports.syncOpenDocuments = syncOpenDocuments;
-});</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>syncUnopenWorkingSet</h4>
-              <div class="description"><p>Scans all the files in the working set that do not have Documents (and thus were not scanned
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>syncUnopenWorkingSet</h4>
+
+    
+    <div class="description"><p>Scans all the files in the working set that do not have Documents (and thus were not scanned
 by findExternalChanges()). If any were deleted on disk, removes them from the working set.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function syncUnopenWorkingSet() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function syncUnopenWorkingSet() {
         &#x2F;&#x2F; We only care about working set entries that have never been open (have no Document).
         var unopenWorkingSetFiles = DocumentManager.getWorkingSet().filter(function (wsFile) {
             return !DocumentManager.getOpenDocumentForPath(wsFile.fullPath);
@@ -963,12 +1005,9 @@ by findExternalChanges()). If any were deleted on disk, removes them from the wo
         
         &#x2F;&#x2F; Check all these files in parallel
         return Async.doInParallel(unopenWorkingSetFiles, checkWorkingSetFile, false);
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

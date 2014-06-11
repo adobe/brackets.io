@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>Inspector - Brackets API</title>
     <link rel="stylesheet" href="../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../../index.html"> API</a>
+            <a class="brand" href="../../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>Inspector</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../../modules/strings.html">strings</a></li>
               <li><a href="../../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,14 +346,16 @@
               <li><a href="../../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Inspector manages the connection to Chrome/Chromium&#39;s remote debugger.
+<h1>Inspector</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>Inspector manages the connection to Chrome/Chromium&#39;s remote debugger.
 See inspector.html for the documentation of the remote debugger.</p>
 <p><strong>SETUP</strong></p>
 <p>To enable remote debugging in Chrome or Chromium open either application
@@ -393,121 +393,128 @@ command function call is a function, it will be used as the callback.</p>
 <p>Debugger events are dispatched as regular events using {Domain}.{Event} as
 the event name. The handler function will be called with a single parameter
 that stores all returned values as an object.</p>
-
-            </div>
-          </section>
-    
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;..&#x2F;../modules/text!LiveDevelopment/Inspector/Inspector.json.html">Inspector.json</a></li>
-            </ul>
-            
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_messageCallbacks</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>Object.&lt;number, {callback: function, message: Object}</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Map message IDs to the callback function and original JSON message</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _messageCallbacks = {};
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/text!LiveDevelopment/Inspector/Inspector.json.html">Inspector.json</a></li>
+    </ul>
+
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_messageCallbacks</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;number, {callback: function, message: Object}</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Map message IDs to the callback function and original JSON message</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _messageCallbacks = {};
 
     var _messageId = 1,     &#x2F;&#x2F; id used for remote method calls, auto-incrementing
         _socket,            &#x2F;&#x2F; remote debugger WebSocket
         _connectDeferred,   &#x2F;&#x2F; The deferred connect
-        _userAgent = &quot;&quot;;    &#x2F;&#x2F; user agent string</code></pre>
-              </div>
-              
-            </section>
+        _userAgent = &quot;&quot;;    &#x2F;&#x2F; user agent string</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onConnect</h4>
-              <div class="description"><p>WebSocket did open</p>
+</span>
+    <h4>_onConnect</h4>
+
+    
+    <div class="description"><p>WebSocket did open</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onConnect() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onConnect() {
         if (_connectDeferred) {
             _connectDeferred.resolve();
             _connectDeferred = null;
         }
         $exports.triggerHandler(&quot;connect&quot;);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onDisconnect</h4>
-              <div class="description"><p>WebSocket did close</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onDisconnect</h4>
+
+    
+    <div class="description"><p>WebSocket did close</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onDisconnect() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onDisconnect() {
         _socket = undefined;
         $exports.triggerHandler(&quot;disconnect&quot;);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onError</h4>
-              <div class="description"><p>WebSocket reported an error</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onError</h4>
+
+    
+    <div class="description"><p>WebSocket reported an error</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onError(error) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onError(error) {
         if (_connectDeferred) {
             _connectDeferred.reject();
             _connectDeferred = null;
         }
         $exports.triggerHandler(&quot;error&quot;, [error]);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onMessage</h4>
-              <div class="description"><p>Received message from the WebSocket
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onMessage</h4>
+
+    
+    <div class="description"><p>Received message from the WebSocket
 A message can be one of three things:</p>
 <ol>
 <li>an error -&gt; report it</li>
@@ -515,13 +522,14 @@ A message can be one of three things:</p>
 <li>an event -&gt; trigger an event handler method</li>
 </ol>
 </div>
-              <dl>
-                  <dt>message</dt>
-                  <dd class="label label-info pull-left">object</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onMessage(message) {
+    
+<dl>
+    <dt>message</dt>
+    <dd class="label label-info pull-left">object</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onMessage(message) {
         var response    = JSON.parse(message.data),
             msgRecord   = _messageCallbacks[response.id],
             callback    = msgRecord &amp;&amp; msgRecord.callback,
@@ -546,28 +554,30 @@ A message can be one of three things:</p>
         if (response.error) {
             $exports.triggerHandler(&quot;error&quot;, [response.error, msgText]);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_send</h4>
-              <div class="description"><p>Send a message to the remote debugger
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_send</h4>
+
+    
+    <div class="description"><p>Send a message to the remote debugger
 All passed arguments after the signature are passed on as parameters.
 If the last argument is a function, it is used as the callback function.</p>
 </div>
-              <dl>
-                  <dt>remote</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>method</dd>
-                  <dt>the</dt>
-                  <dd class="label label-info pull-left">object</dd>
-                  <dd>method signature</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _send(method, signature, varargs) {
+    
+<dl>
+    <dt>remote</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>method</dd>
+    <dt>the</dt>
+    <dd class="label label-info pull-left">object</dd>
+    <dd>method signature</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _send(method, signature, varargs) {
         if (!_socket) {
             console.log(&quot;You must connect to the WebSocket before sending messages.&quot;);
 
@@ -616,50 +626,54 @@ If the last argument is a function, it is used as the callback function.</p>
         _socket.send(JSON.stringify(msg));
 
         return promise;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_verifySignature</h4>
-              <div class="description"><p>Check a parameter value against the given signature
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_verifySignature</h4>
+
+    
+    <div class="description"><p>Check a parameter value against the given signature
 This only checks for optional parameters, not types
 Type checking is complex because of $ref and done on the remote end anyways</p>
 </div>
-              <dl>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">signature</dd>
-                  <dd></dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">value</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _verifySignature(signature, value) {
+    
+<dl>
+    <dt></dt>
+    <dd class="label label-info pull-left">signature</dd>
+    <dd></dd>
+    <dt></dt>
+    <dd class="label label-info pull-left">value</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _verifySignature(signature, value) {
         if (value === undefined) {
             console.assert(signature.optional === true, &quot;Missing argument: &quot; + signature.name);
         }
         return true;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>connect</h4>
-              <div class="description"><p>Connect to the remote debugger WebSocket at the given URL.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>connect</h4>
+
+    
+    <div class="description"><p>Connect to the remote debugger WebSocket at the given URL.
 Clients must listen for the <code>connect</code> event.</p>
 </div>
-              <dl>
-                  <dt>WebSocket</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>URL</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function connect(socketURL) {
+    
+<dl>
+    <dt>WebSocket</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>URL</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function connect(socketURL) {
         disconnect().done(function () {
             _socket = new WebSocket(socketURL);
             _socket.onmessage = _onMessage;
@@ -667,23 +681,25 @@ Clients must listen for the <code>connect</code> event.</p>
             _socket.onclose = _onDisconnect;
             _socket.onerror = _onError;
         });
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>connectToURL</h4>
-              <div class="description"><p>Connect to the remote debugger of the page that is at the given URL</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>connectToURL</h4>
+
+    
+    <div class="description"><p>Connect to the remote debugger of the page that is at the given URL</p>
 </div>
-              <dl>
-                  <dt>url</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function connectToURL(url) {
+    
+<dl>
+    <dt>url</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function connectToURL(url) {
         if (_connectDeferred) {
             &#x2F;&#x2F; reject an existing connection attempt
             _connectDeferred.reject(&quot;CANCEL&quot;);
@@ -707,35 +723,42 @@ Clients must listen for the <code>connect</code> event.</p>
             deferred.reject(err);
         });
         return deferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>connected</h4>
-              <div class="description"><p>Check if the inspector is connected</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>connected</h4>
+
+    
+    <div class="description"><p>Check if the inspector is connected</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function connected() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function connected() {
         return _socket !== undefined &amp;&amp; _socket.readyState === WebSocket.OPEN;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>disconnect</h4>
-              <div class="description"><p>Disconnect from the remote debugger WebSocket</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>disconnect</h4>
+
+    
+    <div class="description"><p>Disconnect from the remote debugger WebSocket</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function disconnect() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dd>Promise that is resolved immediately if not currently connected or asynchronously when the socket is closed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function disconnect() {
         var deferred = new $.Deferred(),
             promise = deferred.promise();
 
@@ -764,26 +787,28 @@ Clients must listen for the <code>connect</code> event.</p>
         }
 
         return promise;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getDebuggableWindows</h4>
-              <div class="description"><p>Get a list of the available windows/tabs/extensions that are remote-debuggable</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDebuggableWindows</h4>
+
+    
+    <div class="description"><p>Get a list of the available windows/tabs/extensions that are remote-debuggable</p>
 </div>
-              <dl>
-                  <dt>host</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>IP or name</dd>
-                  <dt>debugger</dt>
-                  <dd class="label label-info pull-left">integer</dd>
-                  <dd>port</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getDebuggableWindows(host, port) {
+    
+<dl>
+    <dt>host</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>IP or name</dd>
+    <dt>debugger</dt>
+    <dd class="label label-info pull-left">integer</dd>
+    <dd>port</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getDebuggableWindows(host, port) {
         if (!host) {
             host = &quot;127.0.0.1&quot;;
         }
@@ -804,37 +829,44 @@ Clients must listen for the <code>connect</code> event.</p>
         request.send(null);
 
         return def.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getUserAgent</h4>
-              <div class="description"><p>Get user agent string</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getUserAgent</h4>
+
+    
+    <div class="description"><p>Get user agent string</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getUserAgent() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getUserAgent() {
         return _userAgent;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>init</h4>
-              <div class="description"><p>Initialize the Inspector
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>init</h4>
+
+    
+    <div class="description"><p>Initialize the Inspector
 Read the Inspector.json configuration and define the command objects
 -&gt; Inspector.domain.command()</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function init(theConfig) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function init(theConfig) {
         exports.config = theConfig;
 
         var InspectorText = require(&quot;text!LiveDevelopment&#x2F;Inspector&#x2F;Inspector.json&quot;),
@@ -863,95 +895,100 @@ Read the Inspector.json configuration and define the command objects
     exports.on                   = on;
     exports.send                 = send;
     exports.setUserAgent         = setUserAgent;
-});</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>off</h4>
-              <div class="description"><p>Remove the given or all event handler(s) for the given event or remove all event handlers</p>
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>off</h4>
+
+    
+    <div class="description"><p>Remove the given or all event handler(s) for the given event or remove all event handlers</p>
 </div>
-              <dl>
-                  <dt>optional</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>event name</dd>
-                  <dt>optional</dt>
-                  <dd class="label label-info pull-left">function</dd>
-                  <dd>handler function</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function off(name, handler) {
+    
+<dl>
+    <dt>optional</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>event name</dd>
+    <dt>optional</dt>
+    <dd class="label label-info pull-left">function</dd>
+    <dd>handler function</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function off(name, handler) {
         $exports.off(name, handler);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>on</h4>
-              <div class="description"><p>Register a handler to be called when the given event is triggered</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>on</h4>
+
+    
+    <div class="description"><p>Register a handler to be called when the given event is triggered</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>name</dd>
-                  <dt>handler</dt>
-                  <dd class="label label-info pull-left">function</dd>
-                  <dd>function</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function on(name, handler) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>name</dd>
+    <dt>handler</dt>
+    <dd class="label label-info pull-left">function</dd>
+    <dd>function</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function on(name, handler) {
         $exports.on(name, handler);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>send</h4>
-              <div class="description"><p>Manually send a message to the remote debugger
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>send</h4>
+
+    
+    <div class="description"><p>Manually send a message to the remote debugger
 All passed arguments after the command are passed on as parameters.
 If the last argument is a function, it is used as the callback function.</p>
 </div>
-              <dl>
-                  <dt>domain</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>command</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function send(domain, command, varargs) {
+    
+<dl>
+    <dt>domain</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>command</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function send(domain, command, varargs) {
         return _send(domain + &quot;.&quot; + command, null, varargs);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>setUserAgent</h4>
-              <div class="description"><p>Set user agent string</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>setUserAgent</h4>
+
+    
+    <div class="description"><p>Set user agent string</p>
 </div>
-              <dl>
-                  <dt>userAgent</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>User agent string returned from Chrome</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function setUserAgent(userAgent) {
+    
+<dl>
+    <dt>userAgent</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>User agent string returned from Chrome</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setUserAgent(userAgent) {
         _userAgent = userAgent;
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

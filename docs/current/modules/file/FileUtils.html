@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>FileUtils - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>FileUtils</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,144 +346,161 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Set of utilites for working with files and text content.</p>
+<h1>FileUtils</h1>
 
-            </div>
-          </section>
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-              <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-              <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-            </ul>
-            
-            
-          </section>
+    <div><p>Set of utilites for working with files and text content.</p>
+</div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member public">
-      
-                <span class="pull-right scope">
-                  
-                  Public API
-                </span>
-                <h4>LINE_ENDINGS_CRLF</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Line endings</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var LINE_ENDINGS_CRLF = &quot;CRLF&quot;,
-        LINE_ENDINGS_LF   = &quot;LF&quot;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_staticHtmlFileExts</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>File extensions - hard-coded for now, but may want to make these preferences</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;],
-        _serverHtmlFileExts = [&quot;php&quot;, &quot;php3&quot;, &quot;php4&quot;, &quot;php5&quot;, &quot;phtm&quot;, &quot;phtml&quot;, &quot;cfm&quot;, &quot;cfml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;jsp&quot;, &quot;jspx&quot;, &quot;shtm&quot;, &quot;shtml&quot;];</code></pre>
-              </div>
-              
-            </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getFilenameWithoutExtension</h4>
-              <div class="description"><p>Get the file name without the extension.</p>
+    Public API
+</span>
+    <h4>LINE_ENDINGS_CRLF</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Line endings</p>
 </div>
-              <dl>
-                  <dt>filename</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>File name of a file or directory</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getFilenameWithoutExtension(filename) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var LINE_ENDINGS_CRLF = &quot;CRLF&quot;,
+        LINE_ENDINGS_LF   = &quot;LF&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_staticHtmlFileExts</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>File extensions - hard-coded for now, but may want to make these preferences</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;],
+        _serverHtmlFileExts = [&quot;php&quot;, &quot;php3&quot;, &quot;php4&quot;, &quot;php5&quot;, &quot;phtm&quot;, &quot;phtml&quot;, &quot;cfm&quot;, &quot;cfml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;jsp&quot;, &quot;jspx&quot;, &quot;shtm&quot;, &quot;shtml&quot;];</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getFilenameWithoutExtension</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>filename</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>File name of a file or directory</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Returns the file name without the extension</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getFilenameWithoutExtension(filename) {
         var index = filename.lastIndexOf(&quot;.&quot;);
         return index === -1 ? filename : filename.slice(0, index);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>canonicalizeFolderPath</h4>
-              <div class="description"><p>Warning: Contrary to the name, this does NOT return a canonical path. The canonical format
+    }</code></pre></div><div class="member public deprecated">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>canonicalizeFolderPath</h4>
+
+    
+    <div class="description"><p>Warning: Contrary to the name, this does NOT return a canonical path. The canonical format
 used by Directory.fullPath actually DOES include the trailing &quot;/&quot;</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function canonicalizeFolderPath(path) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function canonicalizeFolderPath(path) {
         console.error(&quot;Warning: FileUtils.canonicalizeFolderPath() is deprecated. Use paths ending in &#39;&#x2F;&#39; if possible, like Directory.fullPath&quot;);
         return stripTrailingSlash(path);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>compareFilenames</h4>
-              <div class="description"><p>Compares 2 filenames in lowercases. In Windows it compares the names without the
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>compareFilenames</h4>
+
+    
+    <div class="description"><p>Compares 2 filenames in lowercases. In Windows it compares the names without the
 extension first and then the extensions to fix issue #4409</p>
 </div>
-              <dl>
-                  <dt>filename1</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>filename2</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>extFirst</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true it compares the extensions first and then the file names.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function compareFilenames(filename1, filename2, extFirst) {
+    
+<dl>
+    <dt>filename1</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>filename2</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>extFirst</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true it compares the extensions first and then the file names.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The result of the local compare function</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function compareFilenames(filename1, filename2, extFirst) {
         var ext1   = getFileExtension(filename1),
             ext2   = getFileExtension(filename2),
             cmpExt = ext1.toLocaleLowerCase().localeCompare(ext2.toLocaleLowerCase(), undefined, {numeric: true}),
@@ -525,118 +540,143 @@ extension first and then the extensions to fix issue #4409</p>
     exports.getFileExtension               = getFileExtension;
     exports.getSmartFileExtension          = getSmartFileExtension;
     exports.compareFilenames               = compareFilenames;
-});</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>convertToNativePath</h4>
-              <div class="description"><p>Convert a URI path to a native path.
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>convertToNativePath</h4>
+
+    
+    <div class="description"><p>Convert a URI path to a native path.
 On both platforms, this unescapes the URI
 On windows, URI paths start with a &quot;/&quot;, but have a drive letter (&quot;C:&quot;). In this
 case, remove the initial &quot;/&quot;.</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function convertToNativePath(path) {
+    
+<dl>
+    <dt>path</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function convertToNativePath(path) {
         path = unescape(path);
         if (path.indexOf(&quot;:&quot;) !== -1 &amp;&amp; path[0] === &quot;&#x2F;&quot;) {
             return path.substr(1);
         }
         
         return path;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>convertWindowsPathToUnixPath</h4>
-              <div class="description"><p>Convert a Windows-native path to use Unix style slashes.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>convertWindowsPathToUnixPath</h4>
+
+    
+    <div class="description"><p>Convert a Windows-native path to use Unix style slashes.
 On Windows, this converts &quot;C:\foo\bar\baz.txt&quot; to &quot;C:/foo/bar/baz.txt&quot;.
 On Mac, this does nothing, since Mac paths are already in Unix syntax.
 (Note that this does not add an initial forward-slash. Internally, our
 APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quot; paths.)</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>A native-style path.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function convertWindowsPathToUnixPath(path) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A native-style path.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A Unix-style path.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function convertWindowsPathToUnixPath(path) {
         if (brackets.platform === &quot;win&quot;) {
             path = path.replace(&#x2F;\\&#x2F;g, &quot;&#x2F;&quot;);
         }
         return path;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getBaseName</h4>
-              <div class="description"><p>Get the name of a file or a directory, removing any preceding path.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getBaseName</h4>
+
+    
+    <div class="description"><p>Get the name of a file or a directory, removing any preceding path.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>full path to a file or directory</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getBaseName(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Returns the base name of a file or the name of a directory</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getBaseName(fullPath) {
         var lastSlash = fullPath.lastIndexOf(&quot;&#x2F;&quot;);
         if (lastSlash === fullPath.length - 1) {  &#x2F;&#x2F; directory: exclude trailing &quot;&#x2F;&quot; too
             return fullPath.slice(fullPath.lastIndexOf(&quot;&#x2F;&quot;, fullPath.length - 2) + 1, -1);
         } else {
             return fullPath.slice(lastSlash + 1);
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getDirectoryPath</h4>
-              <div class="description"><p>Get the parent directory of a file. If a directory is passed in the directory is returned.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDirectoryPath</h4>
+
+    
+    <div class="description"><p>Get the parent directory of a file. If a directory is passed in the directory is returned.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>full path to a file or directory</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getDirectoryPath(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Returns the path to the parent directory of a file or the path of a directory, including trailing "/"</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getDirectoryPath(fullPath) {
         return fullPath.substr(0, fullPath.lastIndexOf(&quot;&#x2F;&quot;) + 1);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getFileExtension</h4>
-              <div class="description"><p>Get the file extension (excluding &quot;.&quot;) given a path OR a bare filename.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFileExtension</h4>
+
+    
+    <div class="description"><p>Get the file extension (excluding &quot;.&quot;) given a path OR a bare filename.
 Returns &quot;&quot; for names with no extension. If the name starts with &quot;.&quot;, the
 full remaining text is considered the extension.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>full path to a file or directory</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getFileExtension(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Returns the extension of a filename or empty string if the argument is a directory or a filename with no extension</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFileExtension(fullPath) {
         var baseName = getBaseName(fullPath),
             idx      = baseName.lastIndexOf(&quot;.&quot;);
 
@@ -645,43 +685,53 @@ full remaining text is considered the extension.</p>
         }
 
         return baseName.substr(idx + 1);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getNativeBracketsDirectoryPath</h4>
-              <div class="description"><p>Returns a native absolute path to the &#39;brackets&#39; source directory.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getNativeBracketsDirectoryPath</h4>
+
+    
+    <div class="description"><p>Returns a native absolute path to the &#39;brackets&#39; source directory.
 Note that this only works when run in brackets/src/index.html, so it does
 not work for unit tests (which is run from brackets/test/SpecRunner.html)</p>
 <p>WARNING: unlike most paths in Brackets, this path EXCLUDES the trailing &quot;/&quot;.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getNativeBracketsDirectoryPath() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNativeBracketsDirectoryPath() {
         var pathname = decodeURI(window.location.pathname);
         var directory = pathname.substr(0, pathname.lastIndexOf(&quot;&#x2F;&quot;));
         return convertToNativePath(directory);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getNativeModuleDirectoryPath</h4>
-              <div class="description"><p>Given the module object passed to JS module define function,
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getNativeModuleDirectoryPath</h4>
+
+    
+    <div class="description"><p>Given the module object passed to JS module define function,
 convert the path to a native absolute path.
 Returns a native absolute path to the module folder.</p>
 <p>WARNING: unlike most paths in Brackets, this path EXCLUDES the trailing &quot;/&quot;.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getNativeModuleDirectoryPath(module) {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNativeModuleDirectoryPath(module) {
         var path;
         
         if (module &amp;&amp; module.uri) {
@@ -691,71 +741,86 @@ Returns a native absolute path to the module folder.</p>
             path = path.substr(0, path.lastIndexOf(&quot;&#x2F;&quot;));
         }
         return path;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getPlatformLineEndings</h4>
-              <div class="description"><p>Returns the standard line endings for the current platform</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getPlatformLineEndings</h4>
+
+    
+    <div class="description"><p>Returns the standard line endings for the current platform</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getPlatformLineEndings() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">LINE_ENDINGS_CRLF,LINE_ENDINGS_LF</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getPlatformLineEndings() {
         return brackets.platform === &quot;win&quot; ? LINE_ENDINGS_CRLF : LINE_ENDINGS_LF;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getRelativeFilename</h4>
-              <div class="description"><p>Computes filename as relative to the basePath. For example:
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getRelativeFilename</h4>
+
+    
+    <div class="description"><p>Computes filename as relative to the basePath. For example:
 basePath: /foo/bar/, filename: /foo/bar/baz.txt
 returns: baz.txt</p>
 <p>The net effect is that the common prefix is stripped away. If basePath is not
 a prefix of filename, then undefined is returned.</p>
 </div>
-              <dl>
-                  <dt>basePath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path against which we're computing the relative path</dd>
-                  <dt>filename</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Full path to the file for which we are computing a relative path</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getRelativeFilename(basePath, filename) {
+    
+<dl>
+    <dt>basePath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path against which we're computing the relative path</dd>
+    <dt>filename</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Full path to the file for which we are computing a relative path</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>relative path</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getRelativeFilename(basePath, filename) {
         if (!filename || filename.substr(0, basePath.length) !== basePath) {
             return;
         }
         
         return filename.substr(basePath.length);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getSmartFileExtension</h4>
-              <div class="description"><p>Get the file extension (excluding &quot;.&quot;) given a path OR a bare filename.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getSmartFileExtension</h4>
+
+    
+    <div class="description"><p>Get the file extension (excluding &quot;.&quot;) given a path OR a bare filename.
 Returns &quot;&quot; for names with no extension.
 If the only <code>.</code> in the file is the first character,
 returns &quot;&quot; as this is not considered an extension.
 This method considers known extensions which include <code>.</code> in them.</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>full path to a file or directory</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getSmartFileExtension(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Returns the extension of a filename or empty string if the argument is a directory or a filename with no extension</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getSmartFileExtension(fullPath) {
         var baseName = getBaseName(fullPath),
             parts = baseName.split(&quot;.&quot;);
 
@@ -776,68 +841,83 @@ This method considers known extensions which include <code>.</code> in them.</p>
             }
         }
         return extension.join(&quot;.&quot;);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>isServerHtmlFileExt</h4>
-              <div class="description"><p>Determine if file extension is a server html file extension.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>isServerHtmlFileExt</h4>
+
+    
+    <div class="description"><p>Determine if file extension is a server html file extension.</p>
 </div>
-              <dl>
-                  <dt>filePath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>could be a path, a file name or just a file extension</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function isServerHtmlFileExt(filePath) {
+    
+<dl>
+    <dt>filePath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>could be a path, a file name or just a file extension</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Returns true if fileExt is in the list</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isServerHtmlFileExt(filePath) {
         if (!filePath) {
             return false;
         }
 
         return (_serverHtmlFileExts.indexOf(getFileExtension(filePath).toLowerCase()) !== -1);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>isStaticHtmlFileExt</h4>
-              <div class="description"><p>Determine if file extension is a static html file extension.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>isStaticHtmlFileExt</h4>
+
+    
+    <div class="description"><p>Determine if file extension is a static html file extension.</p>
 </div>
-              <dl>
-                  <dt>filePath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>could be a path, a file name or just a file extension</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function isStaticHtmlFileExt(filePath) {
+    
+<dl>
+    <dt>filePath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>could be a path, a file name or just a file extension</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Returns true if fileExt is in the list</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isStaticHtmlFileExt(filePath) {
         if (!filePath) {
             return false;
         }
 
         return (_staticHtmlFileExts.indexOf(getFileExtension(filePath).toLowerCase()) !== -1);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>readAsText</h4>
-              <div class="description"><p>Asynchronously reads a file as UTF-8 encoded text.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>readAsText</h4>
+
+    
+    <div class="description"><p>Asynchronously reads a file as UTF-8 encoded text.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd>File to read</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function readAsText(file) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd>File to read</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with the file's text content plus its timestamp, or rejected with a FileSystemError string constant if the file can not be read.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function readAsText(file) {
         var result = new $.Deferred();
 
         &#x2F;&#x2F; Measure performance
@@ -856,25 +936,30 @@ This method considers known extensions which include <code>.</code> in them.</p>
         });
         
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>sniffLineEndings</h4>
-              <div class="description"><p>Scans the first 1000 chars of the text to determine how it encodes line endings. Returns
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>sniffLineEndings</h4>
+
+    
+    <div class="description"><p>Scans the first 1000 chars of the text to determine how it encodes line endings. Returns
 null if usage is mixed or if no line endings found.</p>
 </div>
-              <dl>
-                  <dt>text</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function sniffLineEndings(text) {
+    
+<dl>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">null,LINE_ENDINGS_CRLF,LINE_ENDINGS_LF</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function sniffLineEndings(text) {
         var subset = text.substr(0, 1000);  &#x2F;&#x2F; (length is clipped to text.length)
         var hasCRLF = &#x2F;\r\n&#x2F;.test(subset);
         var hasLF = &#x2F;[^\r]\n&#x2F;.test(subset);
@@ -884,51 +969,61 @@ null if usage is mixed or if no line endings found.</p>
         } else {
             return hasCRLF ? LINE_ENDINGS_CRLF : LINE_ENDINGS_LF;
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>stripTrailingSlash</h4>
-              <div class="description"><p>Removes the trailing slash from a path, if it has one.
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>stripTrailingSlash</h4>
+
+    
+    <div class="description"><p>Removes the trailing slash from a path, if it has one.
 Warning: this differs from the format of most paths used in Brackets! Use paths ending in &quot;/&quot;
 normally, as this is the format used by Directory.fullPath.</p>
 </div>
-              <dl>
-                  <dt>path</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function stripTrailingSlash(path) {
+    
+<dl>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function stripTrailingSlash(path) {
         if (path &amp;&amp; path[path.length - 1] === &quot;&#x2F;&quot;) {
             return path.slice(0, -1);
         } else {
             return path;
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>translateLineEndings</h4>
-              <div class="description"><p>Translates any line ending types in the given text to the be the single form specified</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>translateLineEndings</h4>
+
+    
+    <div class="description"><p>Translates any line ending types in the given text to the be the single form specified</p>
 </div>
-              <dl>
-                  <dt>text</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>lineEndings</dt>
-                  <dd class="label label-info pull-left">null,LINE_ENDINGS_CRLF,LINE_ENDINGS_LF</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function translateLineEndings(text, lineEndings) {
+    
+<dl>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>lineEndings</dt>
+    <dd class="label label-info pull-left">null,LINE_ENDINGS_CRLF,LINE_ENDINGS_LF</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function translateLineEndings(text, lineEndings) {
         if (lineEndings !== LINE_ENDINGS_CRLF &amp;&amp; lineEndings !== LINE_ENDINGS_LF) {
             lineEndings = getPlatformLineEndings();
         }
@@ -971,34 +1066,37 @@ normally, as this is the format used by Directory.fullPath.</p>
                 getFileErrorString(name)
             )
         );
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>writeText</h4>
-              <div class="description"><p>Asynchronously writes a file as UTF-8 encoded text.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>writeText</h4>
+
+    
+    <div class="description"><p>Asynchronously writes a file as UTF-8 encoded text.</p>
 </div>
-              <dl>
-                  <dt>file</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd>File to write</dd>
-                  <dt>text</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>allowBlindWrite</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>Indicates whether or not CONTENTS_MODIFIED
- errors---which can be triggered if the actual file contents differ from 
- the FileSystem's last-known contents---should be ignored.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function writeText(file, text, allowBlindWrite) {
+    
+<dl>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd>File to write</dd>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>allowBlindWrite</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Indicates whether or not CONTENTS_MODIFIED errors---which can be triggered if the actual file contents differ from the FileSystem's last-known contents---should be ignored.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved when file writing completes, or rejected with a FileSystemError string constant.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function writeText(file, text, allowBlindWrite) {
         var result = new $.Deferred(),
             options = {};
         
@@ -1015,12 +1113,9 @@ normally, as this is the format used by Directory.fullPath.</p>
         });
         
         return result.promise();
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

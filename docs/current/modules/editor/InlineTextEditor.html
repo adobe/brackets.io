@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>InlineTextEditor - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>InlineTextEditor</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,54 +346,57 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              
-            </div>
-          </section>
+<h1>InlineTextEditor</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/InlineWidget.html">InlineWidget</a></li>
-              <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
-            </ul>
-            
-            
-          </section>
+    <div></div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/InlineWidget.html">InlineWidget</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+    </ul>
+
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
+</span>
+    <h4>_dirtyFlagChangeHandler</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_dirtyFlagChangeHandler</h4>
-              <div class="description"><p>Respond to dirty flag change event. If the dirty flag is associated with an inline editor,
+    <div class="description"><p>Respond to dirty flag change event. If the dirty flag is associated with an inline editor,
 show (or hide) the dirty indicator.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _dirtyFlagChangeHandler(event, doc) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _dirtyFlagChangeHandler(event, doc) {
         var $dirtyIndicators = $(&quot;.inline-text-editor .dirty-indicator&quot;),
             $indicator;
         
@@ -405,56 +406,62 @@ show (or hide) the dirty indicator.</p>
                 _showDirtyIndicator($indicator, doc.isDirty);
             }
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_editorHolderWidth</h4>
-              <div class="description"><p>Returns editor holder width (not CodeMirror&#39;s width).</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_editorHolderWidth</h4>
+
+    
+    <div class="description"><p>Returns editor holder width (not CodeMirror&#39;s width).</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _editorHolderWidth() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _editorHolderWidth() {
         return $(&quot;#editor-holder&quot;).width();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_showDirtyIndicator</h4>
-              <div class="description"><p>Shows or hides the dirty indicator</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showDirtyIndicator</h4>
+
+    
+    <div class="description"><p>Shows or hides the dirty indicator</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showDirtyIndicator($indicatorDiv, isDirty) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showDirtyIndicator($indicatorDiv, isDirty) {
         &#x2F;&#x2F; Show or hide the dirty indicator by adjusting
         &#x2F;&#x2F; the width of the div.
         $indicatorDiv.css(&quot;width&quot;, isDirty ? 16 : 0);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_syncGutterWidths</h4>
-              <div class="description"><p>Given a host editor and its inline editors, find the widest gutter and make all the others match</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_syncGutterWidths</h4>
+
+    
+    <div class="description"><p>Given a host editor and its inline editors, find the widest gutter and make all the others match</p>
 </div>
-              <dl>
-                  <dt>hostEditor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Host editor containing all the inline editors to sync</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _syncGutterWidths(hostEditor) {
+    
+<dl>
+    <dt>hostEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Host editor containing all the inline editors to sync</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _syncGutterWidths(hostEditor) {
         var allHostedEditors = EditorManager.getInlineEditors(hostEditor);
         
         &#x2F;&#x2F; add the host itself to the list too
@@ -483,51 +490,93 @@ show (or hide) the dirty indicator.</p>
             &#x2F;&#x2F; Force CodeMirror to refresh the gutter
             editor._codeMirror.setOption(&quot;gutters&quot;, editor._codeMirror.getOption(&quot;gutters&quot;));
         });
-    }</code></pre>
-            </div>
+    }</code></pre></div>
+</section>
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
             
-          </section>
-          
-          <section class="classes">
-            <h2>Classes</h2>
+            <span class="pull-right scope">Constructor</span>
             
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>InlineTextEditor</h4>
-                  <em></em>
-                  <dl>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function InlineTextEditor() {
-        InlineWidget.call(this);</code></pre>
-                </div>
-      
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_onLostContent</h4>
-                    <div class="description"><p>If Document&#39;s file is deleted, or Editor loses sync with Document, just close</p>
+            <h4>InlineTextEditor</h4>
+            <em></em>
+            
+            <dl>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function InlineTextEditor() {
+        InlineWidget.call(this);
+
+        this.editor = null;
+        
+        &#x2F;&#x2F; We need to set this as a capture handler so CodeMirror doesn&#39;t handle Esc before we see it.
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.htmlContent.addEventListener(&quot;keydown&quot;, this.handleKeyDown, true);
+    }
+    InlineTextEditor.prototype = Object.create(InlineWidget.prototype);
+    InlineTextEditor.prototype.constructor = InlineTextEditor;
+    InlineTextEditor.prototype.parentClass = InlineWidget.prototype;
+    
+    InlineTextEditor.prototype.$wrapper = null;</code></pre>
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>editor</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Editor</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.editor = null;
+    InlineTextEditor.prototype.$editorHolder = null;
+    InlineTextEditor.prototype.$header = null;
+    InlineTextEditor.prototype.$filename = null;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onLostContent</h4>
+
+    
+    <div class="description"><p>If Document&#39;s file is deleted, or Editor loses sync with Document, just close</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype._onLostContent = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype._onLostContent = function () {
         &#x2F;&#x2F; Note: this closes the entire inline widget if any one Editor loses sync. This seems
         &#x2F;&#x2F; better than leaving it open but suddenly removing one rule from the result list.
         this.close();
@@ -538,25 +587,25 @@ show (or hide) the dirty indicator.</p>
 
     exports.InlineTextEditor = InlineTextEditor;
 
-});</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_updateLineRange</h4>
-                    <div class="description"><p>Updates start line display.</p>
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateLineRange</h4>
+
+    
+    <div class="description"><p>Updates start line display.</p>
 </div>
-                    <dl>
-                      <dt>editor</dt>
-                      <dd class="label label-info pull-left">Editor</dd>
-                      <dd></dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype._updateLineRange = function (editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype._updateLineRange = function (editor) {
         var oldStartLine    = this._startLine,
             oldEndLine      = this._endLine,
             oldLineCount    = this._lineCount;
@@ -566,63 +615,65 @@ show (or hide) the dirty indicator.</p>
         this._lineCount = this._endLine - this._startLine;
 
         this.$lineNumber.text(this._startLine + 1);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>getFocusedEditor</h4>
-                    <div class="description"><p>@return {?Editor} If an Editor within this inline editor has focus, returns it. Otherwise returns null.</p>
-</div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.getFocusedEditor = function () {
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>getFocusedEditor</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Editor</dd>
+    <dd>If an Editor within this inline editor has focus, returns it. Otherwise returns null.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.getFocusedEditor = function () {
         if (this.editor &amp;&amp; this.editor.hasFocus()) {
             return this.editor;
         }
         return null;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>handleKeyDown</h4>
-                    <div class="description"><p>Make sure that if we want to handle Esc to cancel a multiple selection, we don&#39;t let it bubble
-up to InlineWidget, which will close the edit.</p>
-</div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.handleKeyDown = function (e) {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>handleKeyDown</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.handleKeyDown = function (e) {
         if (e.keyCode === KeyEvent.DOM_VK_ESCAPE &amp;&amp; this.editor &amp;&amp; this.editor.getSelections().length &gt; 1) {
             CodeMirror.commands.singleSelection(this.editor._codeMirror);
             e.stopImmediatePropagation();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>load</h4>
-                    <div class="description"><p>@param {Editor} hostEditor</p>
-</div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.load = function (hostEditor) {
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>load</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>hostEditor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.load = function (hostEditor) {
         InlineTextEditor.prototype.parentClass.load.apply(this, arguments);
 
         &#x2F;&#x2F; We don&#39;t create the actual editor here--that will happen the first time
@@ -631,26 +682,25 @@ up to InlineWidget, which will close the edit.</p>
         this.$header = $(&quot;&lt;div&#x2F;&gt;&quot;).addClass(&quot;inline-editor-header&quot;).appendTo(this.$wrapper);
         this.$filename = $(&quot;&lt;a&#x2F;&gt;&quot;).addClass(&quot;filename&quot;).appendTo(this.$header);
         this.$editorHolder = $(&quot;&lt;div&#x2F;&gt;&quot;).addClass(&quot;inline-editor-holder&quot;).appendTo(this.$wrapper);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onAdded</h4>
-                    <div class="description"><p>Some tasks have to wait until we&#39;ve been parented into the outer editor</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onAdded</h4>
+
+    
+    <div class="description"><p>Some tasks have to wait until we&#39;ve been parented into the outer editor</p>
 </div>
-                    <dl>
-                      <dt>the</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>inline ID that is generated by CodeMirror after the widget that holds the inline
- editor is constructed and added to the DOM</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onAdded = function () {
+    
+<dl>
+    <dt>the</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>inline ID that is generated by CodeMirror after the widget that holds the inline editor is constructed and added to the DOM</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onAdded = function () {
         var self = this;
 
         InlineTextEditor.prototype.parentClass.onAdded.apply(this, arguments);
@@ -676,22 +726,22 @@ up to InlineWidget, which will close the edit.</p>
         if (this.editor) {
             this.editor.focus();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onClosed</h4>
-                    <div class="description"><p>Called any time inline was closed, whether manually (via close()) or automatically</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onClosed</h4>
+
+    
+    <div class="description"><p>Called any time inline was closed, whether manually (via close()) or automatically</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onClosed = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onClosed = function () {
         InlineTextEditor.prototype.parentClass.onClosed.apply(this, arguments);
             
         _syncGutterWidths(this.hostEditor);
@@ -699,22 +749,22 @@ up to InlineWidget, which will close the edit.</p>
         &#x2F;&#x2F; Destroy the inline editor.
         this.setInlineContent(null);
         this.htmlContent.removeEventListener(&quot;keydown&quot;, this.handleKeyDown, true);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onParentShown</h4>
-                    <div class="description"><p>Called when the editor containing the inline is made visible.</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onParentShown</h4>
+
+    
+    <div class="description"><p>Called when the editor containing the inline is made visible.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onParentShown = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onParentShown = function () {
         InlineTextEditor.prototype.parentClass.onParentShown.apply(this, arguments);
 
         &#x2F;&#x2F; Refresh line number display and codemirror line number gutter
@@ -725,32 +775,32 @@ up to InlineWidget, which will close the edit.</p>
 
         &#x2F;&#x2F; We need to call this explicitly whenever the host editor is reshown
         this.sizeInlineWidgetToContents(true);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setInlineContent</h4>
-                    <div class="description"><p>Sets the document and range to show in the inline editor, or null to destroy the current editor and leave
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setInlineContent</h4>
+
+    
+    <div class="description"><p>Sets the document and range to show in the inline editor, or null to destroy the current editor and leave
 the content blank.</p>
 </div>
-                    <dl>
-                      <dt>doc</dt>
-                      <dd class="label label-info pull-left">Document</dd>
-                      <dd>The document to show, or null to show nothing</dd>
-                      <dt>startLine</dt>
-                      <dd class="label label-info pull-left">number</dd>
-                      <dd>The first line of text in `doc` to show in inline editor. Ignored if doc is null.</dd>
-                      <dt>endLine</dt>
-                      <dd class="label label-info pull-left">number</dd>
-                      <dd>The last line of text in `doc` to show in inline editor. Ignored if doc is null.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.setInlineContent = function (doc, startLine, endLine) {
+    
+<dl>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>The document to show, or null to show nothing</dd>
+    <dt>startLine</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The first line of text in `doc` to show in inline editor. Ignored if doc is null.</dd>
+    <dt>endLine</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The last line of text in `doc` to show in inline editor. Ignored if doc is null.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.setInlineContent = function (doc, startLine, endLine) {
         var self = this;
         
         &#x2F;&#x2F; Destroy the previous editor if we had one and clear out the filename info.
@@ -824,37 +874,35 @@ the content blank.</p>
         
         &#x2F;&#x2F; set dirty indicator state
         _showDirtyIndicator($dirtyIndicatorDiv, doc.isDirty);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>sizeInlineWidgetToContents</h4>
-                    <div class="description"><p>Update the inline editor&#39;s height when the number of lines change. The
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>sizeInlineWidgetToContents</h4>
+
+    
+    <div class="description"><p>Update the inline editor&#39;s height when the number of lines change. The
 base implementation of this method does nothing.</p>
 </div>
-                    <dl>
-                      <dt>force</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>the editor to resize</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.sizeInlineWidgetToContents = function (force) {
+    
+<dl>
+    <dt>force</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>the editor to resize</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.sizeInlineWidgetToContents = function (force) {
         &#x2F;&#x2F; brackets_codemirror_overrides.css adds height:auto to CodeMirror
         &#x2F;&#x2F; Inline editors themselves do not need to be sized, but layouts like
         &#x2F;&#x2F; the one used in CSSInlineEditor do need some manual layout.
-    };</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>ViewUtils - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>ViewUtils</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,106 +346,112 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              
-            </div>
-          </section>
+<h1>ViewUtils</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-            </ul>
-            
-            
-          </section>
+    <div></div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_resizeHandlers</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _resizeHandlers = [];</code></pre>
-              </div>
-              
-            </section>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_handleResize</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _handleResize() {
+</span>
+    <h4>_resizeHandlers</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _resizeHandlers = [];</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleResize</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleResize() {
         _resizeHandlers.forEach(function (f) {
             f.apply();
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateScrollerShadow</h4>
-              <div class="description"><p>Positions shadow background elements to indicate vertical scrolling.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateScrollerShadow</h4>
+
+    
+    <div class="description"><p>Positions shadow background elements to indicate vertical scrolling.</p>
 </div>
-              <dl>
-                  <dt>$displayElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>the DOMElement that displays the shadow</dd>
-                  <dt>$scrollElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>the object that is scrolled</dd>
-                  <dt>$shadowTop</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>div .scroller-shadow.top</dd>
-                  <dt>$shadowBottom</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>div .scroller-shadow.bottom</dd>
-                  <dt>isPositionFixed</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>When using absolute position, top remains at 0.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed) {
+    
+<dl>
+    <dt>$displayElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>the DOMElement that displays the shadow</dd>
+    <dt>$scrollElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>the object that is scrolled</dd>
+    <dt>$shadowTop</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>div .scroller-shadow.top</dd>
+    <dt>$shadowBottom</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>div .scroller-shadow.bottom</dd>
+    <dt>isPositionFixed</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>When using absolute position, top remains at 0.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed) {
         var offsetTop           = 0,
             scrollElement       = $scrollElement.get(0),
             scrollTop           = scrollElement.scrollTop,
@@ -499,34 +503,34 @@
         }
 
         return $findShadow;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>addScrollerShadow</h4>
-              <div class="description"><p>Installs event handlers for updatng shadow background elements to indicate vertical scrolling.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>addScrollerShadow</h4>
+
+    
+    <div class="description"><p>Installs event handlers for updatng shadow background elements to indicate vertical scrolling.</p>
 </div>
-              <dl>
-                  <dt>displayElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>the DOMElement that displays the shadow. Must fire
- "contentChanged" events when the element is resized or repositioned.</dd>
-                  <dt>scrollElement</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>the object that is scrolled. Must fire "scroll" events
- when the element is scrolled. If null, the displayElement is used.</dd>
-                  <dt>showBottom</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>optionally show the bottom shadow</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addScrollerShadow(displayElement, scrollElement, showBottom) {
+    
+<dl>
+    <dt>displayElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>the DOMElement that displays the shadow. Must fire "contentChanged" events when the element is resized or repositioned.</dd>
+    <dt>scrollElement</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>the object that is scrolled. Must fire "scroll" events when the element is scrolled. If null, the displayElement is used.</dd>
+    <dt>showBottom</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>optionally show the bottom shadow</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addScrollerShadow(displayElement, scrollElement, showBottom) {
         &#x2F;&#x2F; use fixed positioning when the display and scroll elements are the same
         var isPositionFixed = false;
         
@@ -551,24 +555,29 @@
         
         &#x2F;&#x2F; update immediately
         doUpdate();
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getDirNamesForDuplicateFiles</h4>
-              <div class="description"><p>Determine the minimum directory path to distinguish duplicate file names
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getDirNamesForDuplicateFiles</h4>
+
+    
+    <div class="description"><p>Determine the minimum directory path to distinguish duplicate file names
 for each file in list.</p>
 </div>
-              <dl>
-                  <dt>files</dt>
-                  <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
-                  <dd>- list of Files with the same filename</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getDirNamesForDuplicateFiles(files) {
+    
+<dl>
+    <dt>files</dt>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd>- list of Files with the same filename</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>directory paths to match list of files</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getDirNamesForDuplicateFiles(files) {
         &#x2F;&#x2F; Must have at least two files in list for this to make sense
         if (files.length &lt;= 1) {
             return [];
@@ -634,28 +643,33 @@ for each file in list.</p>
     exports.getFileEntryDisplay          = getFileEntryDisplay;
     exports.toggleClass                  = toggleClass;
     exports.getDirNamesForDuplicateFiles = getDirNamesForDuplicateFiles;
-});</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getElementClipSize</h4>
-              <div class="description"><p>Determine how much of an element rect is clipped in view.</p>
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getElementClipSize</h4>
+
+    
+    <div class="description"><p>Determine how much of an element rect is clipped in view.</p>
 </div>
-              <dl>
-                  <dt>$view</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>- A jQuery scrolling container</dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">!{top: number,left: number,height: number,width: number}}
- elementRect - rectangle of element&#39;s default position,size </dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getElementClipSize($view, elementRect) {
+    
+<dl>
+    <dt>$view</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>- A jQuery scrolling container</dd>
+    <dt>elementRect</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{top: number, left: number, height: number, width: number}</dd>
+    <dd>- rectangle of element's default position/size</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{top: number,right: number,bottom: number,left: number}</dd>
+    <dd>amount element rect is clipped in each direction</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getElementClipSize($view, elementRect) {
         var delta,
             clip = { top: 0, right: 0, bottom: 0, left: 0 },
             viewOffset = $view.offset() || { top: 0, left: 0},
@@ -686,29 +700,34 @@ for each file in list.</p>
         }
 
         return clip;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getFileEntryDisplay</h4>
-              <div class="description"><p>HTML formats a file entry name  for display in the sidebar.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFileEntryDisplay</h4>
+
+    
+    <div class="description"><p>HTML formats a file entry name  for display in the sidebar.</p>
 </div>
-              <dl>
-                  <dt>entry</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">File</dd>
-                  <dd>File entry to display</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getFileEntryDisplay(entry) {
+    
+<dl>
+    <dt>entry</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
+    <dd>File entry to display</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>HTML formatted string</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFileEntryDisplay(entry) {
         var name = entry.name,
             ext = FileUtils.getSmartFileExtension(name),
             i = name.lastIndexOf(&quot;.&quot; + ext);
         
-        if (i &gt;= 0) {
+        if (i &gt; 0) {
             &#x2F;&#x2F; Escape all HTML-sensitive characters in filename.
             name = _.escape(name.substring(0, i)) + &quot;&lt;span class=&#39;extension&#39;&gt;&quot; + _.escape(name.substring(i)) + &quot;&lt;&#x2F;span&gt;&quot;;
         } else {
@@ -716,28 +735,30 @@ for each file in list.</p>
         }
         
         return name;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>removeScrollerShadow</h4>
-              <div class="description"><p>Remove scroller-shadow effect.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>removeScrollerShadow</h4>
+
+    
+    <div class="description"><p>Remove scroller-shadow effect.</p>
 </div>
-              <dl>
-                  <dt>displayElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>the DOMElement that displays the shadow</dd>
-                  <dt>scrollElement</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>the object that is scrolled</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function removeScrollerShadow(displayElement, scrollElement) {
+    
+<dl>
+    <dt>displayElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>the DOMElement that displays the shadow</dd>
+    <dt>scrollElement</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>the object that is scrolled</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeScrollerShadow(displayElement, scrollElement) {
         if (!scrollElement) {
             scrollElement = displayElement;
         }
@@ -752,15 +773,16 @@ for each file in list.</p>
         &#x2F;&#x2F; remove event handlers
         $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
         $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>scrollElementIntoView</h4>
-              <div class="description"><p>Within a scrolling DOMElement, if necessary, scroll element into viewport.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>scrollElementIntoView</h4>
+
+    
+    <div class="description"><p>Within a scrolling DOMElement, if necessary, scroll element into viewport.</p>
 <p>To Perform the minimum amount of scrolling necessary, cases should be handled as follows:</p>
 <ul>
 <li>element already completely in view : no scrolling</li>
@@ -774,22 +796,23 @@ for each file in list.</p>
 <li>$view is a scrolling container</li>
 </ul>
 </div>
-              <dl>
-                  <dt>$view</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>- A jQuery scrolling container</dd>
-                  <dt>$element</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>- A jQuery element</dd>
-                  <dt>scrollHorizontal</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- whether to also scroll horizontally</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function scrollElementIntoView($view, $element, scrollHorizontal) {
+    
+<dl>
+    <dt>$view</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>- A jQuery scrolling container</dd>
+    <dt>$element</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>- A jQuery element</dd>
+    <dt>scrollHorizontal</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- whether to also scroll horizontally</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function scrollElementIntoView($view, $element, scrollHorizontal) {
         var viewOffset = $view.offset(),
             viewScroller = $view.get(0),
             element = $element.get(0),
@@ -819,15 +842,16 @@ for each file in list.</p>
                 $view.scrollLeft($view.scrollLeft() + clip.right);
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>sidebarList</h4>
-              <div class="description"><p>Within a scrolling DOMElement, creates and positions a styled selection
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>sidebarList</h4>
+
+    
+    <div class="description"><p>Within a scrolling DOMElement, creates and positions a styled selection
 div to align a single selected list item from a ul list element.</p>
 <p>Assumptions:</p>
 <ul>
@@ -836,18 +860,19 @@ div to align a single selected list item from a ul list element.</p>
 selectedClassName is assigned to a new list item</li>
 </ul>
 </div>
-              <dl>
-                  <dt>scrollElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">DOMElement</dd>
-                  <dd>A DOMElement containing a ul list element</dd>
-                  <dt>selectedClassName</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>A CSS class name on at most one list item in the contained list</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function sidebarList($scrollerElement, selectedClassName, leafClassName) {
+    
+<dl>
+    <dt>scrollElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">DOMElement</dd>
+    <dd>A DOMElement containing a ul list element</dd>
+    <dt>selectedClassName</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A CSS class name on at most one list item in the contained list</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function sidebarList($scrollerElement, selectedClassName, leafClassName) {
         var $listElement = $scrollerElement.find(&quot;ul&quot;),
             $selectionMarker,
             $selectionTriangle,
@@ -949,43 +974,42 @@ selectedClassName is assigned to a new list item</li>
         
         &#x2F;&#x2F; update clipping when the window resizes
         _resizeHandlers.push(updateSelectionTriangle);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>toggleClass</h4>
-              <div class="description"><p>Utility function to replace jQuery.toggleClass when used with the second argument, which needs to be a true boolean for jQuery</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>toggleClass</h4>
+
+    
+    <div class="description"><p>Utility function to replace jQuery.toggleClass when used with the second argument, which needs to be a true boolean for jQuery</p>
 </div>
-              <dl>
-                  <dt>$domElement</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">jQueryObject</dd>
-                  <dd>The jQueryObject to toggle the Class on</dd>
-                  <dt>className</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Class name or names (separated by spaces) to toggle</dd>
-                  <dt>addClass</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>A truthy value to add the class and a falsy value to remove the class</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function toggleClass($domElement, className, addClass) {
+    
+<dl>
+    <dt>$domElement</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dd>The jQueryObject to toggle the Class on</dd>
+    <dt>className</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Class name or names (separated by spaces) to toggle</dd>
+    <dt>addClass</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>A truthy value to add the class and a falsy value to remove the class</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function toggleClass($domElement, className, addClass) {
         if (addClass) {
             $domElement.addClass(className);
         } else {
             $domElement.removeClass(className);
         }
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

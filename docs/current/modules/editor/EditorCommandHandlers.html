@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>EditorCommandHandlers - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>EditorCommandHandlers</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,96 +346,101 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Text-editing commands that apply to whichever Editor is currently focused</p>
+<h1>EditorCommandHandlers</h1>
 
-            </div>
-          </section>
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-              <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
-            </ul>
-            
-            
-          </section>
-    
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>DIRECTION_UP</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>List of constants</p>
+    <div><p>Text-editing commands that apply to whichever Editor is currently focused</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var DIRECTION_UP    = -1;
-    var DIRECTION_DOWN  = +1;</code></pre>
-              </div>
-              
-            </section>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_containsNotLineComment</h4>
-              <div class="description"><p>Searches between startLine and endLine to check if there is at least one line commented with a line comment, and
-skips all the block comments.</p>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>DIRECTION_UP</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>List of constants</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-                  <dt>startLine</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>valid line inside the document</dd>
-                  <dt>endLine</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>valid line inside the document</dd>
-                  <dt>lineExp</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
-                  <dd>an array of line comment prefixes regular expressions</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _containsNotLineComment(editor, startLine, endLine, lineExp) {
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var DIRECTION_UP    = -1;
+    var DIRECTION_DOWN  = +1;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_containsNotLineComment</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+    <dt>startLine</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>valid line inside the document</dd>
+    <dt>endLine</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>valid line inside the document</dd>
+    <dt>lineExp</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
+    <dd>an array of line comment prefixes regular expressions</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if there is at least one uncommented line</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _containsNotLineComment(editor, startLine, endLine, lineExp) {
         var i, line,
             containsNotLineComment = false;
         
@@ -450,32 +453,36 @@ skips all the block comments.</p>
             }
         }
         return containsNotLineComment;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_createLineExpressions</h4>
-              <div class="description"><p>Creates regular expressions for multiple line comment prefixes</p>
-</div>
-              <dl>
-                  <dt>prefixes</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
-                  <dd>the line comment prefixes</dd>
-                  <dt>blockPrefix</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the block comment prefix</dd>
-                  <dt>blockSuffix</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the block comment suffix</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createLineExpressions</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>prefixes</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>the line comment prefixes</dd>
+    <dt>blockPrefix</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the block comment prefix</dd>
+    <dt>blockSuffix</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the block comment suffix</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
         var lineExp = [], escapedPrefix, nothingPushed;
         
         prefixes.forEach(function (prefix) {
@@ -495,28 +502,32 @@ skips all the block comments.</p>
             }
         });
         return lineExp;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_createSpecialLineExp</h4>
-              <div class="description"><p>Creates special regular expressions that matches the line prefix but not the block prefix or suffix</p>
-</div>
-              <dl>
-                  <dt>lineSyntax</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>a line comment prefix</dd>
-                  <dt>blockSyntax</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>a block comment prefix or suffix</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _createSpecialLineExp(lineSyntax, blockSyntax) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createSpecialLineExp</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>lineSyntax</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>a line comment prefix</dd>
+    <dt>blockSyntax</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>a block comment prefix or suffix</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">RegExp</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createSpecialLineExp(lineSyntax, blockSyntax) {
         var i, character,
             subExps   = [],
             prevChars = &quot;&quot;;
@@ -530,15 +541,16 @@ skips all the block comments.</p>
             prevChars += character;
         }
         return new RegExp(&quot;^\\s*&quot; + StringUtils.regexEscape(lineSyntax) + &quot;($|&quot; + subExps.join(&quot;|&quot;) + &quot;)&quot;);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getBlockCommentPrefixSuffixEdit</h4>
-              <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getBlockCommentPrefixSuffixEdit</h4>
+
+    
+    <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
 and cursor position. Applies to the currently focused Editor.</p>
 <p>If the selection is inside a block-comment or one block-comment is inside or partially inside the selection
 it will uncomment, otherwise it will comment out, unless if there are multiple block comments inside the selection,
@@ -549,36 +561,38 @@ Uncommenting removes them.</p>
 line uncomment all the lines, otherwise it will block comment/uncomment. In the first case, we return null to
 indicate to the caller that it needs to handle this selection as a line comment.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-                  <dt>prefix,</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>e.g. "<!--"</dd>
-                  <dt>suffix,</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>e.g. "-->"</dd>
-                  <dt>linePrefixes,</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
-                  <dd>e.g. ["//"]</dd>
-                  <dt>sel
-</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}</dd>
-                  <dd>The selection to block comment/uncomment.</dd>
-                  <dt>selectionsToTrack
-</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;{!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}&gt;</dd>
-                  <dd>An array of selections that should be tracked through this edit.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+    <dt>prefix,</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>e.g. "<!--"</dd>
+    <dt>suffix,</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>e.g. "-->"</dd>
+    <dt>linePrefixes,</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>e.g. ["//"]</dd>
+    <dt>sel</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}</dd>
+    <dd>The selection to block comment/uncomment.</dd>
+    <dt>selectionsToTrack</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;{!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}&gt;</dd>
+    <dd>An array of selections that should be tracked through this edit.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</dd>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack) {
         var doc            = editor.document,
             ctx            = TokenUtils.getInitialContext(editor._codeMirror, {line: sel.start.line, ch: sel.start.ch}),
             selEndIndex    = editor.indexFromPos(sel.end),
@@ -799,28 +813,31 @@ indicate to the caller that it needs to handle this selection as a line comment.
         }
         
         return edit;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getLineCommentEdits</h4>
-              <div class="description"><p>Generates an array of edits for toggling line comments on the given selections.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to edit within.</dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}
- selections The selections we want to line-comment. </dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentEdits(editor, selections) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getLineCommentEdits</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to edit within.</dd>
+    <dt>selections</dt>
+    <dd class="label label-info pull-left">Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;</dd>
+    <dd>The selections we want to line-comment.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}&gt;</dd>
+    <dd>An array of edit descriptions suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentEdits(editor, selections) {
         &#x2F;&#x2F; We need to expand line selections in order to coalesce cursors on the same line, but we
         &#x2F;&#x2F; don&#39;t want to merge adjacent line selections.
         var lineSelections = editor.convertToLineSelections(selections, { mergeAdjacent: false }),
@@ -845,52 +862,48 @@ indicate to the caller that it needs to handle this selection as a line comment.
             edits.push(edit);
         });
         return edits;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getLineCommentPrefixEdit</h4>
-              <div class="description"><p>Generates an edit that adds or removes line-comment tokens to all the lines in the selected range,
-preserving selection and cursor position. Applies to currently focused Editor. The given selection
-must already be a line selection in the form returned by <code>Editor.convertToLineSelections()</code>.</p>
-<p>If all non-whitespace lines are already commented out, then we uncomment; otherwise we comment
-out. Commenting out adds the prefix at column 0 of every line. Uncommenting removes the first prefix
-on each line (if any - empty lines might not have one).</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-                  <dt>prefixes,</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
-                  <dd>e.g. ["//"]</dd>
-                  <dt>blockPrefix,</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>e.g. "<!--"</dd>
-                  <dt>blockSuffix,</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>e.g. "-->"</dd>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to edit within.</dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">!{selectionForEdit: {start:{line:number,ch:number},end:{line:number,ch:number},reversed:boolean,primary:boolean},
- selectionsToTrack: Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},reversed:boolean,primary:boolean}&gt;}}
- lineSel A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
- the line comment operation on,and `selectionsToTrack` are a set of selections associated with this line that need to be
- tracked through the edit. </dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getLineCommentPrefixEdit</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+    <dt>prefixes,</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>e.g. ["//"]</dd>
+    <dt>blockPrefix,</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>e.g. "<!--"</dd>
+    <dt>blockSuffix,</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>e.g. "-->"</dd>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to edit within.</dd>
+    <dt>lineSel</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}, selectionsToTrack: Array.&lt;{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}&gt;}</dd>
+    <dd>A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be tracked through the edit.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</dd>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
         var doc         = editor.document,
             sel         = lineSel.selectionForEdit,
             trackedSels = lineSel.selectionsToTrack,
@@ -942,44 +955,46 @@ on each line (if any - empty lines might not have one).</p>
             });
         }
         return {edit: editGroup, selection: trackedSels};
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getLineCommentPrefixSuffixEdit</h4>
-              <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getLineCommentPrefixSuffixEdit</h4>
+
+    
+    <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
 and cursor position. Applies to the currently focused Editor. The selection must already be a
 line selection in the form returned by <code>Editor.convertToLineSelections()</code>.</p>
 <p>The implementation uses blockCommentPrefixSuffix, with the exception of the case where
 there is no selection on a uncommented and not empty line. In this case the whole lines gets
 commented in a block-comment.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-                  <dt>prefix</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">String</dd>
-                  <dd></dd>
-                  <dt>suffix</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">String</dd>
-                  <dd></dd>
-                  <dt></dt>
-                  <dd class="label label-info pull-left">!{selectionForEdit: {start:{line:number,ch:number},end:{line:number,ch:number},reversed:boolean,primary:boolean},
- selectionsToTrack: Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},reversed:boolean,primary:boolean}&gt;}}
- lineSel A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
- the line comment operation on,and `selectionsToTrack` are a set of selections associated with this line that need to be
- tracked through the edit. </dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+    <dt>prefix</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">String</dd>
+    <dd></dd>
+    <dt>suffix</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">String</dd>
+    <dd></dd>
+    <dt>lineSel</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}, selectionsToTrack: Array.&lt;{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}&gt;}</dd>
+    <dd>A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be tracked through the edit.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</dd>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel) {
         var sel             = lineSel.selectionForEdit,
             selStart        = sel.start,
             selEnd          = sel.end,
@@ -993,34 +1008,36 @@ commented in a block-comment.</p>
         &#x2F;&#x2F; Now just run the standard block comment code, but make sure to track any associated selections
         &#x2F;&#x2F; that were subsumed into this line selection.
         return _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, [], sel, lineSel.selectionsToTrack);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getLinePrefix</h4>
-              <div class="description"><p>Returns the line comment prefix that best matches the string. Since there might be line comment prefixes
-that are prefixes of other line comment prefixes, it searches through all and returns the longest line
-comment prefix that matches the string.</p>
-</div>
-              <dl>
-                  <dt>string</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>where to look</dd>
-                  <dt>expressions</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
-                  <dd>the line comment regular expressions</dd>
-                  <dt>prefixes</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
-                  <dd>the line comment prefixes</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getLinePrefix(string, expressions, prefixes) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getLinePrefix</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>string</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>where to look</dd>
+    <dt>expressions</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
+    <dd>the line comment regular expressions</dd>
+    <dt>prefixes</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>the line comment prefixes</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLinePrefix(string, expressions, prefixes) {
         var result = null;
         expressions.forEach(function (exp, index) {
             if (string.match(exp) &amp;&amp; ((result &amp;&amp; result.length &lt; prefixes[index].length) || !result)) {
@@ -1028,47 +1045,48 @@ comment prefix that matches the string.</p>
             }
         });
         return result;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_isPrevTokenABlockComment</h4>
-              <div class="description"><p>Given a token context it will search backwards to determine if the given token is part of a block comment
-that doesn&#39;t start at the initial token. This is used to know if a line comment is part of a block comment
-or if a block delimiter is the prefix or suffix, by passing a token context at that position. Since the
-token context will be moved backwards a lot, it is better to pass a new context.</p>
-</div>
-              <dl>
-                  <dt>ctx</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">{editor:{CodeMirror}, pos:{ch:{number}, line:{number}}, token:{object}}</dd>
-                  <dd>token context</dd>
-                  <dt>prefix</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the block comment prefix</dd>
-                  <dt>suffix</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the block comment suffix</dd>
-                  <dt>prefixExp</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">RegExp</dd>
-                  <dd>a block comment prefix regular expression</dd>
-                  <dt>suffixExp</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">RegExp</dd>
-                  <dd>a block comment suffix regular expression</dd>
-                  <dt>lineExp</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
-                  <dd>an array of line comment prefixes regular expressions</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_isPrevTokenABlockComment</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>ctx</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{editor:{CodeMirror}, pos:{ch:{number}, line:{number}}, token:{object}}</dd>
+    <dd>token context</dd>
+    <dt>prefix</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the block comment prefix</dd>
+    <dt>suffix</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the block comment suffix</dd>
+    <dt>prefixExp</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">RegExp</dd>
+    <dd>a block comment prefix regular expression</dd>
+    <dt>suffixExp</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">RegExp</dd>
+    <dd>a block comment suffix regular expression</dd>
+    <dt>lineExp</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
+    <dd>an array of line comment prefixes regular expressions</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
         &#x2F;&#x2F; Start searching from the previous token
         var result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
         
@@ -1092,49 +1110,54 @@ token context will be moved backwards a lot, it is better to pass a new context.
             }
         }
         return false;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_matchExpressions</h4>
-              <div class="description"><p>Returns true if any regular expression matches the given string</p>
-</div>
-              <dl>
-                  <dt>string</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>where to look</dd>
-                  <dt>expressions</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
-                  <dd>what to look</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _matchExpressions(string, expressions) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_matchExpressions</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>string</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>where to look</dd>
+    <dt>expressions</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;RegExp&gt;</dd>
+    <dd>what to look</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _matchExpressions(string, expressions) {
         return expressions.some(function (exp) {
             return string.match(exp);
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>addCursorToNextLine</h4>
-              <div class="description"><p>Adds a cursor on the next line after each selected range to the selection.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to operate on.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addCursorToNextLine(editor) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>addCursorToNextLine</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToNextLine(editor) {
         addCursorToSelection(editor, 1);
     }
 
@@ -1158,46 +1181,48 @@ token context will be moved backwards a lot, it is better to pass a new context.
 
     function handleRedo() {
         return handleUndoRedo(&quot;redo&quot;);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>addCursorToPrevLine</h4>
-              <div class="description"><p>Adds a cursor on the previous line before each selected range to the selection.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to operate on.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addCursorToPrevLine(editor) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>addCursorToPrevLine</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToPrevLine(editor) {
         addCursorToSelection(editor, -1);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>addCursorToSelection</h4>
-              <div class="description"><p>Adds a cursor on the next/previous line after/before each selected range to the selection.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to operate on.</dd>
-                  <dt>dir</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>The direction to add - 1 is down, -1 is up.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function addCursorToSelection(editor, dir) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>addCursorToSelection</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to operate on.</dd>
+    <dt>dir</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The direction to add - 1 is down, -1 is up.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToSelection(editor, dir) {
         editor = editor || EditorManager.getFocusedEditor();
         if (editor) {
             var origSels = editor.getSelections(),
@@ -1228,24 +1253,26 @@ token context will be moved backwards a lot, it is better to pass a new context.
             &#x2F;&#x2F; CM will take care of sorting the selections.
             editor.setSelections(origSels.concat(newSels));
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>blockComment</h4>
-              <div class="description"><p>Invokes a language-specific block-comment/uncomment handler</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>blockComment</h4>
+
+    
+    <div class="description"><p>Invokes a language-specific block-comment/uncomment handler</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>If unspecified, applies to the currently focused editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function blockComment(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>If unspecified, applies to the currently focused editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function blockComment(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1282,21 +1309,23 @@ token context will be moved backwards a lot, it is better to pass a new context.
         edits.push.apply(edits, _getLineCommentEdits(editor, lineCommentSels));
         
         editor.setSelections(editor.document.doMultipleEdits(edits));
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>deleteCurrentLines</h4>
-              <div class="description"><p>Deletes the current line if there is no selection or the lines for the selection
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>deleteCurrentLines</h4>
+
+    
+    <div class="description"><p>Deletes the current line if there is no selection or the lines for the selection
 (removing the end of line too)</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function deleteCurrentLines(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function deleteCurrentLines(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1334,21 +1363,23 @@ token context will be moved backwards a lot, it is better to pass a new context.
             edits.push({edit: {text: &quot;&quot;, start: from, end: to}});
         });
         doc.doMultipleEdits(edits);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>duplicateText</h4>
-              <div class="description"><p>Duplicates the selected text, or current line if no selection. The cursor/selection is left
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>duplicateText</h4>
+
+    
+    <div class="description"><p>Duplicates the selected text, or current line if no selection. The cursor/selection is left
 on the second copy.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function duplicateText(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function duplicateText(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1386,22 +1417,24 @@ on the second copy.</p>
         });
 
         doc.doMultipleEdits(edits);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>ignoreCommand</h4>
-              <div class="description"><p>Special command handler that just ignores the command. This is used for Cut, Copy, and Paste.
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>ignoreCommand</h4>
+
+    
+    <div class="description"><p>Special command handler that just ignores the command. This is used for Cut, Copy, and Paste.
 These menu items are handled natively, but need to be registered in our JavaScript code so the 
 menu items can be created.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function ignoreCommand() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function ignoreCommand() {
         &#x2F;&#x2F; Do nothing. The shell will call the native handler for the command.
         return (new $.Deferred()).reject().promise();
     }
@@ -1442,71 +1475,77 @@ menu items can be created.</p>
     CommandManager.register(Strings.CMD_COPY,                   Commands.EDIT_COPY,                   ignoreCommand);
     CommandManager.register(Strings.CMD_PASTE,                  Commands.EDIT_PASTE,                  ignoreCommand);
     CommandManager.register(Strings.CMD_SELECT_ALL,             Commands.EDIT_SELECT_ALL,             _handleSelectAll);
-});</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>indentText</h4>
-              <div class="description"><p>Indent a line of text if no selection. Otherwise, indent all lines in selection.</p>
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>indentText</h4>
+
+    
+    <div class="description"><p>Indent a line of text if no selection. Otherwise, indent all lines in selection.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function indentText() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function indentText() {
         var editor = EditorManager.getFocusedEditor();
         if (!editor) {
             return;
         }
         
         editor._codeMirror.execCommand(&quot;indentMore&quot;);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>lineComment</h4>
-              <div class="description"><p>Invokes a language-specific line-comment/uncomment handler</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>lineComment</h4>
+
+    
+    <div class="description"><p>Invokes a language-specific line-comment/uncomment handler</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>If unspecified, applies to the currently focused editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function lineComment(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>If unspecified, applies to the currently focused editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function lineComment(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
         }
         
         editor.setSelections(editor.document.doMultipleEdits(_getLineCommentEdits(editor, editor.getSelections())));
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>moveLine</h4>
-              <div class="description"><p>Moves the selected text, or current line if no selection. The cursor/selection 
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>moveLine</h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection. The cursor/selection 
 moves with the line/lines.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>- target editor</dd>
-                  <dt>direction</dt>
-                  <dd class="label label-info pull-left">Number</dd>
-                  <dd>- direction of the move (-1,+1) => (Up,Down)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function moveLine(editor, direction) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>- target editor</dd>
+    <dt>direction</dt>
+    <dd class="label label-info pull-left">Number</dd>
+    <dd>- direction of the move (-1,+1) => (Up,Down)</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLine(editor, direction) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1606,59 +1645,65 @@ moves with the line/lines.</p>
 
             editor._codeMirror.scrollIntoView(pos);
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>moveLineDown</h4>
-              <div class="description"><p>Moves the selected text, or current line if no selection, one line down. The cursor/selection 
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>moveLineDown</h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line down. The cursor/selection 
 moves with the line/lines.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function moveLineDown(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLineDown(editor) {
         moveLine(editor, DIRECTION_DOWN);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>moveLineUp</h4>
-              <div class="description"><p>Moves the selected text, or current line if no selection, one line up. The cursor/selection 
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>moveLineUp</h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line up. The cursor/selection 
 moves with the line/lines.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function moveLineUp(editor) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLineUp(editor) {
         moveLine(editor, DIRECTION_UP);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>openLine</h4>
-              <div class="description"><p>Inserts a new and smart indented line above/below the selected text, or current line if no selection.
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>openLine</h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line above/below the selected text, or current line if no selection.
 The cursor is moved in the new line.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>- target editor</dd>
-                  <dt>direction</dt>
-                  <dd class="label label-info pull-left">Number</dd>
-                  <dd>- direction where to place the new line (-1,+1) => (Up,Down)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function openLine(editor, direction) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>- target editor</dd>
+    <dt>direction</dt>
+    <dd class="label label-info pull-left">Number</dd>
+    <dd>- direction where to place the new line (-1,+1) => (Up,Down)</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLine(editor, direction) {
         editor = editor || EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1731,80 +1776,87 @@ The cursor is moved in the new line.</p>
             });
         });
         editor.setSelections(newSelections);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>openLineAbove</h4>
-              <div class="description"><p>Inserts a new and smart indented line above the selected text, or current line if no selection.
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>openLineAbove</h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line above the selected text, or current line if no selection.
 The cursor is moved in the new line.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>- target editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function openLineAbove(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>- target editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLineAbove(editor) {
         openLine(editor, DIRECTION_UP);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>openLineBelow</h4>
-              <div class="description"><p>Inserts a new and smart indented line below the selected text, or current line if no selection.
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>openLineBelow</h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line below the selected text, or current line if no selection.
 The cursor is moved in the new line.</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>- target editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function openLineBelow(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>- target editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLineBelow(editor) {
         openLine(editor, DIRECTION_DOWN);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>splitSelIntoLines</h4>
-              <div class="description"><p>Takes the current selection and splits each range into separate selections, one per line.</p>
-</div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>The editor to operate on.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function splitSelIntoLines(editor) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>splitSelIntoLines</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function splitSelIntoLines(editor) {
         editor = editor || EditorManager.getFocusedEditor();
         if (editor) {
             editor._codeMirror.execCommand(&quot;splitSelectionByLine&quot;);
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>unindentText</h4>
-              <div class="description"><p>Unindent a line of text if no selection. Otherwise, unindent all lines in selection.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>unindentText</h4>
+
+    
+    <div class="description"><p>Unindent a line of text if no selection. Otherwise, unindent all lines in selection.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function unindentText() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function unindentText() {
         var editor = EditorManager.getFocusedEditor();
         if (!editor) {
             return;
@@ -1820,12 +1872,9 @@ The cursor is moved in the new line.</p>
             &#x2F;&#x2F; coalesced selections.
             editor.setSelections(_.pluck(editor.convertToLineSelections(editor.getSelections(), { expandEndAtStartOfLine: true }), &quot;selectionForEdit&quot;));
         }
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

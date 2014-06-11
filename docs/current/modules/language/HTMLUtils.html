@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>HTMLUtils - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,17 +14,27 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html"> API</a>
+            <a class="brand" href="../../index.html">Brackets API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>HTMLUtils</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (140)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (140)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -134,7 +132,7 @@
               <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
               <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -149,23 +147,23 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -173,7 +171,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -189,9 +187,9 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -208,9 +206,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -218,15 +216,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -236,9 +234,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -246,7 +244,7 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -258,7 +256,7 @@
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
               <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -272,7 +270,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -284,7 +282,7 @@
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -317,7 +315,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -326,7 +324,7 @@
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -348,53 +346,56 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              
-            </div>
-          </section>
+<h1>HTMLUtils</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-              <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
-            </ul>
-            
-            
-          </section>
+    <div></div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
+    </ul>
+
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
+</span>
+    <h4>_extractAttrVal</h4>
+
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_extractAttrVal</h4>
-              <div class="description"><p>Sometimes as attr values are getting typed, if the quotes aren&#39;t balanced yet
-some extra &#39;non attribute value&#39; text gets included in the token. This attempts
-to assure the attribute value we grab is always good</p>
-</div>
-              <dl>
-                  <dt>context</dt>
-                  <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _extractAttrVal(ctx) {
+    <div class="description"></div>
+    
+<dl>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left"> val:{string},offset:{number}</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _extractAttrVal(ctx) {
         var attrValue = ctx.token.string,
             startChar = attrValue.charAt(0),
             endChar = attrValue.charAt(attrValue.length - 1),
@@ -451,23 +452,27 @@ to assure the attribute value we grab is always good</p>
         }
         
         return {val: attrValue, offset: offset, quoteChar: startChar, hasEndQuote: false};
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_extractTagName</h4>
-              <div class="description"><p>Gets the tagname from where ever you are in the currect state</p>
-</div>
-              <dl>
-                  <dt>context</dt>
-                  <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _extractTagName(ctx) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_extractTagName</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _extractTagName(ctx) {
         var mode = ctx.editor.getMode(),
             innerModeData = CodeMirror.innerMode(mode, ctx.token.state);
 
@@ -478,26 +483,30 @@ to assure the attribute value we grab is always good</p>
         &#x2F;&#x2F; If the ctx is inside the tag name of an end tag, innerModeData.state.tagName is
         &#x2F;&#x2F; undefined. So return token string as the tag name.
         return innerModeData.state.tagName || ctx.token.string;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getTagInfoStartingFromAttrName</h4>
-              <div class="description"><p>Gets the taginfo starting from the attribute name and moving forwards</p>
-</div>
-              <dl>
-                  <dt>context</dt>
-                  <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
-                  <dd></dd>
-                  <dt>isPriorAttr</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>indicates whether we're getting info for a prior attribute</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrName(ctx, isPriorAttr) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getTagInfoStartingFromAttrName</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dd></dd>
+    <dt>isPriorAttr</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>indicates whether we're getting info for a prior attribute</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrName(ctx, isPriorAttr) {
         &#x2F;&#x2F;Verify We&#39;re in the attribute name, move forward and try to extract the rest of
         &#x2F;&#x2F;the info. If the user it typing the attr the rest might not be here
         if (isPriorAttr === false &amp;&amp; ctx.token.type !== &quot;attribute&quot;) {
@@ -532,23 +541,27 @@ to assure the attribute value we grab is always good</p>
             hasEndQuote = attrInfo.hasEndQuote;
         
         return createTagInfo(ATTR_NAME, offset, tagName, attrName, attrVal, true, quoteChar, hasEndQuote);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getTagInfoStartingFromAttrValue</h4>
-              <div class="description"><p>Gets the taginfo starting from the attribute value and moving backwards</p>
-</div>
-              <dl>
-                  <dt>context</dt>
-                  <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrValue(ctx) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getTagInfoStartingFromAttrValue</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getTagInfoStartingFromAttrValue(ctx) {
         &#x2F;&#x2F; Assume we in the attr value
         &#x2F;&#x2F; and validate that by going backwards
         var attrInfo = _extractAttrVal(ctx),
@@ -586,40 +599,45 @@ to assure the attribute value we grab is always good</p>
  
         &#x2F;&#x2F;We&#39;re good. 
         return createTagInfo(ATTR_VALUE, offset, tagName, attrName, attrVal, true, quoteChar, hasEndQuote);
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>createTagInfo</h4>
-              <div class="description"><p>Creates a tagInfo object and assures all the values are entered or are empty strings</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>createTagInfo</h4>
+
+    
+    <div class="description"><p>Creates a tagInfo object and assures all the values are entered or are empty strings</p>
 </div>
-              <dl>
-                  <dt>tokenType</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>what is getting edited and should be hinted</dd>
-                  <dt>offset</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>where the cursor is for the part getting hinted</dd>
-                  <dt>tagName</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The name of the tag</dd>
-                  <dt>attrName</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The name of the attribute</dd>
-                  <dt>attrValue</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The value of the attribute</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function createTagInfo(tokenType, offset, tagName, attrName, attrValue, valueAssigned, quoteChar, hasEndQuote) {
+    
+<dl>
+    <dt>tokenType</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>what is getting edited and should be hinted</dd>
+    <dt>offset</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>where the cursor is for the part getting hinted</dd>
+    <dt>tagName</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The name of the tag</dd>
+    <dt>attrName</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The name of the attribute</dd>
+    <dt>attrValue</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The value of the attribute</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{tagName:string,attr:{name:string,value:string,valueAssigned:boolean,quoteChar:string,hasEndQuote:boolean},position:{tokenType:string,offset:number</dd>
+    <dd>}} A tagInfo object with some context about the current tag hint.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createTagInfo(tokenType, offset, tagName, attrName, attrValue, valueAssigned, quoteChar, hasEndQuote) {
         return { tagName: tagName || &quot;&quot;,
                  attr:
                     { name: attrName || &quot;&quot;,
@@ -630,28 +648,33 @@ to assure the attribute value we grab is always good</p>
                  position:
                     { tokenType: tokenType || &quot;&quot;,
                       offset: offset || 0 } };
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>findBlocks</h4>
-              <div class="description"><p>Returns an Array of info about all blocks whose token mode name matches that passed in,
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>findBlocks</h4>
+
+    
+    <div class="description"><p>Returns an Array of info about all blocks whose token mode name matches that passed in,
 in the given Editor&#39;s HTML document (assumes the Editor contains HTML text).</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>- the editor containing the HTML text</dd>
-                  <dt>modeName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- the mode name of the tokens to look for</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function findBlocks(editor, modeName) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>- the editor containing the HTML text</dd>
+    <dt>modeName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- the mode name of the tokens to look for</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},text:string}&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findBlocks(editor, modeName) {
         &#x2F;&#x2F; Start scanning from beginning of file
         var ctx = TokenUtils.getInitialContext(editor._codeMirror, {line: 0, ch: 0}),
             blocks = [],
@@ -692,25 +715,30 @@ in the given Editor&#39;s HTML document (assumes the Editor contains HTML text).
         }
         
         return blocks;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>findStyleBlocks</h4>
-              <div class="description"><p>Returns an Array of info about all &lt;style&gt; blocks in the given Editor&#39;s HTML document (assumes
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>findStyleBlocks</h4>
+
+    
+    <div class="description"><p>Returns an Array of info about all &lt;style&gt; blocks in the given Editor&#39;s HTML document (assumes
 the Editor contains HTML text).</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function findStyleBlocks(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},text:string}&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findStyleBlocks(editor) {
         return findBlocks(editor, &quot;css&quot;);
     }
     
@@ -728,26 +756,31 @@ the Editor contains HTML text).</p>
     exports.createTagInfo   = createTagInfo;
     exports.findStyleBlocks = findStyleBlocks;
     exports.findBlocks      = findBlocks;
-});</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getTagAttributes</h4>
-              <div class="description"><p>Compiles a list of used attributes for a given tag</p>
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getTagAttributes</h4>
+
+    
+    <div class="description"><p>Compiles a list of used attributes for a given tag</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">CodeMirror</dd>
-                  <dd>An instance of a CodeMirror editor</dd>
-                  <dt>pos</dt>
-                  <dd class="label label-info pull-left">ch:{string},line:{number}</dd>
-                  <dd>A CodeMirror position</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getTagAttributes(editor, pos) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">CodeMirror</dd>
+    <dd>An instance of a CodeMirror editor</dd>
+    <dt>pos</dt>
+    <dd class="label label-info pull-left">ch:{string},line:{number}</dd>
+    <dd>A CodeMirror position</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>A list of the used attributes inside the current tag</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getTagAttributes(editor, pos) {
         var attrs       = [],
             backwardCtx = TokenUtils.getInitialContext(editor._codeMirror, pos),
             forwardCtx  = $.extend({}, backwardCtx);
@@ -789,15 +822,16 @@ the Editor contains HTML text).</p>
         }
         
         return attrs;
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getTagInfo</h4>
-              <div class="description"><p>Figure out if we&#39;re in a tag, and if we are return info about it
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getTagInfo</h4>
+
+    
+    <div class="description"><p>Figure out if we&#39;re in a tag, and if we are return info about it
 An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-arrow&quot;&gt;&lt;/span&gt; : 
      className:tag       string:&quot;&lt;span&quot;
      className:          string:&quot; &quot;
@@ -806,16 +840,20 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
      className:string    string:&quot;&quot;open-files-disclosure-arrow&quot;&quot;
      className:tag       string:&quot;&gt;&lt;/span&gt;&quot;</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>An instance of a Brackets editor</dd>
-                  <dt>constPos</dt>
-                  <dd class="label label-info pull-left">{ch: number,line: number}</dd>
-                  <dd>A CM pos (likely from editor.getCursorPos())</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getTagInfo(editor, constPos) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>An instance of a Brackets editor</dd>
+    <dt>constPos</dt>
+    <dd class="label label-info pull-left">{ch: number,line: number}</dd>
+    <dd>A CM pos (likely from editor.getCursorPos())</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{tagName:string,attr:{name:string,value:string,valueAssigned:boolean,quoteChar:string,hasEndQuote:boolean},position:{tokenType:string,offset:number</dd>
+    <dd>}} A tagInfo object with some context about the current tag hint.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getTagInfo(editor, constPos) {
         &#x2F;&#x2F; We&#39;re going to be changing pos a lot, but we don&#39;t want to mess up
         &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.	
         var pos = $.extend({}, constPos),
@@ -1002,12 +1040,9 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
         }
         
         return tagInfo;
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>
