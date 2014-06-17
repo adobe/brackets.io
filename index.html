@@ -89,6 +89,7 @@ filter: none;
                 <div class="nav clearfix">
                     <div class="nav-links">
                         <a href="contribute.html" class="contribute" data-i18n="nav.contribute">Contribute</a>
+                        <a href="docs/current/modules/brackets.html" data-i18n="nav.apidocs">API Docs</a>
                         <a href="http://blog.brackets.io" data-i18n="nav.blog">Blog</a>
                         <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="nav.support">Support</a>
                     </div>
@@ -122,13 +123,13 @@ filter: none;
                 <h1>Code the Web</h1>
                 <p data-i18n="index.page.hero.description">Brackets is an open source code editor for web designers and front-end developers.</p>
                 <div id="download">
-                    <a id="hero-cta-button" href="http://github.com/adobe/brackets/releases" class="large rounded radius button"><div data-i18n="index.page.hero.download">Download Brackets</div>
-                        <span id="download-version">&nbsp;</span>
+                    <a id="hero-cta-button" href="http://github.com/adobe/brackets/releases/latest" class="large rounded radius button"><div data-i18n="index.page.hero.download">Download Brackets</div>
+                        <span id="download-version" class="nowrap" data-i18n="index.page.hero.latest-release">Latest Release</span>
                     </a>
                     <p>
                         <a id="other-downloads" href="http://github.com/adobe/brackets/releases" data-i18n="index.page.hero.other-downloads">Other Downloads</a>
                         <a id="requirements-link" data-reveal-id="system-requirements" href="#" data-i18n="index.page.hero.requirements">Requirements</a>
-                        <a id="requirements-link" data-reveal-id="installation-instructions" href="#" data-i18n="index.page.hero.installation">Installation</a>
+                        <a id="installation-link" data-reveal-id="installation-instructions" href="#" data-i18n="index.page.hero.installation">Installation</a>
                     </p>
                 </div>
             </div>
@@ -191,18 +192,10 @@ filter: none;
         </div>
         <div class="large-4 columns" id="features">
             <h2 data-i18n="index.page.content.new-features.new-features">New Features</h2>
+            <div class="spinner">
+            </div>
 
-            <h3 data-i18n="index.page.content.new-features.live-html.header"><!-- JS generated content --></h3>
-            <p data-i18n="index.page.content.new-features.live-html.content"><!-- JS generated content --></p>
-
-            <h3 data-i18n="index.page.content.new-features.sass-ci.header"><!-- JS generated content --></h3>
-            <p data-i18n="index.page.content.new-features.sass-ci.content"><!-- JS generated content --></p>
-
-            <h3 data-i18n="index.page.content.new-features.new-css-rule.header"><!-- JS generated content --></h3>
-            <p data-i18n="index.page.content.new-features.new-css-rule.content"><!-- JS generated content --></p>
-
-            <h3 data-i18n="index.page.content.new-features.edit-animation.header"><!-- JS generated content --></h3>
-            <p data-i18n="index.page.content.new-features.edit-animation.content"><!-- JS generated content --></p>
+            <!-- JS generated content -->
 
             <p>
                 <a href="http://blog.brackets.io/category/releases/" data-i18n="index.page.content.new-features.release-notes.past">Read Past Release Notes&hellip;</a>
@@ -211,9 +204,7 @@ filter: none;
         </div>
         <div class="large-4 columns">
             <h2 data-i18n="index.page.content.blog.header">Recent Blog Posts</h2>
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
+            <div class="spinner" id="blogposts-spinner">
             </div>
             <div id="blogposts">
                 <!-- this will be filled dynamically -->
@@ -272,6 +263,9 @@ filter: none;
                     </li>
                     <li>
                         <a href="https://github.com/adobe/brackets/wiki" data-i18n="footer.links.content.wiki">Wiki</a>
+                    </li>
+                    <li>
+                        <a href="docs/current/modules/brackets.html" data-i18n="footer.links.content.apidocs">API Documentation</a>
                     </li>
                 </ul>
             </div>
@@ -405,6 +399,35 @@ filter: none;
         $.getJSON(versionInfoUrl, function(data) {
             i18nLoaded.done(function () {
                 var build = data[0];
+                var buildName = build.versionString;
+                
+                if (buildName) {
+                    var buildNum = buildName.match(/([\d.]+)/);
+                    if (buildNum) {
+                        buildNum = buildNum[1];
+                    }
+
+                    // update button
+                    if (OS != "OTHER" && buildNum) {
+                        var tag = buildName.toLowerCase().split(" ").join("-"),
+                            url = "https://github.com/adobe/brackets/releases/" + tag;
+                        if (ext) {
+                            url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+                        }
+
+                        ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
+                        ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
+
+                        var version_label = buildName;
+                        if (OS != "UNKNOWN") version_label += " (" + OS + ")";
+                        document.getElementById("download-version").innerHTML = version_label;
+                        logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
+                    }
+
+                    // other-download track
+                    logAndGo("other-downloads", document.getElementById("other-downloads").href, ['_trackEvent', 'Other-Downloads', buildNum, OS]);
+                }
+                
                 // update features (limit 5)
                 var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New Features in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
                 for (i = 0; i < Math.min(build.newFeatures.length, 5); i++) {
@@ -429,21 +452,6 @@ filter: none;
                 });
             }
         }
-         // update button
-        if (OS != "OTHER") {
-            var buildNum = "39"; // SET THE BUILD NUMBER HERE
-            var url = "https://github.com/adobe/brackets/releases/download/sprint-" + buildNum + "/Brackets.Sprint." + buildNum + ext;
-
-            ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
-            ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-
-            var version_label = "";
-            if (OS != "UNKNOWN") version_label = buildNum + ' (' + OS + ')';
-            document.getElementById("download-version").innerHTML = version_label;
-            logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
-        }
-        // other-download track
-        logAndGo("other-downloads", document.getElementById("other-downloads").href, ['_trackEvent', 'Other-Downloads', buildNum, OS]);
     </script>
 
     <script>
@@ -477,13 +485,13 @@ filter: none;
                         '</p>');
                 });
 
-                $(".spinner").hide();
+                $("#blogposts-spinner").hide();
                 $blogposts.fadeIn(1000);
             };
 
             function onError() {
                 var $blogpostsDiv = $blogposts.append("<p>Refresh page to load posts</p>").hide();
-                $(".spinner").hide();
+                $("#blogposts-spinner").hide();
                 $blogposts.fadeIn(1000);
             };
 
