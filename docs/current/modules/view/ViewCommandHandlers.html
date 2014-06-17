@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ViewCommandHandlers - Brackets API</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/font-awesome.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.css">
+    <![endif]-->
+    <script type="text/javascript" src="../../assets/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
+    <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
+    
+    <script>
+      window.moduleLevel = "../..";
+    </script>
+  </head>
+  
+  <body>
+    <div class="row-fluid">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="../../index.html">Brackets API</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="#dependencies">Dependencies</a></li>
+                <li><a href="#variables">Variables</a></li>
+                <li><a href="#functions">Functions</a></li>
+                <li><a href="#classes">Classes</a></li>
+              </ul>
+            </div>
+            <input class="typeahead" placeholder="Search..." type="text" >
+          </div>
+        </div>
+      </div>    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="left-section">
+            <h2 class="number-of-modules">Modules (140)</h2>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
+              </li>
+            </ul>
+            <ul id="package_" class="nav nav-list">
+              <li><a href="../../modules/brackets.html">brackets</a></li>
+              <li><a href="../../modules/dependencies.html">dependencies</a></li>
+              <li><a href="../../modules/main.html">main</a></li>
+              <li><a href="../../modules/strings.html">strings</a></li>
+              <li><a href="../../modules/xorigin.html">xorigin</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
+              </li>
+            </ul>
+            <ul id="package_command" class="nav nav-list">
+              <li><a href="../../modules/command/CommandManager.html">CommandManager</a></li>
+              <li><a href="../../modules/command/Commands.html">Commands</a></li>
+              <li><a href="../../modules/command/DefaultMenus.html">DefaultMenus</a></li>
+              <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
+              <li><a href="../../modules/command/Menus.html">Menus</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
+              </li>
+            </ul>
+            <ul id="package_document" class="nav nav-list">
+              <li><a href="../../modules/document/ChangedDocumentTracker.html">ChangedDocumentTracker</a></li>
+              <li><a href="../../modules/document/Document.html">Document</a></li>
+              <li><a href="../../modules/document/DocumentCommandHandlers.html">DocumentCommandHandlers</a></li>
+              <li><a href="../../modules/document/DocumentManager.html">DocumentManager</a></li>
+              <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+              <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
+              </li>
+            </ul>
+            <ul id="package_editor" class="nav nav-list">
+              <li><a href="../../modules/editor/CodeHintList.html">CodeHintList</a></li>
+              <li><a href="../../modules/editor/CodeHintManager.html">CodeHintManager</a></li>
+              <li><a href="../../modules/editor/CSSInlineEditor.html">CSSInlineEditor</a></li>
+              <li><a href="../../modules/editor/Editor.html">Editor</a></li>
+              <li><a href="../../modules/editor/EditorCommandHandlers.html">EditorCommandHandlers</a></li>
+              <li><a href="../../modules/editor/EditorManager.html">EditorManager</a></li>
+              <li><a href="../../modules/editor/EditorOptionHandlers.html">EditorOptionHandlers</a></li>
+              <li><a href="../../modules/editor/EditorStatusBar.html">EditorStatusBar</a></li>
+              <li><a href="../../modules/editor/ImageViewer.html">ImageViewer</a></li>
+              <li><a href="../../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
+              <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
+              <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
+              </li>
+            </ul>
+            <ul id="package_extensibility" class="nav nav-list">
+              <li><a href="../../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerDialog.html">ExtensionManagerDialog</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
+              <li><a href="../../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+              <li><a href="../../modules/extensibility/Package.html">Package</a></li>
+              <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
+              </li>
+            </ul>
+            <ul id="package_file" class="nav nav-list">
+              <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
+              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
+              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem" class="nav nav-list">
+              <li><a href="../../modules/filesystem/Directory.html">Directory</a></li>
+              <li><a href="../../modules/filesystem/File.html">File</a></li>
+              <li><a href="../../modules/filesystem/FileIndex.html">FileIndex</a></li>
+              <li><a href="../../modules/filesystem/FileSystem.html">FileSystem</a></li>
+              <li><a href="../../modules/filesystem/FileSystemEntry.html">FileSystemEntry</a></li>
+              <li><a href="../../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+              <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
+              <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
+              </li>
+            </ul>
+            <ul id="package_help" class="nav nav-list">
+              <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
+              </li>
+            </ul>
+            <ul id="package_language" class="nav nav-list">
+              <li><a href="../../modules/language/CodeInspection.html">CodeInspection</a></li>
+              <li><a href="../../modules/language/CSSUtils.html">CSSUtils</a></li>
+              <li><a href="../../modules/language/HTMLDOMDiff.html">HTMLDOMDiff</a></li>
+              <li><a href="../../modules/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
+              <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
+              <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
+              <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
+              <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Agents/ConsoleAgent.html">ConsoleAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/CSSAgent.html">CSSAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMAgent.html">DOMAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMHelpers.html">DOMHelpers</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMNode.html">DOMNode</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/EditAgent.html">EditAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/GotoAgent.html">GotoAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/NetworkAgent.html">NetworkAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteAgent.html">RemoteAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
+              <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Servers/BaseServer.html">BaseServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
+              </li>
+            </ul>
+            <ul id="package_preferences" class="nav nav-list">
+              <li><a href="../../modules/preferences/PreferencesBase.html">PreferencesBase</a></li>
+              <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
+              <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
+              <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
+              </li>
+            </ul>
+            <ul id="package_project" class="nav nav-list">
+              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
+              <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
+              <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
+              <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
+              <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
+              </li>
+            </ul>
+            <ul id="package_search" class="nav nav-list">
+              <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
+              </li>
+            </ul>
+            <ul id="package_utils" class="nav nav-list">
+              <li><a href="../../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
+              <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
+              <li><a href="../../modules/utils/Async.html">Async</a></li>
+              <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
+              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
+              <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+              <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
+              <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
+              <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
+              <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
+              <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
+              <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
+              <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
+              <li><a href="../../modules/utils/PerfUtils.html">PerfUtils</a></li>
+              <li><a href="../../modules/utils/Resizer.html">Resizer</a></li>
+              <li><a href="../../modules/utils/ShellAPI.html">ShellAPI</a></li>
+              <li><a href="../../modules/utils/StringMatch.html">StringMatch</a></li>
+              <li><a href="../../modules/utils/StringUtils.html">StringUtils</a></li>
+              <li><a href="../../modules/utils/TokenUtils.html">TokenUtils</a></li>
+              <li><a href="../../modules/utils/UpdateNotification.html">UpdateNotification</a></li>
+              <li><a href="../../modules/utils/UrlParams.html">UrlParams</a></li>
+              <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
+              <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
+              </li>
+            </ul>
+            <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
+              </li>
+            </ul>
+            <ul id="package_widgets" class="nav nav-list">
+              <li><a href="../../modules/widgets/bootstrap-alerts.html">bootstrap-alerts</a></li>
+              <li><a href="../../modules/widgets/bootstrap-button.html">bootstrap-button</a></li>
+              <li><a href="../../modules/widgets/bootstrap-dropdown.html">bootstrap-dropdown</a></li>
+              <li><a href="../../modules/widgets/bootstrap-modal.html">bootstrap-modal</a></li>
+              <li><a href="../../modules/widgets/bootstrap-popover.html">bootstrap-popover</a></li>
+              <li><a href="../../modules/widgets/bootstrap-scrollspy.html">bootstrap-scrollspy</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tab.html">bootstrap-tab</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tooltip.html">bootstrap-tooltip</a></li>
+              <li><a href="../../modules/widgets/bootstrap-twipsy-mod.html">bootstrap-twipsy-mod</a></li>
+              <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+              <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
+              <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
+              <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
+              <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="module span9">
+<h1>ViewCommandHandlers</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>The ViewCommandHandlers object dispatches the following event(s):</p>
+<ul>
+<li>fontSizeChange -- Triggered when the font size is changed via the
+Increase Font Size, Decrease Font Size, or Restore Font Size commands.
+The 2nd arg to the listener is the amount of the change. The 3rd arg
+is a string containing the new font size after applying the change.</li>
+</ul>
+</div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+    </ul>
+
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>DEFAULT_FONT_SIZE</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var DEFAULT_FONT_SIZE = 12;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>DYNAMIC_FONT_STYLE_ID</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var DYNAMIC_FONT_STYLE_ID = &quot;codemirror-dynamic-fonts&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>MAX_FONT_SIZE</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var MAX_FONT_SIZE = 72;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>MIN_FONT_SIZE</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var MIN_FONT_SIZE = 1;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_addDynamicFontSize</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>fontSizeStyle</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A string with the font size and the size unit</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _addDynamicFontSize(fontSizeStyle) {
+        var style = $(&quot;&lt;style type=&#39;text&#x2F;css&#39;&gt;&lt;&#x2F;style&gt;&quot;).attr(&quot;id&quot;, DYNAMIC_FONT_STYLE_ID);
+        style.html(&quot;.CodeMirror { font-size: &quot; + fontSizeStyle   + &quot; !important; }&quot;);
+        $(&quot;head&quot;).append(style);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_adjustFontSize</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>adjustment</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Negative number to make the font smaller; positive number to make it bigger</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>true if adjustment occurred, false if it did not occur</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _adjustFontSize(adjustment) {
+        var fsStyle   = $(&quot;.CodeMirror&quot;).css(&quot;font-size&quot;),
+            validFont = &#x2F;^[\d\.]+(px|em)$&#x2F;;
+        
+        &#x2F;&#x2F; Make sure that the font size is expressed in terms we can handle (px or em). If not, simply bail.
+        if (fsStyle.search(validFont) === -1) {
+            return false;
+        }
+        
+        &#x2F;&#x2F; Guaranteed to work by the validation above.
+        var fsUnits = fsStyle.substring(fsStyle.length - 2, fsStyle.length),
+            delta   = fsUnits === &quot;px&quot; ? 1 : 0.1,
+            fsOld   = parseFloat(fsStyle.substring(0, fsStyle.length - 2)),
+            fsNew   = fsOld + (delta * adjustment),
+            fsStr   = fsNew + fsUnits;
+
+        &#x2F;&#x2F; Don&#39;t let the font size get too small or too large. The minimum font size is 1px or 0.1em
+        &#x2F;&#x2F; and the maximum font size is 72px or 7.2em depending on the unit used
+        if (fsNew &lt; MIN_FONT_SIZE * delta || fsNew &gt; MAX_FONT_SIZE * delta) {
+            return false;
+        }
+        
+        _setSizeAndRestoreScroll(fsStr);
+        PreferencesManager.setViewState(&quot;fontSizeStyle&quot;, fsStr);
+        
+        return true;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_convertToNewViewState</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>key</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The key of the preference to be examined for migration of old preferences. Not used since we only have one in this module.</dd>
+    <dt>value</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The value of "fontSizeAdjustment" preference</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>JSON object for the new view state equivalent to the old "fontSizeAdjustment" preference.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _convertToNewViewState(key, value) {
+        return { &quot;fontSizeStyle&quot;: (DEFAULT_FONT_SIZE + value) + &quot;px&quot; };
+    }
+    
+    &#x2F;&#x2F; Register command handlers
+    CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE, _handleIncreaseFontSize);
+    CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE, _handleDecreaseFontSize);
+    CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,  _handleRestoreFontSize);
+    CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,     _handleScrollLineUp);
+    CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,   _handleScrollLineDown);
+
+    PreferencesManager.convertPreferences(module, {&quot;fontSizeAdjustment&quot;: &quot;user&quot;}, true, _convertToNewViewState);
+
+    &#x2F;&#x2F; Update UI when opening or closing a document
+    $(DocumentManager).on(&quot;currentDocumentChange&quot;, _updateUI);
+
+    &#x2F;&#x2F; Update UI when Brackets finishes loading
+    AppInit.appReady(_updateUI);
+    
+    exports.restoreFontSize = restoreFontSize;
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getLinesInView</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>textHeight</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>scrollTop</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+    <dt>editorHeight</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{first: number,last: number}</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLinesInView(textHeight, scrollTop, editorHeight) {
+        var scrolledTop    = scrollTop &#x2F; textHeight,
+            scrolledBottom = (scrollTop + editorHeight) &#x2F; textHeight;
+        
+        &#x2F;&#x2F; Adjust the last line to round inward to show a whole lines.
+        var firstLine      = Math.ceil(scrolledTop),
+            lastLine       = Math.floor(scrolledBottom) - 1;
+        
+        return { first: firstLine, last: lastLine };
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleDecreaseFontSize</h4>
+
+    
+    <div class="description"><p>Decreases the font size by 1</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleDecreaseFontSize() {
+        _adjustFontSize(-1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleIncreaseFontSize</h4>
+
+    
+    <div class="description"><p>Increases the font size by 1</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleIncreaseFontSize() {
+        _adjustFontSize(1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleRestoreFontSize</h4>
+
+    
+    <div class="description"><p>Restores the font size to the original size</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleRestoreFontSize() {
+        _setSizeAndRestoreScroll();
+        PreferencesManager.setViewState(&quot;fontSizeStyle&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleScrollLineDown</h4>
+
+    
+    <div class="description"><p>Scrolls one line down</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleScrollLineDown() {
+        _scrollLine(1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleScrollLineUp</h4>
+
+    
+    <div class="description"><p>Scrolls one line up</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleScrollLineUp() {
+        _scrollLine(-1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_removeDynamicFontSize</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _removeDynamicFontSize() {
+        $(&quot;#&quot; + DYNAMIC_FONT_STYLE_ID).remove();
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_scrollLine</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>direction</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>-1 to scroll one line up; 1 to scroll one line down.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _scrollLine(direction) {
+        var editor        = EditorManager.getCurrentFullEditor(),
+            textHeight    = editor.getTextHeight(),
+            cursorPos     = editor.getCursorPos(),
+            hasSelecction = editor.hasSelection(),
+            inlineEditors = editor.getInlineWidgets(),
+            scrollInfo    = editor._codeMirror.getScrollInfo(),
+            paddingTop    = editor._getLineSpaceElement().offsetTop,
+            editorHeight  = scrollInfo.clientHeight,
+            scrollTop     = scrollInfo.top - paddingTop,
+            removedScroll = paddingTop;
+        
+        &#x2F;&#x2F; Go through all the editors and reduce the scroll top and editor height to properly calculate the lines in view 
+        var line, coords;
+        inlineEditors.forEach(function (inlineEditor) {
+            line   = editor._getInlineWidgetLineNumber(inlineEditor);
+            coords = editor._codeMirror.charCoords({line: line, ch: 0}, &quot;local&quot;);
+            
+            if (coords.top &lt; scrollInfo.top) {
+                scrollTop     -= inlineEditor.info.height;
+                removedScroll += inlineEditor.info.height;
+            
+            } else if (coords.top + inlineEditor.info.height &lt; scrollInfo.top + editorHeight) {
+                editorHeight -= inlineEditor.info.height;
+            }
+        });
+        
+        &#x2F;&#x2F; Calculate the lines in view
+        var linesInView = _getLinesInView(textHeight, scrollTop, editorHeight);
+        
+        &#x2F;&#x2F; If there is no selection move the cursor so that is always visible.
+        if (!hasSelecction) {
+            &#x2F;&#x2F; Move the cursor to the first visible line.
+            if (cursorPos.line &lt; linesInView.first) {
+                editor.setCursorPos({line: linesInView.first + direction, ch: cursorPos.ch});
+            
+            &#x2F;&#x2F; Move the cursor to the last visible line.
+            } else if (cursorPos.line &gt; linesInView.last) {
+                editor.setCursorPos({line: linesInView.last + direction, ch: cursorPos.ch});
+            
+            &#x2F;&#x2F; Move the cursor up or down using moveV to keep the goal column intact, since setCursorPos deletes it.
+            } else if ((direction &gt; 0 &amp;&amp; cursorPos.line === linesInView.first) ||
+                    (direction &lt; 0 &amp;&amp; cursorPos.line === linesInView.last)) {
+                editor._codeMirror.moveV(direction, &quot;line&quot;);
+            }
+        }
+        
+        &#x2F;&#x2F; Scroll and make it snap to lines
+        var lines = linesInView.first + direction;
+        editor.setScrollPos(scrollInfo.left, (textHeight * lines) + removedScroll);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_setSizeAndRestoreScroll</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>fontSizeStyle</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A string with the font size and the size unit</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _setSizeAndRestoreScroll(fontSizeStyle) {
+        var editor      = EditorManager.getCurrentFullEditor(),
+            oldWidth    = editor._codeMirror.defaultCharWidth(),
+            oldFontSize = $(&quot;.CodeMirror&quot;).css(&quot;font-size&quot;),
+            newFontSize = &quot;&quot;,
+            delta       = 0,
+            adjustment  = 0,
+            scrollPos   = editor.getScrollPos(),
+            line        = editor._codeMirror.lineAtHeight(scrollPos.y, &quot;local&quot;);
+        
+        _removeDynamicFontSize();
+        if (fontSizeStyle) {
+            _addDynamicFontSize(fontSizeStyle);
+        }
+        editor.refreshAll();
+        
+        delta = &#x2F;em$&#x2F;.test(oldFontSize) ? 10 : 1;
+        newFontSize = $(&quot;.CodeMirror&quot;).css(&quot;font-size&quot;);
+        adjustment = parseInt((parseFloat(newFontSize) - parseFloat(oldFontSize)) * delta, 10);
+        
+        if (adjustment) {
+            $(exports).triggerHandler(&quot;fontSizeChange&quot;, [adjustment, newFontSize]);
+        }
+        
+        &#x2F;&#x2F; Calculate the new scroll based on the old font sizes and scroll position
+        var newWidth   = editor._codeMirror.defaultCharWidth(),
+            deltaX     = scrollPos.x &#x2F; oldWidth,
+            scrollPosX = scrollPos.x + Math.round(deltaX * (newWidth  - oldWidth)),
+            scrollPosY = editor._codeMirror.heightAtLine(line, &quot;local&quot;);
+        
+        editor.setScrollPos(scrollPosX, scrollPosY);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateUI</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateUI() {
+        if (DocumentManager.getCurrentDocument() !== null) {
+            if (!CommandManager.get(Commands.VIEW_INCREASE_FONT_SIZE).getEnabled()) {
+                &#x2F;&#x2F; If one is disabled then they all are disabled, so enable them all
+                CommandManager.get(Commands.VIEW_INCREASE_FONT_SIZE).setEnabled(true);
+                CommandManager.get(Commands.VIEW_DECREASE_FONT_SIZE).setEnabled(true);
+                CommandManager.get(Commands.VIEW_RESTORE_FONT_SIZE).setEnabled(true);
+            }
+        } else {
+            &#x2F;&#x2F; No current document so disable all of the Font Size commands
+            CommandManager.get(Commands.VIEW_INCREASE_FONT_SIZE).setEnabled(false);
+            CommandManager.get(Commands.VIEW_DECREASE_FONT_SIZE).setEnabled(false);
+            CommandManager.get(Commands.VIEW_RESTORE_FONT_SIZE).setEnabled(false);
+        }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>restoreFontSize</h4>
+
+    
+    <div class="description"><p>Restores the font size using the saved style and migrates the old fontSizeAdjustment
+view state to the new fontSizeStyle, when required</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function restoreFontSize() {
+        var fsStyle      = PreferencesManager.getViewState(&quot;fontSizeStyle&quot;),
+            fsAdjustment = PreferencesManager.getViewState(&quot;fontSizeAdjustment&quot;);
+
+        if (fsAdjustment) {
+            &#x2F;&#x2F; Always remove the old view state even if we also have the new view state.
+            PreferencesManager.setViewState(&quot;fontSizeAdjustment&quot;);
+
+            if (!fsStyle) {
+                &#x2F;&#x2F; Migrate the old view state to the new one.
+                fsStyle = (DEFAULT_FONT_SIZE + fsAdjustment) + &quot;px&quot;;
+                PreferencesManager.setViewState(&quot;fontSizeStyle&quot;, fsStyle);
+            }
+        }
+
+        if (fsStyle) {
+            _removeDynamicFontSize();
+            _addDynamicFontSize(fsStyle);
+        }
+    }</code></pre></div>
+</section>
+
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="../../assets/js/prism.js"></script>
+  </body>
+</html>
