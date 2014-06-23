@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ExtensionManagerDialog -  API</title>
+    <title>FindUtils -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -354,7 +354,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ExtensionManagerDialog</h1>
+<h1>FindUtils</h1>
 
 
 <section class="description">
@@ -367,19 +367,13 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/widgets/bootstrap-tab.html">bootstrap-tab</a></li>
-        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-        <li><a href="..&#x2F;../modules/text!htmlContent/extension-manager-dialog.html.html">extension-manager-dialog.html</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
@@ -393,129 +387,174 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private public">
+<div class="member private">
 
 <span class="pull-right scope">
     Private
-    Public API
+    
 </span>
-    <h4>_performChanges</h4>
+    <h4>_doReplaceInDocument</h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Does a set of replacements in a single document in memory.</p>
+</div>
     
 <dl>
+    <dt>doc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>The document to do the replacements in.</dd>
+    <dt>matchInfo</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The match info for this file, as returned by `_addSearchMatches()`. Might be mutated.</dd>
+    <dt>replaceText</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The text to replace each result with.</dd>
+    <dt>isRegexp</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether the original query was a regexp.</dd>
 </dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _performChanges() {
-        &#x2F;&#x2F; If an extension was removed or updated, prompt the user to quit Brackets.
-        var hasRemovedExtensions = ExtensionManager.hasExtensionsToRemove(),
-            hasUpdatedExtensions = ExtensionManager.hasExtensionsToUpdate();
-        if (!hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
-            return;
+<pre class="code language-javascript"><code class="language-javascript">    function _doReplaceInDocument(doc, matchInfo, replaceText, isRegexp) {
+        &#x2F;&#x2F; Double-check that the open document&#39;s timestamp matches the one we recorded. This
+        &#x2F;&#x2F; should normally never go out of sync, because if it did we wouldn&#39;t start the
+        &#x2F;&#x2F; replace in the first place (due to the fact that we immediately close the search
+        &#x2F;&#x2F; results panel whenever we detect a filesystem change that affects the results),
+        &#x2F;&#x2F; but we want to double-check in case we don&#39;t happen to get the change in time.
+        &#x2F;&#x2F; This will *not* handle cases where the document has been edited in memory since 
+        &#x2F;&#x2F; the matchInfo was generated.
+        if (doc.diskTimestamp.getTime() !== matchInfo.timestamp.getTime()) {
+            return new $.Deferred().reject(exports.ERROR_FILE_CHANGED).promise();
         }
-        
-        var buttonLabel = Strings.CHANGE_AND_RELOAD;
-        if (hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
-            buttonLabel = Strings.REMOVE_AND_RELOAD;
-        } else if (hasUpdatedExtensions &amp;&amp; !hasRemovedExtensions) {
-            buttonLabel = Strings.UPDATE_AND_RELOAD;
-        }
-        
-        var dlg = Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_CHANGE_EXTENSIONS,
-            Strings.CHANGE_AND_RELOAD_TITLE,
-            Strings.CHANGE_AND_RELOAD_MESSAGE,
-            [
-                {
-                    className : Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id        : Dialogs.DIALOG_BTN_CANCEL,
-                    text      : Strings.CANCEL
-                },
-                {
-                    className : Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id        : Dialogs.DIALOG_BTN_OK,
-                    text      : buttonLabel
+
+        &#x2F;&#x2F; Do the replacements in reverse document order so the offsets continue to be correct.
+        doc.batchOperation(function () {
+            matchInfo.matches.reverse().forEach(function (match) {
+                if (match.isChecked) {
+                    doc.replaceRange(isRegexp ? parseDollars(replaceText, match.result) : replaceText, match.start, match.end);
                 }
-            ],
-            false
-        ),
-            $dlg = dlg.getElement();
-        
-        $dlg.one(&quot;buttonClick&quot;, function (e, buttonId) {
-            if (buttonId === Dialogs.DIALOG_BTN_OK) {
-                &#x2F;&#x2F; Disable the dialog buttons so the user can&#39;t dismiss it,
-                &#x2F;&#x2F; and show a message indicating that we&#39;re doing the updates,
-                &#x2F;&#x2F; in case it takes a long time.
-                $dlg.find(&quot;.dialog-button&quot;).prop(&quot;disabled&quot;, true);
-                $dlg.find(&quot;.close&quot;).hide();
-                $dlg.find(&quot;.dialog-message&quot;)
-                    .text(Strings.PROCESSING_EXTENSIONS)
-                    .append(&quot;&lt;span class=&#39;spinner inline spin&#39;&#x2F;&gt;&quot;);
-                
-                ExtensionManager.removeMarkedExtensions()
-                    .done(function () {
-                        ExtensionManager.updateExtensions()
-                            .done(function () {
-                                dlg.close();
-                                CommandManager.execute(Commands.APP_RELOAD);
-                            })
-                            .fail(function (errorArray) {
-                                dlg.close();
-                                
-                                &#x2F;&#x2F; This error case should be very uncommon.
-                                &#x2F;&#x2F; Just let the user know that we couldn&#39;t update
-                                &#x2F;&#x2F; this extension and log the errors to the console.
-                                var ids = [];
-                                errorArray.forEach(function (errorObj) {
-                                    ids.push(errorObj.item);
-                                    if (errorObj.error &amp;&amp; errorObj.error.forEach) {
-                                        console.error(&quot;Errors for &quot;, errorObj.item);
-                                        errorObj.error.forEach(function (error) {
-                                            console.error(Package.formatError(error));
-                                        });
-                                    }
-                                });
-                                Dialogs.showModalDialog(
-                                    DefaultDialogs.DIALOG_ID_ERROR,
-                                    Strings.EXTENSION_MANAGER_UPDATE,
-                                    StringUtils.format(Strings.EXTENSION_MANAGER_UPDATE_ERROR, ids.join(&quot;, &quot;))
-                                ).done(function () {
-                                    &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                                    CommandManager.execute(Commands.APP_RELOAD);
-                                });
-                            });
-                    })
-                    .fail(function (errorArray) {
-                        dlg.close();
-                        ExtensionManager.cleanupUpdates();
-                        
-                        var ids = [];
-                        errorArray.forEach(function (errorObj) {
-                            ids.push(errorObj.item);
-                        });
-                        Dialogs.showModalDialog(
-                            DefaultDialogs.DIALOG_ID_ERROR,
-                            Strings.EXTENSION_MANAGER_REMOVE,
-                            StringUtils.format(Strings.EXTENSION_MANAGER_REMOVE_ERROR, ids.join(&quot;, &quot;))
-                        ).done(function () {
-                            &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                            CommandManager.execute(Commands.APP_RELOAD);
-                        });
-                    });
-            } else {
-                dlg.close();
-                ExtensionManager.cleanupUpdates();
-                ExtensionManager.unmarkAllForRemoval();
-            }
+            });
         });
+        
+        return new $.Deferred().resolve().promise();
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_showDialog</h4>
+    <h4>_doReplaceInOneFile</h4>
+
+    
+    <div class="description"><p>Does a set of replacements in a single file. If the file is already open in a Document in memory,
+will do the replacement there, otherwise does it directly on disk.</p>
+</div>
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The full path to the file.</dd>
+    <dt>matchInfo</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The match info for this file, as returned by `_addSearchMatches()`.</dd>
+    <dt>replaceText</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The text to replace each result with.</dd>
+    <dt>options</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>An options object: forceFilesOpen: boolean - Whether to open the file in an editor and do replacements there rather than doing the replacements on disk. Note that even if this is false, files that are already open in editors will have replacements done in memory. isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doReplaceInOneFile(fullPath, matchInfo, replaceText, options) {
+        var doc = DocumentManager.getOpenDocumentForPath(fullPath);
+        options = options || {};
+        &#x2F;&#x2F; If we&#39;re forcing files open, or if the document is in the working set but not actually open
+        &#x2F;&#x2F; yet, we want to open the file and do the replacement in memory.
+        if (!doc &amp;&amp; (options.forceFilesOpen || DocumentManager.findInWorkingSet(fullPath) !== -1)) {
+            return DocumentManager.getDocumentForPath(fullPath).then(function (newDoc) {
+                return _doReplaceInDocument(newDoc, matchInfo, replaceText, options.isRegexp);
+            });
+        } else if (doc) {
+            return _doReplaceInDocument(doc, matchInfo, replaceText, options.isRegexp);
+        } else {
+            return _doReplaceOnDisk(fullPath, matchInfo, replaceText, options.isRegexp);
+        }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doReplaceOnDisk</h4>
+
+    
+    <div class="description"><p>Does a set of replacements in a single file on disk.</p>
+</div>
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The full path to the file.</dd>
+    <dt>matchInfo</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The match info for this file, as returned by `_addSearchMatches()`.</dd>
+    <dt>replaceText</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The text to replace each result with.</dd>
+    <dt>isRegexp</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether the original query was a regexp.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doReplaceOnDisk(fullPath, matchInfo, replaceText, isRegexp) {
+        var file = FileSystem.getFileForPath(fullPath);
+        return DocumentManager.getDocumentText(file, true).then(function (contents, timestamp, lineEndings) {
+            if (timestamp.getTime() !== matchInfo.timestamp.getTime()) {
+                &#x2F;&#x2F; Return a promise that we&#39;ll reject immediately. (We can&#39;t just return the
+                &#x2F;&#x2F; error since this is the success handler.)
+                return new $.Deferred().reject(exports.ERROR_FILE_CHANGED).promise();
+            }
+
+            &#x2F;&#x2F; Note that this assumes that the matches are sorted.
+            &#x2F;&#x2F; TODO: is there a more efficient way to do this in a large string?
+            var result = [],
+                lastIndex = 0;
+            matchInfo.matches.forEach(function (match) {
+                if (match.isChecked) {
+                    result.push(contents.slice(lastIndex, match.startOffset));
+                    result.push(isRegexp ? parseDollars(replaceText, match.result) : replaceText);
+                    lastIndex = match.endOffset;
+                }
+            });
+            result.push(contents.slice(lastIndex));
+
+            var newContents = result.join(&quot;&quot;);
+            &#x2F;&#x2F; TODO: duplicated logic from Document - should refactor this?
+            if (lineEndings === FileUtils.LINE_ENDINGS_CRLF) {
+                newContents = newContents.replace(&#x2F;\n&#x2F;g, &quot;\r\n&quot;);
+            }
+
+            return Async.promisify(file, &quot;write&quot;, newContents);
+        });
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>hasCheckedMatches</h4>
 
     
     <div class="description"></div>
@@ -523,167 +562,156 @@
 <dl>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showDialog() {
-        var dialog,
-            $dlg,
-            views   = [],
-            $search,
-            $searchClear,
-            context = { Strings: Strings, showRegistry: !!brackets.config.extension_registry },
-            models  = [];
-        
-        &#x2F;&#x2F; Load registry only if the registry URL exists
-        if (context.showRegistry) {
-            models.push(new ExtensionManagerViewModel.RegistryViewModel());
-        }
-        
-        models.push(new ExtensionManagerViewModel.InstalledViewModel());
-        
-        function updateSearchDisabled() {
-            var model           = models[_activeTabIndex],
-                searchDisabled  = ($search.val() === &quot;&quot;) &amp;&amp;
-                                  (!model.filterSet || model.filterSet.length === 0);
-            
-            $search.prop(&quot;disabled&quot;, searchDisabled);
-            $searchClear.prop(&quot;disabled&quot;, searchDisabled);
-            
-            return searchDisabled;
-        }
-        
-        &#x2F;&#x2F; Open the dialog
-        dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
-        
-        &#x2F;&#x2F; When dialog closes, dismiss models and commit changes
-        dialog.done(function () {
-            models.forEach(function (model) {
-                model.dispose();
-            });
-            
-            _performChanges();
-        });
-        
-        &#x2F;&#x2F; Create the view.
-        $dlg = dialog.getElement();
-        $search = $(&quot;.search&quot;, $dlg);
-        $searchClear = $(&quot;.search-clear&quot;, $dlg);
-        
-        &#x2F;&#x2F; Dialog tabs
-        $dlg.find(&quot;.nav-tabs a&quot;)
-            .on(&quot;click&quot;, function (event) {
-                models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
-                $(this).tab(&quot;show&quot;);
-                $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
-                $searchClear.click();
-            });
-        
-        &#x2F;&#x2F; Update &amp; hide&#x2F;show the notification overlay on a tab&#39;s icon, based on its model&#39;s notifyCount
-        function updateNotificationIcon(index) {
-            var model = models[index],
-                $notificationIcon = $dlg.find(&quot;.nav-tabs li&quot;).eq(index).find(&quot;.notification&quot;);
-            if (model.notifyCount) {
-                $notificationIcon.text(model.notifyCount);
-                $notificationIcon.show();
-            } else {
-                $notificationIcon.hide();
-            }
-        }
-        
-        &#x2F;&#x2F; Initialize models and create a view for each model
-        var modelInitPromise = Async.doInParallel(models, function (model, index) {
-            var view    = new ExtensionManagerView(),
-                promise = view.initialize(model),
-                lastNotifyCount;
-            
-            promise.always(function () {
-                views[index] = view;
-                
-                lastNotifyCount = model.notifyCount;
-                updateNotificationIcon(index);
-            });
-            
-            $(model).on(&quot;change&quot;, function () {
-                if (lastNotifyCount !== model.notifyCount) {
-                    lastNotifyCount = model.notifyCount;
-                    updateNotificationIcon(index);
-                }
-            });
-            
-            return promise;
-        }, true);
-        
-        modelInitPromise.always(function () {
-            $(&quot;.spinner&quot;, $dlg).remove();
-            
-            views.forEach(function (view) {
-                view.$el.appendTo($(&quot;.modal-body&quot;, $dlg));
-            });
-            
-            &#x2F;&#x2F; Update search UI before new tab is shown
-            $(&quot;a[data-toggle=&#39;tab&#39;]&quot;, $dlg).each(function (index, tabElement) {
-                $(tabElement).on(&quot;show&quot;, function (event) {
-                    _activeTabIndex = index;
-                    
-                    &#x2F;&#x2F; Focus the search input
-                    if (!updateSearchDisabled()) {
-                        $dlg.find(&quot;.search&quot;).focus();
-                    }
-                });
-            });
-            
-            &#x2F;&#x2F; Filter the views when the user types in the search field.
-            $dlg.on(&quot;input&quot;, &quot;.search&quot;, function (e) {
-                var query = $(this).val();
-                views.forEach(function (view) {
-                    view.filter(query);
-                });
-            }).on(&quot;click&quot;, &quot;.search-clear&quot;, function (e) {
-                $search.val(&quot;&quot;);
-                views.forEach(function (view, index) {
-                    view.filter(&quot;&quot;);
-                });
-                
-                if (!updateSearchDisabled()) {
-                    $search.focus();
-                }
-            });
-            
-            &#x2F;&#x2F; Disable the search field when there are no items in the model
-            models.forEach(function (model, index) {
-                $(model).on(&quot;change&quot;, function () {
-                    if (_activeTabIndex === index) {
-                        updateSearchDisabled();
-                    }
-                });
-            });
-            
-            &#x2F;&#x2F; Open dialog to Installed tab if extension updates are available
-            if ($(&quot;#toolbar-extension-manager&quot;).hasClass(&#39;updatesAvailable&#39;)) {
-                $dlg.find(&quot;.nav-tabs a.installed&quot;).tab(&quot;show&quot;);
-            }
-            &#x2F;&#x2F; Otherwise show the first tab
-            else {
-                $dlg.find(&quot;.nav-tabs a:first&quot;).tab(&quot;show&quot;);
-            }
-        });
-    
-        &#x2F;&#x2F; Handle the install button.
-        $(&quot;.extension-manager-dialog .install-from-url&quot;)
-            .click(function () {
-                InstallExtensionDialog.showDialog().done(ExtensionManager.updateFromDownload);
-            });
-        
-        return new $.Deferred().resolve(dialog).promise();
-    }
-    
-    CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog);
+<pre class="code language-javascript"><code class="language-javascript">    function hasCheckedMatches(result) {
+        return result.matches.some(function (match) { return match.isChecked; });
+    }</code></pre></div><div class="member public">
 
-    AppInit.appReady(function () {
-        $(&quot;#toolbar-extension-manager&quot;).click(_showDialog);
-    });
+<span class="pull-right scope">
     
-    &#x2F;&#x2F; Unit tests
-    exports._performChanges = _performChanges;
-});</code></pre></div>
+    Public API
+</span>
+    <h4>labelForScope</h4>
+
+    
+    <div class="description"><p>Returns label text to indicate the search scope. Already HTML-escaped.</p>
+</div>
+    
+<dl>
+    <dt>scope</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Entry</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function labelForScope(scope) {
+        if (scope) {
+            return StringUtils.format(
+                Strings.FIND_IN_FILES_SCOPED,
+                StringUtils.breakableUrl(
+                    ProjectManager.makeProjectRelativeIfPossible(scope.fullPath)
+                )
+            );
+        } else {
+            return Strings.FIND_IN_FILES_NO_SCOPE;
+        }
+    }
+
+    exports.parseDollars        = parseDollars;
+    exports.hasCheckedMatches   = hasCheckedMatches;
+    exports.performReplacements = performReplacements;
+    exports.labelForScope       = labelForScope;
+    exports.ERROR_FILE_CHANGED  = &quot;fileChanged&quot;;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>parseDollars</h4>
+
+    
+    <div class="description"><p>Given a replace string that contains $-expressions, replace them with data from the given
+regexp match info.
+NOTE: we can&#39;t just use the ordinary replace() function here because the string has been
+extracted from the original text and so might be missing some context that the regexp matched.</p>
+</div>
+    
+<dl>
+    <dt>replaceWith</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The string containing the $-expressions.</dd>
+    <dt>match</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>The match data from the regexp.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The replace text with the $-expressions substituted.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function parseDollars(replaceWith, match) {
+        replaceWith = replaceWith.replace(&#x2F;(\$+)(\d{1,2}|&amp;)&#x2F;g, function (whole, dollars, index) {
+            var parsedIndex = parseInt(index, 10);
+            if (dollars.length % 2 === 1) { &#x2F;&#x2F; check if dollar signs escape themselves (for example $$1, $$$$&amp;)
+                if (index === &quot;&amp;&quot;) { &#x2F;&#x2F; handle $&amp;
+                    return dollars.substr(1) + (match[0] || &quot;&quot;);
+                } else if (parsedIndex !== 0) { &#x2F;&#x2F; handle $n or $nn, don&#39;t handle $0 or $00
+                    return dollars.substr(1) + (match[parsedIndex] || &quot;&quot;);
+                }
+            }
+            return whole;
+        });
+        replaceWith = replaceWith.replace(&#x2F;\$\$&#x2F;g, &quot;$&quot;); &#x2F;&#x2F; replace escaped dollar signs (for example $$) with single ones
+        return replaceWith;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>performReplacements</h4>
+
+    
+    <div class="description"><p>Given a set of search results, replaces them with the given replaceText, either on disk or in memory.
+Checks timestamps to ensure replacements are not performed in files that have changed on disk since
+the original search results were generated. However, does <em>not</em> check whether edits have been performed
+in in-memory documents since the search; it&#39;s up to the caller to guarantee this hasn&#39;t happened.
+(When called from the standard Find in Files UI, SearchResultsView guarantees this. If called headlessly,
+the caller needs to track changes.)</p>
+<p>Replacements in documents that are already open in memory at the start of the replacement are guaranteed to
+happen synchronously; replacements in files on disk will return an error if the on-disk file changes between
+the time performReplacements() is called and the time the replacement actually happens.</p>
+</div>
+    
+<dl>
+    <dt>results</dt>
+    <dd class="label label-info pull-left">Object.&lt;fullPath: string,{matches: Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},startOffset: number,endOffset: number,line: string}&gt;,collapsed: boolean}&gt;</dd>
+    <dd>The list of results to replace, as returned from _doSearch..</dd>
+    <dt>replaceText</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The text to replace each result with.</dd>
+    <dt>options</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>An options object: forceFilesOpen: boolean - Whether to open all files in editors and do replacements there rather than doing the replacements on disk. Note that even if this is false, files that are already open in editors will have replacements done in memory. isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved when the replacement is finished or rejected with an array of errors if there were one or more errors. Each individual item in the array will be a {item: string, error: string} object, where item is the full path to the file that could not be updated, and error is either a FileSystem error or one of the `FindUtils.ERROR_*` constants.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function performReplacements(results, replaceText, options) {
+        return Async.doInParallel_aggregateErrors(Object.keys(results), function (fullPath) {
+            return _doReplaceInOneFile(fullPath, results[fullPath], replaceText, options);
+        }).done(function () {
+            if (options &amp;&amp; options.forceFilesOpen) {
+                &#x2F;&#x2F; If the currently selected document wasn&#39;t modified by the search, or there is no open document,
+                &#x2F;&#x2F; then open the first modified document.
+                var doc = DocumentManager.getCurrentDocument();
+                if (!doc ||
+                        !results[doc.file.fullPath] ||
+                        !hasCheckedMatches(results[doc.file.fullPath])) {
+                    &#x2F;&#x2F; Figure out the first modified document. This logic is slightly different from
+                    &#x2F;&#x2F; SearchResultsView._getSortedFiles() because it doesn&#39;t sort the currently open file to
+                    &#x2F;&#x2F; the top. But if the currently open file were in the search results, we wouldn&#39;t be
+                    &#x2F;&#x2F; doing this anyway.
+                    var sortedPaths = Object.keys(results).sort(FileUtils.comparePaths),
+                        firstPath = _.find(sortedPaths, function (path) {
+                            return hasCheckedMatches(results[path]);
+                        });
+                    
+                    if (firstPath) {
+                        var newDoc = DocumentManager.getOpenDocumentForPath(firstPath);
+                        &#x2F;&#x2F; newDoc might be null if the replacement failed.
+                        if (newDoc) {
+                            DocumentManager.setCurrentDocument(newDoc);
+                        }
+                    }
+                }
+            }
+        });
+    }</code></pre></div>
 </section>
 
         </div>
