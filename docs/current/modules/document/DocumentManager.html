@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DocumentManager - Brackets API</title>
+    <title>DocumentManager -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -34,7 +34,7 @@
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html">Brackets API</a>
+            <a class="brand" href="../../index.html"> API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (140)</h2>
+            <h2 class="number-of-modules">Modules (145)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -277,10 +277,15 @@
             </ul>
             <ul id="package_search" class="nav nav-list">
               <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindBar.html">FindBar</a></li>
               <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+              <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
+              <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1461,26 +1466,31 @@ as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
     <dt>file</dt>
     <span class="label label-non-nullable pull-left">non-nullable</span>
     <dd class="label label-info pull-left">File</dd>
-    <dd></dd>
+    <dd>The file to get the text for.</dd>
+    <dt>checkLineEndings</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether to return line ending information. Default false (slightly more efficient).</dd>
 </dl><dl>
     <dt>Returns: </dt>
-    <dd class="label label-info pull-left">!string</dd>
-    <dd></dd>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that is resolved with three parameters: contents - string: the document's text timestamp - Date: the last time the document was changed on disk (might not be the same as the last time it was changed in memory) lineEndings - string: the original line endings of the file, one of the FileUtils.LINE_ENDINGS_* constants; will be null if checkLineEndings was false. or rejected with a filesystem error.</dd>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getDocumentText(file) {
+<pre class="code language-javascript"><code class="language-javascript">    function getDocumentText(file, checkLineEndings) {
         var result = new $.Deferred(),
             doc = getOpenDocumentForPath(file.fullPath);
         if (doc) {
-            result.resolve(doc.getText());
+            result.resolve(doc.getText(), doc.diskTimestamp, checkLineEndings ? doc._lineEndings : null);
         } else {
-            file.read(function (err, contents) {
+            file.read(function (err, contents, stat) {
                 if (err) {
                     result.reject(err);
                 } else {
                     &#x2F;&#x2F; Normalize line endings the same way Document would, but don&#39;t actually
                     &#x2F;&#x2F; new up a Document (which entails a bunch of object churn).
+                    var originalLineEndings = checkLineEndings ? FileUtils.sniffLineEndings(contents) : null;
                     contents = DocumentModule.Document.normalizeText(contents);
-                    result.resolve(contents);
+                    result.resolve(contents, stat.mtime, originalLineEndings);
                 }
             });
         }

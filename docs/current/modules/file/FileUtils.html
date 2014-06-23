@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FileUtils - Brackets API</title>
+    <title>FileUtils -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -34,7 +34,7 @@
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html">Brackets API</a>
+            <a class="brand" href="../../index.html"> API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (140)</h2>
+            <h2 class="number-of-modules">Modules (145)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -277,10 +277,15 @@
             </ul>
             <ul id="package_search" class="nav nav-list">
               <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindBar.html">FindBar</a></li>
               <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+              <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
+              <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -513,8 +518,56 @@ extension first and then the extensions to fix issue #4409</p>
         cmpNames = filename1.toLocaleLowerCase().localeCompare(filename2.toLocaleLowerCase(), undefined, {numeric: true});
         
         return extFirst ? (cmpExt || cmpNames) : (cmpNames || cmpExt);
-    }
+    }</code></pre></div><div class="member public">
 
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>comparePaths</h4>
+
+    
+    <div class="description"><p>Compares two paths segment-by-segment, used for sorting. Sorts folders before files,
+and sorts files based on <code>compareFilenames()</code>.</p>
+</div>
+    
+<dl>
+    <dt>path1</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>path2</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>-1, 0, or 1 depending on whether path1 is less than, equal to, or greater than path2 according to this ordering.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function comparePaths(path1, path2) {
+        var entryName1, entryName2,
+            pathParts1 = path1.split(&quot;&#x2F;&quot;),
+            pathParts2 = path2.split(&quot;&#x2F;&quot;),
+            length     = Math.min(pathParts1.length, pathParts2.length),
+            folders1   = pathParts1.length - 1,
+            folders2   = pathParts2.length - 1,
+            index      = 0;
+
+        while (index &lt; length) {
+            entryName1 = pathParts1[index];
+            entryName2 = pathParts2[index];
+
+            if (entryName1 !== entryName2) {
+                if (index &lt; folders1 &amp;&amp; index &lt; folders2) {
+                    return entryName1.toLocaleLowerCase().localeCompare(entryName2.toLocaleLowerCase());
+                } else if (index &gt;= folders1 &amp;&amp; index &gt;= folders2) {
+                    return compareFilenames(entryName1, entryName2);
+                }
+                return (index &gt;= folders1 &amp;&amp; index &lt; folders2) ? 1 : -1;
+            }
+            index++;
+        }
+        return 0;
+    }
 
     &#x2F;&#x2F; Define public API
     exports.LINE_ENDINGS_CRLF              = LINE_ENDINGS_CRLF;
@@ -524,6 +577,7 @@ extension first and then the extensions to fix issue #4409</p>
     exports.translateLineEndings           = translateLineEndings;
     exports.showFileOpenError              = showFileOpenError;
     exports.getFileErrorString             = getFileErrorString;
+    exports.makeDialogFileList             = makeDialogFileList;
     exports.readAsText                     = readAsText;
     exports.writeText                      = writeText;
     exports.convertToNativePath            = convertToNativePath;
@@ -540,6 +594,7 @@ extension first and then the extensions to fix issue #4409</p>
     exports.getFileExtension               = getFileExtension;
     exports.getSmartFileExtension          = getSmartFileExtension;
     exports.compareFilenames               = compareFilenames;
+    exports.comparePaths                   = comparePaths;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -895,6 +950,33 @@ This method considers known extensions which include <code>.</code> in them.</p>
         }
 
         return (_staticHtmlFileExts.indexOf(getFileExtension(filePath).toLowerCase()) !== -1);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>makeDialogFileList</h4>
+
+    
+    <div class="description"><p>Creates an HTML string for a list of files to be reported on, suitable for use in a dialog.</p>
+</div>
+    
+<dl>
+    <dt>Array</dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dd>of filenames or paths to display.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function makeDialogFileList(paths) {
+        var result = &quot;&lt;ul class=&#39;dialog-list&#39;&gt;&quot;;
+        paths.forEach(function (path) {
+            result += &quot;&lt;li&gt;&lt;span class=&#39;dialog-filename&#39;&gt;&quot;;
+            result += StringUtils.breakableUrl(path);
+            result += &quot;&lt;&#x2F;span&gt;&lt;&#x2F;li&gt;&quot;;
+        });
+        result += &quot;&lt;&#x2F;ul&gt;&quot;;
+        return result;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

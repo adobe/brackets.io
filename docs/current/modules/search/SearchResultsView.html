@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FileSystemEntry -  API</title>
+    <title>SearchResultsView -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -354,44 +354,13 @@
           </div>
         </div>
         <div class="module span9">
-<h1>FileSystemEntry</h1>
+<h1>SearchResultsView</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>To ensure cache coherence, current and future asynchronous state-changing 
-operations of FileSystemEntry and its subclasses should implement the 
-following high-level sequence of steps:</p>
-<ol>
-<li>Block external filesystem change events;</li>
-<li>Execute the low-level state-changing operation;</li>
-<li>Update the internal filesystem state, including caches;</li>
-<li>Apply the callback;</li>
-<li>Fire an appropriate internal change notification; and</li>
-<li>Unblock external change events.</li>
-</ol>
-<p>Note that because internal filesystem state is updated first, both the original 
-caller and the change notification listeners observe filesystem state that is
-current w.r.t. the operation. Furthermore, because external change events are
-blocked before the operation begins, listeners will only receive the internal
-change event for the operation and not additional (or possibly inconsistent)
-external change events.</p>
-<p>State-changing operations that block external filesystem change events must
-take care to always subsequently unblock the external change events in all
-control paths. It is safe to assume, however, that the underlying impl will
-always apply the callback with some value.</p>
-<p>Caches should be conservative. Consequently, the entry&#39;s cached data should
-always be cleared if the underlying impl&#39;s operation fails. This is the case
-event for read-only operations because an unexpected failure implies that the
-system is in an unknown state. The entry should communicate this by failing
-where appropriate, and should not use the cache to hide failure.</p>
-<p>Only watched entries should make use of cached data because change events are
-only expected for such entries, and change events are used to granularly
-invalidate out-of-date caches.</p>
-<p>By convention, callbacks are optional for asynchronous, state-changing
-operations, but required for read-only operations. The first argument to the
-callback should always be a nullable error string from FileSystemError.</p>
+    <div><p>Panel showing search results for a Find/Replace in Files operation.</p>
 </div>
 </section>
 
@@ -399,8 +368,21 @@ callback should always be a nullable error string from FileSystemError.</p>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-        <li><a href="..&#x2F;../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
+        <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/PanelManager.html">PanelManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/text!htmlContent/search-panel.html.html">search-panel.html</a></li>
+        <li><a href="..&#x2F;../modules/text!htmlContent/search-results.html.html">search-results.html</a></li>
+        <li><a href="..&#x2F;../modules/text!htmlContent/search-summary.html.html">search-summary.html</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
 
 </section>
@@ -417,16 +399,33 @@ callback should always be a nullable error string from FileSystemError.</p>
     
     
 </span>
-    <h4>nextId</h4>
+    <h4>RESULTS_PER_PAGE</h4>
 
     
 <dl>
+    <dt>Type</dt>
+    <dd>number</dd>
 </dl>
-    <div class="description"><p>Counter to give every entry a unique id</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var nextId = 0;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var RESULTS_PER_PAGE = 100;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>UPDATE_TIMEOUT</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var UPDATE_TIMEOUT   = 400;</code></pre></div>
 </section>
 
 
@@ -439,59 +438,30 @@ callback should always be a nullable error string from FileSystemError.</p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>FileSystemEntry</h4>
-            <em><p>Model for a file system entry. This is the base class for File and Directory,
-and is never used directly.</p>
-<p>See the File, Directory, and FileSystem classes for more details.</p>
-</em>
+            <h4>SearchResultsView</h4>
+            <em></em>
             
             <dl>
-                <dt>path</dt>
+                <dt>model</dt>
+                <dd class="label label-info pull-left">SearchModel</dd>
+                <dd>The model that this view is showing.</dd>
+                <dt>panelID</dt>
                 <dd class="label label-info pull-left">string</dd>
-                <dd>The path for this entry.</dd>
-                <dt>fileSystem</dt>
-                <dd class="label label-info pull-left">FileSystem</dd>
-                <dd>The file system associated with this entry.</dd>
+                <dd>The CSS ID to use for the panel.</dd>
+                <dt>panelName</dt>
+                <dd class="label label-info pull-left">string</dd>
+                <dd>The name to use for the panel, as passed to PanelManager.createBottomPanel().</dd>
             </dl>
 
             <button class="btn btn-small show-code">Show code</button>
-            <pre class="code language-javascript"><code class="language-javascript">    function FileSystemEntry(path, fileSystem) {
-        this._setPath(path);
-        this._fileSystem = fileSystem;
-        this._id = nextId++;
-    }
-    
-    &#x2F;&#x2F; Add &quot;fullPath&quot;, &quot;name&quot;, &quot;parent&quot;, &quot;id&quot;, &quot;isFile&quot; and &quot;isDirectory&quot; getters
-    Object.defineProperties(FileSystemEntry.prototype, {
-        &quot;fullPath&quot;: {
-            get: function () { return this._path; },
-            set: function () { throw new Error(&quot;Cannot set fullPath&quot;); }
-        },
-        &quot;name&quot;: {
-            get: function () { return this._name; },
-            set: function () { throw new Error(&quot;Cannot set name&quot;); }
-        },
-        &quot;parentPath&quot;: {
-            get: function () { return this._parentPath; },
-            set: function () { throw new Error(&quot;Cannot set parentPath&quot;); }
-        },
-        &quot;id&quot;: {
-            get: function () { return this._id; },
-            set: function () { throw new Error(&quot;Cannot set id&quot;); }
-        },
-        &quot;isFile&quot;: {
-            get: function () { return this._isFile; },
-            set: function () { throw new Error(&quot;Cannot set isFile&quot;); }
-        },
-        &quot;isDirectory&quot;: {
-            get: function () { return this._isDirectory; },
-            set: function () { throw new Error(&quot;Cannot set isDirectory&quot;); }
-        },
-        &quot;_impl&quot;: {
-            get: function () { return this._fileSystem._impl; },
-            set: function () { throw new Error(&quot;Cannot set _impl&quot;); }
-        }
-    });</code></pre>
+            <pre class="code language-javascript"><code class="language-javascript">    function SearchResultsView(model, panelID, panelName) {
+        var panelHtml  = Mustache.render(searchPanelTemplate, {panelID: panelID});
+
+        this._panel    = PanelManager.createBottomPanel(panelName, $(panelHtml), 100);
+        this._$summary = this._panel.$panel.find(&quot;.title&quot;);
+        this._$table   = this._panel.$panel.find(&quot;.table-container&quot;);
+        this._model    = model;
+    }</code></pre>
         </div>
         
         <section class="properties ">
@@ -507,25 +477,58 @@ and is never used directly.</p>
     Private
     
 </span>
-    <h4>_fileSystem</h4>
+    <h4>_$selectedRow</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>!FileSystem</dd>
+    <dd>$.Element</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>Parent file system.</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._fileSystem = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._$selectedRow = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_isDirectory</h4>
+    <h4>_$summary</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Element</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._$summary = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$table</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Element</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._$table = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_allChecked</h4>
 
     
 <dl>
@@ -533,137 +536,113 @@ and is never used directly.</p>
     <dd>boolean</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>Whether or not the entry is a directory</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isDirectory = false;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._allChecked = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_isFile</h4>
+    <h4>_currentStart</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>boolean</dd>
+    <dd>number</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>Whether or not the entry is a file</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isFile = false;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._currentStart = 0;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_name</h4>
+    <h4>_initialFilePath</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>string</dd>
+    <dd>?string</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>The name of this entry.</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._name = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._initialFilePath = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_parentPath</h4>
+    <h4>_model</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>string</dd>
+    <dd>SearchModel</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>The parent of this entry.</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._parentPath = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._model = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_path</h4>
+    <h4>_panel</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>string</dd>
+    <dd>Panel</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>The path of this entry.</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._path = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._panel = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_stat</h4>
+    <h4>_searchList</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>?FileSystemStats</dd>
+    <dd>Array.&lt;{fileIndex: number, filename: string, fullPath: string, items: Array.&lt;Object&gt;}&gt;</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>Cached stat object for this file.</p>
+    <div class="description"><p>Array with content used in the Results Panel</p>
 </div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._stat = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._searchList = [];</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_watchedRoot</h4>
+    <h4>_timeoutID</h4>
 
     
 <dl>
     <dt>Type</dt>
-    <dd>entry: File, Directory, filter: function(FileSystemEntry):boolean, active: boolean</dd>
+    <dd>number</dd>
     <dt>Private</dt>
 </dl>
-    <div class="description"><p>Cached copy of this entry&#39;s watched root</p>
-</div>
+    <div class="description"></div>
 
 <button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRoot = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>_watchedRootFilterResult</h4>
-
-    
-<dl>
-    <dt>Type</dt>
-    <dd>boolean</dd>
-    <dt>Private</dt>
-</dl>
-    <div class="description"><p>Cached result of _watchedRoot.filter(this.name, this.parentPath).</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRootFilterResult = false;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._timeoutID = null;</code></pre></div>
         </section>
 
         <section class="methods">
@@ -679,110 +658,216 @@ and is never used directly.</p>
     Private
     
 </span>
-    <h4>_clearCachedData</h4>
+    <h4>_addPanelListeners</h4>
 
     
-    <div class="description"><p>Clear any cached data for this entry</p>
-</div>
+    <div class="description"></div>
     
 <dl>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._clearCachedData = function () {
-        this._stat = undefined;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._addPanelListeners = function () {
+        var self = this;
+        this._panel.$panel
+            .off(&quot;.searchResults&quot;)  &#x2F;&#x2F; Remove the old events
+            .on(&quot;click.searchResults&quot;, &quot;.close&quot;, function () {
+                self.close();
+            })
+            &#x2F;&#x2F; The link to go the first page
+            .on(&quot;click.searchResults&quot;, &quot;.first-page:not(.disabled)&quot;, function () {
+                self._currentStart = 0;
+                self._render();
+            })
+            &#x2F;&#x2F; The link to go the previous page
+            .on(&quot;click.searchResults&quot;, &quot;.prev-page:not(.disabled)&quot;, function () {
+                self._currentStart -= RESULTS_PER_PAGE;
+                self._render();
+            })
+            &#x2F;&#x2F; The link to go to the next page
+            .on(&quot;click.searchResults&quot;, &quot;.next-page:not(.disabled)&quot;, function () {
+                self._currentStart += RESULTS_PER_PAGE;
+                self._render();
+            })
+            &#x2F;&#x2F; The link to go to the last page
+            .on(&quot;click.searchResults&quot;, &quot;.last-page:not(.disabled)&quot;, function () {
+                self._currentStart = self._getLastCurrentStart();
+                self._render();
+            })
+            
+            &#x2F;&#x2F; Add the file to the working set on double click
+            .on(&quot;dblclick.searchResults&quot;, &quot;.table-container tr:not(.file-section)&quot;, function (e) {
+                var item = self._searchList[$(this).data(&quot;file-index&quot;)];
+                FileViewController.addToWorkingSetAndSelect(item.fullPath);
+            })
+        
+            &#x2F;&#x2F; Add the click event listener directly on the table parent
+            .on(&quot;click.searchResults .table-container&quot;, function (e) {
+                var $row = $(e.target).closest(&quot;tr&quot;);
+
+                if ($row.length) {
+                    if (self._$selectedRow) {
+                        self._$selectedRow.removeClass(&quot;selected&quot;);
+                    }
+                    $row.addClass(&quot;selected&quot;);
+                    self._$selectedRow = $row;
+
+                    var searchItem = self._searchList[$row.data(&quot;file-index&quot;)],
+                        fullPath   = searchItem.fullPath;
+
+                    &#x2F;&#x2F; This is a file title row, expand&#x2F;collapse on click
+                    if ($row.hasClass(&quot;file-section&quot;)) {
+                        var $titleRows,
+                            collapsed = !self._model.results[fullPath].collapsed;
+
+                        if (e.metaKey || e.ctrlKey) { &#x2F;&#x2F;Expand all &#x2F; Collapse all
+                            $titleRows = $(e.target).closest(&quot;table&quot;).find(&quot;.file-section&quot;);
+                        } else {
+                            &#x2F;&#x2F; Clicking the file section header collapses&#x2F;expands result rows for that file
+                            $titleRows = $row;
+                        }
+
+                        $titleRows.each(function () {
+                            fullPath   = self._searchList[$(this).data(&quot;file-index&quot;)].fullPath;
+                            searchItem = self._model.results[fullPath];
+
+                            if (searchItem.collapsed !== collapsed) {
+                                searchItem.collapsed = collapsed;
+                                $(this).nextUntil(&quot;.file-section&quot;).toggle();
+                                $(this).find(&quot;.disclosure-triangle&quot;).toggleClass(&quot;expanded&quot;).toggleClass(&quot;collapsed&quot;);
+                            }
+                        });
+
+                        &#x2F;&#x2F;In Expand&#x2F;Collapse all, reset all search results &#39;collapsed&#39; flag to same value(true&#x2F;false).
+                        if (e.metaKey || e.ctrlKey) {
+                            _.forEach(self._model.results, function (item) {
+                                item.collapsed = collapsed;
+                            });
+                        }
+                    
+                    &#x2F;&#x2F; This is a file row, show the result on click
+                    } else {
+                        &#x2F;&#x2F; Grab the required item data
+                        var item = searchItem.items[$row.data(&quot;item-index&quot;)];
+
+                        CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath})
+                            .done(function (doc) {
+                                &#x2F;&#x2F; Opened document is now the current main editor
+                                EditorManager.getCurrentFullEditor().setSelection(item.start, item.end, true);
+                            });
+                    }
+                }
+            });
+        
+        
+        &#x2F;&#x2F; Add the Click handlers for replace functionality if required
+        if (this._model.isReplace) {
+            this._panel.$panel
+                .on(&quot;click.searchResults&quot;, &quot;.check-all&quot;, function (e) {
+                    var isChecked = $(this).is(&quot;:checked&quot;);
+                    _.forEach(self._model.results, function (results) {
+                        results.matches.forEach(function (match) {
+                            match.isChecked = isChecked;
+                        });
+                    });
+                    self._$table.find(&quot;.check-one&quot;).prop(&quot;checked&quot;, isChecked);
+                    self._allChecked = isChecked;
+                })
+                .on(&quot;click.searchResults&quot;, &quot;.check-one&quot;, function (e) {
+                    var $row = $(e.target).closest(&quot;tr&quot;),
+                        item = self._searchList[$row.data(&quot;file-index&quot;)],
+                        match = self._model.results[item.fullPath].matches[$row.data(&quot;match-index&quot;)],
+                        $checkAll = self._panel.$panel.find(&quot;.check-all&quot;);
+
+                    match.isChecked = $(this).is(&quot;:checked&quot;);
+                    if (!match.isChecked &amp;&amp; $checkAll.is(&quot;:checked&quot;)) {
+                        $checkAll.prop(&quot;checked&quot;, false);
+                    }
+                    e.stopPropagation();
+                })
+                .on(&quot;click.searchResults&quot;, &quot;.replace-checked&quot;, function (e) {
+                    $(self).triggerHandler(&quot;replaceAll&quot;);
+                });
+        }
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_isWatched</h4>
+    <h4>_getLastCurrentStart</h4>
 
     
-    <div class="description"><p>Determines whether or not the entry is watched.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>relaxed</dt>
+    <dt>numMatches</dt>
     <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
-    <dd>If falsey, the method will only return true if the watched root is fully active. If true, the method will return true if the watched root is either starting up or fully active.</dd>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
 </dl><dl>
     <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dd class="label label-info pull-left">number</dd>
     <dd></dd>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isWatched = function (relaxed) {
-        var watchedRoot = this._watchedRoot,
-            filterResult = this._watchedRootFilterResult;
-        
-        if (!watchedRoot) {
-            watchedRoot = this._fileSystem._findWatchedRootForPath(this._path);
-            
-            if (watchedRoot) {
-                this._watchedRoot = watchedRoot;
-                filterResult = watchedRoot.filter(this._name, this._parentPath);
-                this._watchedRootFilterResult = filterResult;
-            }
-        }
-        
-        if (watchedRoot) {
-            if (watchedRoot.status === WatchedRoot.ACTIVE ||
-                    (relaxed &amp;&amp; watchedRoot.status === WatchedRoot.STARTING)) {
-                return filterResult;
-            } else {
-                &#x2F;&#x2F; We had a watched root, but it&#39;s no longer active, so it must now be invalid.
-                this._watchedRoot = undefined;
-                this._watchedRootFilterResult = false;
-                this._clearCachedData();
-            }
-        }
-        return false;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._getLastCurrentStart = function (numMatches) {
+        numMatches = numMatches || this._model.countFilesMatches().matches;
+        return Math.floor((numMatches - 1) &#x2F; RESULTS_PER_PAGE) * RESULTS_PER_PAGE;
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_setPath</h4>
+    <h4>_getLastIndex</h4>
 
     
-    <div class="description"><p>Update the path for this entry</p>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>newPath</dt>
-    <dd class="label label-info pull-left">String</dd>
+    <dt>numMatches</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd></dd>
 </dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd></dd>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._setPath = function (newPath) {
-        var parts = newPath.split(&quot;&#x2F;&quot;);
-        if (this.isDirectory) {
-            parts.pop(); &#x2F;&#x2F; Remove the empty string after last trailing &quot;&#x2F;&quot;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._getLastIndex = function (numMatches) {
+        return Math.min(this._currentStart + RESULTS_PER_PAGE, numMatches);
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleModelChange</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._handleModelChange = function (quickChange) {
+        &#x2F;&#x2F; If this is a replace, to avoid complications with updating, just close ourselves if we hear about
+        &#x2F;&#x2F; a results model change after we&#39;ve already shown the results initially.
+        &#x2F;&#x2F; TODO: notify user, re-do search in file
+        if (this._model.isReplace) {
+            this.close();
+            return;
         }
-        this._name = parts[parts.length - 1];
-        parts.pop(); &#x2F;&#x2F; Remove name
         
-        if (parts.length &gt; 0) {
-            this._parentPath = parts.join(&quot;&#x2F;&quot;) + &quot;&#x2F;&quot;;
+        var self = this;
+        if (this._timeoutID) {
+            window.clearTimeout(this._timeoutID);
+        }
+        if (quickChange) {
+            this._timeoutID = window.setTimeout(function () {
+                self._updateResults();
+                self._timeoutID = null;
+            }, UPDATE_TIMEOUT);
         } else {
-            &#x2F;&#x2F; root directories have no parent path
-            this._parentPath = null;
-        }
-        
-        this._path = newPath;
-        
-        var watchedRoot = this._watchedRoot;
-        if (watchedRoot) {
-            if (newPath.indexOf(watchedRoot.entry.fullPath) === 0) {
-                &#x2F;&#x2F; Update watchedRootFilterResult
-                this._watchedRootFilterResult = watchedRoot.filter(this._name, this._parentPath);
-            } else {
-                &#x2F;&#x2F; The entry was moved outside of the watched root
-                this._watchedRoot = null;
-                this._watchedRootFilterResult = false;
-            }
+            this._updateResults();
         }
     };</code></pre></div><div class="member private">
 
@@ -790,410 +875,268 @@ and is never used directly.</p>
     Private
     
 </span>
-    <h4>_visitHelper</h4>
+    <h4>_render</h4>
 
     
-    <div class="description"><p>Private helper function for FileSystemEntry.visit that requires sanitized options.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>stats</dt>
-    <dd class="label label-info pull-left">FileSystemStats</dd>
-    <dd>- the stats for this entry</dd>
-    <dt>visitedPaths</dt>
-    <dd class="label label-info pull-left">{string: boolean}</dd>
-    <dd>- the set of fullPaths that have already been visited</dd>
-    <dt>visitor</dt>
-    <dd class="label label-info pull-left">function(FileSystemEntry): boolean</dd>
-    <dd>- A visitor function, which is applied to descendent FileSystemEntry objects. If the function returns false for a particular Directory entry, that directory's descendents will not be visited.</dd>
-    <dt>options</dt>
-    <dd class="label label-info pull-left">{maxDepth: number,maxEntriesCounter: {value: number}}</dd>
-    <dd></dd>
-    <dt>callback</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">function(?string)</dd>
-    <dd>Callback with single FileSystemError string parameter.</dd>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._visitHelper = function (stats, visitedPaths, visitor, options, callback) {
-        var maxDepth = options.maxDepth,
-            maxEntriesCounter = options.maxEntriesCounter;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._render = function () {
+        var searchItems, match, i, item, multiLine,
+            count          = this._model.countFilesMatches(),
+            searchFiles    = this._model.getSortedFiles(this._initialFilePath),
+            lastIndex      = this._getLastIndex(count.matches),
+            matchesCounter = 0,
+            showMatches    = false,
+            self           = this;
         
-        if (maxEntriesCounter.value-- &lt;= 0 || maxDepth-- &lt; 0) {
-            &#x2F;&#x2F; The outer FileSystemEntry.visit call is responsible for applying
-            &#x2F;&#x2F; the main callback to FileSystemError.TOO_MANY_FILES in this case
-            callback(null);
-            return;
-        }
+        this._showSummary();
+        this._searchList   = [];
         
-        if (this.isDirectory) {
-            var visitedPath = stats.realPath || this.fullPath;
-    
-            if (visitedPaths.hasOwnProperty(visitedPath)) {
-                &#x2F;&#x2F; Link cycle detected
-                callback(null);
-                return;
-            }
-            
-            visitedPaths[visitedPath] = true;
-        }
-        
-        if (!visitor(this) || this.isFile) {
-            callback(null);
-            return;
-        }
-        
-        this.getContents(function (err, entries, entriesStats) {
-            if (err) {
-                callback(err);
-                return;
-            }
-            
-            var counter = entries.length;
-            if (counter === 0) {
-                callback(null);
-                return;
+        &#x2F;&#x2F; Iterates throuh the files to display the results sorted by filenamess. The loop ends as soon as
+        &#x2F;&#x2F; we filled the results for one page
+        searchFiles.some(function (fullPath) {
+            showMatches = true;
+            item = self._model.results[fullPath];
+
+            &#x2F;&#x2F; Since the amount of matches on this item plus the amount of matches we skipped until
+            &#x2F;&#x2F; now is still smaller than the first match that we want to display, skip these.
+            if (matchesCounter + item.matches.length &lt; self._currentStart) {
+                matchesCounter += item.matches.length;
+                showMatches = false;
+
+            &#x2F;&#x2F; If we still haven&#39;t skipped enough items to get to the first match, but adding the
+            &#x2F;&#x2F; item matches to the skipped ones is greater the the first match we want to display,
+            &#x2F;&#x2F; then we can display the matches from this item skipping the first ones
+            } else if (matchesCounter &lt; self._currentStart) {
+                i = self._currentStart - matchesCounter;
+                matchesCounter = self._currentStart;
+
+            &#x2F;&#x2F; If we already skipped enough matches to get to the first match to display, we can start
+            &#x2F;&#x2F; displaying from the first match of this item
+            } else if (matchesCounter &lt; lastIndex) {
+                i = 0;
+
+            &#x2F;&#x2F; We can&#39;t display more items by now. Break the loop
+            } else {
+                return true;
             }
 
-            function helperCallback(err) {
-                if (--counter === 0) {
-                    callback(null);
+            if (showMatches &amp;&amp; i &lt; item.matches.length) {
+                &#x2F;&#x2F; Add a row for each match in the file
+                searchItems = [];
+
+                &#x2F;&#x2F; Add matches until we get to the last match of this item, or filling the page
+                while (i &lt; item.matches.length &amp;&amp; matchesCounter &lt; lastIndex) {
+                    match     = item.matches[i];
+                    multiLine = match.start.line !== match.end.line;
+                    
+                    searchItems.push({
+                        fileIndex:  self._searchList.length,
+                        itemIndex:  searchItems.length,
+                        matchIndex: i,
+                        line:       match.start.line + 1,
+                        pre:        match.line.substr(0, match.start.ch),
+                        highlight:  match.line.substring(match.start.ch, multiLine ? undefined : match.end.ch),
+                        post:       multiLine ? &quot;\u2026&quot; : match.line.substr(match.end.ch),
+                        start:      match.start,
+                        end:        match.end,
+                        isChecked:  match.isChecked
+                    });
+                    matchesCounter++;
+                    i++;
                 }
+
+                &#x2F;&#x2F; Add a row for each file
+                var relativePath    = FileUtils.getDirectoryPath(ProjectManager.makeProjectRelativeIfPossible(fullPath)),
+                    directoryPath   = FileUtils.getDirectoryPath(relativePath),
+                    displayFileName = StringUtils.format(
+                        Strings.FIND_IN_FILES_FILE_PATH,
+                        StringUtils.breakableUrl(FileUtils.getBaseName(fullPath)),
+                        StringUtils.breakableUrl(directoryPath),
+                        directoryPath ? &quot;&amp;mdash;&quot; : &quot;&quot;
+                    );
+
+                self._searchList.push({
+                    fileIndex: self._searchList.length,
+                    filename:  displayFileName,
+                    fullPath:  fullPath,
+                    items:     searchItems
+                });
             }
-            
-            var nextOptions = {
-                maxDepth: maxDepth,
-                maxEntriesCounter: maxEntriesCounter
-            };
-            
-            entries.forEach(function (entry, index) {
-                var stats = entriesStats[index];
-                entry._visitHelper(stats, visitedPaths, visitor, nextOptions, helperCallback);
+        });
+
+        
+        &#x2F;&#x2F; Insert the search results
+        this._$table
+            .empty()
+            .append(Mustache.render(searchResultsTemplate, {
+                replace:       this._model.isReplace,
+                searchList:    this._searchList,
+                Strings:       Strings
+            }))
+            &#x2F;&#x2F; Restore the collapsed files
+            .find(&quot;.file-section&quot;).each(function () {
+                var fullPath = self._searchList[$(this).data(&quot;file-index&quot;)].fullPath;
+
+                if (self._model.results[fullPath].collapsed) {
+                    self._model.results[fullPath].collapsed = false;
+                    $(this).trigger(&quot;click&quot;);
+                }
             });
-        }.bind(this));
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>exists</h4>
-
-    
-    <div class="description"><p>Check to see if the entry exists on disk. Note that there will NOT be an
-error returned if the file does not exist on the disk; in that case the
-error parameter will be null and the boolean will be false. The error 
-parameter will only be truthy when an unexpected error was encountered
-during the test, in which case the state of the entry should be considered
-unknown.</p>
-</div>
-    
-<dl>
-    <dt>callback</dt>
-    <dd class="label label-info pull-left">function (?string,boolean)</dd>
-    <dd>Callback with a FileSystemError string or a boolean indicating whether or not the file exists.</dd>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.exists = function (callback) {
-        if (this._stat) {
-            callback(null, true);
-            return;
+        
+        if (this._$selectedRow) {
+            this._$selectedRow.removeClass(&quot;selected&quot;);
+            this._$selectedRow = null;
         }
         
-        this._impl.exists(this._path, function (err, exists) {
-            if (err) {
-                this._clearCachedData();
-                callback(err);
-                return;
-            }
-            
-            if (!exists) {
-                this._clearCachedData();
-            }
-            
-            callback(null, exists);
-        }.bind(this));
-    };</code></pre></div><div class="member">
+        this._panel.show();
+        this._$table.scrollTop(0); &#x2F;&#x2F; Otherwise scroll pos from previous contents is remembered
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
-    
+    Private
     
 </span>
-    <h4>moveToTrash</h4>
+    <h4>_showSummary</h4>
 
     
-    <div class="description"><p>Move this entry to the trash. If the underlying file system doesn&#39;t support move
-to trash, the item is permanently deleted.</p>
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._showSummary = function () {
+        var count     = this._model.countFilesMatches(),
+            lastIndex = this._getLastIndex(count.matches),
+            fileList  = Object.keys(this._model.results),
+            filesStr,
+            summary;
+        
+        filesStr = StringUtils.format(
+            Strings.FIND_NUM_FILES,
+            count.files,
+            (count.files &gt; 1 ? Strings.FIND_IN_FILES_FILES : Strings.FIND_IN_FILES_FILE)
+        );
+        
+        &#x2F;&#x2F; This text contains some formatting, so all the strings are assumed to be already escaped
+        summary = StringUtils.format(
+            Strings.FIND_TITLE_SUMMARY,
+            this._model.foundMaximum ? Strings.FIND_IN_FILES_MORE_THAN : &quot;&quot;,
+            String(count.matches),
+            (count.matches &gt; 1) ? Strings.FIND_IN_FILES_MATCHES : Strings.FIND_IN_FILES_MATCH,
+            filesStr
+        );
+
+        this._$summary.html(Mustache.render(searchSummaryTemplate, {
+            query:       (this._model.queryInfo.query &amp;&amp; this._model.queryInfo.query.toString()) || &quot;&quot;,
+            replaceWith: this._model.replaceText,
+            titleLabel:  this._model.isReplace ? Strings.FIND_REPLACE_TITLE_LABEL : Strings.FIND_TITLE_LABEL,
+            scope:       this._model.scope ? &quot;&amp;nbsp;&quot; + FindUtils.labelForScope(this._model.scope) + &quot;&amp;nbsp;&quot; : &quot;&quot;,
+            summary:     summary,
+            allChecked:  this._allChecked,
+            hasPages:    count.matches &gt; RESULTS_PER_PAGE,
+            results:     StringUtils.format(Strings.FIND_IN_FILES_PAGING, this._currentStart + 1, lastIndex),
+            hasPrev:     this._currentStart &gt; 0,
+            hasNext:     lastIndex &lt; count.matches,
+            replace:     this._model.isReplace,
+            Strings:     Strings
+        }));
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateResults</h4>
+
+    
+    <div class="description"><p>Updates the results view after a model change, preserving scroll position and selection.</p>
 </div>
     
 <dl>
-    <dt>callback</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">function (?string)</dd>
-    <dd>Callback with a single FileSystemError string parameter.</dd>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.moveToTrash = function (callback) {
-        if (!this._impl.moveToTrash) {
-            this.unlink(callback);
-            return;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._updateResults = function () {
+        &#x2F;&#x2F; In general this shouldn&#39;t get called if the panel is closed, but in case some
+        &#x2F;&#x2F; asynchronous process kicks this (e.g. a debounced model change), we double-check.
+        if (this._panel.isVisible()) {
+            var scrollTop  = this._$table.scrollTop(),
+                index      = this._$selectedRow ? this._$selectedRow.index() : null,
+                numMatches = this._model.countFilesMatches().matches;
+
+            if (this._currentStart &gt; numMatches) {
+                this._currentStart = this._getLastCurrentStart(numMatches);
+            }
+            
+            this._render();
+
+            this._$table.scrollTop(scrollTop);
+            if (index) {
+                this._$selectedRow = this._$table.find(&quot;tr:eq(&quot; + index + &quot;)&quot;);
+                this._$selectedRow.addClass(&quot;selected&quot;);
+            }
         }
-
-        callback = callback || function () {};
-
-        &#x2F;&#x2F; Block external change events until after the write has finished
-        this._fileSystem._beginChange();
-        
-        this._clearCachedData();
-        this._impl.moveToTrash(this._path, function (err) {
-            var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
-
-            &#x2F;&#x2F; Update internal filesystem state
-            this._fileSystem._handleDirectoryChange(parent, function (added, removed) {
-                try {
-                    &#x2F;&#x2F; Notify the caller
-                    callback(err);
-                } finally {
-                    &#x2F;&#x2F; Notify change listeners
-                    this._fileSystem._fireChangeEvent(parent, added, removed);
-                    
-                    &#x2F;&#x2F; Unblock external change events
-                    this._fileSystem._endChange();
-                }
-            }.bind(this));
-        }.bind(this));
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>rename</h4>
+    <h4>close</h4>
 
     
-    <div class="description"><p>Rename this entry.</p>
+    <div class="description"><p>Hides the Search Results Panel and unregisters listeners.</p>
 </div>
     
 <dl>
-    <dt>newFullPath</dt>
-    <dd class="label label-info pull-left">string</dd>
-    <dd>New path & name for this entry.</dd>
-    <dt>callback</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">function (?string)</dd>
-    <dd>Callback with a single FileSystemError string parameter.</dd>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.rename = function (newFullPath, callback) {
-        callback = callback || function () {};
-        
-        &#x2F;&#x2F; Block external change events until after the write has finished
-        this._fileSystem._beginChange();
-        
-        this._impl.rename(this._path, newFullPath, function (err) {
-            var oldFullPath = this._path;
-            
-            try {
-                if (err) {
-                    this._clearCachedData();
-                    callback(err);
-                    return;
-                }
-                
-                &#x2F;&#x2F; Update internal filesystem state
-                this._fileSystem._handleRename(this._path, newFullPath, this.isDirectory);
-                
-                try {
-                    &#x2F;&#x2F; Notify the caller
-                    callback(null);
-                } finally {
-                    &#x2F;&#x2F; Notify rename listeners
-                    this._fileSystem._fireRenameEvent(oldFullPath, newFullPath);
-                }
-            } finally {
-                &#x2F;&#x2F; Unblock external change events
-                this._fileSystem._endChange();
-            }
-        }.bind(this));
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>stat</h4>
-
-    
-    <div class="description"><p>Returns the stats for the entry.</p>
-</div>
-    
-<dl>
-    <dt>callback</dt>
-    <dd class="label label-info pull-left">function (?string,FileSystemStats=)</dd>
-    <dd>Callback with a FileSystemError string or FileSystemStats object.</dd>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.stat = function (callback) {
-        if (this._stat) {
-            callback(null, this._stat);
-            return;
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype.close = function () {
+        if (this._panel &amp;&amp; this._panel.isVisible()) {
+            this._$table.empty();
+            this._panel.hide();
+            this._panel.$panel.off(&quot;.searchResults&quot;);
+            $(this._model).off(&quot;change.SearchResultsView&quot;);
+            $(this).triggerHandler(&quot;close&quot;);
         }
-        
-        this._impl.stat(this._path, function (err, stat) {
-            if (err) {
-                this._clearCachedData();
-                callback(err);
-                return;
-            }
-            
-            if (this._isWatched()) {
-                this._stat = stat;
-            }
-            
-            callback(null, stat);
-        }.bind(this));
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>toString</h4>
-
-    
-    <div class="description"><p>Helpful toString for debugging purposes</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.toString = function () {
-        return &quot;[&quot; + (this.isDirectory ? &quot;Directory &quot; : &quot;File &quot;) + this._path + &quot;]&quot;;
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>unlink</h4>
-
-    
-    <div class="description"><p>Permanently delete this entry. For Directories, this will delete the directory
-and all of its contents. For reversible delete, see moveToTrash().</p>
-</div>
-    
-<dl>
-    <dt>callback</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">function (?string)</dd>
-    <dd>Callback with a single FileSystemError string parameter.</dd>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.unlink = function (callback) {
-        callback = callback || function () {};
-        
-        &#x2F;&#x2F; Block external change events until after the write has finished
-        this._fileSystem._beginChange();
-        
-        this._clearCachedData();
-        this._impl.unlink(this._path, function (err) {
-            var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
-
-            &#x2F;&#x2F; Update internal filesystem state
-            this._fileSystem._handleDirectoryChange(parent, function (added, removed) {
-                try {
-                    &#x2F;&#x2F; Notify the caller 
-                    callback(err);
-                } finally {
-                    &#x2F;&#x2F; Notify change listeners
-                    this._fileSystem._fireChangeEvent(parent, added, removed);
-                    
-                    &#x2F;&#x2F; Unblock external change events
-                    this._fileSystem._endChange();
-                }
-            }.bind(this));
-        }.bind(this));
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>visit</h4>
-
-    
-    <div class="description"><p>Visit this entry and its descendents with the supplied visitor function.
-Correctly handles symbolic link cycles and options can be provided to limit
-search depth and total number of entries visited. No particular traversal
-order is guaranteed; instead of relying on such an order, it is preferable
-to use the visit function to build a list of visited entries, sort those
-entries as desired, and then process them. Whenever possible, deep
-filesystem traversals should use this method. </p>
-</div>
-    
-<dl>
-    <dt>visitor</dt>
-    <dd class="label label-info pull-left">function(FileSystemEntry): boolean</dd>
-    <dd>- A visitor function, which is applied to this entry and all descendent FileSystemEntry objects. If the function returns false for a particular Directory entry, that directory's descendents will not be visited.</dd>
-    <dt>options</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">{maxDepth: number=, maxEntries: number=}</dd>
-    <dd></dd>
-    <dt>callback</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">function(?string)</dd>
-    <dd>Callback with single FileSystemError string parameter.</dd>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.visit = function (visitor, options, callback) {
-        if (typeof options === &quot;function&quot;) {
-            callback = options;
-            options = {};
-        } else {
-            if (options === undefined) {
-                options = {};
-            }
-            
-            callback = callback || function () {};
-        }
-        
-        if (options.maxDepth === undefined) {
-            options.maxDepth = VISIT_DEFAULT_MAX_DEPTH;
-        }
-        
-        if (options.maxEntries === undefined) {
-            options.maxEntries = VISIT_DEFAULT_MAX_ENTRIES;
-        }
-
-        options.maxEntriesCounter = { value: options.maxEntries };
-        
-        this.stat(function (err, stats) {
-            if (err) {
-                callback(err);
-                return;
-            }
-            
-            this._visitHelper(stats, {}, visitor, options, function (err) {
-                if (callback) {
-                    if (err) {
-                        callback(err);
-                        return;
-                    }
-                    
-                    if (options.maxEntriesCounter.value &lt; 0) {
-                        callback(FileSystemError.TOO_MANY_ENTRIES);
-                        return;
-                    }
-                    
-                    callback(null);
-                }
-            }.bind(this));
-        }.bind(this));
     };
     
-    &#x2F;&#x2F; Export this class
-    module.exports = FileSystemEntry;
-});</code></pre></div>
+    &#x2F;&#x2F; Public API
+    exports.SearchResultsView = SearchResultsView;
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>open</h4>
+
+    
+    <div class="description"><p>Opens the results panel and displays the current set of results from the model.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype.open = function () {
+        &#x2F;&#x2F; Clear out any paging&#x2F;selection state.
+        this._currentStart  = 0;
+        this._$selectedRow  = null;
+        this._allChecked    = true;
+        
+        &#x2F;&#x2F; Save the currently open document&#39;s fullpath, if any, so we can sort it to the top of the result list.
+        var currentDoc = DocumentManager.getCurrentDocument();
+        this._initialFilePath = currentDoc ? currentDoc.file.fullPath : null;
+
+        this._render();
+        
+        &#x2F;&#x2F; Listen for user interaction events with the panel and change events from the model.
+        this._addPanelListeners();
+        $(this._model).on(&quot;change.SearchResultsView&quot;, this._handleModelChange.bind(this));
+    };</code></pre></div>
         </section>
 
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ProjectManager - Brackets API</title>
+    <title>ProjectManager -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -34,7 +34,7 @@
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="../../index.html">Brackets API</a>
+            <a class="brand" href="../../index.html"> API</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li><a href="#dependencies">Dependencies</a></li>
@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (140)</h2>
+            <h2 class="number-of-modules">Modules (145)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -277,10 +277,15 @@
             </ul>
             <ul id="package_search" class="nav nav-list">
               <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindBar.html">FindBar</a></li>
               <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+              <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
+              <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -589,10 +594,29 @@ a project being opened (e.g. from the Refresh command)</li>
     Private
     
 </span>
+    <h4>_mouseupTimeoutId</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _mouseupTimeoutId = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
     <h4>_projectBaseUrl</h4>
 
     
 <dl>
+    <dt>See</dt>
+    <dd><a href='#'>getBaseUrl(), setBaseUrl()</a></dd>
     <dt>Private</dt>
 </dl>
     <div class="description"></div>
@@ -1840,7 +1864,24 @@ refreshFileTree.</p>
                         }
                     }
                 }
-            );
+            ).bind(&quot;mouseup.jstree&quot;, function (event) {
+                if (event.button !== 0) { &#x2F;&#x2F; 0 = Left mouse button
+                    return;
+                }
+
+                var $treenode = $(event.target).closest(&quot;li&quot;),
+                    entry = $treenode.data(&quot;entry&quot;);
+                &#x2F;&#x2F; Don&#39;t do the rename for folders, because clicking on a folder name collapses&#x2F;expands it.
+                if (entry &amp;&amp; entry.isFile &amp;&amp; $treenode.is($(_projectTree.jstree(&quot;get_selected&quot;)))) {
+                    &#x2F;&#x2F; wrap this in a setTimeout function so that we can check if it&#39;s a double click.
+                    _mouseupTimeoutId = window.setTimeout(function () {
+                        &#x2F;&#x2F; if we get a double-click, _mouseupTimeoutId will have been set to null by the double-click handler before this runs.
+                        if (_mouseupTimeoutId !== null) {
+                            CommandManager.execute(Commands.FILE_RENAME);
+                        }
+                    }, 500);
+                }
+            });
 
         &#x2F;&#x2F; jstree has a default event handler for dblclick that attempts to clear the
         &#x2F;&#x2F; global window selection (presumably because it doesn&#39;t want text within the tree
@@ -1902,6 +1943,11 @@ refreshFileTree.</p>
                     if (entry &amp;&amp; entry.isFile &amp;&amp; !_isInRename(event.target)) {
                         FileViewController.addToWorkingSetAndSelect(entry.fullPath);
                     }
+                    if (_mouseupTimeoutId !== null) {
+                        window.clearTimeout(_mouseupTimeoutId);
+                        _mouseupTimeoutId = null;
+                    }
+                    
                 });
 
             &#x2F;&#x2F; fire selection changed events for sidebar-selection
@@ -2948,6 +2994,9 @@ and send notifications about the rename.</p>
 </div>
     
 <dl>
+    <dt>oldName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Old item name</dd>
     <dt>newName</dt>
     <dd class="label label-info pull-left">string</dd>
     <dd>New item name</dd>

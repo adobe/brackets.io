@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ExtensionManagerDialog -  API</title>
+    <title>FindInFilesUI -  API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -354,13 +354,18 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ExtensionManagerDialog</h1>
+<h1>FindInFilesUI</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div></div>
+    <div><p>UI and controller logic for find/replace across multiple files within the project.</p>
+<p>FUTURE:</p>
+<ul>
+<li>Handle matches that span multiple lines</li>
+</ul>
+</div>
 </section>
 
 <section id="dependencies">
@@ -368,22 +373,82 @@
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/widgets/bootstrap-tab.html">bootstrap-tab</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
         <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
         <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-        <li><a href="..&#x2F;../modules/text!htmlContent/extension-manager-dialog.html.html">extension-manager-dialog.html</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
-        <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/search/FileFilters.html">FileFilters</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
+        <li><a href="..&#x2F;../modules/search/FindInFiles.html">FindInFiles</a></li>
+        <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/search/SearchResultsView.html">SearchResultsView</a></li>
+        <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>MAX_IN_MEMORY</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var MAX_IN_MEMORY = 20;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_findBar</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>FindBar</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _findBar = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_resultsView</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>SearchResultsView</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _resultsView = null;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -399,7 +464,7 @@
     Private
     Public API
 </span>
-    <h4>_performChanges</h4>
+    <h4>_closeFindBar</h4>
 
     
     <div class="description"></div>
@@ -407,115 +472,286 @@
 <dl>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _performChanges() {
-        &#x2F;&#x2F; If an extension was removed or updated, prompt the user to quit Brackets.
-        var hasRemovedExtensions = ExtensionManager.hasExtensionsToRemove(),
-            hasUpdatedExtensions = ExtensionManager.hasExtensionsToUpdate();
-        if (!hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
+<pre class="code language-javascript"><code class="language-javascript">    function _closeFindBar() {
+        if (_findBar) {
+            _findBar.close();
+        }
+    }
+    
+    &#x2F;&#x2F; Initialize items dependent on HTML DOM
+    AppInit.htmlReady(function () {
+        var model = FindInFiles.searchModel;
+        _resultsView = new SearchResultsView(model, &quot;find-in-files-results&quot;, &quot;find-in-files.results&quot;);
+        $(_resultsView)
+            .on(&quot;replaceAll&quot;, function () {
+                _finishReplaceAll(model);
+            })
+            .on(&quot;close&quot;, function () {
+                FindInFiles.clearSearch();
+            });
+    });
+    
+    &#x2F;&#x2F; Initialize: register listeners
+    $(ProjectManager).on(&quot;beforeProjectClose&quot;, function () { _resultsView.close(); });
+    
+    &#x2F;&#x2F; Initialize: command handlers
+    CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
+    CommandManager.register(Strings.CMD_FIND_IN_SELECTED,    Commands.CMD_FIND_IN_SELECTED,    _showFindBarForSubtree);
+    CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree);
+    
+    CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar);
+    CommandManager.register(Strings.CMD_REPLACE_IN_SELECTED, Commands.CMD_REPLACE_IN_SELECTED, _showReplaceBarForSubtree);
+    CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
+    
+    &#x2F;&#x2F; Public exports
+    exports.searchAndShowResults = searchAndShowResults;
+    
+    &#x2F;&#x2F; For unit testing
+    exports._showFindBar  = _showFindBar;
+    exports._closeFindBar = _closeFindBar;
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_finishReplaceAll</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>model</dt>
+    <dd class="label label-info pull-left">SearchModel</dd>
+    <dd>The model for the search associated with ths replace.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _finishReplaceAll(model) {
+        var replaceText = model.replaceText;
+        if (replaceText === null) {
             return;
         }
         
-        var buttonLabel = Strings.CHANGE_AND_RELOAD;
-        if (hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
-            buttonLabel = Strings.REMOVE_AND_RELOAD;
-        } else if (hasUpdatedExtensions &amp;&amp; !hasRemovedExtensions) {
-            buttonLabel = Strings.UPDATE_AND_RELOAD;
+        &#x2F;&#x2F; Clone the search results so that they don&#39;t get updated in the middle of the replacement.
+        var resultsClone = _.cloneDeep(model.results),
+            replacedFiles = Object.keys(resultsClone).filter(function (path) {
+                return FindUtils.hasCheckedMatches(resultsClone[path]);
+            }),
+            isRegexp = model.queryInfo.isRegexp,
+            replacePromise;
+        
+        function processReplace(forceFilesOpen) {
+            StatusBar.showBusyIndicator(true);
+            FindInFiles.doReplace(resultsClone, replaceText, { forceFilesOpen: forceFilesOpen, isRegexp: isRegexp })
+                .fail(function (errors) {
+                    var message = Strings.REPLACE_IN_FILES_ERRORS + FileUtils.makeDialogFileList(
+                            errors.map(function (errorInfo) {
+                                return ProjectManager.makeProjectRelativeIfPossible(errorInfo.item);
+                            })
+                        );
+                    
+                    Dialogs.showModalDialog(
+                        DefaultDialogs.DIALOG_ID_ERROR,
+                        Strings.REPLACE_IN_FILES_ERRORS_TITLE,
+                        message,
+                        [
+                            {
+                                className : Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                                id        : Dialogs.DIALOG_BTN_OK,
+                                text      : Strings.BUTTON_REPLACE_WITHOUT_UNDO
+                            }
+                        ]
+                    );
+                })
+                .always(function () {
+                    StatusBar.hideBusyIndicator();
+                });
+        }
+                
+        if (replacedFiles.length &lt;= MAX_IN_MEMORY) {
+            &#x2F;&#x2F; Just do the replacements in memory.
+            _resultsView.close();
+            processReplace(true);
+        } else {
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_INFO,
+                Strings.REPLACE_WITHOUT_UNDO_WARNING_TITLE,
+                StringUtils.format(Strings.REPLACE_WITHOUT_UNDO_WARNING, MAX_IN_MEMORY),
+                [
+                    {
+                        className : Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                        id        : Dialogs.DIALOG_BTN_CANCEL,
+                        text      : Strings.CANCEL
+                    },
+                    {
+                        className : Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                        id        : Dialogs.DIALOG_BTN_OK,
+                        text      : Strings.BUTTON_REPLACE_WITHOUT_UNDO
+                    }
+                ]
+            )
+                .done(function (id) {
+                    if (id === Dialogs.DIALOG_BTN_OK) {
+                        _resultsView.close();
+                        processReplace(false);
+                    }
+                });
+        }
+    }
+
+    &#x2F;&#x2F; Command handlers</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_showFindBar</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>scope</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Entry</dd>
+    <dd>Project file/subfolder to search within; else searches whole project.</dd>
+    <dt>showReplace</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, show the Replace controls.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showFindBar(scope, showReplace) {
+        &#x2F;&#x2F; If the scope is a file with a custom viewer, then we
+        &#x2F;&#x2F; don&#39;t show find in files dialog.
+        if (scope &amp;&amp; EditorManager.getCustomViewerForPath(scope.fullPath)) {
+            return;
         }
         
-        var dlg = Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_CHANGE_EXTENSIONS,
-            Strings.CHANGE_AND_RELOAD_TITLE,
-            Strings.CHANGE_AND_RELOAD_MESSAGE,
-            [
-                {
-                    className : Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id        : Dialogs.DIALOG_BTN_CANCEL,
-                    text      : Strings.CANCEL
-                },
-                {
-                    className : Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id        : Dialogs.DIALOG_BTN_OK,
-                    text      : buttonLabel
-                }
-            ],
-            false
-        ),
-            $dlg = dlg.getElement();
+        if (scope instanceof InMemoryFile) {
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: scope.fullPath }).done(function () {
+                CommandManager.execute(Commands.CMD_FIND);
+            });
+            return;
+        }
         
-        $dlg.one(&quot;buttonClick&quot;, function (e, buttonId) {
-            if (buttonId === Dialogs.DIALOG_BTN_OK) {
-                &#x2F;&#x2F; Disable the dialog buttons so the user can&#39;t dismiss it,
-                &#x2F;&#x2F; and show a message indicating that we&#39;re doing the updates,
-                &#x2F;&#x2F; in case it takes a long time.
-                $dlg.find(&quot;.dialog-button&quot;).prop(&quot;disabled&quot;, true);
-                $dlg.find(&quot;.close&quot;).hide();
-                $dlg.find(&quot;.dialog-message&quot;)
-                    .text(Strings.PROCESSING_EXTENSIONS)
-                    .append(&quot;&lt;span class=&#39;spinner inline spin&#39;&#x2F;&gt;&quot;);
-                
-                ExtensionManager.removeMarkedExtensions()
-                    .done(function () {
-                        ExtensionManager.updateExtensions()
-                            .done(function () {
-                                dlg.close();
-                                CommandManager.execute(Commands.APP_RELOAD);
-                            })
-                            .fail(function (errorArray) {
-                                dlg.close();
-                                
-                                &#x2F;&#x2F; This error case should be very uncommon.
-                                &#x2F;&#x2F; Just let the user know that we couldn&#39;t update
-                                &#x2F;&#x2F; this extension and log the errors to the console.
-                                var ids = [];
-                                errorArray.forEach(function (errorObj) {
-                                    ids.push(errorObj.item);
-                                    if (errorObj.error &amp;&amp; errorObj.error.forEach) {
-                                        console.error(&quot;Errors for &quot;, errorObj.item);
-                                        errorObj.error.forEach(function (error) {
-                                            console.error(Package.formatError(error));
-                                        });
-                                    }
-                                });
-                                Dialogs.showModalDialog(
-                                    DefaultDialogs.DIALOG_ID_ERROR,
-                                    Strings.EXTENSION_MANAGER_UPDATE,
-                                    StringUtils.format(Strings.EXTENSION_MANAGER_UPDATE_ERROR, ids.join(&quot;, &quot;))
-                                ).done(function () {
-                                    &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                                    CommandManager.execute(Commands.APP_RELOAD);
-                                });
-                            });
-                    })
-                    .fail(function (errorArray) {
-                        dlg.close();
-                        ExtensionManager.cleanupUpdates();
-                        
-                        var ids = [];
-                        errorArray.forEach(function (errorObj) {
-                            ids.push(errorObj.item);
-                        });
-                        Dialogs.showModalDialog(
-                            DefaultDialogs.DIALOG_ID_ERROR,
-                            Strings.EXTENSION_MANAGER_REMOVE,
-                            StringUtils.format(Strings.EXTENSION_MANAGER_REMOVE_ERROR, ids.join(&quot;, &quot;))
-                        ).done(function () {
-                            &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                            CommandManager.execute(Commands.APP_RELOAD);
-                        });
-                    });
-            } else {
-                dlg.close();
-                ExtensionManager.cleanupUpdates();
-                ExtensionManager.unmarkAllForRemoval();
-            }
+        &#x2F;&#x2F; Default to searching for the current selection
+        var currentEditor = EditorManager.getActiveEditor(),
+            initialString = currentEditor &amp;&amp; currentEditor.getSelectedText();
+
+        if (_findBar &amp;&amp; !_findBar.isClosed()) {
+            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
+            &#x2F;&#x2F; current query instead of using the passed-in selected text.
+            initialString = _findBar.getQueryInfo().query;
+        }
+        
+        FindInFiles.clearSearch();
+        
+        &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new _findBar will
+        &#x2F;&#x2F; take care of closing any other find bar instances.)
+        if (_findBar) {
+            _findBar.close();
+        }
+
+        _findBar = new FindBar({
+            multifile: true,
+            replace: showReplace,
+            initialQuery: initialString,
+            queryPlaceholder: Strings.FIND_QUERY_PLACEHOLDER,
+            scopeLabel: FindUtils.labelForScope(scope)
         });
+        _findBar.open();
+
+        &#x2F;&#x2F; TODO Should push this state into ModalBar (via a FindBar API) instead of installing a callback like this.
+        &#x2F;&#x2F; Custom closing behavior: if in the middle of executing search, blur shouldn&#39;t close ModalBar yet. And
+        &#x2F;&#x2F; don&#39;t close bar when opening Edit Filter dialog either.
+        _findBar._modalBar.isLockedOpen = function () {
+            &#x2F;&#x2F; TODO: should have state for whether the search is executing instead of looking at find bar state
+            &#x2F;&#x2F; TODO: should have API on filterPicker to figure out if dialog is open
+            return !_findBar.isEnabled() || $(&quot;.modal.instance .exclusions-editor&quot;).length &gt; 0;
+        };
+        
+        var candidateFilesPromise = FindInFiles.getCandidateFiles(scope),  &#x2F;&#x2F; used for eventual search, and in exclusions editor UI
+            filterPicker;
+        
+        function handleQueryChange() {
+            &#x2F;&#x2F; Check the query expression on every input event. This way the user is alerted
+            &#x2F;&#x2F; to any RegEx syntax errors immediately.
+            var queryInfo = _findBar.getQueryInfo(),
+                queryResult = FindInFiles.searchModel.setQueryInfo(queryInfo);
+
+            &#x2F;&#x2F; Enable the replace button appropriately.
+            _findBar.enableReplace(queryResult.valid);
+
+            if (queryResult.valid || queryResult.empty) {
+                _findBar.showNoResults(false);
+                _findBar.showError(null);
+            } else {
+                _findBar.showNoResults(true, false);
+                _findBar.showError(queryResult.error);
+            }
+        }
+        
+        function startSearch(replaceText) {
+            var queryInfo = _findBar.getQueryInfo();
+            if (queryInfo &amp;&amp; queryInfo.query) {
+                _findBar.enable(false);
+                StatusBar.showBusyIndicator(true);
+
+                var filter;
+                if (filterPicker) {
+                    filter = FileFilters.commitPicker(filterPicker);
+                } else {
+                    &#x2F;&#x2F; Single-file scope: don&#39;t use any file filters
+                    filter = null;
+                }
+                searchAndShowResults(queryInfo, scope, filter, replaceText, candidateFilesPromise);
+            }
+            return null;
+        }
+        
+        function startReplace() {
+            startSearch(_findBar.getReplaceText());
+        }
+        
+        $(_findBar)
+            .on(&quot;doFind.FindInFiles&quot;, function () {
+                &#x2F;&#x2F; Subtle issue: we can&#39;t just pass startSearch directly as the handler, because
+                &#x2F;&#x2F; we don&#39;t want it to get the event object as an argument.
+                startSearch();
+            })
+            .on(&quot;queryChange.FindInFiles&quot;, handleQueryChange)
+            .on(&quot;close.FindInFiles&quot;, function (e) {
+                $(_findBar).off(&quot;.FindInFiles&quot;);
+                _findBar = null;
+            });
+        
+        if (showReplace) {
+            &#x2F;&#x2F; We shouldn&#39;t get a &quot;doReplace&quot; in this case, since the Replace button
+            &#x2F;&#x2F; is hidden when we set options.multifile.
+            $(_findBar).on(&quot;doReplaceAll.FindInFiles&quot;, startReplace);
+        }
+                
+        &#x2F;&#x2F; Show file-exclusion UI *unless* search scope is just a single file
+        if (!scope || scope.isDirectory) {
+            var exclusionsContext = {
+                label: FindUtils.labelForScope(scope),
+                promise: candidateFilesPromise
+            };
+
+            filterPicker = FileFilters.createFilterPicker(exclusionsContext);
+            &#x2F;&#x2F; TODO: include in FindBar? (and disable it when FindBar is disabled)
+            _findBar._modalBar.getRoot().find(&quot;.scope-group&quot;).append(filterPicker);
+        }
+        
+        handleQueryChange();
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_showDialog</h4>
+    <h4>_showFindBarForSubtree</h4>
 
     
     <div class="description"></div>
@@ -523,167 +759,113 @@
 <dl>
 </dl><dl>
 </dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showDialog() {
-        var dialog,
-            $dlg,
-            views   = [],
-            $search,
-            $searchClear,
-            context = { Strings: Strings, showRegistry: !!brackets.config.extension_registry },
-            models  = [];
-        
-        &#x2F;&#x2F; Load registry only if the registry URL exists
-        if (context.showRegistry) {
-            models.push(new ExtensionManagerViewModel.RegistryViewModel());
-        }
-        
-        models.push(new ExtensionManagerViewModel.InstalledViewModel());
-        
-        function updateSearchDisabled() {
-            var model           = models[_activeTabIndex],
-                searchDisabled  = ($search.val() === &quot;&quot;) &amp;&amp;
-                                  (!model.filterSet || model.filterSet.length === 0);
-            
-            $search.prop(&quot;disabled&quot;, searchDisabled);
-            $searchClear.prop(&quot;disabled&quot;, searchDisabled);
-            
-            return searchDisabled;
-        }
-        
-        &#x2F;&#x2F; Open the dialog
-        dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
-        
-        &#x2F;&#x2F; When dialog closes, dismiss models and commit changes
-        dialog.done(function () {
-            models.forEach(function (model) {
-                model.dispose();
-            });
-            
-            _performChanges();
-        });
-        
-        &#x2F;&#x2F; Create the view.
-        $dlg = dialog.getElement();
-        $search = $(&quot;.search&quot;, $dlg);
-        $searchClear = $(&quot;.search-clear&quot;, $dlg);
-        
-        &#x2F;&#x2F; Dialog tabs
-        $dlg.find(&quot;.nav-tabs a&quot;)
-            .on(&quot;click&quot;, function (event) {
-                models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
-                $(this).tab(&quot;show&quot;);
-                $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
-                $searchClear.click();
-            });
-        
-        &#x2F;&#x2F; Update &amp; hide&#x2F;show the notification overlay on a tab&#39;s icon, based on its model&#39;s notifyCount
-        function updateNotificationIcon(index) {
-            var model = models[index],
-                $notificationIcon = $dlg.find(&quot;.nav-tabs li&quot;).eq(index).find(&quot;.notification&quot;);
-            if (model.notifyCount) {
-                $notificationIcon.text(model.notifyCount);
-                $notificationIcon.show();
-            } else {
-                $notificationIcon.hide();
-            }
-        }
-        
-        &#x2F;&#x2F; Initialize models and create a view for each model
-        var modelInitPromise = Async.doInParallel(models, function (model, index) {
-            var view    = new ExtensionManagerView(),
-                promise = view.initialize(model),
-                lastNotifyCount;
-            
-            promise.always(function () {
-                views[index] = view;
-                
-                lastNotifyCount = model.notifyCount;
-                updateNotificationIcon(index);
-            });
-            
-            $(model).on(&quot;change&quot;, function () {
-                if (lastNotifyCount !== model.notifyCount) {
-                    lastNotifyCount = model.notifyCount;
-                    updateNotificationIcon(index);
-                }
-            });
-            
-            return promise;
-        }, true);
-        
-        modelInitPromise.always(function () {
-            $(&quot;.spinner&quot;, $dlg).remove();
-            
-            views.forEach(function (view) {
-                view.$el.appendTo($(&quot;.modal-body&quot;, $dlg));
-            });
-            
-            &#x2F;&#x2F; Update search UI before new tab is shown
-            $(&quot;a[data-toggle=&#39;tab&#39;]&quot;, $dlg).each(function (index, tabElement) {
-                $(tabElement).on(&quot;show&quot;, function (event) {
-                    _activeTabIndex = index;
-                    
-                    &#x2F;&#x2F; Focus the search input
-                    if (!updateSearchDisabled()) {
-                        $dlg.find(&quot;.search&quot;).focus();
-                    }
-                });
-            });
-            
-            &#x2F;&#x2F; Filter the views when the user types in the search field.
-            $dlg.on(&quot;input&quot;, &quot;.search&quot;, function (e) {
-                var query = $(this).val();
-                views.forEach(function (view) {
-                    view.filter(query);
-                });
-            }).on(&quot;click&quot;, &quot;.search-clear&quot;, function (e) {
-                $search.val(&quot;&quot;);
-                views.forEach(function (view, index) {
-                    view.filter(&quot;&quot;);
-                });
-                
-                if (!updateSearchDisabled()) {
-                    $search.focus();
-                }
-            });
-            
-            &#x2F;&#x2F; Disable the search field when there are no items in the model
-            models.forEach(function (model, index) {
-                $(model).on(&quot;change&quot;, function () {
-                    if (_activeTabIndex === index) {
-                        updateSearchDisabled();
-                    }
-                });
-            });
-            
-            &#x2F;&#x2F; Open dialog to Installed tab if extension updates are available
-            if ($(&quot;#toolbar-extension-manager&quot;).hasClass(&#39;updatesAvailable&#39;)) {
-                $dlg.find(&quot;.nav-tabs a.installed&quot;).tab(&quot;show&quot;);
-            }
-            &#x2F;&#x2F; Otherwise show the first tab
-            else {
-                $dlg.find(&quot;.nav-tabs a:first&quot;).tab(&quot;show&quot;);
-            }
-        });
-    
-        &#x2F;&#x2F; Handle the install button.
-        $(&quot;.extension-manager-dialog .install-from-url&quot;)
-            .click(function () {
-                InstallExtensionDialog.showDialog().done(ExtensionManager.updateFromDownload);
-            });
-        
-        return new $.Deferred().resolve(dialog).promise();
-    }
-    
-    CommandManager.register(Strings.CMD_EXTENSION_MANAGER, Commands.FILE_EXTENSION_MANAGER, _showDialog);
+<pre class="code language-javascript"><code class="language-javascript">    function _showFindBarForSubtree() {
+        var selectedEntry = ProjectManager.getSelectedItem();
+        _showFindBar(selectedEntry);
+    }</code></pre></div><div class="member private">
 
-    AppInit.appReady(function () {
-        $(&quot;#toolbar-extension-manager&quot;).click(_showDialog);
-    });
+<span class="pull-right scope">
+    Private
     
-    &#x2F;&#x2F; Unit tests
-    exports._performChanges = _performChanges;
-});</code></pre></div>
+</span>
+    <h4>_showReplaceBar</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showReplaceBar() {
+        _showFindBar(null, true);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showReplaceBarForSubtree</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showReplaceBarForSubtree() {
+        var selectedEntry = ProjectManager.getSelectedItem();
+        _showFindBar(selectedEntry, true);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>searchAndShowResults</h4>
+
+    
+    <div class="description"><p>Does a search in the given scope with the given filter. Shows the result list once the search is complete.</p>
+</div>
+    
+<dl>
+    <dt>queryInfo</dt>
+    <dd class="label label-info pull-left">{query: string,caseSensitive: boolean,isRegexp: boolean}</dd>
+    <dd>Query info object</dd>
+    <dt>scope</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Entry</dd>
+    <dd>Project file/subfolder to search within; else searches whole project.</dd>
+    <dt>filter</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>A "compiled" filter as returned by FileFilters.compile(), or null for no filter</dd>
+    <dt>replaceText</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>If this is a replacement, the text to replace matches with.</dd>
+    <dt>candidateFilesPromise</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>If specified, a promise that should resolve with the same set of files that getCandidateFiles(scope) would return.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A promise that's resolved with the search results or rejected when the find competes.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function searchAndShowResults(queryInfo, scope, filter, replaceText, candidateFilesPromise) {
+        return FindInFiles.doSearchInScope(queryInfo, scope, filter, replaceText, candidateFilesPromise)
+            .done(function (zeroFilesToken) {
+                &#x2F;&#x2F; Done searching all files: show results
+                if (FindInFiles.searchModel.hasResults()) {
+                    _resultsView.open();
+
+                    if (_findBar) {
+                        _findBar.close();
+                    }
+
+                } else {
+                    _resultsView.close();
+
+                    if (_findBar) {
+                        var showMessage = false;
+                        _findBar.enable(true);
+                        _findBar.focusQuery();
+                        if (zeroFilesToken === FindInFiles.ZERO_FILES_TO_SEARCH) {
+                            _findBar.showError(StringUtils.format(Strings.FIND_IN_FILES_ZERO_FILES, FindUtils.labelForScope(FindInFiles.searchModel.scope)), true);
+                        } else {
+                            showMessage = true;
+                        }
+                        _findBar.showNoResults(true, showMessage);
+                    }
+                }
+
+                StatusBar.hideBusyIndicator();
+            })
+            .fail(function (err) {
+                console.log(&quot;find in files failed: &quot;, err);
+                StatusBar.hideBusyIndicator();
+            });
+    }</code></pre></div>
 </section>
 
         </div>
