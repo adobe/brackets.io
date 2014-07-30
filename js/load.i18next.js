@@ -21,9 +21,14 @@ i18n.init(options)
             twitter: "<a href='http://www.twitter.com/brackets'>Twitter</a>",
             googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>"
         });
+
+        var title = i18n.t($("head title").data("i18n"));
+        if (title) {
+            document.title = title;
+        }
     })
     .always(function () {
-        lang = i18n.lng();
+        lang = i18n.t("lang", { defaultValue: "en" });
         $("html").attr("lang", lang);
         i18nLoaded.resolve();
     });
