@@ -42,7 +42,6 @@ $("[data-yt-id]").on("click", function (e) {
             .css("width", elemWidth)
             .css("margin-left", -0.5 * elemWidth)
             .find(".flex-video").toggleClass("widescreen", !!(windowWidth > windowHeight));
-        console.log(Math.random());
     }
     function setTitle(title) {
         $modal.find("h2").html("<a href='" + youTubeLink + "'>" + title + "</a>");
