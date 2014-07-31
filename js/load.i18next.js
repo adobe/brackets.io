@@ -22,7 +22,7 @@ i18n.init(options)
             googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>"
         });
 
-        var title = i18n.t($("head title").data("i18n"), { defaultValue: null });
+        var title = i18n.t($("head title").data("i18n"), { defaultValue: "" });
         if (title) {
             document.title = title;
         }
