@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -362,6 +366,7 @@
     
     <div><p>Defines a ChangedDocumentTracker class to monitor changes to files in the current project.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -374,33 +379,34 @@
 
 </section>
 
-<section id="functions">
 
-    <h3>Functions 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
+<section id="classes">
     
-    
-</span>
-    <h4>ChangedDocumentTracker</h4>
+    <h2>Classes</h2>
 
-    
-    <div class="description"><p>Tracks &quot;change&quot; events on opened Documents. Used to monitor changes
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                ChangedDocumentTracker
+                
+            </h4>
+            
+            <em><p>Tracks &quot;change&quot; events on opened Documents. Used to monitor changes
 to documents in-memory and update caches. Assumes all documents have
 changed when the Brackets window loses and regains focus. Does not
 read timestamps of files on disk. Clients may optionally track file
 timestamps on disk independently.</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function ChangedDocumentTracker() {
+</em>
+            
+            <dl>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function ChangedDocumentTracker() {
         var self = this;
         
         this._changedPaths = {};
@@ -424,9 +430,191 @@ timestamps on disk independently.</p>
         });
 
         $(window).focus(this._onWindowFocus);
-    }</code></pre></div>
-</section>
+    }</code></pre>
+        </div>
+        
 
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _addListener 
+        <a class="anchor" href="#ChangedDocumentTracker-_addListener" id="ChangedDocumentTracker-_addListener"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype._addListener = function (doc) {
+        $(doc).on(&quot;change&quot;, this._onChange);
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _onChange 
+        <a class="anchor" href="#ChangedDocumentTracker-_onChange" id="ChangedDocumentTracker-_onChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype._onChange = function (event, doc) {
+        &#x2F;&#x2F; if it was already changed, and the client hasn&#39;t reset the tracker,
+        &#x2F;&#x2F; then leave it changed.
+        this._changedPaths[doc.file.fullPath] = true;
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _onWindowFocus 
+        <a class="anchor" href="#ChangedDocumentTracker-_onWindowFocus" id="ChangedDocumentTracker-_onWindowFocus"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype._onWindowFocus = function (event, doc) {
+        this._windowFocus = true;
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _removeListener 
+        <a class="anchor" href="#ChangedDocumentTracker-_removeListener" id="ChangedDocumentTracker-_removeListener"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype._removeListener = function (doc) {
+        $(doc).off(&quot;change&quot;, this._onChange);
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getChangedPaths 
+        <a class="anchor" href="#ChangedDocumentTracker-getChangedPaths" id="ChangedDocumentTracker-getChangedPaths"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the set of changed paths since the last reset.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
+    <dd>Changed file paths</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype.getChangedPaths = function () {
+        return $.makeArray(this._changedPaths);
+    };
+
+    module.exports = ChangedDocumentTracker;
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        isPathChanged 
+        <a class="anchor" href="#ChangedDocumentTracker-isPathChanged" id="ChangedDocumentTracker-isPathChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Check if a file path is dirty.</p>
+</div>
+    
+<dl>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>path</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!boolean</span>
+</dt>
+    <dd>Returns true if the file was dirtied since the last reset.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype.isPathChanged = function (path) {
+        return this._windowFocus || this._changedPaths[path];
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        reset 
+        <a class="anchor" href="#ChangedDocumentTracker-reset" id="ChangedDocumentTracker-reset"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Empty the set of dirty paths. Begin tracking new dirty documents.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ChangedDocumentTracker.prototype.reset = function () {
+        this._changedPaths = {};
+        this._windowFocus = false;
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

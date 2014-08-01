@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -372,6 +376,7 @@ removed entirely.</p>
 <p>A Live Development server must implement the BaseServer API. See
 LiveDevelopment/Servers/BaseServer base class.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -397,20 +402,29 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     Private
     
 </span>
-    <h4>_providerSort</h4>
+    <h4>
+        _providerSort 
+        <a class="anchor" href="#-_providerSort" id="-_providerSort"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>a</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        a
+        <span class="label label-info">number</span>
+    </dt>
     <dd></dd>
-    <dt>b</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        b
+        <span class="label label-info">number</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _providerSort(a, b) {
         return b.priority - a.priority;
     }</code></pre></div><div class="member public">
@@ -419,21 +433,28 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     
     Public API
 </span>
-    <h4>getServer</h4>
+    <h4>
+        getServer 
+        <a class="anchor" href="#-getServer" id="-getServer"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Determines which provider can serve a file with a local path.</p>
 </div>
     
 <dl>
-    <dt>localPath</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        localPath
+        <span class="label label-info">string</span>
+    </dt>
     <dd>A local path to file being served.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">?BaseServer</dd>
+    <dt>Returns: <span class="label label-info">?BaseServer</span>
+</dt>
     <dd>A server no null if no servers can serve the file</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getServer(localPath) {
         var provider, server, i;
 
@@ -453,21 +474,30 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     
     Public API
 </span>
-    <h4>registerServer</h4>
+    <h4>
+        registerServer 
+        <a class="anchor" href="#-registerServer" id="-registerServer"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>The method by which a server registers itself.</p>
 </div>
     
 <dl>
-    <dt>provider</dt>
-    <dd class="label label-info pull-left">BaseServer,{create: function():BaseServer}</dd>
+    <dt>
+        provider
+        <span class="label label-info">BaseServer,{create: function():BaseServer}</span>
+    </dt>
     <dd>The provider to be registered, described below.</dd>
-    <dt>priority</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        priority
+        <span class="label label-info">number</span>
+    </dt>
     <dd>A non-negative number used to break ties among providers for a particular url. Providers that register with a higher priority will have the opportunity to provide a given url before those with a lower priority. The higher the number, the higher the priority.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function registerServer(provider, priority) {
         if (!provider.create) {
             console.error(&quot;Incompatible live development server provider&quot;);

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -361,6 +365,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -388,21 +393,28 @@
     Private
     
 </span>
-    <h4>_keydownHook</h4>
+    <h4>
+        _keydownHook 
+        <a class="anchor" href="#-_keydownHook" id="-_keydownHook"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Convert keydown events into hint list navigation actions.</p>
 </div>
     
 <dl>
-    <dt>event</dt>
-    <dd class="label label-info pull-left">KeyboardEvent</dd>
+    <dt>
+        event
+        <span class="label label-info">KeyboardEvent</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>true if key was handled, otherwise false.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function _keydownHook(event) {
             var keyCode;
     
@@ -441,7 +453,10 @@
     
     
 </span>
-    <h4>closeCallback</h4>
+    <h4>
+        closeCallback 
+        <a class="anchor" href="#-closeCallback" id="-closeCallback"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>PopUpManager callback</p>
@@ -449,7 +464,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function closeCallback() {
             KeyBindingManager.removeGlobalKeydownHook(_keydownHook);
             self._cleanup();
@@ -473,7 +490,11 @@
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>DropdownEventHandler</h4>
+            <h4>
+                DropdownEventHandler
+                
+            </h4>
+            
             <em><p>Object to handle events for a dropdown list.</p>
 <p>DropdownEventHandler handles these events:</p>
 <p>Mouse:</p>
@@ -492,13 +513,12 @@
 </em>
             
             <dl>
-                <dt>$list</dt>
-                <dd class="label label-info pull-left">jQueryObject</dd>
+                <dt>$list <span class="label label-info pull-left">jQueryObject</span></dt>
                 <dd>associated list object</dd>
-                <dt>selectionCallback</dt>
-                <dd class="label label-info pull-left">Function</dd>
+                <dt>selectionCallback <span class="label label-info pull-left">Function</span></dt>
                 <dd>function called when list item is selected.</dd>
             </dl>
+          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function DropdownEventHandler($list, selectionCallback, closeCallback) {
@@ -506,7 +526,8 @@
         this.$list = $list;
         this.$items = $list.find(&quot;li&quot;);
         this.selectionCallback = selectionCallback;
-        this.closeCallback = closeCallback;</code></pre>
+        this.closeCallback = closeCallback;
+        this.scrolling = false;</code></pre>
         </div>
         
 
@@ -523,7 +544,10 @@
     Private
     
 </span>
-    <h4>_cleanup</h4>
+    <h4>
+        _cleanup 
+        <a class="anchor" href="#DropdownEventHandler-_cleanup" id="DropdownEventHandler-_cleanup"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Cleanup</p>
@@ -531,7 +555,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._cleanup = function () {
         if (this.$list) {
             this.$list.off(&quot;.dropdownEventHandler&quot;);
@@ -545,18 +571,25 @@
     Private
     
 </span>
-    <h4>_clickHandler</h4>
+    <h4>
+        _clickHandler 
+        <a class="anchor" href="#DropdownEventHandler-_clickHandler" id="DropdownEventHandler-_clickHandler"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Call selectionCallback with selected item</p>
 </div>
     
 <dl>
-    <dt>$item</dt>
-    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dt>
+        $item
+        <span class="label label-info">jQueryObject</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._clickHandler = function ($link) {
 
         if (!this.selectionCallback || !this.$list || !$link) {
@@ -571,17 +604,22 @@
     Private
     
 </span>
-    <h4>_itemsPerPage</h4>
+    <h4>
+        _itemsPerPage 
+        <a class="anchor" href="#DropdownEventHandler-_itemsPerPage" id="DropdownEventHandler-_itemsPerPage"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
     <dd>The number of items per scroll page.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._itemsPerPage = function () {
         var itemsPerPage = 1,
             itemHeight;
@@ -602,7 +640,10 @@
     Private
     
 </span>
-    <h4>_registerMouseEvents</h4>
+    <h4>
+        _registerMouseEvents 
+        <a class="anchor" href="#DropdownEventHandler-_registerMouseEvents" id="DropdownEventHandler-_registerMouseEvents"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Register mouse event handlers</p>
@@ -610,7 +651,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._registerMouseEvents = function () {
         var self = this;
         
@@ -619,6 +662,12 @@
                 self._clickHandler($(this));
             })
             .on(&quot;mouseover.dropdownEventHandler&quot;, &quot;a&quot;, function (e) {
+                &#x2F;&#x2F; Don&#39;t select item under mouse cursor when scrolling.
+                if (self.scrolling) {
+                    self.scrolling = false;
+                    return;
+                }
+                
                 var $link = $(e.currentTarget),
                     $item = $link.closest(&quot;li&quot;),
                     viewOffset = self.$list.offset(),
@@ -637,7 +686,10 @@
     Private
     
 </span>
-    <h4>_rotateSelection</h4>
+    <h4>
+        _rotateSelection 
+        <a class="anchor" href="#DropdownEventHandler-_rotateSelection" id="DropdownEventHandler-_rotateSelection"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Change selection by specified amount. After selection reaches the last item
@@ -645,11 +697,15 @@ in the rotation direction, then it wraps around to the start.</p>
 </div>
     
 <dl>
-    <dt>distance</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        distance
+        <span class="label label-info">number</span>
+    </dt>
     <dd>Number of items to move change selection where positive distance rotates down and negative distance rotates up</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._rotateSelection = function (distance) {
         var len = this.$items.length,
             pos;
@@ -690,7 +746,10 @@ in the rotation direction, then it wraps around to the start.</p>
     Private
     
 </span>
-    <h4>_selectionHandler</h4>
+    <h4>
+        _selectionHandler 
+        <a class="anchor" href="#DropdownEventHandler-_selectionHandler" id="DropdownEventHandler-_selectionHandler"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Call selectionCallback with selected index</p>
@@ -698,7 +757,9 @@ in the rotation direction, then it wraps around to the start.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._selectionHandler = function () {
 
         if (this._selectedIndex === -1) {
@@ -713,7 +774,10 @@ in the rotation direction, then it wraps around to the start.</p>
     Private
     
 </span>
-    <h4>_setSelectedIndex</h4>
+    <h4>
+        _setSelectedIndex 
+        <a class="anchor" href="#DropdownEventHandler-_setSelectedIndex" id="DropdownEventHandler-_setSelectedIndex"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Select the item in the hint list at the specified index, or remove the
@@ -721,11 +785,15 @@ selection if index &lt; 0.</p>
 </div>
     
 <dl>
-    <dt>index</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        index
+        <span class="label label-info">number</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._setSelectedIndex = function (index, scrollIntoView) {
         
         &#x2F;&#x2F; Range check
@@ -742,10 +810,11 @@ selection if index &lt; 0.</p>
         if (this._selectedIndex !== -1) {
             var $item = this.$items.eq(this._selectedIndex);
 
+            $item.find(&quot;a&quot;).addClass(&quot;selected&quot;);
             if (scrollIntoView) {
+                this.scrolling = true;
                 ViewUtils.scrollElementIntoView(this.$list, $item, false);
             }
-            $item.find(&quot;a&quot;).addClass(&quot;selected&quot;);
         }
     };</code></pre></div><div class="member">
 
@@ -753,7 +822,10 @@ selection if index &lt; 0.</p>
     
     
 </span>
-    <h4>close</h4>
+    <h4>
+        close 
+        <a class="anchor" href="#DropdownEventHandler-close" id="DropdownEventHandler-close"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Public close method</p>
@@ -761,16 +833,23 @@ selection if index &lt; 0.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype.close = function () {
-        PopUpManager.removePopUp(this.$list);
+        if (this.$list) {
+            PopUpManager.removePopUp(this.$list);
+        }
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>open</h4>
+    <h4>
+        open 
+        <a class="anchor" href="#DropdownEventHandler-open" id="DropdownEventHandler-open"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Public open method</p>
@@ -778,7 +857,9 @@ selection if index &lt; 0.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype.open = function () {
         var self = this;</code></pre></div><div class="member">
 
@@ -786,19 +867,26 @@ selection if index &lt; 0.</p>
     
     
 </span>
-    <h4>reRegisterMouseHandlers</h4>
+    <h4>
+        reRegisterMouseHandlers 
+        <a class="anchor" href="#DropdownEventHandler-reRegisterMouseHandlers" id="DropdownEventHandler-reRegisterMouseHandlers"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Re-register mouse event handlers</p>
 </div>
     
 <dl>
-    <dt>$list</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">jQueryObject</dd>
+    <dt>
+        $list
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQueryObject</span>
+    </dt>
     <dd>newly updated list object</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype.reRegisterMouseHandlers = function ($list) {
         if (this.$list) {
             this.$list.off(&quot;.dropdownEventHandler&quot;);

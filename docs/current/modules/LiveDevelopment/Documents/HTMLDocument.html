@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -371,6 +375,7 @@ or inserting or deleting nodes.</p>
 highlighting the DOMNode corresponding to the cursor position in the
 editor.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -401,17 +406,20 @@ editor.</p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>HTMLDocument</h4>
+            <h4>
+                HTMLDocument
+                
+            </h4>
+            
             <em></em>
             
             <dl>
-                <dt>doc</dt>
-                <dd class="label label-info pull-left">Document</dd>
+                <dt>doc <span class="label label-info pull-left">Document</span></dt>
                 <dd>The source document from Brackets</dd>
-                <dt>editor</dt>
-                <dd class="label label-info pull-left">Editor</dd>
+                <dt>editor <span class="label label-info pull-left">Editor</span></dt>
                 <dd>The editor for this document</dd>
             </dl>
+          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    var HTMLDocument = function HTMLDocument(doc, editor) {
@@ -457,17 +465,24 @@ editor.</p>
     Private
     
 </span>
-    <h4>_compareWithBrowser</h4>
+    <h4>
+        _compareWithBrowser 
+        <a class="anchor" href="#HTMLDocument-_compareWithBrowser" id="HTMLDocument-_compareWithBrowser"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>change</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        change
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>CodeMirror editor change data</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._compareWithBrowser = function (change) {
         var self = this;
         
@@ -510,7 +525,10 @@ editor.</p>
     Private
     
 </span>
-    <h4>_onChange</h4>
+    <h4>
+        _onChange 
+        <a class="anchor" href="#HTMLDocument-_onChange" id="HTMLDocument-_onChange"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Triggered on change by the editor</p>
@@ -518,7 +536,9 @@ editor.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onChange = function (event, editor, change) {
         &#x2F;&#x2F; Make sure LiveHTML is turned on
         if (!this._instrumentationEnabled) {
@@ -598,7 +618,10 @@ editor.</p>
     Private
     
 </span>
-    <h4>_onCursorActivity</h4>
+    <h4>
+        _onCursorActivity 
+        <a class="anchor" href="#HTMLDocument-_onCursorActivity" id="HTMLDocument-_onCursorActivity"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Triggered on cursor activity by the editor</p>
@@ -606,7 +629,9 @@ editor.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onCursorActivity = function (event, editor) {
         if (!this.editor) {
             return;
@@ -618,7 +643,10 @@ editor.</p>
     Private
     
 </span>
-    <h4>_onHighlight</h4>
+    <h4>
+        _onHighlight 
+        <a class="anchor" href="#HTMLDocument-_onHighlight" id="HTMLDocument-_onHighlight"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Triggered by the HighlightAgent to highlight a node in the editor</p>
@@ -626,7 +654,9 @@ editor.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onHighlight = function (event, node) {
         if (!node || !node.location || !this.editor) {
             if (this._highlight) {
@@ -657,7 +687,10 @@ editor.</p>
     
     
 </span>
-    <h4>close</h4>
+    <h4>
+        close 
+        <a class="anchor" href="#HTMLDocument-close" id="HTMLDocument-close"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Close the document</p>
@@ -665,7 +698,9 @@ editor.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.close = function close() {
         if (!this.editor) {
             return;
@@ -684,7 +719,10 @@ editor.</p>
     
     
 </span>
-    <h4>getResponseData</h4>
+    <h4>
+        getResponseData 
+        <a class="anchor" href="#HTMLDocument-getResponseData" id="HTMLDocument-getResponseData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns a JSON object with HTTP response overrides</p>
@@ -692,10 +730,12 @@ editor.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{body: string}</dd>
+    <dt>Returns: <span class="label label-info">{body: string}</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.getResponseData = function getResponseData(enabled) {
         var body;
         if (this._instrumentationEnabled) {
@@ -711,7 +751,10 @@ editor.</p>
     
     
 </span>
-    <h4>isLiveEditingEnabled</h4>
+    <h4>
+        isLiveEditingEnabled 
+        <a class="anchor" href="#HTMLDocument-isLiveEditingEnabled" id="HTMLDocument-isLiveEditingEnabled"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns true if document edits appear live in the connected browser</p>
@@ -719,10 +762,12 @@ editor.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.isLiveEditingEnabled = function () {
         return this._instrumentationEnabled;
     };</code></pre></div><div class="member">
@@ -731,18 +776,25 @@ editor.</p>
     
     
 </span>
-    <h4>setInstrumentationEnabled</h4>
+    <h4>
+        setInstrumentationEnabled 
+        <a class="anchor" href="#HTMLDocument-setInstrumentationEnabled" id="HTMLDocument-setInstrumentationEnabled"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Enable instrumented HTML</p>
 </div>
     
 <dl>
-    <dt>{boolean}</dt>
-    <dd class="label label-info pull-left">enabled</dd>
+    <dt>
+        {boolean}
+        <span class="label label-info">enabled</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.setInstrumentationEnabled = function setInstrumentationEnabled(enabled) {
         if (enabled &amp;&amp; !this._instrumentationEnabled) {
             HTMLInstrumentation.scanDocument(this.doc);
@@ -756,7 +808,10 @@ editor.</p>
     
     
 </span>
-    <h4>updateHighlight</h4>
+    <h4>
+        updateHighlight 
+        <a class="anchor" href="#HTMLDocument-updateHighlight" id="HTMLDocument-updateHighlight"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Update the highlight</p>
@@ -764,7 +819,9 @@ editor.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.updateHighlight = function () {
         var editor = this.editor,
             codeMirror = editor._codeMirror,

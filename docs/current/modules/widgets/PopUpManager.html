@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -362,6 +366,7 @@
     
     <div><p>Utilities for managing pop-ups.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -390,7 +395,10 @@
     Private
     
 </span>
-    <h4>_beforeMenuPopup</h4>
+    <h4>
+        _beforeMenuPopup 
+        <a class="anchor" href="#-_beforeMenuPopup" id="-_beforeMenuPopup"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>A menu is being popped up, so remove any menu that is currently popped up</p>
@@ -398,7 +406,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _beforeMenuPopup() {
         removeCurrentPopUp();
     }</code></pre></div><div class="member public">
@@ -407,26 +417,37 @@
     
     Public API
 </span>
-    <h4>addPopUp</h4>
+    <h4>
+        addPopUp 
+        <a class="anchor" href="#-addPopUp" id="-addPopUp"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Add Esc key handling for a popup DOM element.</p>
 </div>
     
 <dl>
-    <dt>$popUp</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">jQuery</dd>
+    <dt>
+        $popUp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery</span>
+    </dt>
     <dd>jQuery object for the DOM element pop-up</dd>
-    <dt>removeHandler</dt>
-    <dd class="label label-info pull-left">function</dd>
+    <dt>
+        removeHandler
+        <span class="label label-info">function</span>
+    </dt>
     <dd>Pop-up specific remove (e.g. display:none or DOM removal)</dd>
-    <dt>autoRemove</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Boolean</dd>
+    <dt>
+        autoRemove
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Boolean</span>
+    </dt>
     <dd>- Specify true to indicate the PopUpManager should remove the popup from the _popUps array when the popup is closed. Specify false when the popup is always persistant in the _popUps array.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addPopUp($popUp, removeHandler, autoRemove) {
         autoRemove = autoRemove || false;
 
@@ -439,7 +460,10 @@
     
     Public API
 </span>
-    <h4>listenToContextMenu</h4>
+    <h4>
+        listenToContextMenu 
+        <a class="anchor" href="#-listenToContextMenu" id="-listenToContextMenu"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Context menus are also created in AppInit.htmlReady(), so they may not
@@ -448,11 +472,15 @@ we provide this method to tell us when to start listening for their events</p>
 </div>
     
 <dl>
-    <dt>contextMenu</dt>
-    <dd class="label label-info pull-left">ContextMenu</dd>
+    <dt>
+        contextMenu
+        <span class="label label-info">ContextMenu</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function listenToContextMenu(contextMenu) {
         $(contextMenu).on(&quot;beforeContextMenuOpen&quot;, _beforeMenuPopup);
     }
@@ -477,7 +505,10 @@ we provide this method to tell us when to start listening for their events</p>
     
     
 </span>
-    <h4>removeCurrentPopUp</h4>
+    <h4>
+        removeCurrentPopUp 
+        <a class="anchor" href="#-removeCurrentPopUp" id="-removeCurrentPopUp"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
@@ -485,12 +516,16 @@ if the pop-up is currently visible and was not originally attached.</p>
 </div>
     
 <dl>
-    <dt>keyEvent</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">KeyboardEvent</dd>
+    <dt>
+        keyEvent
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">KeyboardEvent</span>
+    </dt>
     <dd>(optional)</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function removeCurrentPopUp(keyEvent) {
         &#x2F;&#x2F; allow the popUp to prevent closing
         var $popUp,
@@ -544,7 +579,10 @@ if the pop-up is currently visible and was not originally attached.</p>
     
     Public API
 </span>
-    <h4>removePopUp</h4>
+    <h4>
+        removePopUp 
+        <a class="anchor" href="#-removePopUp" id="-removePopUp"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
@@ -552,12 +590,16 @@ if the pop-up is currently visible and was not originally attached.</p>
 </div>
     
 <dl>
-    <dt>$popUp</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">jQuery</dd>
+    <dt>
+        $popUp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function removePopUp($popUp) {
         &#x2F;&#x2F; check visible first to help protect against recursive calls
         &#x2F;&#x2F; via removeHandler

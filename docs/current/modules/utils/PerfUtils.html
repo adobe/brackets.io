@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -362,6 +366,7 @@
     
     <div><p>This is a collection of utility functions for gathering performance data.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -386,83 +391,98 @@
     
     
 </span>
-    <h4>activeTests</h4>
+    <h4>
+        activeTests 
+        <a class="anchor" href="#-activeTests" id="-activeTests"><span class="icon-link"></span></a>
+    </h4>
 
     
-<dl>
-</dl>
     <div class="description"><p>Active tests. This is a hash of all tests that have had markStart() called,
 but have not yet had addMeasurement() called.</p>
 </div>
-
-<button class="btn btn-small show-code">Show code</button>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var activeTests = {};</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>enabled</h4>
+    <h4>
+        enabled 
+        <a class="anchor" href="#-enabled" id="-enabled"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Flag to enable/disable performance data gathering. Default is true (enabled)</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
-</dl>
-    <div class="description"><p>Flag to enable/disable performance data gathering. Default is true (enabled)</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var enabled = brackets &amp;&amp; !!brackets.app.getElapsedMilliseconds;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>perfData</h4>
+    <h4>
+        perfData 
+        <a class="anchor" href="#-perfData" id="-perfData"><span class="icon-link"></span></a>
+    </h4>
 
     
-<dl>
-</dl>
     <div class="description"><p>Peformance data is stored in this hash object. The key is the name of the
 test (passed to markStart/addMeasurement), and the value is the time, in 
 milliseconds, that it took to run the test. If multiple runs of the same test
 are made, the value is an Array with each run stored as an entry in the Array.</p>
 </div>
-
-<button class="btn btn-small show-code">Show code</button>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var perfData = {};</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>perfMeasurementIds</h4>
+    <h4>
+        perfMeasurementIds 
+        <a class="anchor" href="#-perfMeasurementIds" id="-perfMeasurementIds"><span class="icon-link"></span></a>
+    </h4>
 
     
-<dl>
-</dl>
     <div class="description"><p>Hash of measurement IDs</p>
 </div>
-
-<button class="btn btn-small show-code">Show code</button>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var perfMeasurementIds = {};</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>updatableTests</h4>
+    <h4>
+        updatableTests 
+        <a class="anchor" href="#-updatableTests" id="-updatableTests"><span class="icon-link"></span></a>
+    </h4>
 
     
-<dl>
-</dl>
     <div class="description"><p>Updatable tests. This is a hash of all tests that have had markStart() called,
 and have had updateMeasurement() called. Caller must explicitly remove tests
 from this list using finalizeMeasurement()</p>
 </div>
-
-<button class="btn btn-small show-code">Show code</button>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var updatableTests = {};</code></pre></div>
 </section>
 
@@ -479,22 +499,31 @@ from this list using finalizeMeasurement()</p>
     Private
     
 </span>
-    <h4>PerfMeasurement</h4>
+    <h4>
+        PerfMeasurement 
+        <a class="anchor" href="#-PerfMeasurement" id="-PerfMeasurement"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>id</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Unique ID for this measurement name</dd>
-    <dt>name</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">name</dd>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">name</span>
+    </dt>
     <dd>A short name for this measurement</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function PerfMeasurement(id, name) {
         this.id = id;
         this.name = name;
@@ -504,20 +533,29 @@ from this list using finalizeMeasurement()</p>
     Private
     
 </span>
-    <h4>_markStart</h4>
+    <h4>
+        _markStart 
+        <a class="anchor" href="#-_markStart" id="-_markStart"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Timer name.</dd>
-    <dt>time</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        time
+        <span class="label label-info">number</span>
+    </dt>
     <dd>Timer start time.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _markStart(name, time) {
         if (activeTests[name]) {
             console.error(&quot;Recursive tests with the same name are not supported. Timer name: &quot; + name);
@@ -530,7 +568,10 @@ from this list using finalizeMeasurement()</p>
     
     Public API
 </span>
-    <h4>addMeasurement</h4>
+    <h4>
+        addMeasurement 
+        <a class="anchor" href="#-addMeasurement" id="-addMeasurement"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Stop a timer and add its measurements to the performance data.</p>
@@ -541,11 +582,15 @@ measured time is relative to app startup.</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Timer name.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addMeasurement(name) {
         if (!enabled) {
             return;
@@ -579,7 +624,10 @@ measured time is relative to app startup.</p>
     
     Public API
 </span>
-    <h4>clear</h4>
+    <h4>
+        clear 
+        <a class="anchor" href="#-clear" id="-clear"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Clear all logs including metric data and active tests.</p>
@@ -587,7 +635,9 @@ measured time is relative to app startup.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function clear() {
         perfData = {};
         activeTests = {};
@@ -616,7 +666,10 @@ measured time is relative to app startup.</p>
     
     Public API
 </span>
-    <h4>createPerfMeasurement</h4>
+    <h4>
+        createPerfMeasurement 
+        <a class="anchor" href="#-createPerfMeasurement" id="-createPerfMeasurement"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Create a new PerfMeasurement key. Adds itself to the module export.
@@ -624,16 +677,22 @@ Can be accessed on the module, e.g. PerfUtils.MY_PERF_KEY.</p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Unique ID for this measurement name</dd>
-    <dt>name</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">name</dd>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">name</span>
+    </dt>
     <dd>A short name for this measurement</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function createPerfMeasurement(id, name) {
         if (perfMeasurementIds[id]) {
             console.error(&quot;Performance measurement &quot; + id + &quot; is already defined&quot;);
@@ -649,7 +708,10 @@ Can be accessed on the module, e.g. PerfUtils.MY_PERF_KEY.</p>
     
     Public API
 </span>
-    <h4>finalizeMeasurement</h4>
+    <h4>
+        finalizeMeasurement 
+        <a class="anchor" href="#-finalizeMeasurement" id="-finalizeMeasurement"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Remove timer from lists so next action starts a new measurement</p>
@@ -658,11 +720,15 @@ in either or neither list, but should never be in both.</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Timer name.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function finalizeMeasurement(name) {
 
         name = toMeasurementId(name);
@@ -680,18 +746,25 @@ in either or neither list, but should never be in both.</p>
     
     Public API
 </span>
-    <h4>getData</h4>
+    <h4>
+        getData 
+        <a class="anchor" href="#-getData" id="-getData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the measured value for the given measurement name.</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string,PerfMeasurement</dd>
+    <dt>
+        name
+        <span class="label label-info">string,PerfMeasurement</span>
+    </dt>
     <dd>The measurement to retreive.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getData(name) {
         if (!name) {
             return perfData;
@@ -718,7 +791,10 @@ in either or neither list, but should never be in both.</p>
     
     Public API
 </span>
-    <h4>getDelimitedPerfData</h4>
+    <h4>
+        getDelimitedPerfData 
+        <a class="anchor" href="#-getDelimitedPerfData" id="-getDelimitedPerfData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the performance data as a tab deliminted string</p>
@@ -726,10 +802,12 @@ in either or neither list, but should never be in both.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getDelimitedPerfData() {
         var getValue = function (entry) {
             &#x2F;&#x2F; return single value, or tab deliminted values for an array
@@ -762,7 +840,10 @@ in either or neither list, but should never be in both.</p>
     
     Public API
 </span>
-    <h4>isActive</h4>
+    <h4>
+        isActive 
+        <a class="anchor" href="#-isActive" id="-isActive"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns whether a timer is active or not, where &quot;active&quot; means that
@@ -771,14 +852,18 @@ with addMeasurement().</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Timer name.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether a timer is active or not.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function isActive(name) {
         return (activeTests[name]) ? true : false;
     }</code></pre></div><div class="member public">
@@ -787,7 +872,10 @@ with addMeasurement().</p>
     
     Public API
 </span>
-    <h4>markStart</h4>
+    <h4>
+        markStart 
+        <a class="anchor" href="#-markStart" id="-markStart"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Start a new named timer. The name should be as descriptive as possible, since
@@ -798,14 +886,18 @@ a unique name.</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">(string,Array.&lt;string&gt;)</dd>
+    <dt>
+        name
+        <span class="label label-info">(string,Array.&lt;string&gt;)</span>
+    </dt>
     <dd>Single name or an Array of names.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>timer name. Returned for convenience to store and use for calling addMeasure(). Since name is often creating via concatenating strings this return value allows clients to construct the name once.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function markStart(name) {
         if (!enabled) {
             return;
@@ -831,14 +923,19 @@ a unique name.</p>
     Private
     
 </span>
-    <h4>toMeasurementId</h4>
+    <h4>
+        toMeasurementId 
+        <a class="anchor" href="#-toMeasurementId" id="-toMeasurementId"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function toMeasurementId(o) {
         return (o instanceof PerfMeasurement) ? o.id : o;
     }</code></pre></div><div class="member public">
@@ -847,7 +944,10 @@ a unique name.</p>
     
     Public API
 </span>
-    <h4>updateMeasurement</h4>
+    <h4>
+        updateMeasurement 
+        <a class="anchor" href="#-updateMeasurement" id="-updateMeasurement"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>This function is similar to addMeasurement(), but it allows timing the
@@ -864,11 +964,15 @@ not updatable, and it is handled in addMeasurement().</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Timer name.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function updateMeasurement(name) {
         var elapsedTime = brackets.app.getElapsedMilliseconds();
 

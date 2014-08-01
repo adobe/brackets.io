@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>bootstrap-scrollspy - Brackets API</title>
+    <title>ThemeManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -358,7 +358,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>bootstrap-scrollspy</h1>
+<h1>ThemeManager</h1>
 
 
 <section class="description">
@@ -371,52 +371,18 @@
 <section id="dependencies">
     <h3>Dependencies</h3>
 
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+        <li><a href="..&#x2F;../modules/view/ThemeView.html">ThemeView</a></li>
+    </ul>
 
-    <span class="alert alert-info">This module has no dependencies</span>
-</section>
-<section id="variables">
-    
-    <h3>Variables 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        old 
-        <a class="anchor" href="#-old" id="-old"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><h1 id="scrollspy-plugin-definition">SCROLLSPY PLUGIN DEFINITION</h1>
-</div>
-    
-<dl>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">
-  var old = $.fn.scrollspy
-
-  $.fn.scrollspy = function (option) {
-    return this.each(function () {
-      var $this = $(this)
-        , data = $this.data(&#39;scrollspy&#39;)
-        , options = typeof option == &#39;object&#39; &amp;&amp; option
-      if (!data) $this.data(&#39;scrollspy&#39;, (data = new ScrollSpy(this, options)))
-      if (typeof option == &#39;string&#39;) data[option]()
-    })
-  }
-
-  $.fn.scrollspy.Constructor = ScrollSpy
-
-  $.fn.scrollspy.defaults = {
-    offset: 10
-  }</code></pre></div>
 </section>
 
 <section id="functions">
@@ -426,119 +392,549 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member">
+<div class="member private">
 
 <span class="pull-right scope">
-    
+    Private
     
 </span>
     <h4>
-        ScrollSpy 
-        <a class="anchor" href="#-ScrollSpy" id="-ScrollSpy"><span class="icon-link"></span></a>
+        extractScrollbars 
+        <a class="anchor" href="#-extractScrollbars" id="-extractScrollbars"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><h1 id="scrollspy-class-definition">SCROLLSPY CLASS DEFINITION</h1>
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        content
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>is the css/less input string to be processed</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{content: string,scrollbar: Array.&lt;string&gt;}</span>
+</dt>
+    <dd>content is the new css/less content with the scrollbar rules extracted out and put in scrollbar</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function extractScrollbars(content) {
+        var scrollbar = [];
+
+        &#x2F;&#x2F; Go through and extract out scrollbar customizations so that we can
+        &#x2F;&#x2F; enable&#x2F;disable via settings.
+        content = content
+            .replace(scrollbarsRegex, function (match) {
+                scrollbar.push(match);
+                return &quot;&quot;;
+            });
+
+        return {
+            content: content,
+            scrollbar: scrollbar
+        };
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        fixPath 
+        <a class="anchor" href="#-fixPath" id="-fixPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>is a string to search for drive letters that need to be converted to lower case. </dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>Windows Drive letter in lowercase.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function fixPath(path) {
+        return path.replace(&#x2F;^([A-Z]+:)?\&#x2F;&#x2F;, function (match) {
+            return match.toLocaleLowerCase();
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getAllThemes 
+        <a class="anchor" href="#-getAllThemes" id="-getAllThemes"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets all available themes</p>
 </div>
     
 <dl>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;Theme&gt;</span>
+</dt>
+    <dd>collection of all available themes</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">
-  function ScrollSpy(element, options) {
-    var process = $.proxy(this.process, this)
-      , $element = $(element).is(&#39;body&#39;) ? $(window) : $(element)
-      , href
-    this.options = $.extend({}, $.fn.scrollspy.defaults, options)
-    this.$scrollElement = $element.on(&#39;scroll.scroll-spy.data-api&#39;, process)
-    this.selector = (this.options.target
-      || ((href = $(element).attr(&#39;href&#39;)) &amp;&amp; href.replace(&#x2F;.*(?=#[^\s]+$)&#x2F;, &#39;&#39;)) &#x2F;&#x2F;strip for ie7
-      || &#39;&#39;) + &#39; .nav li &gt; a&#39;
-    this.$body = $(&#39;body&#39;)
-    this.refresh()
-    this.process()
-  }
+<pre class="code language-javascript"><code class="language-javascript">    function getAllThemes() {
+        return _.map(loadedThemes, function (theme) {
+            return theme;
+        });
+    }</code></pre></div><div class="member public">
 
-  ScrollSpy.prototype = {
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getCurrentTheme 
+        <a class="anchor" href="#-getCurrentTheme" id="-getCurrentTheme"><span class="icon-link"></span></a>
+    </h4>
 
-      constructor: ScrollSpy
-
-    , refresh: function () {
-        var self = this
-          , $targets
-
-        this.offsets = $([])
-        this.targets = $([])
-
-        $targets = this.$body
-          .find(this.selector)
-          .map(function () {
-            var $el = $(this)
-              , href = $el.data(&#39;target&#39;) || $el.attr(&#39;href&#39;)
-              , $href = &#x2F;^#\w&#x2F;.test(href) &amp;&amp; $(href)
-            return ( $href
-              &amp;&amp; $href.length
-              &amp;&amp; [[ $href.position().top + (!$.isWindow(self.$scrollElement.get(0)) &amp;&amp; self.$scrollElement.scrollTop()), href ]] ) || null
-          })
-          .sort(function (a, b) { return a[0] - b[0] })
-          .each(function () {
-            self.offsets.push(this[0])
-            self.targets.push(this[1])
-          })
-      }
-
-    , process: function () {
-        var scrollTop = this.$scrollElement.scrollTop() + this.options.offset
-          , scrollHeight = this.$scrollElement[0].scrollHeight || this.$body[0].scrollHeight
-          , maxScroll = scrollHeight - this.$scrollElement.height()
-          , offsets = this.offsets
-          , targets = this.targets
-          , activeTarget = this.activeTarget
-          , i
-
-        if (scrollTop &gt;= maxScroll) {
-          return activeTarget != (i = targets.last()[0])
-            &amp;&amp; this.activate ( i )
+    
+    <div class="description"><p>Get current theme object that is loaded in the editor.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Theme</span>
+</dt>
+    <dd>the current theme instance</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getCurrentTheme() {
+        if (!currentTheme) {
+            currentTheme = loadedThemes[prefs.get(&quot;theme&quot;)] || loadedThemes[defaultTheme];
         }
 
-        for (i = offsets.length; i--;) {
-          activeTarget != targets[i]
-            &amp;&amp; scrollTop &gt;= offsets[i]
-            &amp;&amp; (!offsets[i + 1] || scrollTop &lt;= offsets[i + 1])
-            &amp;&amp; this.activate( targets[i] )
+        return currentTheme;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        getThemeByFile 
+        <a class="anchor" href="#-getThemeByFile" id="-getThemeByFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        file
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>is the search criteria</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Theme</span>
+</dt>
+    <dd>theme that matches the file</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getThemeByFile(file) {
+        var path = file._path;
+        return _.find(loadedThemes, function (item) {
+            return item.file._path === path;
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        isFileTypeValid 
+        <a class="anchor" href="#-isFileTypeValid" id="-isFileTypeValid"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        file
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>is object to verify if it is a valid theme file type</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>to confirm if the file is a valid theme file type</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isFileTypeValid(file) {
+        return file.isFile &amp;&amp;
+            validExtensions.indexOf(FileUtils.getFileExtension(file.name)) !== -1;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        lessifyTheme 
+        <a class="anchor" href="#-lessifyTheme" id="-lessifyTheme"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        content
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>is the css/less string to be processed</dd>
+    <dt>
+        theme
+        <span class="label label-info">Theme</span>
+    </dt>
+    <dd>is the object the css/less corresponds to</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>promsie with the processed css/less as the resolved value</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function lessifyTheme(content, theme) {
+        var deferred = new $.Deferred();
+        var parser   = new less.Parser({
+            rootpath: fixPath(stylesPath),
+            filename: fixPath(theme.file._path)
+        });
+
+        parser.parse(&quot;#editor-holder {&quot; + content + &quot;}&quot;, function (err, tree) {
+            if (err) {
+                deferred.reject(err);
+            } else {
+                deferred.resolve(tree.toCSS());
+            }
+        });
+
+        return deferred.promise();
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        loadCurrentTheme 
+        <a class="anchor" href="#-loadCurrentTheme" id="-loadCurrentTheme"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>promise object resolved with the theme object and all corresponding new css/less and scrollbar information</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function loadCurrentTheme() {
+        var theme = getCurrentTheme();
+
+        var pending = theme &amp;&amp; FileUtils.readAsText(theme.file)
+            .then(function (lessContent) {
+                return lessifyTheme(lessContent.replace(commentRegex, &quot;&quot;), theme);
+            })
+            .then(function (content) {
+                var result = extractScrollbars(content);
+                theme.scrollbar = result.scrollbar;
+                return result.content;
+            })
+            .then(function (cssContent) {
+                $(&quot;body&quot;).toggleClass(&quot;dark&quot;, theme.dark);
+                styleNode.text(cssContent);
+                return theme;
+            });
+
+        return $.when(pending);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        loadFile 
+        <a class="anchor" href="#-loadFile" id="-loadFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Loads a theme from a file.</p>
+</div>
+    
+<dl>
+    <dt>
+        fileName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>is the full path to the file to be opened</dd>
+    <dt>
+        options
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>is an optional parameter to specify metadata for the theme.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>promise object resolved with the theme to be loaded from fileName</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function loadFile(fileName, options) {
+        var deferred         = new $.Deferred(),
+            file             = FileSystem.getFileForPath(fileName),
+            currentThemeName = prefs.get(&quot;theme&quot;);
+
+        file.exists(function (err, exists) {
+            var theme;
+
+            if (exists) {
+                theme = new Theme(file, options);
+                loadedThemes[theme.name] = theme;
+                ThemeSettings._setThemes(loadedThemes);
+
+                &#x2F;&#x2F; For themes that are loaded after ThemeManager has been loaded,
+                &#x2F;&#x2F; we should check if it&#39;s the current theme.  If it is, then we just
+                &#x2F;&#x2F; load it.
+                if (currentThemeName === theme.name) {
+                    refresh(true);
+                }
+
+                deferred.resolve(theme);
+            } else if (err || !exists) {
+                deferred.reject(err);
+            }
+        });
+
+        return deferred.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        loadPackage 
+        <a class="anchor" href="#-loadPackage" id="-loadPackage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Loads a theme from an extension package.</p>
+</div>
+    
+<dl>
+    <dt>
+        themePackage
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>is a package from the extension manager for the theme to be loaded.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>promise object resolved with the theme to be loaded from the pacakge</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function loadPackage(themePackage) {
+        var fileName = themePackage.path + &quot;&#x2F;&quot; + themePackage.metadata.theme.file;
+        return loadFile(fileName, themePackage.metadata);
+    }
+
+
+    prefs.on(&quot;change&quot;, &quot;theme&quot;, function () {
+        &#x2F;&#x2F; Make sure we don&#39;t reprocess a theme that&#39;s already loaded
+        if (currentTheme &amp;&amp; currentTheme.name === prefs.get(&quot;theme&quot;)) {
+            return;
         }
-      }
 
-    , activate: function (target) {
-        var active
-          , selector
+        &#x2F;&#x2F; Refresh editor with the new theme
+        refresh(true);
 
-        this.activeTarget = target
+        &#x2F;&#x2F; Process the scrollbars for the editor
+        ThemeView.updateScrollbars(getCurrentTheme());
 
-        $(this.selector)
-          .parent(&#39;.active&#39;)
-          .removeClass(&#39;active&#39;)
+        &#x2F;&#x2F; Expose event for theme changes
+        $(exports).trigger(&quot;themeChange&quot;, getCurrentTheme());
+    });
 
-        selector = this.selector
-          + &#39;[data-target=&quot;&#39; + target + &#39;&quot;],&#39;
-          + this.selector + &#39;[href=&quot;&#39; + target + &#39;&quot;]&#39;
+    prefs.on(&quot;change&quot;, &quot;themeScrollbars&quot;, function () {
+        refresh();
+        ThemeView.updateScrollbars(getCurrentTheme());
+    });
 
-        active = $(selector)
-          .parent(&#39;li&#39;)
-          .addClass(&#39;active&#39;)
-
-        if (active.parent(&#39;.dropdown-menu&#39;).length)  {
-          active = active.closest(&#39;li.dropdown&#39;).addClass(&#39;active&#39;)
+    &#x2F;&#x2F; Monitor file changes.  If the file that has changed is actually the currently loaded
+    &#x2F;&#x2F; theme, then we just reload the theme.  This allows to live edit the theme
+    FileSystem.on(&quot;change&quot;, function (evt, file) {
+        if (!file || file.isDirectory) {
+            return;
         }
 
-        active.trigger(&#39;activate&#39;)
-      }
+        if (getThemeByFile(file)) {
+            refresh(true);
+        }
+    });
 
-  }</code></pre></div>
+    $(EditorManager).on(&quot;activeEditorChange&quot;, function () {
+        refresh();
+    });
+
+
+    exports.refresh         = refresh;
+    exports.loadFile        = loadFile;
+    exports.loadPackage     = loadPackage;
+    exports.getCurrentTheme = getCurrentTheme;
+    exports.getAllThemes    = getAllThemes;
+
+    &#x2F;&#x2F; Exposed for testing purposes
+    exports._toDisplayName     = toDisplayName;
+    exports._extractScrollbars = extractScrollbars;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        refresh 
+        <a class="anchor" href="#-refresh" id="-refresh"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Refresh current theme in the editor</p>
+</div>
+    
+<dl>
+    <dt>
+        force
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Forces a reload the current theme. It reload the theme file.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function refresh(force) {
+        if (force) {
+            currentTheme = null;
+        }
+
+        $.when(force &amp;&amp; loadCurrentTheme()).done(function () {
+            var editor = EditorManager.getActiveEditor();
+            if (!editor || !editor._codeMirror) {
+                return;
+            }
+
+            var cm = editor._codeMirror;
+            ThemeView.updateThemes(cm);
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        toDisplayName 
+        <a class="anchor" href="#-toDisplayName" id="-toDisplayName"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>is what needs to be procseed to generate a display name</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>theme name properly formatted for display</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function toDisplayName(name) {
+        var extIndex = name.lastIndexOf(&#39;.&#39;);
+        name = name.substring(0, extIndex !== -1 ? extIndex : undefined).replace(&#x2F;-&#x2F;g, &#39; &#39;);
+
+        return name.split(&quot; &quot;).map(function (part) {
+            return part[0].toUpperCase() + part.substring(1);
+        }).join(&quot; &quot;);
+    }</code></pre></div>
 </section>
 
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                Theme
+                
+            </h4>
+            
+            <em></em>
+            
+            <dl>
+                <dt>file <span class="label label-info pull-left">File</span></dt>
+                <dd>for the theme</dd>
+                <dt>options <span class="label label-info pull-left">{name: string,title: string}</span></dt>
+                <dd>to configure different properties in the theme</dd>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function Theme(file, options) {
+        options = options || {};
+        var fileName = file.name;
+
+        &#x2F;&#x2F; The name is used to map the loaded themes to the list in the settings dialog. So we want
+        &#x2F;&#x2F; a unique name if one is not provided.  This is particularly important when loading just
+        &#x2F;&#x2F; files where there is no other way to feed in meta data to provide unique names.  Say, there
+        &#x2F;&#x2F; is a theme1.css and a theme1.less that are entirely different themes...
+
+        this.file        = file;
+        this.name        = options.name  || (options.title || fileName).toLocaleLowerCase().replace(&#x2F;[\W]&#x2F;g, &#39;-&#39;);
+        this.displayName = options.title || toDisplayName(fileName);
+        this.dark        = options.theme !== undefined &amp;&amp; options.theme.dark === true;
+    }</code></pre>
+        </div>
+        
+
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

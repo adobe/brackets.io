@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -361,6 +365,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -385,7 +390,10 @@
     
     Public API
 </span>
-    <h4>getInitialContext</h4>
+    <h4>
+        getInitialContext 
+        <a class="anchor" href="#-getInitialContext" id="-getInitialContext"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Creates a context object for the given editor and position, suitable for passing to the
@@ -393,17 +401,23 @@ move functions.</p>
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">CodeMirror</dd>
+    <dt>
+        editor
+        <span class="label label-info">CodeMirror</span>
+    </dt>
     <dd></dd>
-    <dt>pos</dt>
-    <dd class="label label-info pull-left">{ch:{string},line:{number}</dd>
+    <dt>
+        pos
+        <span class="label label-info">{ch:{string},line:{number}</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dt>Returns: <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getInitialContext(editor, pos) {
         return {
             &quot;editor&quot;: editor,
@@ -416,24 +430,33 @@ move functions.</p>
     
     Public API
 </span>
-    <h4>getModeAt</h4>
+    <h4>
+        getModeAt 
+        <a class="anchor" href="#-getModeAt" id="-getModeAt"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the mode object and mode name string at a given position</p>
 </div>
     
 <dl>
-    <dt>cm</dt>
-    <dd class="label label-info pull-left">CodeMirror</dd>
+    <dt>
+        cm
+        <span class="label label-info">CodeMirror</span>
+    </dt>
     <dd>CodeMirror instance</dd>
-    <dt>pos</dt>
-    <dd class="label label-info pull-left">line:{number},ch:{number}</dd>
+    <dt>
+        pos
+        <span class="label label-info">line:{number},ch:{number}</span>
+    </dt>
     <dd>Position to query for mode</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">mode:{Object},name:string</dd>
+    <dt>Returns: <span class="label label-info">mode:{Object},name:string</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getModeAt(cm, pos) {
         var outerMode = cm.getMode(),
             modeData = CodeMirror.innerMode(outerMode, cm.getTokenAt(pos, true).state),
@@ -457,25 +480,34 @@ move functions.</p>
     
     Public API
 </span>
-    <h4>moveNextToken</h4>
+    <h4>
+        moveNextToken 
+        <a class="anchor" href="#-moveNextToken" id="-moveNextToken"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Moves the given context forward by one token.</p>
 </div>
     
 <dl>
-    <dt>ctx</dt>
-    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dt>
+        ctx
+        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
+    </dt>
     <dd></dd>
-    <dt>precise</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        precise
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>If code is being edited, use true (default) for accuracy. If parsing unchanging code, use false to use cache for performance.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>whether the context changed</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function moveNextToken(ctx, precise) {
         var eol = ctx.editor.getLine(ctx.pos.line).length;
         if (precise === undefined) {
@@ -500,25 +532,34 @@ move functions.</p>
     
     Public API
 </span>
-    <h4>movePrevToken</h4>
+    <h4>
+        movePrevToken 
+        <a class="anchor" href="#-movePrevToken" id="-movePrevToken"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Moves the given context backwards by one token.</p>
 </div>
     
 <dl>
-    <dt>ctx</dt>
-    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dt>
+        ctx
+        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
+    </dt>
     <dd></dd>
-    <dt>precise</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        precise
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>If code is being edited, use true (default) for accuracy. If parsing unchanging code, use false to use cache for performance.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>whether the context changed</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function movePrevToken(ctx, precise) {
         if (precise === undefined) {
             precise = true;
@@ -542,24 +583,33 @@ move functions.</p>
     
     Public API
 </span>
-    <h4>moveSkippingWhitespace</h4>
+    <h4>
+        moveSkippingWhitespace 
+        <a class="anchor" href="#-moveSkippingWhitespace" id="-moveSkippingWhitespace"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Moves the given context in the given direction, skipping any whitespace it hits.</p>
 </div>
     
 <dl>
-    <dt>moveFxn</dt>
-    <dd class="label label-info pull-left">function</dd>
+    <dt>
+        moveFxn
+        <span class="label label-info">function</span>
+    </dt>
     <dd>the function to move the context</dd>
-    <dt>ctx</dt>
-    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dt>
+        ctx
+        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>whether the context changed</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function moveSkippingWhitespace(moveFxn, ctx) {
         if (!moveFxn(ctx)) {
             return false;
@@ -576,21 +626,28 @@ move functions.</p>
     
     Public API
 </span>
-    <h4>offsetInToken</h4>
+    <h4>
+        offsetInToken 
+        <a class="anchor" href="#-offsetInToken" id="-offsetInToken"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>In the given context, get the character offset of pos from the start of the token.</p>
 </div>
     
 <dl>
-    <dt>context</dt>
-    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
+    <dt>
+        context
+        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function offsetInToken(ctx) {
         var offset = ctx.pos.ch - ctx.token.start;
         if (offset &lt; 0) {

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -361,6 +365,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -378,7 +383,10 @@
         <li><a href="..&#x2F;../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
         <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
         <li><a href="..&#x2F;../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -393,20 +401,131 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private public">
+<div class="member private">
 
 <span class="pull-right scope">
     Private
-    Public API
+    
 </span>
-    <h4>_performChanges</h4>
+    <h4>
+        _installUsingDragAndDrop 
+        <a class="anchor" href="#-_installUsingDragAndDrop" id="-_installUsingDragAndDrop"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _installUsingDragAndDrop() {
+        var installZips = [],
+            updateZips = [],
+            deferred = new $.Deferred(),
+            validatePromise;
+
+        brackets.app.getDroppedFiles(function (err, paths) {
+            if (err) {
+                &#x2F;&#x2F; Only possible error is invalid params, silently ignore
+                console.error(err);
+                deferred.resolve();
+                return;
+            }
+
+            &#x2F;&#x2F; Parse zip files and separate new installs vs. updates
+            validatePromise = Async.doInParallel_aggregateErrors(paths, function (path) {
+                var result = new $.Deferred();
+                
+                FileSystem.resolve(path, function (err, file) {
+                    var extension = FileUtils.getFileExtension(path),
+                        isZip = file.isFile &amp;&amp; (extension === &quot;zip&quot;),
+                        errStr;
+                    
+                    if (err) {
+                        errStr = FileUtils.getFileErrorString(err);
+                    } else if (!isZip) {
+                        errStr = Strings.INVALID_ZIP_FILE;
+                    }
+
+                    if (errStr) {
+                        result.reject(errStr);
+                        return;
+                    }
+                    
+                    &#x2F;&#x2F; Call validate() so that we open the local zip file and parse the
+                    &#x2F;&#x2F; package.json. We need the name to detect if this zip will be a
+                    &#x2F;&#x2F; new install or an update.
+                    Package.validate(path, { requirePackageJSON: true }).done(function (info) {
+                        if (info.errors.length) {
+                            result.reject(Package.formatError(info.errors));
+                            return;
+                        }
+
+                        var extensionName = info.metadata.name,
+                            extensionInfo = ExtensionManager.extensions[extensionName],
+                            isUpdate = extensionInfo &amp;&amp; !!extensionInfo.installInfo;
+
+                        if (isUpdate) {
+                            updateZips.push(file);
+                        } else {
+                            installZips.push(file);
+                        }
+
+                        result.resolve();
+                    }).fail(function (err) {
+                        result.reject(Package.formatError(err));
+                    });
+                });
+                
+                return result.promise();
+            });
+
+            validatePromise.done(function () {
+                var installPromise = Async.doSequentially(installZips, function (file) {
+                    return InstallExtensionDialog.installUsingDialog(file);
+                });
+
+                var updatePromise = installPromise.then(function () {
+                    return Async.doSequentially(updateZips, function (file) {
+                        return InstallExtensionDialog.updateUsingDialog(file).done(function (result) {
+                            ExtensionManager.updateFromDownload(result);
+                        });
+                    });
+                });
+                
+                &#x2F;&#x2F; InstallExtensionDialog displays it&#39;s own errors, always
+                &#x2F;&#x2F; resolve the outer promise
+                updatePromise.always(deferred.resolve);
+            }).fail(function (errorArray) {
+                deferred.reject(errorArray);
+            });
+        });
+        
+        return deferred.promise();
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _performChanges 
+        <a class="anchor" href="#-_performChanges" id="-_performChanges"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _performChanges() {
         &#x2F;&#x2F; If an extension was removed or updated, prompt the user to quit Brackets.
         var hasRemovedExtensions = ExtensionManager.hasExtensionsToRemove(),
@@ -515,14 +634,19 @@
     Private
     
 </span>
-    <h4>_showDialog</h4>
+    <h4>
+        _showDialog 
+        <a class="anchor" href="#-_showDialog" id="-_showDialog"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _showDialog() {
         var dialog,
             $dlg,
@@ -659,9 +783,7 @@
             &#x2F;&#x2F; Open dialog to Installed tab if extension updates are available
             if ($(&quot;#toolbar-extension-manager&quot;).hasClass(&#39;updatesAvailable&#39;)) {
                 $dlg.find(&quot;.nav-tabs a.installed&quot;).tab(&quot;show&quot;);
-            }
-            &#x2F;&#x2F; Otherwise show the first tab
-            else {
+            } else { &#x2F;&#x2F; Otherwise show the first tab
                 $dlg.find(&quot;.nav-tabs a:first&quot;).tab(&quot;show&quot;);
             }
         });
@@ -670,6 +792,86 @@
         $(&quot;.extension-manager-dialog .install-from-url&quot;)
             .click(function () {
                 InstallExtensionDialog.showDialog().done(ExtensionManager.updateFromDownload);
+            });
+        
+        &#x2F;&#x2F; Handle the drag&#x2F;drop zone
+        var $dropzone = $(&quot;#install-drop-zone&quot;),
+            $dropmask = $(&quot;#install-drop-zone-mask&quot;);
+        
+        $dropzone
+            .on(&quot;dragover&quot;, function (event) {
+                _stopEvent(event);
+
+                if (!event.originalEvent.dataTransfer.files) {
+                    return;
+                }
+
+                var items = event.originalEvent.dataTransfer.items,
+                    isValidDrop = false;
+
+                isValidDrop = _.every(items, function (item) {
+                    if (item.kind === &quot;file&quot;) {
+                        var entry = item.webkitGetAsEntry(),
+                            extension = FileUtils.getFileExtension(entry.fullPath);
+
+                        return entry.isFile &amp;&amp; extension === &quot;zip&quot;;
+                    }
+
+                    return false;
+                });
+
+                if (isValidDrop) {
+                    &#x2F;&#x2F; Set an absolute width to stabilize the button size
+                    $dropzone.width($dropzone.width());
+
+                    &#x2F;&#x2F; Show drop styling and message
+                    $dropzone.removeClass(&quot;drag&quot;);
+                    $dropzone.addClass(&quot;drop&quot;);
+                } else {
+                    event.originalEvent.dataTransfer.dropEffect = &quot;none&quot;;
+                }
+            })
+            .on(&quot;drop&quot;, _stopEvent);
+        
+        $dropmask
+            .on(&quot;dragover&quot;, function (event) {
+                _stopEvent(event);
+                event.originalEvent.dataTransfer.dropEffect = &quot;copy&quot;;
+            })
+            .on(&quot;dragleave&quot;, function () {
+                $dropzone.removeClass(&quot;drop&quot;);
+                $dropzone.addClass(&quot;drag&quot;);
+            })
+            .on(&quot;drop&quot;, function (event) {
+                _stopEvent(event);
+                
+                if (event.originalEvent.dataTransfer.files) {
+                    &#x2F;&#x2F; Attempt install
+                    _installUsingDragAndDrop().fail(function (errorArray) {
+                        var message = Strings.INSTALL_EXTENSION_DROP_ERROR;
+
+                        message += &quot;&lt;ul class=&#39;dialog-list&#39;&gt;&quot;;
+                        errorArray.forEach(function (info) {
+                            message += &quot;&lt;li&gt;&lt;span class=&#39;dialog-filename&#39;&gt;&quot;;
+                            message += StringUtils.breakableUrl(info.item);
+                            message += &quot;&lt;&#x2F;span&gt;: &quot; + info.error + &quot;&lt;&#x2F;li&gt;&quot;;
+                        });
+                        message += &quot;&lt;&#x2F;ul&gt;&quot;;
+
+                        Dialogs.showModalDialog(
+                            DefaultDialogs.DIALOG_ID_ERROR,
+                            Strings.EXTENSION_MANAGER_TITLE,
+                            message
+                        );
+                    }).always(function () {
+                        $dropzone.removeClass(&quot;validating&quot;);
+                        $dropzone.addClass(&quot;drag&quot;);
+                    });
+                    
+                    &#x2F;&#x2F; While installing, show validating message
+                    $dropzone.removeClass(&quot;drop&quot;);
+                    $dropzone.addClass(&quot;validating&quot;);
+                }
             });
         
         return new $.Deferred().resolve(dialog).promise();

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -363,6 +367,7 @@
     <div><p>ScriptAgent tracks all executed scripts, defines internal breakpoints, and
 interfaces with the remote debugger.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -388,21 +393,30 @@ interfaces with the remote debugger.</p>
     Private
     
 </span>
-    <h4>_addTraceToNode</h4>
+    <h4>
+        _addTraceToNode 
+        <a class="anchor" href="#-_addTraceToNode" id="-_addTraceToNode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Add a call stack trace to a node</p>
 </div>
     
 <dl>
-    <dt>node</dt>
-    <dd class="label label-info pull-left">integer</dd>
+    <dt>
+        node
+        <span class="label label-info">integer</span>
+    </dt>
     <dd>id</dd>
-    <dt>call</dt>
-    <dd class="label label-info pull-left">[{Debugger.CallFrame}]</dd>
+    <dt>
+        call
+        <span class="label label-info">[{Debugger.CallFrame}]</span>
+    </dt>
     <dd>stack</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addTraceToNode(nodeId, trace) {
         var node = DOMAgent.nodeWithId(nodeId);
         node.trace = trace;
@@ -414,20 +428,29 @@ interfaces with the remote debugger.</p>
     Private
     
 </span>
-    <h4>_onFrameNavigated</h4>
+    <h4>
+        _onFrameNavigated 
+        <a class="anchor" href="#-_onFrameNavigated" id="-_onFrameNavigated"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>event</dt>
-    <dd class="label label-info pull-left">jQuery.Event</dd>
+    <dt>
+        event
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
     <dd></dd>
-    <dt>res</dt>
-    <dd class="label label-info pull-left">frame: Frame</dd>
+    <dt>
+        res
+        <span class="label label-info">frame: Frame</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onFrameNavigated(event, res) {
         &#x2F;&#x2F; Clear maps when navigating to a new page
         _reset();
@@ -437,7 +460,10 @@ interfaces with the remote debugger.</p>
     
     Public API
 </span>
-    <h4>load</h4>
+    <h4>
+        load 
+        <a class="anchor" href="#-load" id="-load"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Initialize the agent</p>
@@ -445,7 +471,9 @@ interfaces with the remote debugger.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function load() {
         _reset();
         _load = new $.Deferred();
@@ -473,18 +501,25 @@ interfaces with the remote debugger.</p>
     
     Public API
 </span>
-    <h4>scriptForURL</h4>
+    <h4>
+        scriptForURL 
+        <a class="anchor" href="#-scriptForURL" id="-scriptForURL"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Get the script information for a given url</p>
 </div>
     
 <dl>
-    <dt>url</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        url
+        <span class="label label-info">string</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function scriptForURL(url) {
         return _urlToScript[url];
     }
@@ -550,18 +585,25 @@ interfaces with the remote debugger.</p>
     
     Public API
 </span>
-    <h4>scriptWithId</h4>
+    <h4>
+        scriptWithId 
+        <a class="anchor" href="#-scriptWithId" id="-scriptWithId"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Get the script information for a given url</p>
 </div>
     
 <dl>
-    <dt>url</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        url
+        <span class="label label-info">string</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function scriptWithId(url) {
         return _idToScript[url];
     }
@@ -572,7 +614,10 @@ interfaces with the remote debugger.</p>
     
     Public API
 </span>
-    <h4>unload</h4>
+    <h4>
+        unload 
+        <a class="anchor" href="#-unload" id="-unload"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Clean up</p>
@@ -580,7 +625,9 @@ interfaces with the remote debugger.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function unload() {
         _reset();
         $(Inspector.Page).off(&quot;.ScriptAgent&quot;);

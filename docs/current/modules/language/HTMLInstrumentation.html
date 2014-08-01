@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -379,6 +383,7 @@ RemoteFunctions) so that the DOM structure in the live preview can be updated ac
 <p>There are also helper functions for returning the tagID associated with a specified
 position in the document--this is used in live highlighting.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -406,21 +411,30 @@ position in the document--this is used in live highlighting.</p>
     Private
     
 </span>
-    <h4>_dumpMarks</h4>
+    <h4>
+        _dumpMarks 
+        <a class="anchor" href="#-_dumpMarks" id="-_dumpMarks"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor to find the mark ranges for.</dd>
-    <dt>nodeMap</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        nodeMap
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>If specified, a map of tag IDs to DOM nodes, used so we can indicate which tag name the DOM thinks corresponds to the given mark.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _dumpMarks(editor, nodeMap) {
         var markCache = {},
             marks = _getSortedTagMarks(editor._codeMirror.getAllMarks(), markCache);
@@ -436,20 +450,29 @@ position in the document--this is used in live highlighting.</p>
     Private
     Public API
 </span>
-    <h4>_getBrowserDiff</h4>
+    <h4>
+        _getBrowserDiff 
+        <a class="anchor" href="#-_getBrowserDiff" id="-_getBrowserDiff"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd></dd>
-    <dt>browserSimpleDOM</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        browserSimpleDOM
+        <span class="label label-info">Object</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getBrowserDiff(editor, browserSimpleDOM) {
         var cachedValue = _cachedValues[editor.document.file.fullPath],
             editorRoot  = cachedValue.dom,
@@ -470,30 +493,43 @@ position in the document--this is used in live highlighting.</p>
     Private
     Public API
 </span>
-    <h4>_getMarkerAtDocumentPos</h4>
+    <h4>
+        _getMarkerAtDocumentPos 
+        <a class="anchor" href="#-_getMarkerAtDocumentPos" id="-_getMarkerAtDocumentPos"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor containing the instrumented document.</dd>
-    <dt>pos</dt>
-    <dd class="label label-info pull-left">{line: number,ch: number}</dd>
+    <dt>
+        pos
+        <span class="label label-info">{line: number,ch: number}</span>
+    </dt>
     <dd>The position to find the DOM marker for.</dd>
-    <dt>preferParent</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        preferParent
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>If true, and the pos is at one or the other edge of the innermost marked range, return the immediately enclosing mark instead.</dd>
-    <dt>markCache</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        markCache
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An optional cache to look up positions of existing markers. (This avoids calling the find() operation on marks multiple times, which is expensive.)</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
     <dd>The CodeMirror mark object that represents the DOM node at the given position.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getMarkerAtDocumentPos(editor, pos, preferParent, markCache) {
         var i, marks, match;
         
@@ -525,23 +561,32 @@ position in the document--this is used in live highlighting.</p>
     Private
     
 </span>
-    <h4>_getSortedTagMarks</h4>
+    <h4>
+        _getSortedTagMarks 
+        <a class="anchor" href="#-_getSortedTagMarks" id="-_getSortedTagMarks"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>marks</dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        marks
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>An array of mark objects returned by CodeMirror.</dd>
-    <dt>markCache</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        markCache
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An object that maps tag IDs to {mark, range} objects. If a mark in the marks array is already in the cache, we use the cached range info, otherwise we look up its range in CodeMirror and store it in the cache.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;{mark: Object,range: {line: number,ch: number}}&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;{mark: Object,range: {line: number,ch: number}}&gt;</span>
+</dt>
     <dd>The filtered and sorted array of mark info objects (each of which contains the mark and its range, so the range doesn't need to be looked up again).</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getSortedTagMarks(marks, markCache) {
         marks = marks.filter(function (mark) {
             return !!mark.tagID;
@@ -565,7 +610,10 @@ position in the document--this is used in live highlighting.</p>
     Private
     Public API
 </span>
-    <h4>_getTagIDAtDocumentPos</h4>
+    <h4>
+        _getTagIDAtDocumentPos 
+        <a class="anchor" href="#-_getTagIDAtDocumentPos" id="-_getTagIDAtDocumentPos"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Get the instrumented tagID at the specified position. Returns -1 if
@@ -576,21 +624,29 @@ the API is likely to change in the future.</p>
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor to scan. </dd>
-    <dt>pos</dt>
-    <dd class="label label-info pull-left">{line: number,ch: number}</dd>
+    <dt>
+        pos
+        <span class="label label-info">{line: number,ch: number}</span>
+    </dt>
     <dd>The position to find the DOM marker for.</dd>
-    <dt>markCache</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        markCache
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An optional cache to look up positions of existing markers. (This avoids calling the find() operation on marks multiple times, which is expensive.)</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
     <dd>tagID at the specified position, or -1 if there is no tag</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getTagIDAtDocumentPos(editor, pos, markCache) {
         var match = _getMarkerAtDocumentPos(editor, pos, false, markCache);
 
@@ -601,23 +657,32 @@ the API is likely to change in the future.</p>
     Private
     
 </span>
-    <h4>_hasAncestorWithID</h4>
+    <h4>
+        _hasAncestorWithID 
+        <a class="anchor" href="#-_hasAncestorWithID" id="-_hasAncestorWithID"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>node</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        node
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>A node from an HTMLSimpleDOM structure.</dd>
-    <dt>id</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        id
+        <span class="label label-info">number</span>
+    </dt>
     <dd>The ID of the tag to check for.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>true if the node has an ancestor with that ID.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _hasAncestorWithID(node, id) {
         var ancestor = node.parent;
         while (ancestor &amp;&amp; ancestor.tagID !== id) {
@@ -630,7 +695,10 @@ the API is likely to change in the future.</p>
     Private
     
 </span>
-    <h4>_markTags</h4>
+    <h4>
+        _markTags 
+        <a class="anchor" href="#-_markTags" id="-_markTags"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Recursively walks the SimpleDOM starting at node and marking
@@ -640,14 +708,20 @@ before calling this function to create new ones.</p>
 </div>
     
 <dl>
-    <dt>cm</dt>
-    <dd class="label label-info pull-left">CodeMirror</dd>
+    <dt>
+        cm
+        <span class="label label-info">CodeMirror</span>
+    </dt>
     <dd>CodeMirror instance in which to mark tags</dd>
-    <dt>node</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        node
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>SimpleDOM node to use as the root for marking</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _markTags(cm, node) {
         node.children.forEach(function (childNode) {
             if (childNode.isElement()) {
@@ -662,7 +736,10 @@ before calling this function to create new ones.</p>
     Private
     Public API
 </span>
-    <h4>_markText</h4>
+    <h4>
+        _markText 
+        <a class="anchor" href="#-_markText" id="-_markText"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Mark the text for the specified editor. Either scanDocument() or 
@@ -673,14 +750,18 @@ the API is likely to change in the future.</p>
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor whose text should be marked.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">none</dd>
+    <dt>Returns: <span class="label label-info">none</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _markText(editor) {
         var cache = _cachedValues[editor.document.file.fullPath],
             dom = cache &amp;&amp; cache.dom;
@@ -697,21 +778,30 @@ the API is likely to change in the future.</p>
     Private
     Public API
 </span>
-    <h4>_markTextFromDOM</h4>
+    <h4>
+        _markTextFromDOM 
+        <a class="anchor" href="#-_markTextFromDOM" id="-_markTextFromDOM"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Clears the marks from the document and creates new ones.</p>
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>Editor object holding this document</dd>
-    <dt>dom</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        dom
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>SimpleDOM root object that contains the parsed structure</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _markTextFromDOM(editor, dom) {
         var cm = editor._codeMirror;
         
@@ -733,23 +823,32 @@ the API is likely to change in the future.</p>
     Private
     
 </span>
-    <h4>_posEq</h4>
+    <h4>
+        _posEq 
+        <a class="anchor" href="#-_posEq" id="-_posEq"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>pos1</dt>
-    <dd class="label label-info pull-left">{line: number,ch: number}</dd>
+    <dt>
+        pos1
+        <span class="label label-info">{line: number,ch: number}</span>
+    </dt>
     <dd></dd>
-    <dt>pos2</dt>
-    <dd class="label label-info pull-left">{line: number,ch: number}</dd>
+    <dt>
+        pos2
+        <span class="label label-info">{line: number,ch: number}</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>true if pos1 and pos2 are equal. Fails if either of them is falsy.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _posEq(pos1, pos2) {
         return pos1 &amp;&amp; pos2 &amp;&amp; pos1.line === pos2.line &amp;&amp; pos1.ch === pos2.ch;
     }</code></pre></div><div class="member private">
@@ -758,17 +857,24 @@ the API is likely to change in the future.</p>
     Private
     
 </span>
-    <h4>_processBrowserSimpleDOM</h4>
+    <h4>
+        _processBrowserSimpleDOM 
+        <a class="anchor" href="#-_processBrowserSimpleDOM" id="-_processBrowserSimpleDOM"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>root</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        root
+        <span class="label label-info">Object</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _processBrowserSimpleDOM(browserRoot, editorRootTagID) {
         var nodeMap         = {},
             root;
@@ -816,20 +922,29 @@ the API is likely to change in the future.</p>
     Private
     
 </span>
-    <h4>_removeDocFromCache</h4>
+    <h4>
+        _removeDocFromCache 
+        <a class="anchor" href="#-_removeDocFromCache" id="-_removeDocFromCache"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>event</dt>
-    <dd class="label label-info pull-left">$.Event</dd>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
     <dd>(unused)</dd>
-    <dt>document</dt>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        document
+        <span class="label label-info">Document</span>
+    </dt>
     <dd>The document to clear from the cache.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeDocFromCache(evt, document) {
         if (_cachedValues.hasOwnProperty(document.file.fullPath)) {
             delete _cachedValues[document.file.fullPath];
@@ -841,14 +956,19 @@ the API is likely to change in the future.</p>
     Private
     Public API
 </span>
-    <h4>_resetCache</h4>
+    <h4>
+        _resetCache 
+        <a class="anchor" href="#-_resetCache" id="-_resetCache"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _resetCache() {
         _cachedValues = {};
     }
@@ -873,27 +993,38 @@ the API is likely to change in the future.</p>
     Private
     Public API
 </span>
-    <h4>_updateDOM</h4>
+    <h4>
+        _updateDOM 
+        <a class="anchor" href="#-_updateDOM" id="-_updateDOM"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>previousDOM</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        previousDOM
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The HTMLSimpleDOM corresponding to the previous state of the editor. Note that in the case of an incremental edit, this will be mutated to create the new DOM (by swapping out the subtree corresponding to the changed portion).</dd>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor containing the instrumented HTML.</dd>
-    <dt>changeList</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        changeList
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>If specified, a CodeMirror changelist reflecting all the text changes in the editor since previousDOM was built. If specified, we will attempt to do an incremental update (although we might fall back to a full update in various cases). If not specified, we will always do a full update.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{dom: Object,edits: Array}</dd>
+    <dt>Returns: <span class="label label-info">{dom: Object,edits: Array}</span>
+</dt>
     <dd>The new DOM representing the current state of the editor, and an array of edits that can be applied to update the browser (see HTMLDOMDiff for more information on the edit format).</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateDOM(previousDOM, editor, changeList) {
         if (!allowIncremental) {
             changeList = undefined;
@@ -922,7 +1053,10 @@ the API is likely to change in the future.</p>
     
     Public API
 </span>
-    <h4>generateInstrumentedHTML</h4>
+    <h4>
+        generateInstrumentedHTML 
+        <a class="anchor" href="#-generateInstrumentedHTML" id="-generateInstrumentedHTML"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Generate instrumented HTML for the specified editor&#39;s document, and mark the associated tag 
@@ -937,14 +1071,18 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor whose document we're instrumenting, and which we should mark ranges in.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>instrumented html content</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function generateInstrumentedHTML(editor) {
         var doc = editor.document,
             dom = scanDocument(doc),
@@ -986,7 +1124,10 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
     
     Public API
 </span>
-    <h4>getUnappliedEditList</h4>
+    <h4>
+        getUnappliedEditList 
+        <a class="anchor" href="#-getUnappliedEditList" id="-getUnappliedEditList"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Calculates the DOM edits that are needed to update the browser from the state the
@@ -1003,17 +1144,23 @@ made while the document was invalid.</p>
 </div>
     
 <dl>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd>The editor containing the instrumented HTML</dd>
-    <dt>changeList</dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        changeList
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>A CodeMirror change list describing the text changes made in the editor since the last update. If specified, we will attempt to do an incremental update.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>Returns: <span class="label label-info">Array</span>
+</dt>
     <dd>edits A list of edits to apply in the browser. See HTMLDOMDiff for more information on the format of these edits.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getUnappliedEditList(editor, changeList) {
         var cachedValue = _cachedValues[editor.document.file.fullPath];
         
@@ -1044,7 +1191,10 @@ made while the document was invalid.</p>
     
     Public API
 </span>
-    <h4>scanDocument</h4>
+    <h4>
+        scanDocument 
+        <a class="anchor" href="#-scanDocument" id="-scanDocument"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Parses the document, returning an HTMLSimpleDOM structure and caching it as the
@@ -1056,14 +1206,18 @@ instrumented HTML is requested by the browser.</p>
 </div>
     
 <dl>
-    <dt>doc</dt>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        doc
+        <span class="label label-info">Document</span>
+    </dt>
     <dd>The doc to scan. </dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
     <dd>Root DOM node of the document.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function scanDocument(doc) {
         if (!_cachedValues.hasOwnProperty(doc.file.fullPath)) {
             $(doc).on(&quot;change.htmlInstrumentation&quot;, function () {
@@ -1106,23 +1260,25 @@ instrumented HTML is requested by the browser.</p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>DOMUpdater</h4>
+            <h4>
+                DOMUpdater
+                
+            </h4>
+            
             <em><p>Subclass of HTMLSimpleDOM.Builder that builds an updated DOM after changes have been made,
 and maps nodes from the new DOM to the old DOM by tag ID. For non-structural edits, avoids reparsing
 the whole editor. Also updates marks in the editor based on the new DOM state.</p>
 </em>
             
             <dl>
-                <dt>previousDOM</dt>
-                <dd class="label label-info pull-left">Object</dd>
+                <dt>previousDOM <span class="label label-info pull-left">Object</span></dt>
                 <dd>The root of the HTMLSimpleDOM tree representing a previous state of the DOM.</dd>
-                <dt>editor</dt>
-                <dd class="label label-info pull-left">Editor</dd>
+                <dt>editor <span class="label label-info pull-left">Editor</span></dt>
                 <dd>The editor containing the instrumented HTML.</dd>
-                <dt>changeList</dt>
-                <dd class="label label-info pull-left">Array</dd>
+                <dt>changeList <span class="label label-info pull-left">Array</span></dt>
                 <dd>An optional array of CodeMirror change records representing the edits the user made in the editor since previousDOM was built. If provided, and the edits are not structural, DOMUpdater will do a fast incremental reparse. If not provided, or if one of the edits changes the DOM structure, DOMUpdater will reparse the whole DOM.</dd>
             </dl>
+          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function DOMUpdater(previousDOM, editor, changeList) {
@@ -1189,17 +1345,24 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
     Private
     
 </span>
-    <h4>_buildNodeMap</h4>
+    <h4>
+        _buildNodeMap 
+        <a class="anchor" href="#DOMUpdater-_buildNodeMap" id="DOMUpdater-_buildNodeMap"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>root</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        root
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The root of an HTMLSimpleDOM tree.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype._buildNodeMap = function (root) {
         var nodeMap = {};
         
@@ -1220,23 +1383,34 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
     Private
     
 </span>
-    <h4>_handleDeletions</h4>
+    <h4>
+        _handleDeletions 
+        <a class="anchor" href="#DOMUpdater-_handleDeletions" id="DOMUpdater-_handleDeletions"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>nodeMap</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        nodeMap
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The nodeMap to update to remove deleted items.</dd>
-    <dt>oldSubtreeMap</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        oldSubtreeMap
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The nodeMap for the original subtree (which should be a subset of the first nodeMap).</dd>
-    <dt>newSubtreeMap</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        newSubtreeMap
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The nodeMap for the new subtree.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype._handleDeletions = function (nodeMap, oldSubtreeMap, newSubtreeMap) {
         var deletedIDs = [];
         Object.keys(oldSubtreeMap).forEach(function (key) {
@@ -1262,7 +1436,10 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
     Private
     
 </span>
-    <h4>_updateMarkedRanges</h4>
+    <h4>
+        _updateMarkedRanges 
+        <a class="anchor" href="#DOMUpdater-_updateMarkedRanges" id="DOMUpdater-_updateMarkedRanges"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Updates the CodeMirror marks in the editor to reflect the new bounds of nodes in
@@ -1270,14 +1447,20 @@ the given nodeMap.</p>
 </div>
     
 <dl>
-    <dt>nodeMap</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        nodeMap
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The node map from the new DOM.</dd>
-    <dt>markCache</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        markCache
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The cache of existing mark ranges built during the latest parse.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype._updateMarkedRanges = function (nodeMap, markCache) {
         &#x2F;&#x2F; FUTURE: this is somewhat inefficient (getting all the marks involves passing linearly through
         &#x2F;&#x2F; the document once), but it doesn&#39;t seem to be a hotspot right now.
@@ -1316,7 +1499,10 @@ the given nodeMap.</p>
     
     
 </span>
-    <h4>getID</h4>
+    <h4>
+        getID 
+        <a class="anchor" href="#DOMUpdater-getID" id="DOMUpdater-getID"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Overrides the <code>getID</code> method to return the tag ID from the document. If a viable tag
@@ -1326,14 +1512,18 @@ node.</p>
 </div>
     
 <dl>
-    <dt>newTag</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        newTag
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>tag object for the current element</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">int</dd>
+    <dt>Returns: <span class="label label-info">int</span>
+</dt>
     <dd>best ID</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype.getID = function (newTag, markCache) {
         &#x2F;&#x2F; Get the mark at the start of the tagname (not before the beginning of the tag, because that&#39;s
         &#x2F;&#x2F; actually inside the parent).
@@ -1358,7 +1548,10 @@ node.</p>
     
     
 </span>
-    <h4>update</h4>
+    <h4>
+        update 
+        <a class="anchor" href="#DOMUpdater-update" id="DOMUpdater-update"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Reparses the document (or a portion of it if we can do it incrementally).
@@ -1368,10 +1561,12 @@ subtree is swapped in for the old subtree).</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">?{newDOM: Object,oldSubtree: Object,newSubtree: Object}</dd>
+    <dt>Returns: <span class="label label-info">?{newDOM: Object,oldSubtree: Object,newSubtree: Object}</span>
+</dt>
     <dd>newDOM is the full new DOM. For a full update, oldSubtree is the full old DOM and newSubtree is the same as newDOM; for an incremental update, oldSubtree is the portion of the old tree that was reparsed, newSubtree is the updated version, and newDOM is actually the same as the original DOM (with newSubtree swapped in for oldSubtree). If the document can't be parsed due to invalid HTML, returns null.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype.update = function () {
         var markCache = {},
             newSubtree = this.build(true, markCache),
