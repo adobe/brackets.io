@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>bootstrap-scrollspy - Brackets API</title>
+    <title>ThemeView - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -358,7 +358,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>bootstrap-scrollspy</h1>
+<h1>ThemeView</h1>
 
 
 <section class="description">
@@ -371,52 +371,12 @@
 <section id="dependencies">
     <h3>Dependencies</h3>
 
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+    </ul>
 
-    <span class="alert alert-info">This module has no dependencies</span>
-</section>
-<section id="variables">
-    
-    <h3>Variables 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        old 
-        <a class="anchor" href="#-old" id="-old"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><h1 id="scrollspy-plugin-definition">SCROLLSPY PLUGIN DEFINITION</h1>
-</div>
-    
-<dl>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">
-  var old = $.fn.scrollspy
-
-  $.fn.scrollspy = function (option) {
-    return this.each(function () {
-      var $this = $(this)
-        , data = $this.data(&#39;scrollspy&#39;)
-        , options = typeof option == &#39;object&#39; &amp;&amp; option
-      if (!data) $this.data(&#39;scrollspy&#39;, (data = new ScrollSpy(this, options)))
-      if (typeof option == &#39;string&#39;) data[option]()
-    })
-  }
-
-  $.fn.scrollspy.Constructor = ScrollSpy
-
-  $.fn.scrollspy.defaults = {
-    offset: 10
-  }</code></pre></div>
 </section>
 
 <section id="functions">
@@ -426,117 +386,82 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member">
+<div class="member public">
 
 <span class="pull-right scope">
     
-    
+    Public API
 </span>
     <h4>
-        ScrollSpy 
-        <a class="anchor" href="#-ScrollSpy" id="-ScrollSpy"><span class="icon-link"></span></a>
+        updateScrollbars 
+        <a class="anchor" href="#-updateScrollbars" id="-updateScrollbars"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><h1 id="scrollspy-class-definition">SCROLLSPY CLASS DEFINITION</h1>
+    <div class="description"><p>Load scrollbar styling based on whether or not theme scrollbars are enabled.</p>
 </div>
     
 <dl>
+    <dt>
+        theme
+        <span class="label label-info">ThemeManager.Theme</span>
+    </dt>
+    <dd>Is the theme object with the corresponding scrollbar style to be updated</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">
-  function ScrollSpy(element, options) {
-    var process = $.proxy(this.process, this)
-      , $element = $(element).is(&#39;body&#39;) ? $(window) : $(element)
-      , href
-    this.options = $.extend({}, $.fn.scrollspy.defaults, options)
-    this.$scrollElement = $element.on(&#39;scroll.scroll-spy.data-api&#39;, process)
-    this.selector = (this.options.target
-      || ((href = $(element).attr(&#39;href&#39;)) &amp;&amp; href.replace(&#x2F;.*(?=#[^\s]+$)&#x2F;, &#39;&#39;)) &#x2F;&#x2F;strip for ie7
-      || &#39;&#39;) + &#39; .nav li &gt; a&#39;
-    this.$body = $(&#39;body&#39;)
-    this.refresh()
-    this.process()
-  }
+<pre class="code language-javascript"><code class="language-javascript">    function updateScrollbars(theme) {
+        theme = theme || {};
+        if (prefs.get(&quot;themeScrollbars&quot;)) {
+            var scrollbar = (theme.scrollbar || []).join(&quot; &quot;);
+            $scrollbars.text(scrollbar || &quot;&quot;);
+        } else {
+            $scrollbars.text(&quot;&quot;);
+        }
+    }</code></pre></div><div class="member public">
 
-  ScrollSpy.prototype = {
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        updateThemes 
+        <a class="anchor" href="#-updateThemes" id="-updateThemes"><span class="icon-link"></span></a>
+    </h4>
 
-      constructor: ScrollSpy
+    
+    <div class="description"><p>Handles updating codemirror with the current selection of themes.</p>
+</div>
+    
+<dl>
+    <dt>
+        cm
+        <span class="label label-info">CodeMirror</span>
+    </dt>
+    <dd>is the CodeMirror instance currently loaded</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function updateThemes(cm) {
+        var newTheme = prefs.get(&quot;theme&quot;),
+            cmTheme  = (cm.getOption(&quot;theme&quot;) || &quot;&quot;).replace(&#x2F;[\s]*&#x2F;, &quot;&quot;); &#x2F;&#x2F; Normalize themes string
 
-    , refresh: function () {
-        var self = this
-          , $targets
-
-        this.offsets = $([])
-        this.targets = $([])
-
-        $targets = this.$body
-          .find(this.selector)
-          .map(function () {
-            var $el = $(this)
-              , href = $el.data(&#39;target&#39;) || $el.attr(&#39;href&#39;)
-              , $href = &#x2F;^#\w&#x2F;.test(href) &amp;&amp; $(href)
-            return ( $href
-              &amp;&amp; $href.length
-              &amp;&amp; [[ $href.position().top + (!$.isWindow(self.$scrollElement.get(0)) &amp;&amp; self.$scrollElement.scrollTop()), href ]] ) || null
-          })
-          .sort(function (a, b) { return a[0] - b[0] })
-          .each(function () {
-            self.offsets.push(this[0])
-            self.targets.push(this[1])
-          })
-      }
-
-    , process: function () {
-        var scrollTop = this.$scrollElement.scrollTop() + this.options.offset
-          , scrollHeight = this.$scrollElement[0].scrollHeight || this.$body[0].scrollHeight
-          , maxScroll = scrollHeight - this.$scrollElement.height()
-          , offsets = this.offsets
-          , targets = this.targets
-          , activeTarget = this.activeTarget
-          , i
-
-        if (scrollTop &gt;= maxScroll) {
-          return activeTarget != (i = targets.last()[0])
-            &amp;&amp; this.activate ( i )
+        &#x2F;&#x2F; Check if the editor already has the theme applied...
+        if (cmTheme === newTheme) {
+            return;
         }
 
-        for (i = offsets.length; i--;) {
-          activeTarget != targets[i]
-            &amp;&amp; scrollTop &gt;= offsets[i]
-            &amp;&amp; (!offsets[i + 1] || scrollTop &lt;= offsets[i + 1])
-            &amp;&amp; this.activate( targets[i] )
-        }
-      }
+        &#x2F;&#x2F; Setup current and further documents to get the new theme...
+        CodeMirror.defaults.theme = newTheme;
+        cm.setOption(&quot;theme&quot;, newTheme);
+    }
 
-    , activate: function (target) {
-        var active
-          , selector
 
-        this.activeTarget = target
-
-        $(this.selector)
-          .parent(&#39;.active&#39;)
-          .removeClass(&#39;active&#39;)
-
-        selector = this.selector
-          + &#39;[data-target=&quot;&#39; + target + &#39;&quot;],&#39;
-          + this.selector + &#39;[href=&quot;&#39; + target + &#39;&quot;]&#39;
-
-        active = $(selector)
-          .parent(&#39;li&#39;)
-          .addClass(&#39;active&#39;)
-
-        if (active.parent(&#39;.dropdown-menu&#39;).length)  {
-          active = active.closest(&#39;li.dropdown&#39;).addClass(&#39;active&#39;)
-        }
-
-        active.trigger(&#39;activate&#39;)
-      }
-
-  }</code></pre></div>
+    exports.updateScrollbars = updateScrollbars;
+    exports.updateThemes     = updateThemes;
+});</code></pre></div>
 </section>
 
         </div>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -361,6 +365,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -385,7 +390,10 @@
     
     Public API
 </span>
-    <h4>SearchResult</h4>
+    <h4>
+        SearchResult 
+        <a class="anchor" href="#-SearchResult" id="-SearchResult"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Object representing a search result with associated metadata (added as extra ad hoc fields)</p>
@@ -393,7 +401,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function SearchResult(label) {
         this.label = label;
     }</code></pre></div><div class="member public">
@@ -402,7 +412,10 @@
     
     Public API
 </span>
-    <h4>StringMatcher</h4>
+    <h4>
+        StringMatcher 
+        <a class="anchor" href="#-StringMatcher" id="-StringMatcher"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>A StringMatcher provides an interface to the stringMatch function with built-in
@@ -413,11 +426,15 @@ single data set.</p>
 </div>
     
 <dl>
-    <dt>options</dt>
-    <dd class="label label-info pull-left">{preferPrefixMatches:?boolean,segmentedSearch:?boolean}</dd>
+    <dt>
+        options
+        <span class="label label-info">{preferPrefixMatches:?boolean,segmentedSearch:?boolean}</span>
+    </dt>
     <dd>to control search behavior. preferPrefixMatches puts an exact case-insensitive prefix match ahead of all other matches, even short-circuiting the match logic. This option implies segmentedSearch=false. segmentedSearch treats segments of the string specially.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function StringMatcher(options) {
         this.options = options;
         this.reset();
@@ -427,27 +444,38 @@ single data set.</p>
     Private
     Public API
 </span>
-    <h4>_computeRangesAndScore</h4>
+    <h4>
+        _computeRangesAndScore 
+        <a class="anchor" href="#-_computeRangesAndScore" id="-_computeRangesAndScore"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Converts a list of matches into a form suitable for returning from stringMatch.</p>
 </div>
     
 <dl>
-    <dt>matchList</dt>
-    <dd class="label label-info pull-left">Array.&lt;SpecialMatch,NormalMatch&gt;</dd>
+    <dt>
+        matchList
+        <span class="label label-info">Array.&lt;SpecialMatch,NormalMatch&gt;</span>
+    </dt>
     <dd>to convert</dd>
-    <dt>original</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        original
+        <span class="label label-info">string</span>
+    </dt>
     <dd>string</dd>
-    <dt>character</dt>
-    <dd class="label label-info pull-left">int</dd>
+    <dt>
+        character
+        <span class="label label-info">int</span>
+    </dt>
     <dd>index where last segment begins</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</dd>
+    <dt>Returns: <span class="label label-info">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</span>
+</dt>
     <dd>matched ranges and score</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _computeRangesAndScore(matchList, str, lastSegmentStart) {
         var matchCounter;
         var ranges = [];
@@ -634,7 +662,10 @@ single data set.</p>
     Private
     Public API
 </span>
-    <h4>_generateMatchList</h4>
+    <h4>
+        _generateMatchList 
+        <a class="anchor" href="#-_generateMatchList" id="-_generateMatchList"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Finds the best matches between the query and the string. The query is
@@ -701,23 +732,33 @@ either:</p>
 </div>
     
 <dl>
-    <dt>query</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the search string (generally lower cased)</dd>
-    <dt>str</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        str
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the string to compare with (generally lower cased)</dd>
-    <dt>specials</dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        specials
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>list of special indexes in str (from findSpecialCharacters)</dd>
-    <dt>startingSpecial</dt>
-    <dd class="label label-info pull-left">int</dd>
+    <dt>
+        startingSpecial
+        <span class="label label-info">int</span>
+    </dt>
     <dd>index into specials array to start scanning with</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;SpecialMatch,NormalMatch&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;SpecialMatch,NormalMatch&gt;</span>
+</dt>
     <dd>matched indexes or null if no matches possible</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _generateMatchList(query, str, specials, startingSpecial) {
         var result = [];
         
@@ -875,7 +916,10 @@ either:</p>
     Private
     Public API
 </span>
-    <h4>_lastSegmentSearch</h4>
+    <h4>
+        _lastSegmentSearch 
+        <a class="anchor" href="#-_lastSegmentSearch" id="-_lastSegmentSearch"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Seek out the best match in the last segment (generally the filename). 
@@ -890,26 +934,38 @@ at the beginning of the query which did not match in the last segment.</p>
 </div>
     
 <dl>
-    <dt>query</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the search string (generally lower cased)</dd>
-    <dt>str</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        str
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the string to compare with (generally lower cased)</dd>
-    <dt>specials</dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        specials
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>list of special indexes in str (from findSpecialCharacters)</dd>
-    <dt>startingSpecial</dt>
-    <dd class="label label-info pull-left">int</dd>
+    <dt>
+        startingSpecial
+        <span class="label label-info">int</span>
+    </dt>
     <dd>index into specials array to start scanning with</dd>
-    <dt>lastSegmentStart</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        lastSegmentStart
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>which character does the last segment start at</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{remainder:int,matchList:Array.&lt;SpecialMatch,NormalMatch&gt;}</dd>
+    <dt>Returns: <span class="label label-info">{remainder:int,matchList:Array.&lt;SpecialMatch,NormalMatch&gt;}</span>
+</dt>
     <dd>matched indexes or null if no matches possible</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _lastSegmentSearch(query, str, specials, startingSpecial, lastSegmentStart) {
         var queryCounter, matchList;
         
@@ -947,7 +1003,10 @@ at the beginning of the query which did not match in the last segment.</p>
     Private
     
 </span>
-    <h4>_prefixMatchResult</h4>
+    <h4>
+        _prefixMatchResult 
+        <a class="anchor" href="#-_prefixMatchResult" id="-_prefixMatchResult"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>If we short circuit normal matching to produce a prefix match,
@@ -957,17 +1016,23 @@ been performed.</p>
 </div>
     
 <dl>
-    <dt>str</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        str
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The string with the prefix match for the query</dd>
-    <dt>query</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The query that matched the beginning of str</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</dd>
+    <dt>Returns: <span class="label label-info">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</span>
+</dt>
     <dd>ranges has a matching range for beginning of str and a non-matching range for the end of the str the score is -Number.MAX_VALUE in all cases</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _prefixMatchResult(str, query) {
         var result = new SearchResult(str);
         result.matchGoodness = -Number.MAX_VALUE;
@@ -995,7 +1060,10 @@ been performed.</p>
     Private
     Public API
 </span>
-    <h4>_wholeStringSearch</h4>
+    <h4>
+        _wholeStringSearch 
+        <a class="anchor" href="#-_wholeStringSearch" id="-_wholeStringSearch"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Implements the top-level search algorithm. Search the last segment first,
@@ -1004,23 +1072,33 @@ then search the rest of the string with the remainder.</p>
 </div>
     
 <dl>
-    <dt>query</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the search string (will be searched lower case)</dd>
-    <dt>compareStr</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        compareStr
+        <span class="label label-info">string</span>
+    </dt>
     <dd>the lower-cased string to search</dd>
-    <dt>specials</dt>
-    <dd class="label label-info pull-left">Array</dd>
+    <dt>
+        specials
+        <span class="label label-info">Array</span>
+    </dt>
     <dd>list of special indexes in str (from findSpecialCharacters)</dd>
-    <dt>lastSegmentSpecialsIndex</dt>
-    <dd class="label label-info pull-left">int</dd>
+    <dt>
+        lastSegmentSpecialsIndex
+        <span class="label label-info">int</span>
+    </dt>
     <dd>index into specials array to start scanning with</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;SpecialMatch,NormalMatch&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;SpecialMatch,NormalMatch&gt;</span>
+</dt>
     <dd>matched indexes or null if no matches possible</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _wholeStringSearch(query, compareStr, specials, lastSegmentSpecialsIndex) {
         var lastSegmentStart = specials[lastSegmentSpecialsIndex];
         var result;
@@ -1059,7 +1137,10 @@ then search the rest of the string with the remainder.</p>
     
     Public API
 </span>
-    <h4>basicMatchSort</h4>
+    <h4>
+        basicMatchSort 
+        <a class="anchor" href="#-basicMatchSort" id="-basicMatchSort"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sorts search results generated by stringMatch(): results are sorted into several
@@ -1069,7 +1150,9 @@ within each tier.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function basicMatchSort(searchResults) {
         multiFieldSort(searchResults, { matchGoodness: 0, label: 1 });
     }</code></pre></div><div class="member">
@@ -1078,7 +1161,10 @@ within each tier.</p>
     
     
 </span>
-    <h4>findSpecialCharacters</h4>
+    <h4>
+        findSpecialCharacters 
+        <a class="anchor" href="#-findSpecialCharacters" id="-findSpecialCharacters"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Identifies the &quot;special&quot; characters in the given string.
@@ -1098,14 +1184,18 @@ the last segment&#39;s specials separately.)</p>
 </div>
     
 <dl>
-    <dt>input</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        input
+        <span class="label label-info">string</span>
+    </dt>
     <dd>string to break apart (e.g. filename that is being searched)</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{specials:Array.&lt;number&gt;,lastSegmentSpecialsIndex:number}</dd>
+    <dt>Returns: <span class="label label-info">{specials:Array.&lt;number&gt;,lastSegmentSpecialsIndex:number}</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findSpecialCharacters(str) {
         var i, c;
         
@@ -1185,7 +1275,10 @@ the last segment&#39;s specials separately.)</p>
     
     Public API
 </span>
-    <h4>multiFieldSort</h4>
+    <h4>
+        multiFieldSort 
+        <a class="anchor" href="#-multiFieldSort" id="-multiFieldSort"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sorts an array of SearchResult objects on a primary field, followed by secondary fields
@@ -1199,16 +1292,22 @@ present on all SearchResult objects (no optional/undefined fields).</p>
 </div>
     
 <dl>
-    <dt>searchResults</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Array.&lt;SearchResult&gt;</dd>
+    <dt>
+        searchResults
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;SearchResult&gt;</span>
+    </dt>
     <dd></dd>
-    <dt>fieldSpec</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Array.&lt;string, function&gt;</dd>
+    <dt>
+        fieldSpec
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string, function&gt;</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function multiFieldSort(searchResults, fieldSpec) {
         &#x2F;&#x2F; Move field names into an array, with primary field first
         var comparisons;
@@ -1255,7 +1354,10 @@ present on all SearchResult objects (no optional/undefined fields).</p>
     
     Public API
 </span>
-    <h4>stringMatch</h4>
+    <h4>
+        stringMatch 
+        <a class="anchor" href="#-stringMatch" id="-stringMatch"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Match str against the query using the QuickOpen algorithm provided by
@@ -1271,24 +1373,34 @@ to provide insight into the score.</p>
 </div>
     
 <dl>
-    <dt>str</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        str
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The string to search</dd>
-    <dt>query</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The query string to find in string</dd>
-    <dt>options</dt>
-    <dd class="label label-info pull-left">{preferPrefixMatches:?boolean,segmentedSearch:?boolean}</dd>
+    <dt>
+        options
+        <span class="label label-info">{preferPrefixMatches:?boolean,segmentedSearch:?boolean}</span>
+    </dt>
     <dd>to control search behavior. preferPrefixMatches puts an exact case-insensitive prefix match ahead of all other matches, even short-circuiting the match logic. This option implies segmentedSearch=false. When segmentedSearch is true, the string is broken into segments by "/" characters and the last segment is searched first and matches there are scored higher.</dd>
-    <dt>special</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        special
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>(optional) the specials data from findSpecialCharacters, if already known This is generally just used by StringMatcher for optimization.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</dd>
+    <dt>Returns: <span class="label label-info">{ranges:Array.&lt;{text:string,matched:boolean,includesLastSegment:boolean}&gt;,matchGoodness:int,scoreDebug: Object}</span>
+</dt>
     <dd>matched ranges and score</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function stringMatch(str, query, options, special) {
         var result;
         

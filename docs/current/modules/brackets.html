@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../modules/utils/Global.html">Global</a></li>
               <li><a href="../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -366,6 +370,7 @@ shortcuts to their Commands.</p>
 <p>Unlike other modules, this one can be accessed without an explicit require() because it exposes
 a global object, window.brackets.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -434,6 +439,7 @@ a global object, window.brackets.</p>
         <li><a href="../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="../modules/LiveDevelopment/main.html">main</a></li>
         <li><a href="../modules/text!htmlContent/main-view.html.html">main-view.html</a></li>
+        <li><a href="../modules/thirdparty/CodeMirror2/addon/selection/mark-selection.html">mark-selection</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/search/match-highlighter.html">match-highlighter</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/edit/matchbrackets.html">matchbrackets</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/edit/matchtags.html">matchtags</a></li>
@@ -459,6 +465,7 @@ a global object, window.brackets.</p>
         <li><a href="../modules/project/SidebarView.html">SidebarView</a></li>
         <li><a href="../modules/strings.html">strings</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/keymap/sublime.html">sublime</a></li>
+        <li><a href="../modules/view/ThemeManager.html">ThemeManager</a></li>
         <li><a href="../modules/utils/UpdateNotification.html">UpdateNotification</a></li>
         <li><a href="../modules/utils/UpdateNotification.html">UpdateNotification</a></li>
         <li><a href="../modules/utils/UrlParams.html">UrlParams</a></li>
@@ -483,7 +490,10 @@ a global object, window.brackets.</p>
     Private
     
 </span>
-    <h4>_beforeHTMLReady</h4>
+    <h4>
+        _beforeHTMLReady 
+        <a class="anchor" href="#-_beforeHTMLReady" id="-_beforeHTMLReady"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Setup event handlers prior to dispatching AppInit.HTML_READY</p>
@@ -491,7 +501,9 @@ a global object, window.brackets.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _beforeHTMLReady() {
         &#x2F;&#x2F; Add the platform (mac or win) to the body tag so we can have platform-specific CSS rules
         $(&quot;body&quot;).addClass(&quot;platform-&quot; + brackets.platform);
@@ -575,14 +587,15 @@ a global object, window.brackets.</p>
         $(&quot;html&quot;).on(&quot;mousedown&quot;, &quot;.no-focus&quot;, function (e) {
             &#x2F;&#x2F; Text fields should always be focusable.
             var $target = $(e.target),
-                isTextField =
+                isFormElement =
                     $target.is(&quot;input[type=text]&quot;) ||
                     $target.is(&quot;input[type=number]&quot;) ||
                     $target.is(&quot;input[type=password]&quot;) ||
                     $target.is(&quot;input:not([type])&quot;) || &#x2F;&#x2F; input with no type attribute defaults to text
-                    $target.is(&quot;textarea&quot;);
+                    $target.is(&quot;textarea&quot;) ||
+                    $target.is(&quot;select&quot;);
     
-            if (!isTextField) {
+            if (!isFormElement) {
                 e.preventDefault();
             }
         });
@@ -623,7 +636,10 @@ a global object, window.brackets.</p>
     Private
     
 </span>
-    <h4>_initTest</h4>
+    <h4>
+        _initTest 
+        <a class="anchor" href="#-_initTest" id="-_initTest"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Setup test object</p>
@@ -631,7 +647,9 @@ a global object, window.brackets.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _initTest() {
         &#x2F;&#x2F; TODO: (issue #265) Make sure the &quot;test&quot; object is not included in final builds
         &#x2F;&#x2F; All modules that need to be tested from the context of the application
@@ -693,7 +711,10 @@ a global object, window.brackets.</p>
     Private
     
 </span>
-    <h4>_onReady</h4>
+    <h4>
+        _onReady 
+        <a class="anchor" href="#-_onReady" id="-_onReady"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Setup Brackets</p>
@@ -701,7 +722,9 @@ a global object, window.brackets.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onReady() {
         PerfUtils.addMeasurement(&quot;window.document Ready&quot;);
 

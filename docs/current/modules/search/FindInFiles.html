@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -362,6 +366,7 @@
     
     <div><p>The core search functionality used by Find in Files and single-file Replace Batch.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -396,48 +401,60 @@
     
     Public API
 </span>
-    <h4>ZERO_FILES_TO_SEARCH</h4>
+    <h4>
+        ZERO_FILES_TO_SEARCH     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-ZERO_FILES_TO_SEARCH" id="-ZERO_FILES_TO_SEARCH"><span class="icon-link"></span></a>
+    </h4>
 
     
-<dl>
-</dl>
     <div class="description"><p>Token used to indicate a specific reason for zero search results</p>
 </div>
-
-<button class="btn btn-small show-code">Show code</button>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>@type !Object</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var ZERO_FILES_TO_SEARCH = {};</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
     Public API
 </span>
-    <h4>_documentChangeHandler</h4>
+    <h4>
+        _documentChangeHandler 
+        <a class="anchor" href="#-_documentChangeHandler" id="-_documentChangeHandler"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Forward declarations</p>
+</div>
     
 <dl>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Forward declarations</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _documentChangeHandler, _fileSystemChangeHandler, _fileNameChangeHandler;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
     Public API
 </span>
-    <h4>searchModel</h4>
+    <h4>
+        searchModel 
+        <a class="anchor" href="#-searchModel" id="-searchModel"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>The search query and results model.</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>SearchModel</dd>
-</dl>
-    <div class="description"><p>The search query and results model.</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var searchModel = new SearchModel();</code></pre></div>
 </section>
 
@@ -454,7 +471,10 @@
     Private
     
 </span>
-    <h4>_addListeners</h4>
+    <h4>
+        _addListeners 
+        <a class="anchor" href="#-_addListeners" id="-_addListeners"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Add listeners to track events that might change the search result set</p>
@@ -462,7 +482,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addListeners() {
         if (searchModel.hasResults()) {
             &#x2F;&#x2F; Avoid adding duplicate listeners - e.g. if a 2nd search is run without closing the old results panel first
@@ -478,21 +500,28 @@
     Private
     
 </span>
-    <h4>_addSearchResultsForEntry</h4>
+    <h4>
+        _addSearchResultsForEntry 
+        <a class="anchor" href="#-_addSearchResultsForEntry" id="-_addSearchResultsForEntry"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Add new search results for this entry and all of its children</p>
 </div>
     
 <dl>
-    <dt>entry</dt>
-    <dd class="label label-info pull-left">(File,Directory)</dd>
+    <dt>
+        entry
+        <span class="label label-info">(File,Directory)</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dt>Returns: <span class="label label-info">jQuery.Promise</span>
+</dt>
     <dd>Resolves when the results have been added</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function _addSearchResultsForEntry(entry) {
             var addedFiles = [],
                 deferred = new $.Deferred();
@@ -582,28 +611,39 @@
     Private
     
 </span>
-    <h4>_doSearch</h4>
+    <h4>
+        _doSearch 
+        <a class="anchor" href="#-_doSearch" id="-_doSearch"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>queryInfo</dt>
-    <dd class="label label-info pull-left">{query: string,caseSensitive: boolean,isRegexp: boolean}</dd>
+    <dt>
+        queryInfo
+        <span class="label label-info">{query: string,caseSensitive: boolean,isRegexp: boolean}</span>
+    </dt>
     <dd>Query info object</dd>
-    <dt>candidateFilesPromise</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>
+        candidateFilesPromise
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">$.Promise</span>
+    </dt>
     <dd>Promise from getCandidateFiles(), which was called earlier</dd>
-    <dt>filter</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        filter
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>A "compiled" filter as returned by FileFilters.compile(), or null for no filter</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">?$.Promise</dd>
+    <dt>Returns: <span class="label label-info">?$.Promise</span>
+</dt>
     <dd>A promise that's resolved with the search results (or ZERO_FILES_TO_SEARCH) or rejected when the find competes. Will be null if the query is invalid.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doSearch(queryInfo, candidateFilesPromise, filter) {
         searchModel.filter = filter;
 
@@ -652,21 +692,28 @@
     Private
     
 </span>
-    <h4>_doSearchInOneFile</h4>
+    <h4>
+        _doSearchInOneFile 
+        <a class="anchor" href="#-_doSearchInOneFile" id="-_doSearchInOneFile"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>file</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">File</dd>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doSearchInOneFile(file) {
         var result = new $.Deferred();
         
@@ -691,23 +738,32 @@
     Private
     
 </span>
-    <h4>_getSearchMatches</h4>
+    <h4>
+        _getSearchMatches 
+        <a class="anchor" href="#-_getSearchMatches" id="-_getSearchMatches"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>contents</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        contents
+        <span class="label label-info">string</span>
+    </dt>
     <dd></dd>
-    <dt>queryExpr</dt>
-    <dd class="label label-info pull-left">RegExp</dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">RegExp</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">!Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},line: string}&gt;</dd>
+    <dt>Returns: <span class="label label-info">!Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},line: string}&gt;</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getSearchMatches(contents, queryExpr) {
         &#x2F;&#x2F; Quick exit if not found or if we hit the limit
         if (searchModel.foundMaximum || contents.search(queryExpr) === -1) {
@@ -763,7 +819,10 @@
     Private
     
 </span>
-    <h4>_inSearchScope</h4>
+    <h4>
+        _inSearchScope 
+        <a class="anchor" href="#-_inSearchScope" id="-_inSearchScope"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Checks that the file is eligible for inclusion in the search (matches the user&#39;s subtree scope and
@@ -773,15 +832,19 @@ after it.</p>
 </div>
     
 <dl>
-    <dt>file</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">File</dd>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _inSearchScope(file) {
         &#x2F;&#x2F; Replicate the checks getCandidateFiles() does
         if (searchModel &amp;&amp; searchModel.scope) {
@@ -813,21 +876,28 @@ after it.</p>
     Private
     
 </span>
-    <h4>_isReadableText</h4>
+    <h4>
+        _isReadableText 
+        <a class="anchor" href="#-_isReadableText" id="-_isReadableText"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Filters out files that are known binary types.</p>
 </div>
     
 <dl>
-    <dt>fullPath</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>True if the file's contents can be read as text</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isReadableText(fullPath) {
         return !LanguageManager.getLanguageForPath(fullPath).isBinary();
     }</code></pre></div><div class="member private">
@@ -836,7 +906,10 @@ after it.</p>
     Private
     
 </span>
-    <h4>_removeListeners</h4>
+    <h4>
+        _removeListeners 
+        <a class="anchor" href="#-_removeListeners" id="-_removeListeners"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Remove the listeners that were tracking potential search result changes</p>
@@ -844,7 +917,9 @@ after it.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeListeners() {
         $(DocumentModule).off(&quot;documentChange&quot;, _documentChangeHandler);
         FileSystem.off(&quot;change&quot;, _fileSystemChangeHandler);
@@ -855,18 +930,25 @@ after it.</p>
     Private
     
 </span>
-    <h4>_removeSearchResultsForEntry</h4>
+    <h4>
+        _removeSearchResultsForEntry 
+        <a class="anchor" href="#-_removeSearchResultsForEntry" id="-_removeSearchResultsForEntry"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Remove existing search results that match the given entry&#39;s path</p>
 </div>
     
 <dl>
-    <dt>entry</dt>
-    <dd class="label label-info pull-left">(File,Directory)</dd>
+    <dt>
+        entry
+        <span class="label label-info">(File,Directory)</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function _removeSearchResultsForEntry(entry) {
             Object.keys(searchModel.results).forEach(function (fullPath) {
                 if (fullPath.indexOf(entry.fullPath) === 0) {
@@ -880,7 +962,10 @@ after it.</p>
     Private
     
 </span>
-    <h4>_subtreeFilter</h4>
+    <h4>
+        _subtreeFilter 
+        <a class="anchor" href="#-_subtreeFilter" id="-_subtreeFilter"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Checks that the file matches the given subtree scope. To fully check whether the file
@@ -888,19 +973,25 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
 </div>
     
 <dl>
-    <dt>file</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">File</dd>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
     <dd></dd>
-    <dt>scope</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">FileSystemEntry</span>
+    </dt>
     <dd>Search scope, or null if whole project</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _subtreeFilter(file, scope) {
         if (scope) {
             if (scope.isDirectory) {
@@ -918,20 +1009,29 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
     Private
     
 </span>
-    <h4>_updateResults</h4>
+    <h4>
+        _updateResults 
+        <a class="anchor" href="#-_updateResults" id="-_updateResults"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>doc</dt>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        doc
+        <span class="label label-info">Document</span>
+    </dt>
     <dd>The Document that changed, should be the current one</dd>
-    <dt>changeList</dt>
-    <dd class="label label-info pull-left">Array.&lt;{from: {line:number,ch:number},to: {line:number,ch:number},text: !Array.&lt;string&gt;}&gt;</dd>
+    <dt>
+        changeList
+        <span class="label label-info">Array.&lt;{from: {line:number,ch:number},to: {line:number,ch:number},text: !Array.&lt;string&gt;}&gt;</span>
+    </dt>
     <dd>An array of changes as described in the Document constructor</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateResults(doc, changeList) {
         var i, diff, matches, lines, start, howMany,
             resultsChanged = false,
@@ -1029,18 +1129,25 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
     Private
     Public API
 </span>
-    <h4>clearSearch</h4>
+    <h4>
+        clearSearch 
+        <a class="anchor" href="#-clearSearch" id="-clearSearch"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>scope</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Entry</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Entry</span>
+    </dt>
     <dd>Project file/subfolder to search within; else searches whole project.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function clearSearch() {
         _removeListeners();
         searchModel.clear();
@@ -1050,28 +1157,39 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
     
     Public API
 </span>
-    <h4>doReplace</h4>
+    <h4>
+        doReplace 
+        <a class="anchor" href="#-doReplace" id="-doReplace"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Given a set of search results, replaces them with the given replaceText, either on disk or in memory.</p>
 </div>
     
 <dl>
-    <dt>results</dt>
-    <dd class="label label-info pull-left">Object.&lt;fullPath: string,{matches: Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},startOffset: number,endOffset: number,line: string}&gt;,collapsed: boolean}&gt;</dd>
+    <dt>
+        results
+        <span class="label label-info">Object.&lt;fullPath: string,{matches: Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},startOffset: number,endOffset: number,line: string}&gt;,collapsed: boolean}&gt;</span>
+    </dt>
     <dd>The list of results to replace, as returned from _doSearch..</dd>
-    <dt>replaceText</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The text to replace each result with.</dd>
-    <dt>options</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        options
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An options object: forceFilesOpen: boolean - Whether to open all files in editors and do replacements there rather than doing the replacements on disk. Note that even if this is false, files that are already open in editors will have replacements done in memory. isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the replacement is finished or rejected with an array of errors if there were one or more errors. Each individual item in the array will be a {item: string, error: string} object, where item is the full path to the file that could not be updated, and error is either a FileSystem error or one of the `FindInFiles.ERROR_*` constants.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doReplace(results, replaceText, options) {
         return FindUtils.performReplacements(results, replaceText, options).always(function () {
             &#x2F;&#x2F; For UI integration testing only
@@ -1083,7 +1201,10 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
     
     Public API
 </span>
-    <h4>doSearchInScope</h4>
+    <h4>
+        doSearchInScope 
+        <a class="anchor" href="#-doSearchInScope" id="-doSearchInScope"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Does a search in the given scope with the given filter. Used when you want to start a search
@@ -1091,30 +1212,42 @@ programmatically.</p>
 </div>
     
 <dl>
-    <dt>queryInfo</dt>
-    <dd class="label label-info pull-left">{query: string,caseSensitive: boolean,isRegexp: boolean}</dd>
+    <dt>
+        queryInfo
+        <span class="label label-info">{query: string,caseSensitive: boolean,isRegexp: boolean}</span>
+    </dt>
     <dd>Query info object</dd>
-    <dt>scope</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Entry</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Entry</span>
+    </dt>
     <dd>Project file/subfolder to search within; else searches whole project.</dd>
-    <dt>filter</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        filter
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>A "compiled" filter as returned by FileFilters.compile(), or null for no filter</dd>
-    <dt>replaceText</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>If this is a replacement, the text to replace matches with. This is just stored in the model for later use - the replacement is not actually performed right now.</dd>
-    <dt>candidateFilesPromise</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>
+        candidateFilesPromise
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">$.Promise</span>
+    </dt>
     <dd>If specified, a promise that should resolve with the same set of files that getCandidateFiles(scope) would return.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved with the search results or rejected when the find competes.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doSearchInScope(queryInfo, scope, filter, replaceText, candidateFilesPromise) {
         clearSearch();
         searchModel.scope = scope;
@@ -1130,7 +1263,10 @@ programmatically.</p>
     
     Public API
 </span>
-    <h4>getCandidateFiles</h4>
+    <h4>
+        getCandidateFiles 
+        <a class="anchor" href="#-getCandidateFiles" id="-getCandidateFiles"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Finds all candidate files to search in the given scope&#39;s subtree that are not binary content. Does NOT apply
@@ -1138,15 +1274,19 @@ the current filter yet.</p>
 </div>
     
 <dl>
-    <dt>scope</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">FileSystemEntry</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">FileSystemEntry</span>
+    </dt>
     <dd>Search scope, or null if whole project</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that will be resolved with the list of files in the scope. Never rejected.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCandidateFiles(scope) {
         function filter(file) {
             return _subtreeFilter(file, scope) &amp;&amp; _isReadableText(file.fullPath);

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -361,6 +365,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -393,32 +398,45 @@
     Private
     
 </span>
-    <h4>_doReplaceInDocument</h4>
+    <h4>
+        _doReplaceInDocument 
+        <a class="anchor" href="#-_doReplaceInDocument" id="-_doReplaceInDocument"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Does a set of replacements in a single document in memory.</p>
 </div>
     
 <dl>
-    <dt>doc</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        doc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Document</span>
+    </dt>
     <dd>The document to do the replacements in.</dd>
-    <dt>matchInfo</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        matchInfo
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The match info for this file, as returned by `_addSearchMatches()`. Might be mutated.</dd>
-    <dt>replaceText</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The text to replace each result with.</dd>
-    <dt>isRegexp</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        isRegexp
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>Whether the original query was a regexp.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doReplaceInDocument(doc, matchInfo, replaceText, isRegexp) {
         &#x2F;&#x2F; Double-check that the open document&#39;s timestamp matches the one we recorded. This
         &#x2F;&#x2F; should normally never go out of sync, because if it did we wouldn&#39;t start the
@@ -447,7 +465,10 @@
     Private
     
 </span>
-    <h4>_doReplaceInOneFile</h4>
+    <h4>
+        _doReplaceInOneFile 
+        <a class="anchor" href="#-_doReplaceInOneFile" id="-_doReplaceInOneFile"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Does a set of replacements in a single file. If the file is already open in a Document in memory,
@@ -455,24 +476,34 @@ will do the replacement there, otherwise does it directly on disk.</p>
 </div>
     
 <dl>
-    <dt>fullPath</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The full path to the file.</dd>
-    <dt>matchInfo</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        matchInfo
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The match info for this file, as returned by `_addSearchMatches()`.</dd>
-    <dt>replaceText</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The text to replace each result with.</dd>
-    <dt>options</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        options
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An options object: forceFilesOpen: boolean - Whether to open the file in an editor and do replacements there rather than doing the replacements on disk. Note that even if this is false, files that are already open in editors will have replacements done in memory. isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doReplaceInOneFile(fullPath, matchInfo, replaceText, options) {
         var doc = DocumentManager.getOpenDocumentForPath(fullPath);
         options = options || {};
@@ -493,31 +524,44 @@ will do the replacement there, otherwise does it directly on disk.</p>
     Private
     
 </span>
-    <h4>_doReplaceOnDisk</h4>
+    <h4>
+        _doReplaceOnDisk 
+        <a class="anchor" href="#-_doReplaceOnDisk" id="-_doReplaceOnDisk"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Does a set of replacements in a single file on disk.</p>
 </div>
     
 <dl>
-    <dt>fullPath</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The full path to the file.</dd>
-    <dt>matchInfo</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        matchInfo
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The match info for this file, as returned by `_addSearchMatches()`.</dd>
-    <dt>replaceText</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The text to replace each result with.</dd>
-    <dt>isRegexp</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        isRegexp
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>Whether the original query was a regexp.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doReplaceOnDisk(fullPath, matchInfo, replaceText, isRegexp) {
         var file = FileSystem.getFileForPath(fullPath);
         return DocumentManager.getDocumentText(file, true).then(function (contents, timestamp, lineEndings) {
@@ -554,14 +598,19 @@ will do the replacement there, otherwise does it directly on disk.</p>
     Private
     Public API
 </span>
-    <h4>hasCheckedMatches</h4>
+    <h4>
+        hasCheckedMatches 
+        <a class="anchor" href="#-hasCheckedMatches" id="-hasCheckedMatches"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function hasCheckedMatches(result) {
         return result.matches.some(function (match) { return match.isChecked; });
     }</code></pre></div><div class="member public">
@@ -570,22 +619,29 @@ will do the replacement there, otherwise does it directly on disk.</p>
     
     Public API
 </span>
-    <h4>labelForScope</h4>
+    <h4>
+        labelForScope 
+        <a class="anchor" href="#-labelForScope" id="-labelForScope"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns label text to indicate the search scope. Already HTML-escaped.</p>
 </div>
     
 <dl>
-    <dt>scope</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Entry</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Entry</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function labelForScope(scope) {
         if (scope) {
             return StringUtils.format(
@@ -610,7 +666,10 @@ will do the replacement there, otherwise does it directly on disk.</p>
     
     Public API
 </span>
-    <h4>parseDollars</h4>
+    <h4>
+        parseDollars 
+        <a class="anchor" href="#-parseDollars" id="-parseDollars"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Given a replace string that contains $-expressions, replace them with data from the given
@@ -620,30 +679,45 @@ extracted from the original text and so might be missing some context that the r
 </div>
     
 <dl>
-    <dt>replaceWith</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceWith
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The string containing the $-expressions.</dd>
-    <dt>match</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        match
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The match data from the regexp.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The replace text with the $-expressions substituted.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function parseDollars(replaceWith, match) {
         replaceWith = replaceWith.replace(&#x2F;(\$+)(\d{1,2}|&amp;)&#x2F;g, function (whole, dollars, index) {
-            var parsedIndex = parseInt(index, 10);
-            if (dollars.length % 2 === 1) { &#x2F;&#x2F; check if dollar signs escape themselves (for example $$1, $$$$&amp;)
+            if (dollars.length % 2 === 1) { &#x2F;&#x2F; make sure dollar signs don&#39;t escape themselves (like $$1, $$$$&amp;)
                 if (index === &quot;&amp;&quot;) { &#x2F;&#x2F; handle $&amp;
+                    &#x2F;&#x2F; slice the first dollar (but leave any others to get unescaped below) and return the
+                    &#x2F;&#x2F; whole match
                     return dollars.substr(1) + (match[0] || &quot;&quot;);
-                } else if (parsedIndex !== 0) { &#x2F;&#x2F; handle $n or $nn, don&#39;t handle $0 or $00
-                    return dollars.substr(1) + (match[parsedIndex] || &quot;&quot;);
+                } else {
+                    &#x2F;&#x2F; now we&#39;re sure index is an integer, so we can parse it
+                    var parsedIndex = parseInt(index, 10);
+                    if (parsedIndex !== 0) { &#x2F;&#x2F; handle $n or $nn, but don&#39;t handle $0 or $00
+                        &#x2F;&#x2F; slice the first dollar (but leave any others to get unescaped below) and return the
+                        &#x2F;&#x2F; the corresponding match
+                        return dollars.substr(1) + (match[parsedIndex] || &quot;&quot;);
+                    }
                 }
             }
-            return whole;
+            &#x2F;&#x2F; this code gets called if the dollar signs escape themselves or if $0&#x2F;$00 (not handled) was present
+            return whole; &#x2F;&#x2F; return everything to get handled below
         });
-        replaceWith = replaceWith.replace(&#x2F;\$\$&#x2F;g, &quot;$&quot;); &#x2F;&#x2F; replace escaped dollar signs (for example $$) with single ones
+        &#x2F;&#x2F; replace escaped dollar signs (i.e. $$, $$$$, ...) with single ones (unescaping)
+        replaceWith = replaceWith.replace(&#x2F;\$\$&#x2F;g, &quot;$&quot;);
         return replaceWith;
     }</code></pre></div><div class="member public">
 
@@ -651,7 +725,10 @@ extracted from the original text and so might be missing some context that the r
     
     Public API
 </span>
-    <h4>performReplacements</h4>
+    <h4>
+        performReplacements 
+        <a class="anchor" href="#-performReplacements" id="-performReplacements"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Given a set of search results, replaces them with the given replaceText, either on disk or in memory.
@@ -666,21 +743,29 @@ the time performReplacements() is called and the time the replacement actually h
 </div>
     
 <dl>
-    <dt>results</dt>
-    <dd class="label label-info pull-left">Object.&lt;fullPath: string,{matches: Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},startOffset: number,endOffset: number,line: string}&gt;,collapsed: boolean}&gt;</dd>
+    <dt>
+        results
+        <span class="label label-info">Object.&lt;fullPath: string,{matches: Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},startOffset: number,endOffset: number,line: string}&gt;,collapsed: boolean}&gt;</span>
+    </dt>
     <dd>The list of results to replace, as returned from _doSearch..</dd>
-    <dt>replaceText</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        replaceText
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The text to replace each result with.</dd>
-    <dt>options</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        options
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An options object: forceFilesOpen: boolean - Whether to open all files in editors and do replacements there rather than doing the replacements on disk. Note that even if this is false, files that are already open in editors will have replacements done in memory. isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the replacement is finished or rejected with an array of errors if there were one or more errors. Each individual item in the array will be a {item: string, error: string} object, where item is the full path to the file that could not be updated, and error is either a FileSystem error or one of the `FindUtils.ERROR_*` constants.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function performReplacements(results, replaceText, options) {
         return Async.doInParallel_aggregateErrors(Object.keys(results), function (fullPath) {
             return _doReplaceInOneFile(fullPath, results[fullPath], replaceText, options);

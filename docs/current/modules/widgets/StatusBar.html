@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -365,6 +369,7 @@ container; for the code that decides what content appears in the status bar, see
 EditorStatusBar. (Although in practice StatusBar&#39;s HTML structure and initialization
 assume it&#39;s only used for this one purpose, and all the APIs are on a singleton).</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -392,38 +397,55 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>addIndicator</h4>
+    <h4>
+        addIndicator 
+        <a class="anchor" href="#-addIndicator" id="-addIndicator"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Registers a new status indicator</p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Registration id of the indicator to be updated.</dd>
-    <dt>indicator</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">(DOMNode, jQueryObject)</dd>
+    <dt>
+        indicator
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">(DOMNode, jQueryObject)</span>
+    </dt>
     <dd>Optional DOMNode for the indicator</dd>
-    <dt>visible</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        visible
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>Shows or hides the indicator over the statusbar.</dd>
-    <dt>style</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        style
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Sets the attribute "class" of the indicator.</dd>
-    <dt>tooltip</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        tooltip
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Sets the attribute "title" of the indicator.</dd>
-    <dt>insertBefore</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        insertBefore
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>An id of an existing status bar indicator. The new indicator will be inserted before (i.e. to the left of) the indicator specified by this parameter.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addIndicator(id, indicator, visible, style, tooltip, insertBefore) {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);
@@ -463,7 +485,10 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>hide</h4>
+    <h4>
+        hide 
+        <a class="anchor" href="#-hide" id="-hide"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Hide the statusbar</p>
@@ -471,7 +496,9 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function hide() {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);
@@ -488,7 +515,10 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>hideBusyIndicator</h4>
+    <h4>
+        hideBusyIndicator 
+        <a class="anchor" href="#-hideBusyIndicator" id="-hideBusyIndicator"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Hides the &#39;busy&#39; indicator</p>
@@ -496,7 +526,9 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function hideBusyIndicator() {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);
@@ -517,7 +549,10 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>show</h4>
+    <h4>
+        show 
+        <a class="anchor" href="#-show" id="-show"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Show the statusbar</p>
@@ -525,7 +560,9 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function show() {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);
@@ -565,18 +602,25 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>showBusyIndicator</h4>
+    <h4>
+        showBusyIndicator 
+        <a class="anchor" href="#-showBusyIndicator" id="-showBusyIndicator"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Shows the &#39;busy&#39; indicator</p>
 </div>
     
 <dl>
-    <dt>updateCursor</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        updateCursor
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>Sets the cursor to "wait"</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function showBusyIndicator(updateCursor) {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);
@@ -595,29 +639,42 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     
     Public API
 </span>
-    <h4>updateIndicator</h4>
+    <h4>
+        updateIndicator 
+        <a class="anchor" href="#-updateIndicator" id="-updateIndicator"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Updates a status indicator</p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Registration id of the indicator to be updated.</dd>
-    <dt>visible</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        visible
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>Shows or hides the indicator over the statusbar.</dd>
-    <dt>style</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        style
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Sets the attribute "class" of the indicator.</dd>
-    <dt>tooltip</dt>
-    <span class="label label-optional pull-left">optional</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        tooltip
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Sets the attribute "title" of the indicator.</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function updateIndicator(id, visible, style, tooltip) {
         if (!_init) {
             console.error(&quot;StatusBar API invoked before status bar created&quot;);

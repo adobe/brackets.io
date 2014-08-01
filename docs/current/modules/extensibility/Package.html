@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -362,6 +366,7 @@
     
     <div><p>Functions for working with extension packages</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -392,51 +397,60 @@
     Private
     
 </span>
-    <h4>_nodeConnection</h4>
+    <h4>
+        _nodeConnection 
+        <a class="anchor" href="#-_nodeConnection" id="-_nodeConnection"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>NodeConnection</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _nodeConnection;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_nodeConnectionDeferred</h4>
+    <h4>
+        _nodeConnectionDeferred 
+        <a class="anchor" href="#-_nodeConnectionDeferred" id="-_nodeConnectionDeferred"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>jQuery.Deferred.&lt;NodeConnection&gt;</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _nodeConnectionDeferred = $.Deferred();</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_uniqueId</h4>
+    <h4>
+        _uniqueId 
+        <a class="anchor" href="#-_uniqueId" id="-_uniqueId"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>number</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _uniqueId = 0;
     
     function _extensionManagerCall(callback) {
@@ -461,7 +475,10 @@
     Private
     Public API
 </span>
-    <h4>_getNodeConnectionDeferred</h4>
+    <h4>
+        _getNodeConnectionDeferred 
+        <a class="anchor" href="#-_getNodeConnectionDeferred" id="-_getNodeConnectionDeferred"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Allows access to the deferred that manages the node connection. This
@@ -471,10 +488,12 @@ potentially break everything.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">jQuery.Deferred</dd>
+    <dt>Returns: <span class="label label-info">jQuery.Deferred</span>
+</dt>
     <dd>The deferred that manages the node connection</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getNodeConnectionDeferred() {
         return _nodeConnectionDeferred;
     }
@@ -504,6 +523,7 @@ potentially break everything.</p>
     exports._getNodeConnectionDeferred = _getNodeConnectionDeferred;
 
     exports.installFromURL = installFromURL;
+    exports.installFromPath = installFromPath;
     exports.validate = validate;
     exports.install = install;
     exports.remove = remove;
@@ -516,7 +536,10 @@ potentially break everything.</p>
     
     
 </span>
-    <h4>cancelDownload</h4>
+    <h4>
+        cancelDownload 
+        <a class="anchor" href="#-cancelDownload" id="-cancelDownload"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Attempts to synchronously cancel the given pending download. This may not be possible, e.g.
@@ -524,11 +547,15 @@ if the download has already finished.</p>
 </div>
     
 <dl>
-    <dt>downloadId</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        downloadId
+        <span class="label label-info">number</span>
+    </dt>
     <dd>Identifier previously passed to download()</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function cancelDownload(downloadId) {
         return _extensionManagerCall(function (extensionManager) {
             return extensionManager.abortDownload(downloadId);
@@ -539,7 +566,10 @@ if the download has already finished.</p>
     
     
 </span>
-    <h4>download</h4>
+    <h4>
+        download 
+        <a class="anchor" href="#-download" id="-download"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Downloads from the given URL to a temporary location. On success, resolves with the path of the
@@ -548,17 +578,23 @@ with an error object.</p>
 </div>
     
 <dl>
-    <dt>url</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        url
+        <span class="label label-info">string</span>
+    </dt>
     <dd>URL of the file to be downloaded</dd>
-    <dt>downloadId</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        downloadId
+        <span class="label label-info">number</span>
+    </dt>
     <dd>Unique number to identify this request</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function download(url, downloadId) {
         return _extensionManagerCall(function (extensionManager) {
             var d = new $.Deferred();
@@ -601,21 +637,29 @@ with an error object.</p>
     
     Public API
 </span>
-    <h4>formatError</h4>
+    <h4>
+        formatError 
+        <a class="anchor" href="#-formatError" id="-formatError"><span class="icon-link"></span></a>
+    </h4>
 
     
-    <div class="description"><p>Converts an error object as returned by install() or installFromURL() into a flattened, localized string.</p>
+    <div class="description"><p>Converts an error object as returned by install(), installFromPath() or
+installFromURL() into a flattened, localized string.</p>
 </div>
     
 <dl>
-    <dt>error</dt>
-    <dd class="label label-info pull-left">string,Array.&lt;string&gt;</dd>
+    <dt>
+        error
+        <span class="label label-info">string,Array.&lt;string&gt;</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function formatError(error) {
         function localize(key) {
             if (Strings[key]) {
@@ -637,7 +681,10 @@ with an error object.</p>
     
     
 </span>
-    <h4>githubURLFilter</h4>
+    <h4>
+        githubURLFilter 
+        <a class="anchor" href="#-githubURLFilter" id="-githubURLFilter"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Special case handling to make the common case of downloading from GitHub easier; modifies &#39;urlInfo&#39; as
@@ -646,11 +693,15 @@ master ZIP URL already, sets a nicer download filename (both cases use the repo 
 </div>
     
 <dl>
-    <dt>urlInfo</dt>
-    <dd class="label label-info pull-left">{url:string,parsed:Array.&lt;string&gt;,filenameHint:string}</dd>
+    <dt>
+        urlInfo
+        <span class="label label-info">{url:string,parsed:Array.&lt;string&gt;,filenameHint:string}</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function githubURLFilter(urlInfo) {
         if (urlInfo.parsed.hostname === &quot;github.com&quot; || urlInfo.parsed.hostname === &quot;www.github.com&quot;) {
             &#x2F;&#x2F; Is it a URL to the root of a repo? (&#x2F;user&#x2F;repo)
@@ -676,7 +727,10 @@ master ZIP URL already, sets a nicer download filename (both cases use the repo 
     
     Public API
 </span>
-    <h4>install</h4>
+    <h4>
+        install 
+        <a class="anchor" href="#-install" id="-install"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Validates and installs the package at the given path. Validation and
@@ -693,22 +747,30 @@ if there are errors. It is null if there was no package.json.</p>
 </div>
     
 <dl>
-    <dt>path</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Absolute path to the package zip file</dd>
-    <dt>nameHint</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        nameHint
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Hint for the extension folder's name (used in favor of path's filename if present, and if no package metadata present).</dd>
-    <dt>_doUpdate</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        _doUpdate
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>private argument used to signal an update</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that is resolved with information about the package (which may include errors, in which case the extension was disabled), or rejected with an error object.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function install(path, nameHint, _doUpdate) {
         return _extensionManagerCall(function (extensionManager) {
             var d                       = new $.Deferred(),
@@ -752,7 +814,78 @@ if there are errors. It is null if there was no package.json.</p>
     
     Public API
 </span>
-    <h4>installFromURL</h4>
+    <h4>
+        installFromPath 
+        <a class="anchor" href="#-installFromPath" id="-installFromPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>On success, resolves with an extension metadata object; at that point, the extension has already
+started running in Brackets. On failure (including validation errors), rejects with an error object.</p>
+<p>An error object consists of either a string error code OR an array where the first entry is the error
+code and the remaining entries are further info. The error code string is one of either
+ExtensionsDomain.Errors or Package.Errors. Use formatError() to convert an error object to a friendly,
+localized error message.</p>
+</div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Absolute path to the package zip file</dd>
+    <dt>
+        filenameHint
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Hint for the extension folder's name (used in favor of path's filename if present, and if no package metadata present).</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that is rejected if there are errors during install or the extension is disabled.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function installFromPath(path, filenameHint) {
+        var d = new $.Deferred();
+
+        install(path, filenameHint)
+            .done(function (result) {
+                var installationStatus = result.installationStatus;
+                if (installationStatus === InstallationStatuses.ALREADY_INSTALLED ||
+                        installationStatus === InstallationStatuses.NEEDS_UPDATE ||
+                        installationStatus === InstallationStatuses.SAME_VERSION ||
+                        installationStatus === InstallationStatuses.OLDER_VERSION) {
+                    d.resolve(result);
+                } else {
+                    if (result.errors &amp;&amp; result.errors.length &gt; 0) {
+                        &#x2F;&#x2F; Validation errors - for now, only return the first one
+                        d.reject(result.errors[0]);
+                    } else if (result.disabledReason) {
+                        &#x2F;&#x2F; Extension valid but left disabled (wrong API version, extension name collision, etc.)
+                        d.reject(result.disabledReason);
+                    } else {
+                        &#x2F;&#x2F; Success! Extension is now running in Brackets
+                        d.resolve(result);
+                    }
+                }
+            })
+            .fail(function (err) {
+                d.reject(err);
+            });
+
+        return d.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        installFromURL 
+        <a class="anchor" href="#-installFromURL" id="-installFromURL"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>On success, resolves with an extension metadata object; at that point, the extension has already
@@ -768,10 +901,12 @@ to cancel, the Promise is resolved or rejected normally, as if cancel() had neve
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">{promise: $.Promise,cancel: function():boolean}</dd>
+    <dt>Returns: <span class="label label-info">{promise: $.Promise,cancel: function():boolean}</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function installFromURL(url) {
         var STATE_DOWNLOADING = 1,
             STATE_INSTALLING = 2,
@@ -786,34 +921,19 @@ to cancel, the Promise is resolved or rejected normally, as if cancel() had neve
             .done(function (downloadResult) {
                 state = STATE_INSTALLING;
                 
-                install(downloadResult.localPath, downloadResult.filenameHint)
+                installFromPath(downloadResult.localPath, downloadResult.filenameHint)
                     .done(function (result) {
                         var installationStatus = result.installationStatus;
-                        if (installationStatus === InstallationStatuses.ALREADY_INSTALLED ||
-                                installationStatus === InstallationStatuses.NEEDS_UPDATE ||
-                                installationStatus === InstallationStatuses.SAME_VERSION ||
-                                installationStatus === InstallationStatuses.OLDER_VERSION) {
-                            &#x2F;&#x2F; We don&#39;t delete the file in this case, because it will be needed
-                            &#x2F;&#x2F; if the user is going to install the update.
-                            state = STATE_SUCCEEDED;
-                            result.localPath = downloadResult.localPath;
-                            d.resolve(result);
-                        } else {
+
+                        state = STATE_SUCCEEDED;
+                        result.localPath = downloadResult.localPath;
+
+                        if (installationStatus === InstallationStatuses.INSTALLED) {
+                            &#x2F;&#x2F; Delete temp file
                             FileSystem.getFileForPath(downloadResult.localPath).unlink();
-                            if (result.errors &amp;&amp; result.errors.length &gt; 0) {
-                                &#x2F;&#x2F; Validation errors - for now, only return the first one
-                                state = STATE_FAILED;
-                                d.reject(result.errors[0]);
-                            } else if (result.disabledReason) {
-                                &#x2F;&#x2F; Extension valid but left disabled (wrong API version, extension name collision, etc.)
-                                state = STATE_FAILED;
-                                d.reject(result.disabledReason);
-                            } else {
-                                &#x2F;&#x2F; Success! Extension is now running in Brackets
-                                state = STATE_SUCCEEDED;
-                                d.resolve(result);
-                            }
                         }
+
+                        d.resolve(result);
                     })
                     .fail(function (err) {
                         &#x2F;&#x2F; File IO errors, internal error in install()&#x2F;validate(), or extension startup crashed
@@ -845,7 +965,10 @@ to cancel, the Promise is resolved or rejected normally, as if cancel() had neve
     
     Public API
 </span>
-    <h4>installUpdate</h4>
+    <h4>
+        installUpdate 
+        <a class="anchor" href="#-installUpdate" id="-installUpdate"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Install an extension update located at path.
@@ -858,19 +981,31 @@ and installed packages.</p>
 </div>
     
 <dl>
-    <dt>path</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
     <dd>to package file</dd>
-    <dt>nameHint</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        nameHint
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Hint for the extension folder's name (used in favor of path's filename if present, and if no package metadata present).</dd>
+    <dt>
+        keepFile
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Flag to keep extension update, default=false</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that is resolved when the extension is successfully installed or rejected if there is a problem.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function installUpdate(path, nameHint) {
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function installUpdate(path, nameHint, keepFile) {
         var d = new $.Deferred();
         install(path, nameHint, true)
             .done(function (result) {
@@ -884,7 +1019,9 @@ and installed packages.</p>
                 d.reject(error);
             })
             .always(function () {
-                FileSystem.getFileForPath(path).unlink();
+                if (!keepFile) {
+                    FileSystem.getFileForPath(path).unlink();
+                }
             });
         return d.promise();
     }</code></pre></div><div class="member public">
@@ -893,21 +1030,28 @@ and installed packages.</p>
     
     Public API
 </span>
-    <h4>remove</h4>
+    <h4>
+        remove 
+        <a class="anchor" href="#-remove" id="-remove"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Removes the extension at the given path.</p>
 </div>
     
 <dl>
-    <dt>path</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The absolute path to the extension to remove.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that's resolved when the extension is removed, or rejected if there was an error.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function remove(path) {
         return _extensionManagerCall(function (extensionManager) {
             return extensionManager.remove(path);
@@ -918,7 +1062,10 @@ and installed packages.</p>
     
     Public API
 </span>
-    <h4>validate</h4>
+    <h4>
+        validate 
+        <a class="anchor" href="#-validate" id="-validate"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>TODO: can this go away now that we never call it directly?</p>
@@ -931,17 +1078,23 @@ if there are errors or null if the extension did not include package.json.</p>
 </div>
     
 <dl>
-    <dt>Absolute</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        Absolute
+        <span class="label label-info">string</span>
+    </dt>
     <dd>path to the package zip file</dd>
-    <dt>validation</dt>
-    <dd class="label label-info pull-left">{requirePackageJSON: ?boolean}</dd>
+    <dt>
+        validation
+        <span class="label label-info">{requirePackageJSON: ?boolean}</span>
+    </dt>
     <dd>options</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise that is resolved with information about the package</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function validate(path, options) {
         return _extensionManagerCall(function (extensionManager) {
             var d = new $.Deferred();

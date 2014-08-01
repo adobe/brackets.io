@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -431,6 +435,7 @@ To register a binary language the isBinary flag must be set, i.e.</p>
     isBinary: true    
 });
 </code></pre></div>
+    
 </section>
 
 <section id="dependencies">
@@ -459,22 +464,29 @@ To register a binary language the isBinary flag must be set, i.e.</p>
     Private
     
 </span>
-    <h4>_getLanguageForMode</h4>
+    <h4>
+        _getLanguageForMode 
+        <a class="anchor" href="#-_getLanguageForMode" id="-_getLanguageForMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Resolves a CodeMirror mode to a Language object.</p>
 </div>
     
 <dl>
-    <dt>mode</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        mode
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>CodeMirror mode</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>Returns: <span class="label label-info">Language</span>
+</dt>
     <dd>The language for the provided mode or the fallback language</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getLanguageForMode(mode) {
         var language = _modeToLanguageMap[mode];
         if (language) {
@@ -490,7 +502,10 @@ To register a binary language the isBinary flag must be set, i.e.</p>
     Private
     
 </span>
-    <h4>_patchCodeMirror</h4>
+    <h4>
+        _patchCodeMirror 
+        <a class="anchor" href="#-_patchCodeMirror" id="-_patchCodeMirror"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Monkey-patch CodeMirror to prevent modes from being overwritten by extensions.
@@ -499,7 +514,9 @@ We may rely on the tokens provided by some of these modes.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _patchCodeMirror() {
         var _original_CodeMirror_defineMode = CodeMirror.defineMode;
         function _wrapped_CodeMirror_defineMode(name) {
@@ -510,26 +527,57 @@ We may rely on the tokens provided by some of these modes.</p>
             _original_CodeMirror_defineMode.apply(CodeMirror, arguments);
         }
         CodeMirror.defineMode = _wrapped_CodeMirror_defineMode;
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _resetLanguageOverrides 
+        <a class="anchor" href="#-_resetLanguageOverrides" id="-_resetLanguageOverrides"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Resets all the language overrides for file paths. Used by unit tests only.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _resetLanguageOverrides() {
+        _filePathToLanguageMap = {};
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_restoreOverriddenDefault</h4>
+    <h4>
+        _restoreOverriddenDefault 
+        <a class="anchor" href="#-_restoreOverriddenDefault" id="-_restoreOverriddenDefault"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>name</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Extension or filename that should be restored</dd>
-    <dt>prefState</dt>
-    <dd class="label label-info pull-left">{overridden: string,add: string}</dd>
+    <dt>
+        prefState
+        <span class="label label-info">{overridden: string,add: string}</span>
+    </dt>
     <dd>object for the pref that is currently being updated</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _restoreOverriddenDefault(name, state) {
         if (state.overridden[name]) {
             var language = getLanguage(state.overridden[name]);
@@ -542,23 +590,32 @@ We may rely on the tokens provided by some of these modes.</p>
     Private
     
 </span>
-    <h4>_setLanguageForMode</h4>
+    <h4>
+        _setLanguageForMode 
+        <a class="anchor" href="#-_setLanguageForMode" id="-_setLanguageForMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Adds a global mode-to-language association.</p>
 </div>
     
 <dl>
-    <dt>mode</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        mode
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The mode to associate the language with</dd>
-    <dt>language</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>
+        language
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Language</span>
+    </dt>
     <dd>The language to associate with the mode</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _setLanguageForMode(mode, language) {
         if (_modeToLanguageMap[mode]) {
             console.warn(&quot;CodeMirror mode \&quot;&quot; + mode + &quot;\&quot; is already used by language &quot; + _modeToLanguageMap[mode]._name + &quot; - cannot fully register language &quot; + language._name +
@@ -567,24 +624,70 @@ We may rely on the tokens provided by some of these modes.</p>
         }
 
         _modeToLanguageMap[mode] = language;
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _setLanguageOverrideForPath 
+        <a class="anchor" href="#-_setLanguageOverrideForPath" id="-_setLanguageOverrideForPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds a language mapping for the specified fullPath. If language is falsy (null or undefined), the mapping
+is removed.</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">fullPath</span>
+    </dt>
+    <dd>absolute path of the file</dd>
+    <dt>
+        language
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>language to associate the file with or falsy value to remove the existing mapping</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _setLanguageOverrideForPath(fullPath, language) {
+        if (!language) {
+            delete _filePathToLanguageMap[fullPath];
+        } else {
+            _filePathToLanguageMap[fullPath] = language;
+        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_triggerLanguageAdded</h4>
+    <h4>
+        _triggerLanguageAdded 
+        <a class="anchor" href="#-_triggerLanguageAdded" id="-_triggerLanguageAdded"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>language</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>
+        language
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Language</span>
+    </dt>
     <dd>The new language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _triggerLanguageAdded(language) {
         &#x2F;&#x2F; finally, store language to _language map
         _languages[language.getId()] = language;
@@ -595,18 +698,25 @@ We may rely on the tokens provided by some of these modes.</p>
     Private
     
 </span>
-    <h4>_triggerLanguageModified</h4>
+    <h4>
+        _triggerLanguageModified 
+        <a class="anchor" href="#-_triggerLanguageModified" id="-_triggerLanguageModified"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>language</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>
+        language
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Language</span>
+    </dt>
     <dd>The modified language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _triggerLanguageModified(language) {
         $(exports).triggerHandler(&quot;languageModified&quot;, [language]);
     }</code></pre></div><div class="member private">
@@ -615,14 +725,19 @@ We may rely on the tokens provided by some of these modes.</p>
     Private
     
 </span>
-    <h4>_updateFromPrefs</h4>
+    <h4>
+        _updateFromPrefs 
+        <a class="anchor" href="#-_updateFromPrefs" id="-_updateFromPrefs"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateFromPrefs(pref) {
         var newMapping = PreferencesManager.get(pref) || {},
             newNames = Object.keys(newMapping),
@@ -733,22 +848,31 @@ We may rely on the tokens provided by some of these modes.</p>
     });
     
     &#x2F;&#x2F; Private for unit tests
-    exports._EXTENSION_MAP_PREF     = _EXTENSION_MAP_PREF;
-    exports._NAME_MAP_PREF          = _NAME_MAP_PREF;
+    exports._EXTENSION_MAP_PREF         = _EXTENSION_MAP_PREF;
+    exports._NAME_MAP_PREF              = _NAME_MAP_PREF;
+    exports._resetLanguageOverrides     = _resetLanguageOverrides;
+    &#x2F;&#x2F; Internal use only
+    &#x2F;&#x2F; _setLanguageOverrideForPath is used by Document to help LanguageManager keeping track of
+    &#x2F;&#x2F; in-document language overrides
+    exports._setLanguageOverrideForPath  = _setLanguageOverrideForPath;
     
     &#x2F;&#x2F; Public methods
-    exports.ready                   = _ready;
-    exports.defineLanguage          = defineLanguage;
-    exports.getLanguage             = getLanguage;
-    exports.getLanguageForExtension = getLanguageForExtension;
-    exports.getLanguageForPath      = getLanguageForPath;
+    exports.ready                       = _ready;
+    exports.defineLanguage              = defineLanguage;
+    exports.getLanguage                 = getLanguage;
+    exports.getLanguageForExtension     = getLanguageForExtension;
+    exports.getLanguageForPath          = getLanguageForPath;
+    exports.getLanguages                = getLanguages;
 });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_validateNonEmptyString</h4>
+    <h4>
+        _validateNonEmptyString 
+        <a class="anchor" href="#-_validateNonEmptyString" id="-_validateNonEmptyString"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Checks whether value is a non-empty string. Reports an error otherwise.
@@ -757,22 +881,30 @@ Otherwise the deferred is rejected with the error message.</p>
 </div>
     
 <dl>
-    <dt>value</dt>
-    <dd class="label label-info pull-left">*</dd>
+    <dt>
+        value
+        <span class="label label-info">*</span>
+    </dt>
     <dd>The value to validate</dd>
-    <dt>description</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        description
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>A helpful identifier for value</dd>
-    <dt>deferred</dt>
-    <span class="label label-nullable pull-left">nullable</span>
-    <dd class="label label-info pull-left">jQuery.Deferred</dd>
+    <dt>
+        deferred
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">jQuery.Deferred</span>
+    </dt>
     <dd>A deferred to reject with the error message in case of an error</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>True if the value is a non-empty string, false otherwise</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _validateNonEmptyString(value, description, deferred) {
         var reportError = deferred ? deferred.reject : console.error;
         
@@ -792,45 +924,66 @@ Otherwise the deferred is rejected with the error message.</p>
     
     Public API
 </span>
-    <h4>defineLanguage</h4>
+    <h4>
+        defineLanguage 
+        <a class="anchor" href="#-defineLanguage" id="-defineLanguage"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Defines a language.</p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Unique identifier for this language: lowercase letters, digits, and _ separators (e.g. "cpp", "foo_bar", "c99")</dd>
-    <dt>definition</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        definition
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>An object describing the language</dd>
-    <dt>definition.name</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        definition.name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Human-readable name of the language, as it's commonly referred to (e.g. "C++")</dd>
-    <dt>definition.fileExtensions</dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>
+        definition.fileExtensions
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
     <dd>List of file extensions used by this language (e.g. ["php", "php3"] or ["coffee.md"] - may contain dots)</dd>
-    <dt>definition.fileNames</dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>
+        definition.fileNames
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
     <dd>List of exact file names (e.g. ["Makefile"] or ["package.json]). Higher precedence than file extension.</dd>
-    <dt>definition.blockComment</dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>
+        definition.blockComment
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
     <dd>Array with two entries defining the block comment prefix and suffix (e.g. ["<!--", "-->"])</dd>
-    <dt>definition.lineComment</dt>
-    <dd class="label label-info pull-left">(string,Array.&lt;string&gt;)</dd>
+    <dt>
+        definition.lineComment
+        <span class="label label-info">(string,Array.&lt;string&gt;)</span>
+    </dt>
     <dd>Line comment prefixes (e.g. "//" or ["//", "#"])</dd>
-    <dt>definition.mode</dt>
-    <dd class="label label-info pull-left">(string,Array.&lt;string&gt;)</dd>
+    <dt>
+        definition.mode
+        <span class="label label-info">(string,Array.&lt;string&gt;)</span>
+    </dt>
     <dd>CodeMirror mode (e.g. "htmlmixed"), optionally with a MIME mode defined by that mode ["clike", "text/x-c++src"] Unless the mode is located in thirdparty/CodeMirror2/mode/<name>/<name>.js, you need to first load it yourself. </dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise object that will be resolved with a Language object</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function defineLanguage(id, definition) {
         var result = new $.Deferred();
         
@@ -918,7 +1071,10 @@ Otherwise the deferred is rejected with the error message.</p>
     
     Public API
 </span>
-    <h4>getLanguage</h4>
+    <h4>
+        getLanguage 
+        <a class="anchor" href="#-getLanguage" id="-getLanguage"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Resolves a language ID to a Language object.
@@ -926,15 +1082,19 @@ File names have a higher priority than file extensions. </p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Identifier for this language: lowercase letters, digits, and _ separators (e.g. "cpp", "foo_bar", "c99")</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>Returns: <span class="label label-info">Language</span>
+</dt>
     <dd>The language with the provided identifier or undefined</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getLanguage(id) {
         return _languages[id];
     }</code></pre></div><div class="member public">
@@ -943,22 +1103,29 @@ File names have a higher priority than file extensions. </p>
     
     Public API
 </span>
-    <h4>getLanguageForExtension</h4>
+    <h4>
+        getLanguageForExtension 
+        <a class="anchor" href="#-getLanguageForExtension" id="-getLanguageForExtension"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Resolves a language to a file extension</p>
 </div>
     
 <dl>
-    <dt>extension</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        extension
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Extension that language should be resolved for</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">?Language</dd>
+    <dt>Returns: <span class="label label-info">?Language</span>
+</dt>
     <dd>The language for the provided extension or null if none exists</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getLanguageForExtension(extension) {
         return _fileExtensionToLanguageMap[extension.toLowerCase()];
     }</code></pre></div><div class="member public">
@@ -967,28 +1134,49 @@ File names have a higher priority than file extensions. </p>
     
     Public API
 </span>
-    <h4>getLanguageForPath</h4>
+    <h4>
+        getLanguageForPath 
+        <a class="anchor" href="#-getLanguageForPath" id="-getLanguageForPath"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Resolves a file path to a Language object.</p>
 </div>
     
 <dl>
-    <dt>path</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        path
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Path to the file to find a language for</dd>
+    <dt>
+        ignoreOverride
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>If set to true will cause the lookup to ignore any overrides and return default binding. By default override is not ignored. </dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>Returns: <span class="label label-info">Language</span>
+</dt>
     <dd>The language for the provided file type or the fallback language</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getLanguageForPath(path) {
-        var fileName = FileUtils.getBaseName(path).toLowerCase(),
-            language = _fileNameToLanguageMap[fileName],
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getLanguageForPath(path, ignoreOverride) {
+        var fileName,
+            language = _filePathToLanguageMap[path],
             extension,
             parts;
-
+        
+        &#x2F;&#x2F; if there&#39;s an override, return it
+        if (!ignoreOverride &amp;&amp; language) {
+            return language;
+        }
+        
+        fileName = FileUtils.getBaseName(path).toLowerCase();
+        language = _fileNameToLanguageMap[fileName];
+        
         &#x2F;&#x2F; If no language was found for the file name, use the file extension instead
         if (!language) {
             &#x2F;&#x2F; Split the file name into parts:
@@ -1033,6 +1221,32 @@ File names have a higher priority than file extensions. </p>
         }
         
         return language || _fallbackLanguage;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getLanguages 
+        <a class="anchor" href="#-getLanguages" id="-getLanguages"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns a map of all the languages currently defined in the LanguageManager. The key to
+the map is the language id and the value is the language object.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object.&lt;string,Language&gt;</span>
+</dt>
+    <dd>A map containing all of the languages currently defined.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getLanguages() {
+        return $.extend({}, _languages); &#x2F;&#x2F; copy to prevent modification
     }</code></pre></div>
 </section>
 
@@ -1045,12 +1259,17 @@ File names have a higher priority than file extensions. </p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>Language</h4>
+            <h4>
+                Language
+                
+            </h4>
+            
             <em><p>Model for a language.</p>
 </em>
             
             <dl>
             </dl>
+          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function Language() {
@@ -1074,162 +1293,189 @@ File names have a higher priority than file extensions. </p>
     Private
     
 </span>
-    <h4>_blockCommentSyntax</h4>
+    <h4>
+        _blockCommentSyntax 
+        <a class="anchor" href="#Language-_blockCommentSyntax" id="Language-_blockCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Block comment syntax</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>{ prefix: string, suffix: string }</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Block comment syntax</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._blockCommentSyntax = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_fileExtensions</h4>
+    <h4>
+        _fileExtensions 
+        <a class="anchor" href="#Language-_fileExtensions" id="Language-_fileExtensions"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>File extensions that use this language</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;string&gt;</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>File extensions that use this language</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._fileExtensions = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_fileNames</h4>
+    <h4>
+        _fileNames 
+        <a class="anchor" href="#Language-_fileNames" id="Language-_fileNames"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>File names for extensionless files that use this language</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;string&gt;</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>File names for extensionless files that use this language</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._fileNames = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_id</h4>
+    <h4>
+        _id 
+        <a class="anchor" href="#Language-_id" id="Language-_id"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Identifier for this language</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>string</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Identifier for this language</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._id = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_isBinary</h4>
+    <h4>
+        _isBinary 
+        <a class="anchor" href="#Language-_isBinary" id="Language-_isBinary"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Whether or not the language is binary</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Whether or not the language is binary</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._isBinary = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_lineCommentSyntax</h4>
+    <h4>
+        _lineCommentSyntax 
+        <a class="anchor" href="#Language-_lineCommentSyntax" id="Language-_lineCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Line comment syntax</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;string&gt;</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Line comment syntax</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._lineCommentSyntax = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_mode</h4>
+    <h4>
+        _mode 
+        <a class="anchor" href="#Language-_mode" id="Language-_mode"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>CodeMirror mode for this language</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>string</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>CodeMirror mode for this language</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._mode = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_modeToLanguageMap</h4>
+    <h4>
+        _modeToLanguageMap 
+        <a class="anchor" href="#Language-_modeToLanguageMap" id="Language-_modeToLanguageMap"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Which language to use for what CodeMirror mode</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Object.&lt;string, Language&gt;</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Which language to use for what CodeMirror mode</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._modeToLanguageMap = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_name</h4>
+    <h4>
+        _name 
+        <a class="anchor" href="#Language-_name" id="Language-_name"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Human-readable name of this language</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>string</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Human-readable name of this language</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._name = null;</code></pre></div>
         </section>
 
@@ -1246,21 +1492,28 @@ File names have a higher priority than file extensions. </p>
     Private
     
 </span>
-    <h4>_loadAndSetMode</h4>
+    <h4>
+        _loadAndSetMode 
+        <a class="anchor" href="#Language-_loadAndSetMode" id="Language-_loadAndSetMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Loads a mode and sets it for this language.</p>
 </div>
     
 <dl>
-    <dt>mode</dt>
-    <dd class="label label-info pull-left">(string,Array.&lt;string&gt;)</dd>
+    <dt>
+        mode
+        <span class="label label-info">(string,Array.&lt;string&gt;)</span>
+    </dt>
     <dd>CodeMirror mode (e.g. "htmlmixed"), optionally paired with a MIME mode defined by that mode (e.g. ["clike", "text/x-c++src"]). Unless the mode is located in thirdparty/CodeMirror2/mode/<name>/<name>.js, you need to first load it yourself.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>A promise object that will be resolved when the mode is loaded and set</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._loadAndSetMode = function (mode) {
         var result      = new $.Deferred(),
             self        = this,
@@ -1317,19 +1570,26 @@ File names have a higher priority than file extensions. </p>
     Private
     
 </span>
-    <h4>_setBinary</h4>
+    <h4>
+        _setBinary 
+        <a class="anchor" href="#Language-_setBinary" id="Language-_setBinary"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets whether or not the language is binary</p>
 </div>
     
 <dl>
-    <dt>isBinary</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        isBinary
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._setBinary = function (isBinary) {
         this._isBinary = isBinary;
     };</code></pre></div><div class="member private">
@@ -1338,22 +1598,29 @@ File names have a higher priority than file extensions. </p>
     Private
     
 </span>
-    <h4>_setId</h4>
+    <h4>
+        _setId 
+        <a class="anchor" href="#Language-_setId" id="Language-_setId"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the identifier for this language or prints an error to the console.</p>
 </div>
     
 <dl>
-    <dt>id</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Identifier for this language: lowercase letters, digits, and _ separators (e.g. "cpp", "foo_bar", "c99")</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether the ID was valid and set or not</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._setId = function (id) {
         if (!_validateNonEmptyString(id, &quot;Language ID&quot;)) {
             return false;
@@ -1373,7 +1640,10 @@ File names have a higher priority than file extensions. </p>
     Private
     
 </span>
-    <h4>_setLanguageForMode</h4>
+    <h4>
+        _setLanguageForMode 
+        <a class="anchor" href="#Language-_setLanguageForMode" id="Language-_setLanguageForMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Overrides a mode-to-language association for this particular language only or prints an error to the console.
@@ -1381,19 +1651,25 @@ Used to disambiguate modes used by multiple languages.</p>
 </div>
     
 <dl>
-    <dt>mode</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        mode
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The mode to associate the language with</dd>
-    <dt>language</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>
+        language
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Language</span>
+    </dt>
     <dd>The language to associate with the mode</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether the mode-to-language association was valid and set or not</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._setLanguageForMode = function (mode, language) {
         if (mode === this._mode &amp;&amp; language !== this) {
             console.error(&quot;A language must always map its mode to itself&quot;);
@@ -1410,22 +1686,29 @@ Used to disambiguate modes used by multiple languages.</p>
     Private
     
 </span>
-    <h4>_setName</h4>
+    <h4>
+        _setName 
+        <a class="anchor" href="#Language-_setName" id="Language-_setName"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the human-readable name of this language or prints an error to the console.</p>
 </div>
     
 <dl>
-    <dt>name</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Human-readable name of the language, as it's commonly referred to (e.g. "C++")</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether the name was valid and set or not</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._setName = function (name) {
         if (!_validateNonEmptyString(name, &quot;name&quot;)) {
             return false;
@@ -1439,7 +1722,10 @@ Used to disambiguate modes used by multiple languages.</p>
     Private
     
 </span>
-    <h4>_wasModified</h4>
+    <h4>
+        _wasModified 
+        <a class="anchor" href="#Language-_wasModified" id="Language-_wasModified"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Trigger the &quot;languageModified&quot; event if this language is registered already</p>
@@ -1447,7 +1733,9 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype._wasModified = function () {
         if (_languages[this._id]) {
             _triggerLanguageModified(this);
@@ -1458,19 +1746,26 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>addFileExtension</h4>
+    <h4>
+        addFileExtension 
+        <a class="anchor" href="#Language-addFileExtension" id="Language-addFileExtension"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Adds one or more file extensions to this language.</p>
 </div>
     
 <dl>
-    <dt>extension</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string, Array.&lt;string&gt;</dd>
+    <dt>
+        extension
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string, Array.&lt;string&gt;</span>
+    </dt>
     <dd>A file extension (or array thereof) used by this language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.addFileExtension = function (extension) {
         if (Array.isArray(extension)) {
             extension.forEach(this._addFileExtension.bind(this));
@@ -1505,19 +1800,26 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>addFileName</h4>
+    <h4>
+        addFileName 
+        <a class="anchor" href="#Language-addFileName" id="Language-addFileName"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Adds one or more file names to the language which is used to match files that don&#39;t have extensions like &quot;Makefile&quot; for example.</p>
 </div>
     
 <dl>
-    <dt>extension</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string, Array.&lt;string&gt;</dd>
+    <dt>
+        extension
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string, Array.&lt;string&gt;</span>
+    </dt>
     <dd>An extensionless file name (or array thereof) used by this language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.addFileName = function (name) {
         if (Array.isArray(name)) {
             name.forEach(this._addFileName.bind(this));
@@ -1547,7 +1849,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getBlockCommentPrefix</h4>
+    <h4>
+        getBlockCommentPrefix 
+        <a class="anchor" href="#Language-getBlockCommentPrefix" id="Language-getBlockCommentPrefix"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the prefix to use for block comments.</p>
@@ -1555,10 +1860,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The prefix</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getBlockCommentPrefix = function () {
         return this._blockCommentSyntax &amp;&amp; this._blockCommentSyntax.prefix;
     };</code></pre></div><div class="member">
@@ -1567,7 +1874,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getBlockCommentSuffix</h4>
+    <h4>
+        getBlockCommentSuffix 
+        <a class="anchor" href="#Language-getBlockCommentSuffix" id="Language-getBlockCommentSuffix"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the suffix to use for block comments.</p>
@@ -1575,10 +1885,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The suffix</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getBlockCommentSuffix = function () {
         return this._blockCommentSyntax &amp;&amp; this._blockCommentSyntax.suffix;
     };</code></pre></div><div class="member">
@@ -1587,7 +1899,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getFileExtensions</h4>
+    <h4>
+        getFileExtensions 
+        <a class="anchor" href="#Language-getFileExtensions" id="Language-getFileExtensions"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns an array of file extensions for this language.</p>
@@ -1595,10 +1910,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
     <dd>File extensions used by this language</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getFileExtensions = function () {
         &#x2F;&#x2F; Use concat to create a copy of this array, preventing external modification
         return this._fileExtensions.concat();
@@ -1608,7 +1925,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getFileNames</h4>
+    <h4>
+        getFileNames 
+        <a class="anchor" href="#Language-getFileNames" id="Language-getFileNames"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns an array of file names for extensionless files that use this language.</p>
@@ -1616,10 +1936,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
     <dd>Extensionless file names used by this language</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getFileNames = function () {
         &#x2F;&#x2F; Use concat to create a copy of this array, preventing external modification
         return this._fileNames.concat();
@@ -1629,7 +1951,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getId</h4>
+    <h4>
+        getId 
+        <a class="anchor" href="#Language-getId" id="Language-getId"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the identifier for this language.</p>
@@ -1637,10 +1962,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The identifier</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getId = function () {
         return this._id;
     };</code></pre></div><div class="member">
@@ -1649,7 +1976,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getLanguageForMode</h4>
+    <h4>
+        getLanguageForMode 
+        <a class="anchor" href="#Language-getLanguageForMode" id="Language-getLanguageForMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns either a language associated with the mode or the fallback language.
@@ -1657,15 +1987,19 @@ Used to disambiguate modes used by multiple languages.</p>
 </div>
     
 <dl>
-    <dt>mode</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        mode
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The mode to associate the language with</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Language</dd>
+    <dt>Returns: <span class="label label-info">Language</span>
+</dt>
     <dd>This language if it uses the mode, or whatever {@link LanguageManager#_getLanguageForMode} returns</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getLanguageForMode = function (mode) {
         if (mode === this._mode) {
             return this;
@@ -1677,7 +2011,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getLineCommentPrefixes</h4>
+    <h4>
+        getLineCommentPrefixes 
+        <a class="anchor" href="#Language-getLineCommentPrefixes" id="Language-getLineCommentPrefixes"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns an array of prefixes to use for line comments.</p>
@@ -1685,10 +2022,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
     <dd>The prefixes</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getLineCommentPrefixes = function () {
         return this._lineCommentSyntax;
     };</code></pre></div><div class="member">
@@ -1697,7 +2036,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getMode</h4>
+    <h4>
+        getMode 
+        <a class="anchor" href="#Language-getMode" id="Language-getMode"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the CodeMirror mode for this language.</p>
@@ -1705,10 +2047,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The mode</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getMode = function () {
         return this._mode;
     };</code></pre></div><div class="member">
@@ -1717,7 +2061,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>getName</h4>
+    <h4>
+        getName 
+        <a class="anchor" href="#Language-getName" id="Language-getName"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns the human-readable name of this language.</p>
@@ -1725,10 +2072,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
     <dd>The name</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.getName = function () {
         return this._name;
     };</code></pre></div><div class="member">
@@ -1737,7 +2086,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>hasBlockCommentSyntax</h4>
+    <h4>
+        hasBlockCommentSyntax 
+        <a class="anchor" href="#Language-hasBlockCommentSyntax" id="Language-hasBlockCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns whether the block comment syntax is defined for this language.</p>
@@ -1745,10 +2097,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether block comments are supported</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.hasBlockCommentSyntax = function () {
         return Boolean(this._blockCommentSyntax);
     };</code></pre></div><div class="member">
@@ -1757,7 +2111,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>hasLineCommentSyntax</h4>
+    <h4>
+        hasLineCommentSyntax 
+        <a class="anchor" href="#Language-hasLineCommentSyntax" id="Language-hasLineCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns whether the line comment syntax is defined for this language.</p>
@@ -1765,10 +2122,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether line comments are supported</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.hasLineCommentSyntax = function () {
         return this._lineCommentSyntax.length &gt; 0;
     };</code></pre></div><div class="member">
@@ -1777,7 +2136,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>isBinary</h4>
+    <h4>
+        isBinary 
+        <a class="anchor" href="#Language-isBinary" id="Language-isBinary"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Indicates whether or not the language is binary (e.g., image or audio).</p>
@@ -1785,10 +2147,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.isBinary = function () {
         return this._isBinary;
     };</code></pre></div><div class="member">
@@ -1797,7 +2161,10 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>isFallbackLanguage</h4>
+    <h4>
+        isFallbackLanguage 
+        <a class="anchor" href="#Language-isFallbackLanguage" id="Language-isFallbackLanguage"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Determines whether this is the fallback language or not</p>
@@ -1805,10 +2172,12 @@ Used to disambiguate modes used by multiple languages.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>True if this is the fallback language, false otherwise</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.isFallbackLanguage = function () {
         return this === _fallbackLanguage;
     };</code></pre></div><div class="member">
@@ -1817,19 +2186,26 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>removeFileExtension</h4>
+    <h4>
+        removeFileExtension 
+        <a class="anchor" href="#Language-removeFileExtension" id="Language-removeFileExtension"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Unregisters one or more file extensions from this language.</p>
 </div>
     
 <dl>
-    <dt>extension</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string, Array.&lt;string&gt;</dd>
+    <dt>
+        extension
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string, Array.&lt;string&gt;</span>
+    </dt>
     <dd>File extension (or array thereof) to stop using for this language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.removeFileExtension = function (extension) {
         if (Array.isArray(extension)) {
             extension.forEach(this._removeFileExtension.bind(this));
@@ -1860,19 +2236,26 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>removeFileName</h4>
+    <h4>
+        removeFileName 
+        <a class="anchor" href="#Language-removeFileName" id="Language-removeFileName"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Unregisters one or more file names from this language.</p>
 </div>
     
 <dl>
-    <dt>extension</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string, Array.&lt;string&gt;</dd>
+    <dt>
+        extension
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string, Array.&lt;string&gt;</span>
+    </dt>
     <dd>An extensionless file name (or array thereof) used by this language</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.removeFileName = function (name) {
         if (Array.isArray(name)) {
             name.forEach(this._removeFileName.bind(this));
@@ -1898,26 +2281,35 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>setBlockCommentSyntax</h4>
+    <h4>
+        setBlockCommentSyntax 
+        <a class="anchor" href="#Language-setBlockCommentSyntax" id="Language-setBlockCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the prefix and suffix to use for blocks comments in this language or prints an error to the console.</p>
 </div>
     
 <dl>
-    <dt>prefix</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        prefix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Prefix string to use for block comments (e.g. "<!--")</dd>
-    <dt>suffix</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        suffix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Suffix string to use for block comments (e.g. "-->")</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether the syntax was valid and set or not</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.setBlockCommentSyntax = function (prefix, suffix) {
         if (!_validateNonEmptyString(prefix, &quot;prefix&quot;) || !_validateNonEmptyString(suffix, &quot;suffix&quot;)) {
             return false;
@@ -1933,22 +2325,29 @@ Used to disambiguate modes used by multiple languages.</p>
     
     
 </span>
-    <h4>setLineCommentSyntax</h4>
+    <h4>
+        setLineCommentSyntax 
+        <a class="anchor" href="#Language-setLineCommentSyntax" id="Language-setLineCommentSyntax"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the prefixes to use for line comments in this language or prints an error to the console.</p>
 </div>
     
 <dl>
-    <dt>prefix</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">(string, Array.&lt;string&gt;)</dd>
+    <dt>
+        prefix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">(string, Array.&lt;string&gt;)</span>
+    </dt>
     <dd>Prefix string or an array of prefix strings to use for line comments (e.g. "//" or ["//", "#"])</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
     <dd>Whether the syntax was valid and set or not</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.setLineCommentSyntax = function (prefix) {
         var prefixes = Array.isArray(prefix) ? prefix : [prefix];
         var i;

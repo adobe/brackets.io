@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (145)</h2>
+            <h2 class="number-of-modules">Modules (149)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -306,6 +306,7 @@
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
               <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
               <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
@@ -327,6 +328,9 @@
             </ul>
             <ul id="package_view" class="nav nav-list">
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
             </ul>
             <ul class="nav nav-list package-list">
@@ -371,6 +375,7 @@ the disk to check every open Document&#39;s timestamp every time.</p>
 <p>FUTURE: Whenever we have a &#39;project file tree model,&#39; we should manipulate that instead of notifying
 DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to that model for changes.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -405,101 +410,119 @@ DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to 
     Private
     
 </span>
-    <h4>_alreadyChecking</h4>
+    <h4>
+        _alreadyChecking 
+        <a class="anchor" href="#-_alreadyChecking" id="-_alreadyChecking"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Guard to spot re-entrancy while syncOpenDocuments() is still in progress</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>Guard to spot re-entrancy while syncOpenDocuments() is still in progress</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _alreadyChecking = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>_restartPending</h4>
+    <h4>
+        _restartPending 
+        <a class="anchor" href="#-_restartPending" id="-_restartPending"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>If true, we should bail from the syncOpenDocuments() process and then re-run it. See
+comments in syncOpenDocuments() for how this works.</p>
+</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
     <dt>Private</dt>
-</dl>
-    <div class="description"><p>If true, we should bail from the syncOpenDocuments() process and then re-run it. See
-comments in syncOpenDocuments() for how this works.</p>
-</div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _restartPending = false;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>deleteConflicts</h4>
+    <h4>
+        deleteConflicts 
+        <a class="anchor" href="#-deleteConflicts" id="-deleteConflicts"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;{doc: Document, fileTime: number}&gt;</dd>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var deleteConflicts;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>editConflicts</h4>
+    <h4>
+        editConflicts 
+        <a class="anchor" href="#-editConflicts" id="-editConflicts"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;{doc: Document, fileTime: number}&gt;</dd>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var editConflicts;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>toClose</h4>
+    <h4>
+        toClose 
+        <a class="anchor" href="#-toClose" id="-toClose"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;Document&gt;</dd>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var toClose;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>toReload</h4>
+    <h4>
+        toReload 
+        <a class="anchor" href="#-toReload" id="-toReload"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>Array.&lt;Document&gt;</dd>
-</dl>
-    <div class="description"></div>
-
-<button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var toReload;</code></pre></div>
 </section>
 
@@ -516,7 +539,10 @@ comments in syncOpenDocuments() for how this works.</p>
     
     
 </span>
-    <h4>closeDeletedDocs</h4>
+    <h4>
+        closeDeletedDocs 
+        <a class="anchor" href="#-closeDeletedDocs" id="-closeDeletedDocs"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Closes all the documents in &quot;toClose&quot; silently (no prompts). Completes synchronously.</p>
@@ -524,7 +550,9 @@ comments in syncOpenDocuments() for how this works.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function closeDeletedDocs() {
         toClose.forEach(function (doc) {
             DocumentManager.notifyFileDeleted(doc.file);
@@ -535,7 +563,10 @@ comments in syncOpenDocuments() for how this works.</p>
     
     
 </span>
-    <h4>findExternalChanges</h4>
+    <h4>
+        findExternalChanges 
+        <a class="anchor" href="#-findExternalChanges" id="-findExternalChanges"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Scans all the given Documents for changes on disk, and sorts them into four buckets,
@@ -547,15 +578,19 @@ populating the corresponding arrays:
 </div>
     
 <dl>
-    <dt>docs</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Array.&lt;Document&gt;</dd>
+    <dt>
+        docs
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;Document&gt;</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>Resolved when all scanning done, or rejected immediately if there's any error while reading file timestamps. Errors are logged but no UI is shown.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findExternalChanges(docs) {
 
         toReload = [];
@@ -632,7 +667,10 @@ populating the corresponding arrays:
     
     
 </span>
-    <h4>presentConflicts</h4>
+    <h4>
+        presentConflicts 
+        <a class="anchor" href="#-presentConflicts" id="-presentConflicts"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Walks through all the documents in &quot;editConflicts&quot; &amp; &quot;deleteConflicts&quot; and prompts the user
@@ -641,14 +679,18 @@ prompt is not shown until after the reload has completed.</p>
 </div>
     
 <dl>
-    <dt>title</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        title
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Title of the dialog.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>Resolved/rejected after all documents have been prompted and (if applicable) reloaded (and any resulting error UI has been dismissed). Rejected if any one reload failed.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function presentConflicts(title) {
         
         var allConflicts = editConflicts.concat(deleteConflicts);
@@ -767,7 +809,10 @@ prompt is not shown until after the reload has completed.</p>
     
     
 </span>
-    <h4>reloadChangedDocs</h4>
+    <h4>
+        reloadChangedDocs 
+        <a class="anchor" href="#-reloadChangedDocs" id="-reloadChangedDocs"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Reloads all the documents in &quot;toReload&quot; silently (no prompts). The operations are all run
@@ -776,10 +821,12 @@ in parallel.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>Resolved/rejected after all reloads done; will be rejected if any one file's reload failed. Errors are logged (by reloadDoc()) but no UI is shown.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function reloadChangedDocs() {
         &#x2F;&#x2F; Reload each doc in turn, and once all are (async) done, signal that we&#39;re done
         return Async.doInParallel(toReload, reloadDoc, false);
@@ -789,22 +836,29 @@ in parallel.</p>
     
     
 </span>
-    <h4>reloadDoc</h4>
+    <h4>
+        reloadDoc 
+        <a class="anchor" href="#-reloadDoc" id="-reloadDoc"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Reloads the Document&#39;s contents from disk, discarding any unsaved changes in the editor.</p>
 </div>
     
 <dl>
-    <dt>doc</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        doc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Document</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">$.Promise</dd>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
     <dd>Resolved after editor has been refreshed; rejected if unable to load the file's new content. Errors are logged but no UI is shown.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function reloadDoc(doc) {
         
         var promise = FileUtils.readAsText(doc.file);
@@ -822,24 +876,33 @@ in parallel.</p>
     
     
 </span>
-    <h4>showReloadError</h4>
+    <h4>
+        showReloadError 
+        <a class="anchor" href="#-showReloadError" id="-showReloadError"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>error</dt>
-    <dd class="label label-info pull-left">FileError</dd>
+    <dt>
+        error
+        <span class="label label-info">FileError</span>
+    </dt>
     <dd></dd>
-    <dt>doc</dt>
-    <span class="label label-non-nullable pull-left">non-nullable</span>
-    <dd class="label label-info pull-left">Document</dd>
+    <dt>
+        doc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Document</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Dialog</dd>
+    <dt>Returns: <span class="label label-info">Dialog</span>
+</dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function showReloadError(error, doc) {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
@@ -856,7 +919,10 @@ in parallel.</p>
     
     Public API
 </span>
-    <h4>syncOpenDocuments</h4>
+    <h4>
+        syncOpenDocuments 
+        <a class="anchor" href="#-syncOpenDocuments" id="-syncOpenDocuments"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Check to see whether any open files have been modified by an external app since the last time
@@ -866,11 +932,15 @@ the user.</p>
 </div>
     
 <dl>
-    <dt>title</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        title
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Title to use for document. Default is "External Changes".</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function syncOpenDocuments(title) {
         
         title = title || Strings.EXT_MODIFIED_TITLE;
@@ -970,7 +1040,10 @@ the user.</p>
     
     
 </span>
-    <h4>syncUnopenWorkingSet</h4>
+    <h4>
+        syncUnopenWorkingSet 
+        <a class="anchor" href="#-syncUnopenWorkingSet" id="-syncUnopenWorkingSet"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Scans all the files in the working set that do not have Documents (and thus were not scanned
@@ -979,7 +1052,9 @@ by findExternalChanges()). If any were deleted on disk, removes them from the wo
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function syncUnopenWorkingSet() {
         &#x2F;&#x2F; We only care about working set entries that have never been open (have no Document).
         var unopenWorkingSetFiles = DocumentManager.getWorkingSet().filter(function (wsFile) {
