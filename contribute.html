@@ -50,6 +50,8 @@
         }
     </style>
 
+    <link rel="stylesheet" href="css/spinner.css" />
+
     <!-- SEO for internationalization: https://support.google.com/webmasters/answer/189077 -->
     <link rel="alternate" href="?" hreflang="x-default" />
     <link rel="alternate" href="?lang=en" hreflang="en" />
@@ -139,7 +141,7 @@
             </div>
             <div class="large-3 columns">
                 <h2 data-i18n="contribute.page.sub-hero.translate.header">Help Translate Brackets</h2>
-                <p><span data-i18n="contribute.page.sub-hero.translate.content">Brackets is available in 15+ languages that are contributed and maintained by the community.</span>
+                <p><span data-i18n="[html]contribute.page.sub-hero.translate.content">Brackets is available in <span id="langCount">25+</span> languages that are contributed and maintained by the community.</span>
                     <br>
                     <a href="https://github.com/adobe/brackets/blob/master/src/nls/README.md" data-i18n="contribute.page.sub-hero.translate.more">Contribute a translation.</a>
                 </p>
@@ -152,11 +154,11 @@
             <h2><a href="https://github.com/adobe/brackets/labels/starter%20bug" data-i18n="contribute.page.content.starter-issues.header">Starter Issues</a></h2>
             <p data-i18n="[html]contribute.page.content.starter-issues.description">Just getting started? Starter issues are bite-sized bugs that shouldn't take more than an hour or two to complete. They are a great way to learn the codebase <em>and</em> make a difference.</p>
             <div id="starter_issues">
-                <article class="card"><header><h3><a href="https://github.com/adobe/brackets/issues/5479">Unit tests should avoid expect().not.toBeNull() and .not.toBe(null)</a></h3></header><footer><div class="comment-count">4 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://github.com/adobe/brackets/issues/5368">Remove deprecated FileUtils.getFilenameExtension()</a></h3></header><footer><div class="comment-count">1 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://github.com/adobe/brackets/issues/5072">Support for VB syntax</a></h3></header><footer><div class="comment-count">5 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://github.com/adobe/brackets/issues/5059">SpecRunnerUtils.removeTempDirectory() should make all files &amp; folders read/write</a></h3></header><footer><div class="comment-count">5 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://github.com/adobe/brackets/issues/5005">Poor keyboard interaction in last stage of Replace dialog</a></h3></header><footer><div class="comment-count">1 comment(s)</div></footer></article>
+                <div class="spinner">
+                </div>
+
+                <!-- JS generated content -->
+
             </div>
             <p><a href="https://github.com/adobe/brackets/issues?labels=starter+bug&page=1&state=open" data-i18n="contribute.page.content.starter-issues.more">View starter issues&hellip;</a></p>
         </div>
@@ -164,11 +166,11 @@
             <h2 data-i18n="contribute.page.content.starter-features.header">Starter Features</h2>
             <p data-i18n="contribute.page.content.starter-features.description">Ready for something bigger? Starter features are small ideas that won't require a big time commitment. You should be able to complete one in a couple weeknights or over a weekend.</p>
             <div id="starter_features">
-                <article class="card"><header><h3><a href="https://trello.com/c/AUMtxj7D/754-create-file-w-duplicate">Create File w/ Duplicate</a></h3></header><footer><div class="comment-count">3 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://trello.com/c/mQUNlrqC/626-open-containing-folder-in-os-shell-explorer-finder">Open containing folder in OS shell (Explorer/Finder)</a></h3></header><footer><div class="comment-count">2 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://trello.com/c/I0TQSICd/549-jump-to-script-css-file-s-source-from-html-script-link-tag">Jump to script/CSS file's source from HTML script/link tag</a></h3></header><footer><div class="comment-count">4 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://trello.com/c/l32CzTCW/537-save-all-keyboard-shortcut">Save All keyboard shortcut</a></h3></header><footer><div class="comment-count">4 comment(s)</div></footer></article>
-                <article class="card"><header><h3><a href="https://trello.com/c/8wfzb1gw/253-keyboard-menu-other-interaction-to-navigate-in-out-of-inline-editor-2">Keyboard/menu/other interaction to navigate in/out of inline editor	2</a></h3></header><footer><div class="comment-count">0 comment(s)</div></footer></article>
+                <div class="spinner">
+                </div>
+
+                <!-- JS generated content -->
+
             </div>
             <p><a href="http://bit.ly/BracketsBacklog" data-i18n="contribute.page.content.starter-features.more">View the feature backlog&hellip;</a></p>
         </div>
@@ -370,62 +372,60 @@
     <script src="js/load.i18next.js"></script>
 
     <script>
-        function localizedCommentsCount (count) {
+        function localizedCommentsCount(count) {
             return i18n.t("contribute.page.content.comments.comments", {
                 count: count,
-                defaultValue: count + ' ' + (count === 1 ? "comment" : "comments")
+                defaultValue: count + " " + (count === 1 ? "comment" : "comments")
             });
         }
 
         // don't load starter issues or features on smartphones
-        if(document.documentElement.clientWidth > 480)
-        {      
+        if (document.documentElement.clientWidth > 480) {
             // get starter issues from github
-            $.ajax({url:'https://api.github.com/repos/adobe/brackets/issues?labels=starter+bug&state=open&milestone=none', dataType:'json', success:function(data){
+            $.getJSON("https://api.github.com/repos/adobe/brackets/issues?labels=starter+bug&state=open&per_page=6").done(function (data) {
                 i18nLoaded.done(function () {
                     // update issue list
-                    var limit = 6;
-                    var feature_content = '';
-                    for(i = 0; i < Math.min(data.length, limit); i++) {
-                        feature_content = feature_content + '<article class="card">';
-                        feature_content = feature_content + '<header><h3><a href="' + data[i].html_url + '">' +  $('<div></div>').text(data[i].title).html() + '</a></h3></header>';
-                        feature_content = feature_content + '<footer><div class="comment-count">' + localizedCommentsCount(data[i].comments) + '</div></footer>';
-                        feature_content = feature_content + '</article>';
-                    }
-                    document.getElementById("starter_issues").innerHTML = feature_content;
+                    var feature_content = "";
+                    data.forEach(function (entry) {
+                        feature_content += "<article class='card'>";
+                        feature_content += "<header><h3><a href='" + entry.html_url + "'>" + $("<div/>").text(entry.title).html() + "</a></h3></header>";
+                        feature_content += "<footer><div class='comment-count'>" + localizedCommentsCount(entry.comments) + "</div></footer>";
+                        feature_content += "</article>";
+                    });
+                    $("#starter_issues").html(feature_content);
                 });
-            }, error:function(data){
-                // fail silently
-            }});
+            });
 
             // get starter features from trello
-            $.ajax({url:'https://api.trello.com/1/boards/4f90a6d98f77505d7940ce88/cards?key=1953abc13ad18fd16a66a2a1d938a07a&filter=open&fields=badges,name,url,labels', dataType:'json', success:function(data){
+            $.getJSON("https://api.trello.com/1/boards/4f90a6d98f77505d7940ce88/cards?key=1953abc13ad18fd16a66a2a1d938a07a&filter=open&fields=badges,name,url,labels").done(function (data) {
                 i18nLoaded.done(function () {
                     // update starter feature list
                     var limit = 7;
-                    var feature_content = '';
-                    var starter_features = [];
-                    for(i = 0; i < data.length && starter_features.length < limit; i++){
+                    var feature_content = "";
+                    for (i = 0; i < data.length && limit > 0; i++) {
                         var feature = data[i];
-                        for(j = 0; j < feature.labels.length; j++){
-                            if(feature.labels[j].color == 'green'){
-                                starter_features.push({"name":feature.name, "url":feature.url, "badges":feature.badges});
-                                break;
-                            }
+                        if (feature.labels.some(function (label) { return label.color === 'green'; })) { // labelled Starter Feature
+                            feature_content += "<article class='card'>";
+                            feature_content += "<header><h3><a href='" + feature.url + "'>" +  $("<div></div>").text(feature.name).html() + "</a></h3></header>";
+                            feature_content += "<footer><div class='comment-count'>" + localizedCommentsCount(feature.badges.comments) + "</div></footer>";
+                            feature_content += "</article>";
+                            limit--;
                         }
                     }
-                    for(i = 0; i < starter_features.length; i++) {
-                        feature_content = feature_content + '<article class="card">';
-                        feature_content = feature_content + '<header><h3><a href="' + starter_features[i].url + '">' +  $('<div></div>').text(starter_features[i].name).html() + '</a></h3></header>';
-                        feature_content = feature_content + '<footer><div class="comment-count">' + localizedCommentsCount(starter_features[i].badges.comments) + '</div></footer>';
-                        feature_content = feature_content + '</article>';
-                    }
-                    document.getElementById("starter_features").innerHTML = feature_content;
+                    $("#starter_features").html(feature_content);
                 });
-            }, error:function(data){
-                // fail silently
-            }});
-        };
+            });
+        }
+
+        // retrieve the actual count of available languages
+        $.getJSON("https://api.github.com/repos/adobe/brackets/contents/src/nls")
+            .done(function (data) {
+                i18nLoaded.done(function () {
+                    $("#langCount").text(data.filter(function (entry) {
+                        return entry.type === "dir";
+                    }).length);
+                });
+            });
     </script>
 
     <script type="text/javascript">
