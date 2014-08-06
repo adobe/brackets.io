@@ -337,33 +337,23 @@ filter: none;
     <script>
         var ext = "";
         var OS = "UNKNOWN";
-        if (navigator.userAgent.indexOf("Win32") != -1 ||
-            navigator.userAgent.indexOf("Windows") != -1 ||
-            navigator.userAgent.indexOf("WOW64") != -1 ||
-            navigator.userAgent.indexOf("Win64") != -1) {
+        if (/Windows|Win32|WOW64|Win64/.test(navigator.userAgent)) {
             OS = "WIN";
             ext = ".msi";
-        };
-        if (navigator.platform.indexOf("Mac") != -1) {
+        } else if (/Mac/.test(navigator.userAgent)) {
             OS = "OSX";
             ext = ".dmg";
-        };
-        if (navigator.appVersion.indexOf("X11") != -1 ||
-            navigator.appVersion.indexOf("Linux") != -1) {
+        } else if (/Linux|X11/.test(navigator.userAgent)) {
             OS = "LINUX32";
             ext = ".32-bit.deb";
-            if (navigator.appVersion.indexOf("x86_64") != -1 ||
-                navigator.userAgent.indexOf("x86_64") != -1) {
+            if (/x86_64/.test(navigator.appVersion + navigator.userAgent)) {
                 OS = "LINUX64";
                 ext = ".64-bit.deb";
             }
         }
-        if (navigator.userAgent.indexOf("iPad") != -1 ||
-            navigator.userAgent.indexOf("iPod") != -1 ||
-            navigator.userAgent.indexOf("iPhone") != -1 ||
-            navigator.userAgent.indexOf("Android") != -1) OS = "OTHER";
-        if (OS == "OTHER") {
-            document.getElementById("download").style.display = "none";
+        if (/iPad|iPod|iPhone|Android/.test(navigator.userAgent)) {
+            OS = "OTHER";
+            $("#download").hide();
         }
     </script>
 
@@ -384,7 +374,7 @@ filter: none;
             });
         }
 
-        $.getJSON(versionInfoUrl, function(data) {
+        $.getJSON(versionInfoUrl, function (data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 var buildName = build.versionString;
@@ -408,35 +398,35 @@ filter: none;
 
                         var version_label = buildName;
                         if (OS != "UNKNOWN") version_label += " (" + OS + ")";
-                        document.getElementById("download-version").innerHTML = version_label;
+                        $("#download-version").html(version_label);
                         logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
                     }
 
                     // other-download track
-                    logAndGo("other-downloads", document.getElementById("other-downloads").href, ['_trackEvent', 'Other-Downloads', buildNum, OS]);
+                    logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
                 }
                 
                 // update features (limit 5)
                 var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New Features in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
-                for (i = 0; i < Math.min(build.newFeatures.length, 5); i++) {
-                    feature_content = feature_content + "<h3>" + build.newFeatures[i].name + "</h3>";
-                    feature_content = feature_content + "<p>" + build.newFeatures[i].description + "</p>";
-                }
-                feature_content = feature_content + '<p><a href="' + build.releaseNotesURL + '">' + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + '</a></p>';
-                document.getElementById("features").innerHTML = feature_content;
+                build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
+                    feature_content += "<h3>" + $("<div/>").text(feature.name).html() + "</h3>";
+                    feature_content += "<p>" + $("<div/>").text(feature.description).html() + "</p>";
+                });
+                feature_content += "<p><a href='" + build.releaseNotesURL + "'>" + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + "</a></p>";
+                $("#features").html(feature_content);
             });
         });
 
         function logAndGo(elementID, _url, tagObj) {
             var elem = document.getElementById(elementID);
             elem.href = _url;
-            elem.onclick = function(e) {
+            elem.onclick = function (e) {
                 e.preventDefault();
                 var downloadStarted = false;
-                setTimeout(function() {  if(!downloadStarted) window.location.href = _url; }, 1200); // fallback
-                _gaq.push(tagObj, function(){
+                setTimeout(function () { if (!downloadStarted) window.location.href = _url; }, 1200); // fallback
+                _gaq.push(tagObj, function () {
                     downloadStarted = true;
-                    setTimeout(function() {  window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
+                    setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
                 });
             }
         }
@@ -444,52 +434,44 @@ filter: none;
 
     <script>
         function recentBlogposts() {
-            var site = "http://blog.brackets.io/feed/json",
-                dateRegex = /(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)/;
-
-            var $blogposts = $("#blogposts");
-
-            function onSuccess(data) {
-                var options = {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                };
-                var $blogpostsDiv = $blogposts.append('<div id="blogposts"></div>').hide();
-
-                data.forEach(function(item) {
-                    var dateComponents = item.date.match(dateRegex),
-                        postingDate = new Date(dateComponents[1],
-                            dateComponents[2] - 1, // zero based month
-                            dateComponents[3],
-                            dateComponents[4],
-                            dateComponents[5],
-                            dateComponents[6]);
-
-                    $blogpostsDiv.append('<h3><a href="' + item.permalink + '">' +
-                        item.title +
-                        '</a></h3><p>' +
-                        postingDate.toLocaleDateString(requestedLang, options) +
-                        '</p>');
-                });
-
-                $("#blogposts-spinner").hide();
-                $blogposts.fadeIn(1000);
-            };
-
-            function onError() {
-                var $blogpostsDiv = $blogposts.append("<p>Refresh page to load posts</p>").hide();
-                $("#blogposts-spinner").hide();
-                $blogposts.fadeIn(1000);
-            };
+            var dateRegex = /(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)/,
+                $blogposts = $("#blogposts");
 
             $.ajax({
-                type: "GET",
-                url: site,
-                dataType: "jsonp",
-                success: onSuccess,
-                error: onError
-            });
+                url: "http://blog.brackets.io/feed/json",
+                dataType: "jsonp"
+            })
+                .always(function () {
+                    $("#blogposts-spinner").remove();
+                    $blogposts.hide();
+                    $blogposts.fadeIn(1000);
+                })
+                .done(function (data) {
+                    var options = {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    };
+
+                    data.forEach(function (item) {
+                        var dateComponents = item.date.match(dateRegex),
+                            postingDate = new Date(dateComponents[1],
+                                dateComponents[2] - 1, // zero based month
+                                dateComponents[3],
+                                dateComponents[4],
+                                dateComponents[5],
+                                dateComponents[6]);
+
+                        $blogposts.append('<h3><a href="' + item.permalink + '">' +
+                            $("<div/>").text(item.title).html() +
+                            '</a></h3><p>' +
+                            postingDate.toLocaleDateString(requestedLang, options) +
+                            '</p>');
+                    });
+                })
+                .fail(function () {
+                    $blogposts.append("<p>Refresh page to load posts</p>");
+                });
         }
 
         $(recentBlogposts());
@@ -501,9 +483,7 @@ filter: none;
         _gaq.push(['_setDomainName', 'brackets.io']);
         _gaq.push(['_trackPageview']);
         (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
