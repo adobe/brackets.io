@@ -374,7 +374,11 @@ filter: none;
             });
         }
 
-        $.getJSON(versionInfoUrl, { "_": new Date().getTime() }, function (data) {
+        $.ajax({
+            dataType: "json",
+            url: versionInfoUrl,
+            cache: false
+        }).done( function (data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 var buildName = build.versionString;
