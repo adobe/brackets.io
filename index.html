@@ -374,11 +374,11 @@ filter: none;
             });
         }
 
-        $.getJSON(versionInfoUrl, function (data) {
+        $.getJSON(versionInfoUrl, { "_": new Date().getTime() }, function (data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 var buildName = build.versionString;
-                
+
                 if (buildName) {
                     var buildNum = buildName.match(/([\d.]+)/);
                     if (buildNum) {
@@ -405,7 +405,7 @@ filter: none;
                     // other-download track
                     logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
                 }
-                
+
                 // update features (limit 5)
                 var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New Features in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
                 build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
