@@ -19,8 +19,7 @@ i18n.init(options)
         $(document).i18n({
             heart: "<a href='contribute.html'>&hearts;</a>",
             twitter: "<a href='http://www.twitter.com/brackets'>Twitter</a>",
-            googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>",
-            WinXPBlogURL: "http://blog.brackets.io/2014/04/18/windows-xp-support/"
+            googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>"
         });
 
         var title = i18n.t($("head title").data("i18n"), { defaultValue: "" });
