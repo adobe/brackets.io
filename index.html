@@ -252,6 +252,9 @@ filter: none;
                     <li>
                         <a href="http://youtu.be/T6d5C3rLeFY" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">JavaScript Debugger for Brackets</a>
                     </li>
+<li>
+                        <a href="https://courses.tutsplus.com/courses/introduction-to-brackets?utm_source=Bracketsio&utm_medium=website&utm_campaign=BracketsWebsite" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">Tuts+ Introduction to Brackets</a>
+                    </li>
                 </ul>
 
             </div>
@@ -425,11 +428,15 @@ filter: none;
             });
         }
 
-        $.getJSON(versionInfoUrl, function (data) {
+        $.ajax({
+            dataType: "json",
+            url: versionInfoUrl,
+            cache: false
+        }).done( function (data) {
             i18nLoaded.done(function () {
                 var build = data[0];
                 var buildName = build.versionString;
-                
+
                 if (buildName) {
                     var buildNum = buildName.match(/([\d.]+)/);
                     if (buildNum) {
@@ -457,9 +464,9 @@ filter: none;
                     // other-download track
                     logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
                 }
-                
+
                 // update features (limit 5)
-                var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New Features in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
+                var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
                 build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
                     feature_content += "<h3>" + $("<div/>").text(feature.name).html() + "</h3>";
                     feature_content += "<p>" + $("<div/>").text(feature.description).html() + "</p>";
@@ -533,6 +540,7 @@ filter: none;
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-32881640-1']);
         _gaq.push(['_setDomainName', 'brackets.io']);
+        _gaq.push(['_gat._anonymizeIp']);
         _gaq.push(['_trackPageview']);
         (function() {
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
