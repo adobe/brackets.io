@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -779,6 +781,26 @@ a project being opened (e.g. from the Refresh command)</li>
     }, function (a, b) {
         return $(a).data(&quot;compareString&quot;) + &quot;:&quot; + $(b).data(&quot;compareString&quot;);
     });</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _projectWarnedForTooManyFiles 
+        <a class="anchor" href="#-_projectWarnedForTooManyFiles" id="-_projectWarnedForTooManyFiles"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _projectWarnedForTooManyFiles = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1561,8 +1583,11 @@ also on project load and unload.</p>
             
             getProjectRoot().visit(allFilesVisitor, function (err) {
                 if (err) {
-                    deferred.reject();
-                    _allFilesCachePromise = null;
+                    if (err === FileSystemError.TOO_MANY_ENTRIES &amp;&amp; !_projectWarnedForTooManyFiles) {
+                        _showErrorDialog(ERR_TYPE_MAX_FILES);
+                        _projectWarnedForTooManyFiles = true;
+                    }
+                    deferred.reject(err);
                 } else {
                     deferred.resolve(allFiles);
                 }
@@ -1768,8 +1793,8 @@ getSelectedItem() to get the selection regardless of whether it&#39;s in the tre
     </h4>
 
     
-    <div class="description"><p>Loads the given folder as a project. Normally, you would call openProject() instead to let the
-user choose a folder.</p>
+    <div class="description"><p>Loads the given folder as a project. Does NOT prompt about any unsaved changes - use openProject()
+instead to check for unsaved changes and (optionally) let the user choose the folder to open.</p>
 </div>
     
 <dl>
@@ -1819,8 +1844,9 @@ user choose a folder.</p>
             DocumentManager.closeAll();
     
             _unwatchProjectRoot().always(function () {
-                &#x2F;&#x2F; Done closing old project (if any)
+                &#x2F;&#x2F; Finish closing old project (if any)
                 if (_projectRoot) {
+                    LanguageManager._resetPathLanguageOverrides();
                     PreferencesManager._reloadUserPrefs(_projectRoot);
                     $(exports).triggerHandler(&quot;projectClose&quot;, _projectRoot);
                 }
@@ -2918,31 +2944,40 @@ out by shouldShow().</p>
         var filteredFilesDeferred = new $.Deferred();
         
         &#x2F;&#x2F; First gather all files in project proper
-        _getAllFilesCache().done(function (result) {
-            &#x2F;&#x2F; Add working set entries, if requested
-            if (includeWorkingSet) {
-                DocumentManager.getWorkingSet().forEach(function (file) {
-                    if (result.indexOf(file) === -1 &amp;&amp; !(file instanceof InMemoryFile)) {
-                        result.push(file);
-                    }
-                });
-            }
-            
-            &#x2F;&#x2F; Filter list, if requested
-            if (filter) {
-                result = result.filter(filter);
-            }
-            
-            &#x2F;&#x2F; If a done handler attached to the returned filtered files promise
-            &#x2F;&#x2F; throws an exception that isn&#39;t handled here then it will leave
-            &#x2F;&#x2F; _allFilesCachePromise in an inconsistent state such that no
-            &#x2F;&#x2F; additional done handlers will ever be called!
-            try {
-                filteredFilesDeferred.resolve(result);
-            } catch (e) {
-                console.warn(&quot;Unhandled exception in getAllFiles handler: &quot;, e);
-            }
-        });
+        _getAllFilesCache()
+            .done(function (result) {
+                &#x2F;&#x2F; Add working set entries, if requested
+                if (includeWorkingSet) {
+                    DocumentManager.getWorkingSet().forEach(function (file) {
+                        if (result.indexOf(file) === -1 &amp;&amp; !(file instanceof InMemoryFile)) {
+                            result.push(file);
+                        }
+                    });
+                }
+
+                &#x2F;&#x2F; Filter list, if requested
+                if (filter) {
+                    result = result.filter(filter);
+                }
+
+                &#x2F;&#x2F; If a done handler attached to the returned filtered files promise
+                &#x2F;&#x2F; throws an exception that isn&#39;t handled here then it will leave
+                &#x2F;&#x2F; _allFilesCachePromise in an inconsistent state such that no
+                &#x2F;&#x2F; additional done handlers will ever be called!
+                try {
+                    filteredFilesDeferred.resolve(result);
+                } catch (e) {
+                    console.warn(&quot;Unhandled exception in getAllFiles handler: &quot;, e);
+                }
+            })
+            .fail(function (err) {
+                &#x2F;&#x2F; resolve with empty list
+                try {
+                    filteredFilesDeferred.resolve([]);
+                } catch (e) {
+                    console.warn(&quot;Unhandled exception in getAllFiles handler: &quot;, e);
+                }
+            });
         
         return filteredFilesDeferred.promise();
     }</code></pre></div><div class="member public">
@@ -3002,7 +3037,10 @@ first launch.</p>
 
         FileSystem.watch(FileSystem.getDirectoryForPath(rootPath), _shouldShowName, function (err) {
             if (err === FileSystemError.TOO_MANY_ENTRIES) {
-                _showErrorDialog(ERR_TYPE_MAX_FILES);
+                if (!_projectWarnedForTooManyFiles) {
+                    _showErrorDialog(ERR_TYPE_MAX_FILES);
+                    _projectWarnedForTooManyFiles = true;
+                }
             } else if (err) {
                 console.error(&quot;Error watching project root: &quot;, rootPath, err);
             }
@@ -3029,9 +3067,9 @@ first launch.</p>
     <dt>
         languageId
         <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
+        <span class="label label-info">(string, Array.&lt;string&gt;)</span>
     </dt>
-    <dd></dd>
+    <dd>a single string of a language id or an array of language ids</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">!function(File):boolean</span>
 </dt>
@@ -3041,7 +3079,12 @@ first launch.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getLanguageFilter(languageId) {
         return function languageFilter(file) {
-            return (LanguageManager.getLanguageForPath(file.fullPath).getId() === languageId);
+            var id = LanguageManager.getLanguageForPath(file.fullPath).getId();
+            if (typeof languageId === &quot;string&quot;) {
+                return (id === languageId);
+            } else {
+                return (languageId.indexOf(id) !== -1);
+            }
         };
     }</code></pre></div><div class="member public">
 

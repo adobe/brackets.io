@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>NetworkAgent - Brackets API</title>
+    <title>CSSPreprocessorDocument - Brackets API</title>
     <link rel="stylesheet" href="../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/font-awesome.css">
@@ -360,14 +360,16 @@
           </div>
         </div>
         <div class="module span9">
-<h1>NetworkAgent</h1>
+<h1>CSSPreprocessorDocument</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>NetworkAgent tracks all resources loaded by the remote debugger. Use
-<code>wasURLRequested(url)</code> to query whether a resource was loaded.</p>
+    <div><p>CSSPreprocessorDocument manages a single LESS or SASS source document</p>
+<p><strong>HIGHLIGHTING</strong></p>
+<p>CSSPreprocessorDocument supports highlighting all DOMNode corresponding to the rule at 
+the cursor position in the editor.</p>
 </div>
     
 </section>
@@ -376,182 +378,205 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;..&#x2F;../modules/language/CSSUtils.html">CSSUtils</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
     </ul>
 
 </section>
 
-<section id="functions">
 
-    <h3>Functions 
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                CSSPreprocessorDocument
+                
+            </h4>
+            
+            <em></em>
+            
+            <dl>
+                <dt>doc <span class="label label-info pull-left">Document</span></dt>
+                <dd>The source document from Brackets</dd>
+                <dt>editor <span class="label label-info pull-left">Editor</span></dt>
+                <dd>The editor for this document. This is not used here since we always need to get the active editor for a preprocessor document and not the one passed in `editor`.</dd>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    var CSSPreprocessorDocument = function CSSPreprocessorDocument(doc, editor) {
+        this.doc = doc;
+
+        this.onCursorActivity = this.onCursorActivity.bind(this);
+
+        &#x2F;&#x2F; Add a ref to the doc since we&#39;re listening for change events
+        this.doc.addRef();
+        this.onActiveEditorChange = this.onActiveEditorChange.bind(this);
+        $(EditorManager).on(&quot;activeEditorChange&quot;, this.onActiveEditorChange);
+        this.onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
+    };</code></pre>
+        </div>
+        
+
+        <section class="methods">
+
+            <h3>Methods 
 <label class="checkbox">
     <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
+</label>            </h3>
 
-<div class="member private">
+<div class="member">
 
 <span class="pull-right scope">
-    Private
+    
     
 </span>
     <h4>
-        _urlWithoutQueryString 
-        <a class="anchor" href="#-_urlWithoutQueryString" id="-_urlWithoutQueryString"><span class="icon-link"></span></a>
+        close 
+        <a class="anchor" href="#CSSPreprocessorDocument-close" id="CSSPreprocessorDocument-close"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Return the URL without the query string</p>
+    <div class="description"><p>Close the document</p>
 </div>
     
 <dl>
-    <dt>
-        URL
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _urlWithoutQueryString(url) {
-        var index = url.search(&#x2F;[#\?]&#x2F;);
-        if (index &gt;= 0) {
-            url = url.substr(0, index);
+<pre class="code language-javascript"><code class="language-javascript">    CSSPreprocessorDocument.prototype.close = function close() {
+        $(this.doc).off(&quot;.CSSPreprocessorDocument&quot;);
+        $(EditorManager).off(&quot;activeEditorChange&quot;, this.onActiveEditorChange);
+        this.doc.releaseRef();
+        this.detachFromEditor();
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        isLiveEditingEnabled 
+        <a class="anchor" href="#CSSPreprocessorDocument-isLiveEditingEnabled" id="CSSPreprocessorDocument-isLiveEditingEnabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Return false so edits cause &quot;out of sync&quot; icon to appear</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    CSSPreprocessorDocument.prototype.isLiveEditingEnabled = function () {
+        &#x2F;&#x2F; Normally this isn&#39;t called since wasURLRequested() returns false for us, but if user&#39;s
+        &#x2F;&#x2F; page uses less.js to dynamically load LESS files, then it&#39;ll be true and we&#39;ll get called.
+        return false;
+    };
+
+    CSSPreprocessorDocument.prototype.attachToEditor = function (editor) {
+        this.editor = editor;
+        
+        if (this.editor) {
+            $(this.editor).on(&quot;cursorActivity.CSSPreprocessorDocument&quot;, this.onCursorActivity);
+            this.updateHighlight();
         }
-        return url;
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
+    };
     
-    Public API
-</span>
-    <h4>
-        enable 
-        <a class="anchor" href="#-enable" id="-enable"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Enable the inspector Network domain</p>
-</div>
-    
-<dl>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">jQuery.Promise</span>
-</dt>
-    <dd>A promise resolved when the Network.enable() command is successful.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function enable() {
-        return Inspector.Network.enable();
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        load 
-        <a class="anchor" href="#-load" id="-load"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Initialize the agent</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function load() {
-        $(Inspector.Page).on(&quot;frameNavigated.NetworkAgent&quot;, _onFrameNavigated);
-        $(Inspector.Network).on(&quot;requestWillBeSent.NetworkAgent&quot;, _onRequestWillBeSent);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        unload 
-        <a class="anchor" href="#-unload" id="-unload"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Unload the agent</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function unload() {
-        _reset();
-        $(Inspector.Page).off(&quot;.NetworkAgent&quot;);
-        $(Inspector.Network).off(&quot;.NetworkAgent&quot;);
-    }
-
-    &#x2F;&#x2F; Export public functions
-    exports.wasURLRequested = wasURLRequested;
-    exports.enable = enable;
-    exports.load = load;
-    exports.unload = unload;
-});</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        wasURLRequested 
-        <a class="anchor" href="#-wasURLRequested" id="-wasURLRequested"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Return the resource information for a given URL</p>
-</div>
-    
-<dl>
-    <dt>
-        url
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function wasURLRequested(url) {
-        return _urlRequested &amp;&amp; _urlRequested[url];
-    }
-
-    function _logURL(url) {
-        _urlRequested[_urlWithoutQueryString(url)] = true;
-    }
-
-    &#x2F;&#x2F; WebInspector Event: Network.requestWillBeSent
-    function _onRequestWillBeSent(event, res) {
-        &#x2F;&#x2F; res = {requestId, frameId, loaderId, documentURL, request, timestamp, initiator, stackTrace, redirectResponse}
-        _logURL(res.request.url);
-    }
-
-    function _reset() {
-        _urlRequested = {};
-    }
-
-    &#x2F;&#x2F; WebInspector Event: Page.frameNavigated
-    function _onFrameNavigated(event, res) {
-        &#x2F;&#x2F; res = {frame}
-        &#x2F;&#x2F; Clear log when navigating to a new page, but not if an iframe was loaded
-        if (!res.frame.parentId) {
-            _reset();
+    CSSPreprocessorDocument.prototype.detachFromEditor = function () {
+        if (this.editor) {
+            HighlightAgent.hide();
+            $(this.editor).off(&quot;.CSSPreprocessorDocument&quot;);
+            this.editor = null;
         }
-        _logURL(res.frame.url);
-    }</code></pre></div>
+    };
+
+    CSSPreprocessorDocument.prototype.updateHighlight = function () {
+        if (Inspector.config.highlight &amp;&amp; this.editor) {
+            var editor = this.editor,
+                codeMirror = editor._codeMirror,
+                selectors = [];
+            _.each(this.editor.getSelections(), function (sel) {
+                var selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
+                if (selector) {
+                    selectors.push(selector);
+                }
+            });
+            if (selectors.length) {
+                HighlightAgent.rule(selectors.join(&quot;,&quot;));
+            } else {
+                HighlightAgent.hide();
+            }
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        onActiveEditorChange 
+        <a class="anchor" href="#CSSPreprocessorDocument-onActiveEditorChange" id="CSSPreprocessorDocument-onActiveEditorChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Triggered when the active editor changes</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    CSSPreprocessorDocument.prototype.onActiveEditorChange = function (event, newActive, oldActive) {
+        this.detachFromEditor();
+        
+        if (newActive &amp;&amp; newActive.document === this.doc) {
+            this.attachToEditor(newActive);
+        }
+    };
+    
+    &#x2F;&#x2F; Export the class
+    module.exports = CSSPreprocessorDocument;
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        onCursorActivity 
+        <a class="anchor" href="#CSSPreprocessorDocument-onCursorActivity" id="CSSPreprocessorDocument-onCursorActivity"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Triggered on cursor activity of the editor</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    CSSPreprocessorDocument.prototype.onCursorActivity = function onCursorActivity(event, editor) {
+        this.updateHighlight();
+    };</code></pre></div>
+        </section>
+
+    </div>
+
 </section>
-
         </div>
       </div>
     </div>

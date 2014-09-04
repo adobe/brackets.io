@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -404,6 +406,7 @@ The status codes are:</p>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Agents/ConsoleAgent.html">ConsoleAgent</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Agents/CSSAgent.html">CSSAgent</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+        <li><a href="..&#x2F;../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
         <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
         <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
@@ -570,7 +573,7 @@ The status codes are:</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _server;
-
+    
     function _isPromisePending(promise) {
         return promise &amp;&amp; promise.state() === &quot;pending&quot;;
     }
@@ -615,6 +618,9 @@ The status codes are:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _classForDocument(doc) {
         switch (doc.getLanguage().getId()) {
+        case &quot;less&quot;:
+        case &quot;scss&quot;:
+            return CSSPreprocessorDocument;
         case &quot;css&quot;:
             return CSSDocument;
         case &quot;javascript&quot;:
@@ -929,6 +935,8 @@ if the related file has been deleted on disk).</p>
             deferred    = new $.Deferred(),
             connected   = Inspector.connected();
 
+        $(EditorManager).off(&quot;activeEditorChange&quot;, onActiveEditorChange);
+        
         $(Inspector.Page).off(&quot;.livedev&quot;);
         $(Inspector).off(&quot;.livedev&quot;);
 
@@ -1468,6 +1476,18 @@ _adds extension, url and root to the document</p>
         
         &#x2F;&#x2F; open browser to the interstitial page to prepare for loading agents
         _openInterstitialPage();
+        
+        &#x2F;&#x2F; Once all agents loaded (see _onInterstitialPageLoad()), begin Live Highlighting for preprocessor documents
+        _openDeferred.done(function () {
+            &#x2F;&#x2F; Setup activeEditorChange event listener so that we can track cursor positions in
+            &#x2F;&#x2F; CSS preprocessor files and perform live preview highlighting on all elements with
+            &#x2F;&#x2F; the current selector in the preprocessor file.
+            $(EditorManager).on(&quot;activeEditorChange&quot;, onActiveEditorChange);
+
+            &#x2F;&#x2F; Explicitly trigger onActiveEditorChange so that live preview highlighting
+            &#x2F;&#x2F; can be set up for the preprocessor files.
+            onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
+        });
     }
     
     function _prepareServer(doc) {
@@ -1751,7 +1771,8 @@ _adds extension, url and root to the document</p>
         var docPromise = DocumentManager.getDocumentForPath(path);
 
         docPromise.done(function (doc) {
-            if ((_classForDocument(doc) === CSSDocument) &amp;&amp;
+            if ((_classForDocument(doc) === CSSDocument ||
+                    _classForDocument(doc) === CSSPreprocessorDocument) &amp;&amp;
                     (!_liveDocument || (doc !== _liveDocument.doc))) {
                 &#x2F;&#x2F; The doc may already have an editor (e.g. starting live preview from an css file),
                 &#x2F;&#x2F; so pass the editor if any
@@ -2126,6 +2147,8 @@ the status accordingly.</p>
         return _server &amp;&amp; _server.getBaseUrl();
     }
 
+
+
     &#x2F;&#x2F; For unit testing
     exports.launcherUrl               = launcherUrl;
     exports._getServer                = _getServer;
@@ -2230,6 +2253,59 @@ the status accordingly.</p>
             });
 
         return _loadAgentsPromise;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        onActiveEditorChange 
+        <a class="anchor" href="#-onActiveEditorChange" id="-onActiveEditorChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>If the current editor is for a CSS preprocessor file, then add it to the style sheet 
+so that we can track cursor positions in the editor to show live preview highlighting.
+For normal CSS we only do highlighting from files we know for sure are referenced by the 
+current live preview document, but for preprocessors we just assume that any preprocessor 
+file you edit is probably related to the live preview.</p>
+</div>
+    
+<dl>
+    <dt>
+        event
+        <span class="label label-info">Event</span>
+    </dt>
+    <dd>(unused)</dd>
+    <dt>
+        current
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>Current editor</dd>
+    <dt>
+        previous
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>Previous editor</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function onActiveEditorChange(event, current, previous) {
+        if (previous &amp;&amp; previous.document &amp;&amp;
+                FileUtils.isCSSPreprocessorFile(previous.document.file.fullPath)) {
+            var prevDocUrl = _server &amp;&amp; _server.pathToUrl(previous.document.file.fullPath);
+            
+            if (_relatedDocuments &amp;&amp; _relatedDocuments[prevDocUrl]) {
+                _closeRelatedDocument(_relatedDocuments[prevDocUrl]);
+            }
+        }
+        if (current &amp;&amp; current.document &amp;&amp;
+                FileUtils.isCSSPreprocessorFile(current.document.file.fullPath)) {
+            var docUrl = _server &amp;&amp; _server.pathToUrl(current.document.file.fullPath);
+            _styleSheetAdded(null, docUrl);
+        }
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

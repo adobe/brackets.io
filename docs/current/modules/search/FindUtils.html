@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -592,6 +594,43 @@ will do the replacement there, otherwise does it directly on disk.</p>
 
             return Async.promisify(file, &quot;write&quot;, newContents);
         });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getInitialQueryFromSelection 
+        <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the string used to prepopulate the find bar</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>first line of primary selection to populate the find bar</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getInitialQueryFromSelection(editor) {
+        var selectionText = editor.getSelectedText();
+        if (selectionText) {
+            return selectionText
+                .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
+                .split(&quot;\n&quot;)[0];
+        }
+        return &quot;&quot;;
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -655,11 +694,12 @@ will do the replacement there, otherwise does it directly on disk.</p>
         }
     }
 
-    exports.parseDollars        = parseDollars;
-    exports.hasCheckedMatches   = hasCheckedMatches;
-    exports.performReplacements = performReplacements;
-    exports.labelForScope       = labelForScope;
-    exports.ERROR_FILE_CHANGED  = &quot;fileChanged&quot;;
+    exports.parseDollars                    = parseDollars;
+    exports.getInitialQueryFromSelection    = getInitialQueryFromSelection;
+    exports.hasCheckedMatches               = hasCheckedMatches;
+    exports.performReplacements             = performReplacements;
+    exports.labelForScope                   = labelForScope;
+    exports.ERROR_FILE_CHANGED              = &quot;fileChanged&quot;;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

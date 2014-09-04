@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -377,6 +379,7 @@ the URL for the added/removed style sheet.</p>
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/path-utils/path-utils.min.html">path-utils.min</a></li>
     </ul>
 
@@ -416,33 +419,12 @@ the URL for the added/removed style sheet.</p>
     
 </span>
     <h4>
-        _styleSheetIdToUrl 
-        <a class="anchor" href="#-_styleSheetIdToUrl" id="-_styleSheetIdToUrl"><span class="icon-link"></span></a>
+        _styleSheetDetails 
+        <a class="anchor" href="#-_styleSheetDetails" id="-_styleSheetDetails"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Map of stylesheet ids to urls</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>Object.&lt;string, string&gt;</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _styleSheetIdToUrl;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _urlToStyle 
-        <a class="anchor" href="#-_urlToStyle" id="-_urlToStyle"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Stylesheet urls</p>
+    <div class="description"><p>Stylesheet details</p>
 </div>
     
 <dl>
@@ -451,7 +433,7 @@ the URL for the added/removed style sheet.</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _urlToStyle = {};</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _styleSheetDetails = {};</code></pre></div>
 </section>
 
 <section id="functions">
@@ -521,9 +503,10 @@ the URL for the added/removed style sheet.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onFrameNavigated(event, res) {
-        &#x2F;&#x2F; Clear maps when navigating to a new page
-        _urlToStyle = {};
-        _styleSheetIdToUrl = {};
+        &#x2F;&#x2F; Clear maps when navigating to a new page, but not if an iframe was loaded
+        if (!res.frame.parentId) {
+            _styleSheetDetails = {};
+        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -615,16 +598,21 @@ the URL for the added/removed style sheet.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _styleSheetAdded(event, res) {
-        var url = _canonicalize(res.header.sourceURL),
-            existing = _urlToStyle[url];
+        var url             = _canonicalize(res.header.sourceURL),
+            existing        = styleForURL(res.header.sourceURL),
+            styleSheetId    = res.header.styleSheetId,
+            duplicate;
         
         &#x2F;&#x2F; detect duplicates
-        if (existing &amp;&amp; existing.styleSheetId === res.header.styleSheetId) {
+        duplicate = _.some(existing, function (styleSheet) {
+            return styleSheet &amp;&amp; styleSheet.styleSheetId === styleSheetId;
+        });
+        if (duplicate) {
             return;
         }
         
-        _urlToStyle[url] = res.header;
-        _styleSheetIdToUrl[res.header.styleSheetId] = url;
+        _styleSheetDetails[styleSheetId] = res.header;
+        _styleSheetDetails[styleSheetId].canonicalizedURL = url; &#x2F;&#x2F; canonicalized URL
         
         $(exports).triggerHandler(&quot;styleSheetAdded&quot;, [url, res.header]);
     }</code></pre></div><div class="member private">
@@ -657,16 +645,11 @@ the URL for the added/removed style sheet.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _styleSheetRemoved(event, res) {
-        var url = _styleSheetIdToUrl[res.styleSheetId],
-            header = url &amp;&amp; _urlToStyle[url];
+        var header = _styleSheetDetails[res.styleSheetId];
         
-        if (url) {
-            delete _urlToStyle[url];
-        }
+        delete _styleSheetDetails[res.styleSheetId];
         
-        delete _styleSheetIdToUrl[res.styleSheetId];
-        
-        $(exports).triggerHandler(&quot;styleSheetRemoved&quot;, [url, header]);
+        $(exports).triggerHandler(&quot;styleSheetRemoved&quot;, [header.canonicalizedURL, header]);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -696,9 +679,7 @@ the URL for the added/removed style sheet.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function clearCSSForDocument(doc) {
-        var style = styleForURL(doc.url);
-        console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
-        return Inspector.CSS.setStyleSheetText(style.styleSheetId, &quot;&quot;);
+        return reloadCSSForDocument(doc, &quot;&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -744,13 +725,11 @@ Get a list of all loaded stylesheet files by URL.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getStylesheetURLs() {
-        var urls = [], url;
-        for (url in _urlToStyle) {
-            if (_urlToStyle.hasOwnProperty(url)) {
-                urls.push(url);
-            }
+        var styleSheetId, urls = [];
+        for (styleSheetId in _styleSheetDetails) {
+            urls[_styleSheetDetails[styleSheetId].canonicalizedURL] = true;
         }
-        return urls;
+        return _.keys(urls);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -801,6 +780,12 @@ Get a list of all loaded stylesheet files by URL.</p>
         <span class="label label-info">Document</span>
     </dt>
     <dd></dd>
+    <dt>
+        newContent
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>new content of every stylesheet. Defaults to doc.getText() if omitted</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">jQuery.Promise</span>
 </dt>
@@ -808,10 +793,23 @@ Get a list of all loaded stylesheet files by URL.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function reloadCSSForDocument(doc) {
-        var style = styleForURL(doc.url);
-        console.assert(style, &quot;Style Sheet for document not loaded: &quot; + doc.url);
-        return Inspector.CSS.setStyleSheetText(style.styleSheetId, doc.getText());
+<pre class="code language-javascript"><code class="language-javascript">    function reloadCSSForDocument(doc, newContent) {
+        var styles = styleForURL(doc.url),
+            styleSheetId,
+            deferreds = [];
+
+        if (newContent === undefined) {
+            newContent = doc.getText();
+        }
+        for (styleSheetId in styles) {
+            deferreds.push(Inspector.CSS.setStyleSheetText(styles[styleSheetId].styleSheetId, newContent));
+        }
+        if (!deferreds.length) {
+            console.error(&quot;Style Sheet for document not loaded: &quot; + doc.url);
+            return new $.Deferred().reject().promise();
+        }
+        &#x2F;&#x2F; return master deferred
+        return $.when.apply($, deferreds);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -824,7 +822,7 @@ Get a list of all loaded stylesheet files by URL.</p>
     </h4>
 
     
-    <div class="description"><p>Get a style sheet for a url</p>
+    <div class="description"><p>Get the style sheets for a url</p>
 </div>
     
 <dl>
@@ -834,14 +832,21 @@ Get a list of all loaded stylesheet files by URL.</p>
     </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">CSS.CSSStyleSheetHeader</span>
+    <dt>Returns: <span class="label label-info">Object.&lt;string,CSSStyleSheetHeader&gt;</span>
 </dt>
     <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function styleForURL(url) {
-        return _urlToStyle[_canonicalize(url)];
+        var styleSheetId, styles = {};
+        url = _canonicalize(url);
+        for (styleSheetId in _styleSheetDetails) {
+            if (_styleSheetDetails[styleSheetId].canonicalizedURL === url) {
+                styles[styleSheetId] = _styleSheetDetails[styleSheetId];
+            }
+        }
+        return styles;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

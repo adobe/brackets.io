@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -423,13 +425,23 @@
                 keyCode = event.keyCode;
     
                 if (keyCode === KeyEvent.DOM_VK_UP) {
-                    self._rotateSelection(-1);
+                    &#x2F;&#x2F; Move up one, wrapping at edges (if nothing selected, select the last item)
+                    self._tryToSelect(self._selectedIndex === -1 ? -1 : self._selectedIndex - 1, -1);
                 } else if (keyCode === KeyEvent.DOM_VK_DOWN) {
-                    self._rotateSelection(1);
+                    &#x2F;&#x2F; Move down one, wrapping at edges (if nothing selected, select the first item)
+                    self._tryToSelect(self._selectedIndex === -1 ? 0 : self._selectedIndex + 1, +1);
                 } else if (keyCode === KeyEvent.DOM_VK_PAGE_UP) {
-                    self._rotateSelection(-self._itemsPerPage());
+                    &#x2F;&#x2F; Move up roughly one &#39;page&#39;, stopping at edges (not wrapping) (if nothing selected, selects the first item)
+                    self._tryToSelect((self._selectedIndex || 0) - self._itemsPerPage(), -1, true);
                 } else if (keyCode === KeyEvent.DOM_VK_PAGE_DOWN) {
-                    self._rotateSelection(self._itemsPerPage());
+                    &#x2F;&#x2F; Move down roughly one &#39;page&#39;, stopping at edges (not wrapping) (if nothing selected, selects the item one page down from the top)
+                    self._tryToSelect((self._selectedIndex || 0) + self._itemsPerPage(), +1, true);
+                    
+                } else if (keyCode === KeyEvent.DOM_VK_HOME) {
+                    self._tryToSelect(0, +1);
+                } else if (keyCode === KeyEvent.DOM_VK_END) {
+                    self._tryToSelect(self.$items.length - 1, -1);
+                    
                 } else if (self._selectedIndex !== -1 &amp;&amp;
                         (keyCode === KeyEvent.DOM_VK_RETURN)) {
     
@@ -510,6 +522,7 @@
 <li>Up/Down     - change selection</li>
 <li>PageUp/Down - change selection</li>
 </ul>
+<p>Items whose &lt;a&gt; has the .disabled class do not respond to selection.</p>
 </em>
             
             <dl>
@@ -595,6 +608,9 @@
         if (!this.selectionCallback || !this.$list || !$link) {
             return;
         }
+        if ($link.hasClass(&quot;disabled&quot;)) {
+            return;
+        }
         
         this.selectionCallback($link);
         PopUpManager.removePopUp(this.$list);
@@ -673,73 +689,14 @@
                     viewOffset = self.$list.offset(),
                     elementOffset = $item.offset();
 
-                &#x2F;&#x2F; Only set selected if in view
-                if (elementOffset.top &lt; viewOffset.top + self.$list.height()) {
-                    if (viewOffset.top &lt;= elementOffset.top) {
+                &#x2F;&#x2F; Only set selected if enabled &amp; in view
+                &#x2F;&#x2F; (dividers are already screened out since they don&#39;t have an &quot;a&quot; tag in them)
+                if (!$link.hasClass(&quot;disabled&quot;)) {
+                    if (elementOffset.top &lt; viewOffset.top + self.$list.height() &amp;&amp; viewOffset.top &lt;= elementOffset.top) {
                         self._setSelectedIndex(self.$items.index($item), false);
                     }
                 }
             });
-    };</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _rotateSelection 
-        <a class="anchor" href="#DropdownEventHandler-_rotateSelection" id="DropdownEventHandler-_rotateSelection"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Change selection by specified amount. After selection reaches the last item
-in the rotation direction, then it wraps around to the start.</p>
-</div>
-    
-<dl>
-    <dt>
-        distance
-        <span class="label label-info">number</span>
-    </dt>
-    <dd>Number of items to move change selection where positive distance rotates down and negative distance rotates up</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._rotateSelection = function (distance) {
-        var len = this.$items.length,
-            pos;
-
-        if (this._selectedIndex &lt; 0) {
-            &#x2F;&#x2F; set the initial selection
-            pos = (distance &gt; 0) ? distance - 1 : len - 1;
-
-        } else {
-            &#x2F;&#x2F; adjust current selection
-            pos = this._selectedIndex;
-
-            &#x2F;&#x2F; Don&#39;t &quot;rotate&quot; until all items have been shown
-            if (distance &gt; 0) {
-                if (pos === (len - 1)) {
-                    pos = 0;  &#x2F;&#x2F; wrap
-                } else {
-                    pos = Math.min(pos + distance, len - 1);
-                }
-            } else {
-                if (pos === 0) {
-                    pos = (len - 1);  &#x2F;&#x2F; wrap
-                } else {
-                    pos = Math.max(pos + distance, 0);
-                }
-            }
-        }
-
-        &#x2F;&#x2F; If the item to be selected is a divider, then rotate one more.
-        if ($(this.$items[pos]).hasClass(&quot;divider&quot;)) {
-            this._rotateSelection((distance &gt; 0) ? (distance + 1) : (distance - 1));
-        } else {
-            this._setSelectedIndex(pos, true);
-        }
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -815,6 +772,70 @@ selection if index &lt; 0.</p>
                 this.scrolling = true;
                 ViewUtils.scrollElementIntoView(this.$list, $item, false);
             }
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _tryToSelect 
+        <a class="anchor" href="#DropdownEventHandler-_tryToSelect" id="DropdownEventHandler-_tryToSelect"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Try to select item at the given index. If it&#39;s disabled or a divider, keep trying by incrementing
+index by &#39;direction&#39; each time (wrapping around if needed).</p>
+</div>
+    
+<dl>
+    <dt>
+        index
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>If out of bounds, index either wraps around to remain in range (e.g. -1 yields last item, length+1 yields 2nd item) or if noWrap set, clips instead (e.g. -1 yields first item, length+1 yields last item).</dd>
+    <dt>
+        direction
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Either +1 or -1</dd>
+    <dt>
+        noWrap
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Clip out of range index values instead of wrapping. Default false (wrap).</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._tryToSelect = function (index, direction, noWrap) {
+        &#x2F;&#x2F; Fix up &#39;index&#39; if out of bounds (&gt;= len or &lt; 0)
+        var len = this.$items.length;
+        if (noWrap) {
+            &#x2F;&#x2F; Clip to stay in range (and set direction so we don&#39;t wrap in the recursion case either)
+            if (index &lt; 0) {
+                index = 0;
+                direction = +1;
+            } else if (index &gt;= len) {
+                index = len - 1;
+                direction = -1;
+            }
+        } else {
+            &#x2F;&#x2F; Wrap around to keep index in bounds
+            index %= len;
+            if (index &lt; 0) {
+                index += len;
+            }
+        }
+        
+        var $item = this.$items.eq(index);
+        if ($item.hasClass(&quot;divider&quot;) || $item.find(&quot;a.disabled&quot;).length) {
+            &#x2F;&#x2F; Desired item is ineligible for selection: try next one
+            this._tryToSelect(index + direction, direction, noWrap);
+        } else {
+            this._setSelectedIndex(index, true);
         }
     };</code></pre></div><div class="member">
 

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -622,7 +624,7 @@
             filename: fixPath(theme.file._path)
         });
 
-        parser.parse(&quot;#editor-holder {&quot; + content + &quot;}&quot;, function (err, tree) {
+        parser.parse(&quot;#editor-holder {&quot; + content + &quot;\n}&quot;, function (err, tree) {
             if (err) {
                 deferred.reject(err);
             } else {
@@ -918,13 +920,26 @@
         options = options || {};
         var fileName = file.name;
 
-        &#x2F;&#x2F; The name is used to map the loaded themes to the list in the settings dialog. So we want
-        &#x2F;&#x2F; a unique name if one is not provided.  This is particularly important when loading just
-        &#x2F;&#x2F; files where there is no other way to feed in meta data to provide unique names.  Say, there
-        &#x2F;&#x2F; is a theme1.css and a theme1.less that are entirely different themes...
+        &#x2F;&#x2F; If no options.name is provided, then we derive the name of the theme from whichever we find
+        &#x2F;&#x2F; first, the options.title or the filename.
+        if (!options.name) {
+            if (options.title) {
+                options.name = options.title;
+            } else {
+                &#x2F;&#x2F; Remove the file extension when the filename is used as the theme name. This is to
+                &#x2F;&#x2F; follow CodeMirror conventions where themes are just a CSS file and the filename
+                &#x2F;&#x2F; (without the extension) is used to build CSS rules.  Also handle removing .min
+                &#x2F;&#x2F; in case the &quot;.min&quot; is part of the file name.
+                options.name = FileUtils.getFilenameWithoutExtension(fileName).replace(&#x2F;\.min$&#x2F;, &quot;&quot;);
+            }
+
+            &#x2F;&#x2F; We do a bit of string treatment here to make sure we generate theme names that can be
+            &#x2F;&#x2F; used as a CSS class name by CodeMirror.
+            options.name = options.name.toLocaleLowerCase().replace(&#x2F;[\W]&#x2F;g, &#39;-&#39;);
+        }
 
         this.file        = file;
-        this.name        = options.name  || (options.title || fileName).toLocaleLowerCase().replace(&#x2F;[\W]&#x2F;g, &#39;-&#39;);
+        this.name        = options.name;
         this.displayName = options.title || toDisplayName(fileName);
         this.dark        = options.theme !== undefined &amp;&amp; options.theme.dark === true;
     }</code></pre>
