@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -384,6 +386,7 @@ editor.</p>
     <ul class="nav nav-list">
         <li><a href="..&#x2F;..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Agents/DOMAgent.html">DOMAgent</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
         <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
@@ -426,28 +429,18 @@ editor.</p>
         var self = this;
 
         this.doc = doc;
-        if (!editor) {
-            return;
+        if (this.doc) {
+            this.doc.addRef();
         }
+
         this.editor = editor;
         this._instrumentationEnabled = false;
         
-        &#x2F;&#x2F; Performance optimization to use closures instead of Function.bind()
-        &#x2F;&#x2F; to improve responsiveness during cursor movement and keyboard events
-        $(this.editor).on(&quot;cursorActivity.HTMLDocument&quot;, function (event, editor) {
-            self._onCursorActivity(event, editor);
-        });
-
-        $(this.editor).on(&quot;change.HTMLDocument&quot;, function (event, editor, change) {
-            self._onChange(event, editor, change);
-        });
+        this._onActiveEditorChange = this._onActiveEditorChange.bind(this);
+        $(EditorManager).on(&quot;activeEditorChange&quot;, this._onActiveEditorChange);
         
-        &#x2F;&#x2F; Experimental code
-        if (LiveDevelopment.config.experimental) {
-            $(HighlightAgent).on(&quot;highlight.HTMLDocument&quot;, function (event, node) {
-                self._onHighlight(event, node);
-            });
-        }
+        &#x2F;&#x2F; Attach now
+        this.attachToEditor(editor);
     };</code></pre>
         </div>
         
@@ -526,6 +519,49 @@ editor.</p>
     
 </span>
     <h4>
+        _onActiveEditorChange 
+        <a class="anchor" href="#HTMLDocument-_onActiveEditorChange" id="HTMLDocument-_onActiveEditorChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Triggered when the active editor changes</p>
+</div>
+    
+<dl>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
+    <dd>Event</dd>
+    <dt>
+        newActive
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The new active editor</dd>
+    <dt>
+        oldActive
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The old active editor</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onActiveEditorChange = function (event, newActive, oldActive) {
+        this.detachFromEditor();
+        
+        if (newActive &amp;&amp; newActive.document === this.doc) {
+            this.attachToEditor(newActive);
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _onChange 
         <a class="anchor" href="#HTMLDocument-_onChange" id="HTMLDocument-_onChange"><span class="icon-link"></span></a>
     </h4>
@@ -535,6 +571,22 @@ editor.</p>
 </div>
     
 <dl>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
+    <dd>Event</dd>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor for this document</dd>
+    <dt>
+        change
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>CodeMirror editor change data</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -628,12 +680,23 @@ editor.</p>
 </div>
     
 <dl>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
+    <dd>Event</dd>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor for this document</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onCursorActivity = function (event, editor) {
-        if (!this.editor) {
+        if (this.editor !== editor) {
             return;
         }
         this.updateHighlight();
@@ -653,18 +716,26 @@ editor.</p>
 </div>
     
 <dl>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
+    <dd>Event</dd>
+    <dt>
+        node
+        <span class="label label-info">DOMElement</span>
+    </dt>
+    <dd>Element to highlight</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onHighlight = function (event, node) {
+        this._removeHighlight();
         if (!node || !node.location || !this.editor) {
-            if (this._highlight) {
-                this._highlight.clear();
-                delete this._highlight;
-            }
             return;
         }
+
         var codeMirror = this.editor._codeMirror;
         var to, from = codeMirror.posFromIndex(node.location);
         if (node.closeLocation) {
@@ -672,16 +743,91 @@ editor.</p>
         } else {
             to = node.location + node.length;
         }
+
         to = codeMirror.posFromIndex(to);
+        this._highlight = codeMirror.markText(from, to, { className: &quot;highlight&quot; });
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _removeHighlight 
+        <a class="anchor" href="#HTMLDocument-_removeHighlight" id="HTMLDocument-_removeHighlight"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Remove all highlighting</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._removeHighlight = function () {
         if (this._highlight) {
             this._highlight.clear();
+            this._highlight = null;
         }
-        this._highlight = codeMirror.markText(from, to, { className: &quot;highlight&quot; });
     };
 
     &#x2F;&#x2F; Export the class
     module.exports = HTMLDocument;
 });</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        attachToEditor 
+        <a class="anchor" href="#HTMLDocument-attachToEditor" id="HTMLDocument-attachToEditor"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Attach new editor</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor for this document</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.attachToEditor = function (editor) {
+        var self = this;
+        this.editor = editor;
+        
+        &#x2F;&#x2F; Performance optimization to use closures instead of Function.bind()
+        &#x2F;&#x2F; to improve responsiveness during cursor movement and keyboard events
+        $(this.editor).on(&quot;cursorActivity.HTMLDocument&quot;, function (event, editor) {
+            self._onCursorActivity(event, editor);
+        });
+
+        $(this.editor).on(&quot;change.HTMLDocument&quot;, function (event, editor, change) {
+            self._onChange(event, editor, change);
+        });
+
+        &#x2F;&#x2F; Experimental code
+        if (LiveDevelopment.config.experimental) {
+            $(HighlightAgent).on(&quot;highlight.HTMLDocument&quot;, function (event, node) {
+                self._onHighlight(event, node);
+            });
+        }
+
+        if (this._instrumentationEnabled) {
+            &#x2F;&#x2F; Update instrumentation for new editor
+            HTMLInstrumentation.scanDocument(this.doc);
+            HTMLInstrumentation._markText(this.editor);
+        }
+    };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -702,16 +848,47 @@ editor.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.close = function close() {
-        if (!this.editor) {
-            return;
+        if (this.editor) {
+            $(this.editor).off(&quot;.HTMLDocument&quot;);
         }
 
-        $(this.editor).off(&quot;.HTMLDocument&quot;);
+        if (this.doc) {
+            this.doc.releaseRef();
+        }
+
+        $(EditorManager).off(&quot;activeEditorChange&quot;, this._onActiveEditorChange);
 
         &#x2F;&#x2F; Experimental code
         if (LiveDevelopment.config.experimental) {
             &#x2F;&#x2F; Force highlight teardown
             this._onHighlight();
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        detachFromEditor 
+        <a class="anchor" href="#HTMLDocument-detachFromEditor" id="HTMLDocument-detachFromEditor"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Detach current editor</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.detachFromEditor = function () {
+        if (this.editor) {
+            HighlightAgent.hide();
+            $(this.editor).off(&quot;.HTMLDocument&quot;);
+            this._removeHighlight();
+            this.editor = null;
         }
     };</code></pre></div><div class="member">
 
@@ -729,6 +906,11 @@ editor.</p>
 </div>
     
 <dl>
+    <dt>
+        enabled
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>(Unused)</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">{body: string}</span>
 </dt>
@@ -738,7 +920,7 @@ editor.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.getResponseData = function getResponseData(enabled) {
         var body;
-        if (this._instrumentationEnabled) {
+        if (this._instrumentationEnabled &amp;&amp; this.editor) {
             body = HTMLInstrumentation.generateInstrumentedHTML(this.editor);
         }
         
@@ -782,21 +964,21 @@ editor.</p>
     </h4>
 
     
-    <div class="description"><p>Enable instrumented HTML</p>
+    <div class="description"><p>Enable or disable instrumented HTML</p>
 </div>
     
 <dl>
     <dt>
-        {boolean}
-        <span class="label label-info">enabled</span>
+        enabled
+        <span class="label label-info">boolean</span>
     </dt>
-    <dd></dd>
+    <dd>Whether to enable or disable</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.setInstrumentationEnabled = function setInstrumentationEnabled(enabled) {
-        if (enabled &amp;&amp; !this._instrumentationEnabled) {
+        if (enabled &amp;&amp; !this._instrumentationEnabled &amp;&amp; this.editor) {
             HTMLInstrumentation.scanDocument(this.doc);
             HTMLInstrumentation._markText(this.editor);
         }

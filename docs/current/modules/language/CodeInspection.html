@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -1309,7 +1311,7 @@ change based on the number of problems reported and how many provider reported p
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted) {
-        var message;
+        var message, tooltip;
 
         if (providersReportingProblems.length === 1) {
             &#x2F;&#x2F; don&#39;t show a header if there is only one provider available for this file type
@@ -1324,9 +1326,6 @@ change based on the number of problems reported and how many provider reported p
 
                 message = StringUtils.format(Strings.MULTIPLE_ERRORS, providersReportingProblems[0].name, numProblems);
             }
-
-            $problemsPanel.find(&quot;.title&quot;).text(message);
-            StatusBar.updateIndicator(INDICATOR_ID, true, &quot;inspection-errors&quot;, message);
         } else if (providersReportingProblems.length &gt; 1) {
             $problemsPanelTable.find(&quot;.inspector-section&quot;).show();
 
@@ -1335,9 +1334,13 @@ change based on the number of problems reported and how many provider reported p
             }
 
             message = StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems);
-            $problemsPanel.find(&quot;.title&quot;).text(message);
-            StatusBar.updateIndicator(INDICATOR_ID, true, &quot;inspection-errors&quot;, message);
+        } else {
+            return;
         }
+
+        $problemsPanel.find(&quot;.title&quot;).text(message);
+        tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP, message);
+        StatusBar.updateIndicator(INDICATOR_ID, true, &quot;inspection-errors&quot;, tooltip);
     }</code></pre></div>
 </section>
 

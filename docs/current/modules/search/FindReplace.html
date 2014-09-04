@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -493,6 +495,9 @@
         this.queryInfo = null;
         this.foundAny = false;
         this.marked = [];
+        this.resultSet = [];
+        this.matchIndex = -1;
+        this.markedCurrent = null;
     }
 
     function getSearchState(cm) {
@@ -729,10 +734,10 @@ is not a range after expansion.</p>
     </dt>
     <dd>The editor to search in</dd>
     <dt>
-        rev
+        searchBackwards
         <span class="label label-info">boolean</span>
     </dt>
-    <dd>True to search backwards</dd>
+    <dd>true to search backwards</dd>
     <dt>
         pos
         <span class="label label-optional">optional</span>
@@ -752,16 +757,16 @@ is not a range after expansion.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _getNextMatch(editor, rev, pos, wrap) {
+<pre class="code language-javascript"><code class="language-javascript">    function _getNextMatch(editor, searchBackwards, pos, wrap) {
         var cm = editor._codeMirror;
         var state = getSearchState(cm);
-        var cursor = getSearchCursor(cm, state, pos || editor.getCursorPos(false, rev ? &quot;start&quot; : &quot;end&quot;));
+        var cursor = getSearchCursor(cm, state, pos || editor.getCursorPos(false, searchBackwards ? &quot;start&quot; : &quot;end&quot;));
 
-        state.lastMatch = cursor.find(rev);
+        state.lastMatch = cursor.find(searchBackwards);
         if (!state.lastMatch &amp;&amp; wrap !== false) {
             &#x2F;&#x2F; If no result found before hitting edge of file, try wrapping around
-            cursor = getSearchCursor(cm, state, rev ? {line: cm.lineCount() - 1} : {line: 0, ch: 0});
-            state.lastMatch = cursor.find(rev);
+            cursor = getSearchCursor(cm, state, searchBackwards ? {line: cm.lineCount() - 1} : {line: 0, ch: 0});
+            state.lastMatch = cursor.find(searchBackwards);
         }
         if (!state.lastMatch) {
             &#x2F;&#x2F; No result found, period: clear selection &amp; bail
@@ -1023,35 +1028,70 @@ is not a range after expansion.</p>
         }
         editor._codeMirror.scrollIntoView({from: primary.start, to: primary.end});
         editor.setSelections(selections, center, centerOptions);
-    }</code></pre></div><div class="member">
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
-    
+    Private
     
 </span>
     <h4>
-        doSearch 
-        <a class="anchor" href="#-doSearch" id="-doSearch"><span class="icon-link"></span></a>
+        _updateFindBarWithMatchInfo 
+        <a class="anchor" href="#-_updateFindBarWithMatchInfo" id="-_updateFindBarWithMatchInfo"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>If no search pending, opens the Find dialog. If search bar already open, moves to
-next/prev result (depending on &#39;rev&#39;)</p>
-</div>
+    <div class="description"></div>
     
 <dl>
+    <dt>
+        state
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">SearchState</span>
+    </dt>
+    <dd>The search state that has the array of search result</dd>
+    <dt>
+        matchRange
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{from: {line: number, ch: number}, to: {line: number, ch: number}}</span>
+    </dt>
+    <dd>- the range of current match</dd>
+    <dt>
+        searchBackwards
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true if searching backwards</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function doSearch(editor, rev) {
-        var state = getSearchState(editor._codeMirror);
-        if (state.parsedQuery) {
-            findNext(editor, rev);
+<pre class="code language-javascript"><code class="language-javascript">    function _updateFindBarWithMatchInfo(state, matchRange, searchBackwards) {
+        &#x2F;&#x2F; Bail if there is no result set.
+        if (!state.foundAny) {
             return;
         }
         
-        openSearchBar(editor, false);
+        if (findBar) {
+            if (state.matchIndex === -1) {
+                state.matchIndex = _.findIndex(state.resultSet, matchRange);
+            } else {
+                state.matchIndex = searchBackwards ? state.matchIndex - 1 : state.matchIndex + 1;
+                &#x2F;&#x2F; Adjust matchIndex for modulo wraparound
+                state.matchIndex = (state.matchIndex + state.resultSet.length) % state.resultSet.length;
+                
+                &#x2F;&#x2F; Confirm that we find the right matchIndex. If not, then search 
+                &#x2F;&#x2F; matchRange in the entire resultSet.
+                if (!_.isEqual(state.resultSet[state.matchIndex], matchRange)) {
+                    state.matchIndex = _.findIndex(state.resultSet, matchRange);
+                }
+            }
+        
+            if (state.matchIndex !== -1) {
+                &#x2F;&#x2F; Convert to 1-based by adding one before showing the index.
+                findBar.showFindCount(StringUtils.format(Strings.FIND_MATCH_INDEX,
+                                                        state.matchIndex + 1, state.resultSet.length));
+            }
+        }
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1059,68 +1099,57 @@ next/prev result (depending on &#39;rev&#39;)</p>
     
 </span>
     <h4>
-        findNext 
-        <a class="anchor" href="#-findNext" id="-findNext"><span class="icon-link"></span></a>
+        clearCurrentMatchHighlight 
+        <a class="anchor" href="#-clearCurrentMatchHighlight" id="-clearCurrentMatchHighlight"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Selects the next match (or prev match, if rev==true) starting from either the current position
-(if pos unspecified) or the given position (if pos specified explicitly). The starting position
-need not be an existing match. If a new match is found, sets to state.lastMatch either the regex
-match result, or simply true for a plain-string match. If no match found, sets state.lastMatch
-to false.</p>
+    <div class="description"><p>Removes the current-match highlight, leaving all matches marked in the generic highlight style</p>
 </div>
     
 <dl>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        rev
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        preferNoScroll
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        pos
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Pos</span>
-    </dt>
-    <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function findNext(editor, rev, preferNoScroll, pos) {
-        var cm = editor._codeMirror;
-        cm.operation(function () {
-            var nextMatch = _getNextMatch(editor, rev, pos);
-            if (nextMatch) {
-                _selectAndScrollTo(editor, [nextMatch], true, preferNoScroll);
-            } else {
-                cm.setCursor(editor.getCursorPos());  &#x2F;&#x2F; collapses selection, keeping cursor in place to avoid scrolling
-            }
-        });
-    }
+<pre class="code language-javascript"><code class="language-javascript">    function clearCurrentMatchHighlight(cm, state) {
+        if (state.markedCurrent) {
+            state.markedCurrent.clear();
+        }
+    }</code></pre></div><div class="member">
 
-    function clearHighlights(cm, state) {
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        clearHighlights 
+        <a class="anchor" href="#-clearHighlights" id="-clearHighlights"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Clears all match highlights, including the current match</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function clearHighlights(cm, state) {
         cm.operation(function () {
             state.marked.forEach(function (markedRange) {
                 markedRange.clear();
             });
+            clearCurrentMatchHighlight(cm, state);
         });
         state.marked.length = 0;
+        state.markedCurrent = null;
         
         ScrollTrackMarkers.clear();
+
+        state.resultSet = [];
+        state.matchIndex = -1;
     }
 
     function clearSearch(cm) {
@@ -1144,6 +1173,100 @@ to false.</p>
         }
         
         ScrollTrackMarkers.setVisible(editor, enabled);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        doSearch 
+        <a class="anchor" href="#-doSearch" id="-doSearch"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>If no search pending, opens the Find dialog. If search bar already open, moves to
+next/prev result (depending on &#39;searchBackwards&#39;)</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSearch(editor, searchBackwards) {
+        var state = getSearchState(editor._codeMirror);
+        if (state.parsedQuery) {
+            findNext(editor, searchBackwards);
+            return;
+        }
+        
+        openSearchBar(editor, false);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        findNext 
+        <a class="anchor" href="#-findNext" id="-findNext"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Selects the next match (or prev match, if searchBackwards==true) starting from either the current position
+(if pos unspecified) or the given position (if pos specified explicitly). The starting position
+need not be an existing match. If a new match is found, sets to state.lastMatch either the regex
+match result, or simply true for a plain-string match. If no match found, sets state.lastMatch
+to false.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        searchBackwards
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        preferNoScroll
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        pos
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Pos</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function findNext(editor, searchBackwards, preferNoScroll, pos) {
+        var cm = editor._codeMirror;
+        cm.operation(function () {
+            var state = getSearchState(cm);
+            clearCurrentMatchHighlight(cm, state);
+            
+            var nextMatch = _getNextMatch(editor, searchBackwards, pos);
+            if (nextMatch) {
+                _updateFindBarWithMatchInfo(getSearchState(editor._codeMirror),
+                                            {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
+                _selectAndScrollTo(editor, [nextMatch], true, preferNoScroll);
+                state.markedCurrent = cm.markText(nextMatch.start, nextMatch.end,
+                     { className: &quot;searching-current-match&quot;, startStyle: &quot;searching-first&quot;, endStyle: &quot;searching-last&quot; });
+            } else {
+                cm.setCursor(editor.getCursorPos());  &#x2F;&#x2F; collapses selection, keeping cursor in place to avoid scrolling
+            }
+        });
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1241,15 +1364,7 @@ the first matching result, starting from the original cursor position.</p>
             &#x2F;&#x2F; Use the previous query. This can happen if the user switches from Find to Replace.
             initialQuery = findBar.getQueryInfo().query;
         } else {
-            &#x2F;&#x2F; Prepopulate with the current primary selection, if any
-            var sel = editor.getSelection();
-            initialQuery = cm.getRange(sel.start, sel.end);
-            
-            &#x2F;&#x2F; Eliminate newlines since we don&#39;t generally support searching across line boundaries (#2960)
-            var newline = initialQuery.indexOf(&quot;\n&quot;);
-            if (newline !== -1) {
-                initialQuery = initialQuery.substr(0, newline);
-            }
+            initialQuery = FindUtils.getInitialQueryFromSelection(editor);
         }
         
         &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new findBar will
@@ -1271,8 +1386,8 @@ the first matching result, starting from the original cursor position.</p>
             .on(&quot;queryChange.FindReplace&quot;, function (e) {
                 handleQueryChange(editor, state);
             })
-            .on(&quot;doFind.FindReplace&quot;, function (e, rev) {
-                findNext(editor, rev);
+            .on(&quot;doFind.FindReplace&quot;, function (e, searchBackwards) {
+                findNext(editor, searchBackwards);
             })
             .on(&quot;close.FindReplace&quot;, function (e) {
                 &#x2F;&#x2F; Clear highlights but leave search state in place so Find Next&#x2F;Previous work after closing
@@ -1375,37 +1490,36 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
             var cursor = getSearchCursor(cm, state);
             if (cm.getValue().length &lt;= FIND_MAX_FILE_SIZE) {
                 &#x2F;&#x2F; FUTURE: if last query was prefix of this one, could optimize by filtering last result set
-                var resultSet = [];
+                state.resultSet = [];
                 while (cursor.findNext()) {
-                    resultSet.push(cursor.pos);  &#x2F;&#x2F; pos is unique obj per search result
+                    state.resultSet.push(cursor.pos);  &#x2F;&#x2F; pos is unique obj per search result
                 }
                 
                 &#x2F;&#x2F; Highlight all matches if there aren&#39;t too many
-                if (resultSet.length &lt;= FIND_HIGHLIGHT_MAX) {
+                if (state.resultSet.length &lt;= FIND_HIGHLIGHT_MAX) {
                     toggleHighlighting(editor, true);
                     
-                    resultSet.forEach(function (result) {
+                    state.resultSet.forEach(function (result) {
                         state.marked.push(cm.markText(result.from, result.to,
                              { className: &quot;CodeMirror-searching&quot;, startStyle: &quot;searching-first&quot;, endStyle: &quot;searching-last&quot; }));
                     });
-                    var scrollTrackPositions = resultSet.map(function (result) {
+                    var scrollTrackPositions = state.resultSet.map(function (result) {
                         return result.from;
                     });
                     
                     ScrollTrackMarkers.addTickmarks(editor, scrollTrackPositions);
                 }
                 
-                var countInfo;
-                if (resultSet.length === 0) {
-                    countInfo = Strings.FIND_NO_RESULTS;
-                } else if (resultSet.length === 1) {
-                    countInfo = Strings.FIND_RESULT_COUNT_SINGLE;
-                } else {
-                    countInfo = StringUtils.format(Strings.FIND_RESULT_COUNT, resultSet.length);
+                &#x2F;&#x2F; Here we only update find bar with no result. In the case of a match 
+                &#x2F;&#x2F; a findNext() call is guaranteed to be followed by this function call,
+                &#x2F;&#x2F; and findNext() in turn calls _updateFindBarWithMatchInfo() to show the 
+                &#x2F;&#x2F; match index.
+                if (state.resultSet.length === 0) {
+                    findBar.showFindCount(Strings.FIND_NO_RESULTS);
                 }
-                findBar.showFindCount(countInfo);
-                state.foundAny = (resultSet.length &gt; 0);
-                indicateHasMatches(resultSet.length);
+
+                state.foundAny = (state.resultSet.length &gt; 0);
+                indicateHasMatches(state.resultSet.length);
                 
             } else {
                 &#x2F;&#x2F; On huge documents, just look for first match &amp; then stop

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -433,8 +435,14 @@ To register a binary language the isBinary flag must be set, i.e.</p>
     name: &quot;Audio&quot;,
     fileExtensions: [&quot;mp3&quot;, &quot;wav&quot;, &quot;aif&quot;, &quot;aiff&quot;, &quot;ogg&quot;],
     isBinary: true    
-});
-</code></pre></div>
+}); 
+</code></pre><p>LanguageManager dispatches two events:</p>
+<ul>
+<li>languageAdded -- When any new Language is added. 2nd arg is the new Language.</li>
+<li>languageModified -- When the attributes of a Language change, or when the Language gains or loses<pre><code>  file extension / filename mappings. 2nd arg is the modified Language.
+</code></pre></li>
+</ul>
+</div>
     
 </section>
 
@@ -534,8 +542,8 @@ We may rely on the tokens provided by some of these modes.</p>
     Public API
 </span>
     <h4>
-        _resetLanguageOverrides 
-        <a class="anchor" href="#-_resetLanguageOverrides" id="-_resetLanguageOverrides"><span class="icon-link"></span></a>
+        _resetPathLanguageOverrides 
+        <a class="anchor" href="#-_resetPathLanguageOverrides" id="-_resetPathLanguageOverrides"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -547,7 +555,7 @@ We may rely on the tokens provided by some of these modes.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _resetLanguageOverrides() {
+<pre class="code language-javascript"><code class="language-javascript">    function _resetPathLanguageOverrides() {
         _filePathToLanguageMap = {};
     }</code></pre></div><div class="member private">
 
@@ -624,45 +632,6 @@ We may rely on the tokens provided by some of these modes.</p>
         }
 
         _modeToLanguageMap[mode] = language;
-    }</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        _setLanguageOverrideForPath 
-        <a class="anchor" href="#-_setLanguageOverrideForPath" id="-_setLanguageOverrideForPath"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Adds a language mapping for the specified fullPath. If language is falsy (null or undefined), the mapping
-is removed.</p>
-</div>
-    
-<dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">fullPath</span>
-    </dt>
-    <dd>absolute path of the file</dd>
-    <dt>
-        language
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">object</span>
-    </dt>
-    <dd>language to associate the file with or falsy value to remove the existing mapping</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _setLanguageOverrideForPath(fullPath, language) {
-        if (!language) {
-            delete _filePathToLanguageMap[fullPath];
-        } else {
-            _filePathToLanguageMap[fullPath] = language;
-        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -739,7 +708,7 @@ is removed.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateFromPrefs(pref) {
-        var newMapping = PreferencesManager.get(pref) || {},
+        var newMapping = PreferencesManager.get(pref),
             newNames = Object.keys(newMapping),
             state = _prefState[pref],
             last = state.last,
@@ -836,25 +805,21 @@ is removed.</p>
         &#x2F;&#x2F; depends on FileUtils) here. Using the async form of require fixes this.
         require([&quot;preferences&#x2F;PreferencesManager&quot;], function (pm) {
             PreferencesManager = pm;
-            _updateFromPrefs(_EXTENSION_MAP_PREF);
-            _updateFromPrefs(_NAME_MAP_PREF);
-            pm.definePreference(_EXTENSION_MAP_PREF, &quot;object&quot;).on(&quot;change&quot;, function () {
+            pm.definePreference(_EXTENSION_MAP_PREF, &quot;object&quot;, {}).on(&quot;change&quot;, function () {
                 _updateFromPrefs(_EXTENSION_MAP_PREF);
             });
-            pm.definePreference(_NAME_MAP_PREF, &quot;object&quot;).on(&quot;change&quot;, function () {
+            pm.definePreference(_NAME_MAP_PREF, &quot;object&quot;, {}).on(&quot;change&quot;, function () {
                 _updateFromPrefs(_NAME_MAP_PREF);
             });
+            _updateFromPrefs(_EXTENSION_MAP_PREF);
+            _updateFromPrefs(_NAME_MAP_PREF);
         });
     });
     
     &#x2F;&#x2F; Private for unit tests
     exports._EXTENSION_MAP_PREF         = _EXTENSION_MAP_PREF;
     exports._NAME_MAP_PREF              = _NAME_MAP_PREF;
-    exports._resetLanguageOverrides     = _resetLanguageOverrides;
-    &#x2F;&#x2F; Internal use only
-    &#x2F;&#x2F; _setLanguageOverrideForPath is used by Document to help LanguageManager keeping track of
-    &#x2F;&#x2F; in-document language overrides
-    exports._setLanguageOverrideForPath  = _setLanguageOverrideForPath;
+    exports._resetPathLanguageOverrides = _resetPathLanguageOverrides;
     
     &#x2F;&#x2F; Public methods
     exports.ready                       = _ready;
@@ -863,6 +828,7 @@ is removed.</p>
     exports.getLanguageForExtension     = getLanguageForExtension;
     exports.getLanguageForPath          = getLanguageForPath;
     exports.getLanguages                = getLanguages;
+    exports.setLanguageOverrideForPath  = setLanguageOverrideForPath;
 });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1109,7 +1075,9 @@ File names have a higher priority than file extensions. </p>
     </h4>
 
     
-    <div class="description"><p>Resolves a language to a file extension</p>
+    <div class="description"><p>Resolves a file extension to a Language object.
+<em>Warning:</em> it is almost always better to use getLanguageForPath(), since Language can depend
+on file name and even full path. Use this API only if no relevant file/path exists.</p>
 </div>
     
 <dl>
@@ -1247,6 +1215,52 @@ the map is the language id and the value is the language object.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getLanguages() {
         return $.extend({}, _languages); &#x2F;&#x2F; copy to prevent modification
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setLanguageOverrideForPath 
+        <a class="anchor" href="#-setLanguageOverrideForPath" id="-setLanguageOverrideForPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds a language mapping for the specified fullPath. If language is falsy (null or undefined), the mapping
+is removed. The override is NOT persisted across Brackets sessions.</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">fullPath</span>
+    </dt>
+    <dd>absolute path of the file</dd>
+    <dt>
+        language
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>language to associate the file with or falsy value to remove any existing override</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setLanguageOverrideForPath(fullPath, language) {
+        var oldLang = getLanguageForPath(fullPath);
+        if (!language) {
+            delete _filePathToLanguageMap[fullPath];
+        } else {
+            _filePathToLanguageMap[fullPath] = language;
+        }
+        var newLang = getLanguageForPath(fullPath);
+        
+        &#x2F;&#x2F; Old language changed since this path is no longer mapped to it
+        _triggerLanguageModified(oldLang);
+        &#x2F;&#x2F; New language changed since a path is now mapped to it that wasn&#39;t before
+        _triggerLanguageModified(newLang);
     }</code></pre></div>
 </section>
 

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -435,7 +437,7 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;],
+<pre class="code language-javascript"><code class="language-javascript">    var _staticHtmlFileExts = [&quot;htm&quot;, &quot;html&quot;, &quot;xhtml&quot;],
         _serverHtmlFileExts = [&quot;php&quot;, &quot;php3&quot;, &quot;php4&quot;, &quot;php5&quot;, &quot;phtm&quot;, &quot;phtml&quot;, &quot;cfm&quot;, &quot;cfml&quot;, &quot;asp&quot;, &quot;aspx&quot;, &quot;jsp&quot;, &quot;jspx&quot;, &quot;shtm&quot;, &quot;shtml&quot;];</code></pre></div>
 </section>
 
@@ -446,37 +448,7 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _getFilenameWithoutExtension 
-        <a class="anchor" href="#-_getFilenameWithoutExtension" id="-_getFilenameWithoutExtension"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        filename
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>File name of a file or directory</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
-    <dd>Returns the file name without the extension</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _getFilenameWithoutExtension(filename) {
-        var index = filename.lastIndexOf(&quot;.&quot;);
-        return index === -1 ? filename : filename.slice(0, index);
-    }</code></pre></div><div class="member public deprecated">
+<div class="member public deprecated">
 
 <span class="pull-right scope">
     
@@ -555,8 +527,8 @@ extension first and then the extensions to fix issue #4409</p>
             cmpNames;
         
         if (brackets.platform === &quot;win&quot;) {
-            filename1 = _getFilenameWithoutExtension(filename1);
-            filename2 = _getFilenameWithoutExtension(filename2);
+            filename1 = getFilenameWithoutExtension(filename1);
+            filename2 = getFilenameWithoutExtension(filename2);
         }
         cmpNames = filename1.toLocaleLowerCase().localeCompare(filename2.toLocaleLowerCase(), undefined, {numeric: true});
         
@@ -638,11 +610,13 @@ and sorts files based on <code>compareFilenames()</code>.</p>
     exports.getNativeModuleDirectoryPath   = getNativeModuleDirectoryPath;
     exports.canonicalizeFolderPath         = canonicalizeFolderPath;
     exports.stripTrailingSlash             = stripTrailingSlash;
+    exports.isCSSPreprocessorFile          = isCSSPreprocessorFile;
     exports.isStaticHtmlFileExt            = isStaticHtmlFileExt;
     exports.isServerHtmlFileExt            = isServerHtmlFileExt;
     exports.getDirectoryPath               = getDirectoryPath;
     exports.getBaseName                    = getBaseName;
     exports.getRelativeFilename            = getRelativeFilename;
+    exports.getFilenameWithoutExtension    = getFilenameWithoutExtension;
     exports.getFileExtension               = getFileExtension;
     exports.getSmartFileExtension          = getSmartFileExtension;
     exports.compareFilenames               = compareFilenames;
@@ -834,6 +808,37 @@ full remaining text is considered the extension.</p>
     Public API
 </span>
     <h4>
+        getFilenameWithoutExtension 
+        <a class="anchor" href="#-getFilenameWithoutExtension" id="-getFilenameWithoutExtension"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the file name without the extension.</p>
+</div>
+    
+<dl>
+    <dt>
+        filename
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>File name of a file or directory</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>Returns the file name without the extension</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFilenameWithoutExtension(filename) {
+        var index = filename.lastIndexOf(&quot;.&quot;);
+        return index === -1 ? filename : filename.slice(0, index);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         getNativeBracketsDirectoryPath 
         <a class="anchor" href="#-getNativeBracketsDirectoryPath" id="-getNativeBracketsDirectoryPath"><span class="icon-link"></span></a>
     </h4>
@@ -1014,6 +1019,37 @@ This method considers known extensions which include <code>.</code> in them.</p>
             }
         }
         return extension.join(&quot;.&quot;);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isCSSPreprocessorFile 
+        <a class="anchor" href="#-isCSSPreprocessorFile" id="-isCSSPreprocessorFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Determines if file extension is a CSS preprocessor file extension that Brackets supports.</p>
+</div>
+    
+<dl>
+    <dt>
+        filePath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>could be a path, a file name</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if LanguageManager identifies filePath as less or scss language.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isCSSPreprocessorFile(filePath) {
+        var languageId = LanguageManager.getLanguageForPath(filePath).getId();
+        return (languageId === &quot;less&quot; || languageId === &quot;scss&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

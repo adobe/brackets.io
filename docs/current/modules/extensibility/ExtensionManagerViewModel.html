@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -495,7 +497,26 @@ Events:</p>
     <dd>string</dd>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerViewModel.prototype.SOURCE_REGISTRY = &quot;registry&quot;;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerViewModel.prototype.SOURCE_REGISTRY = &quot;registry&quot;;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        SOURCE_THEMES 
+        <a class="anchor" href="#ExtensionManagerViewModel-SOURCE_THEMES" id="ExtensionManagerViewModel-SOURCE_THEMES"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerViewModel.prototype.SOURCE_THEMES = &quot;themes&quot;;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -975,7 +996,7 @@ Events:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerViewModel.prototype.initialize = function () {
         var self = this;
-
+        
         this._initializeFromSourcePromise = this._initializeFromSource().always(function () {
             self._updateMessage();
         });
@@ -1120,7 +1141,7 @@ Must be disposed with dispose() when done.</p>
                 &#x2F;&#x2F; Sort the registry by last published date and store the sorted list of IDs.
                 self.sortedFullSet = registry_utils.sortRegistry(self.extensions, &quot;registryInfo&quot;)
                     .filter(function (entry) {
-                        return entry.registryInfo !== undefined;
+                        return entry.registryInfo !== undefined &amp;&amp; entry.registryInfo.metadata.theme === undefined;
                     })
                     .map(function (entry) {
                         return entry.registryInfo.metadata.name;
@@ -1272,11 +1293,7 @@ Must be disposed with dispose() when done.</p>
             return entry.installInfo;
         }
         return entry;
-    };
-
-    exports.RegistryViewModel = RegistryViewModel;
-    exports.InstalledViewModel = InstalledViewModel;
-});</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1406,6 +1423,162 @@ alphabetically by id (or name of the extension folder for legacy extensions).</p
 
             return id1.localeCompare(id2);
         });
+    };</code></pre></div>
+        </section>
+
+    </div>
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                ThemesViewModel
+                
+            </h4>
+            
+            <em><p>The model for the ExtensionManagerView that is responsible for handling registry-based theme extensions. 
+This extends ExtensionManagerViewModel.
+Must be disposed with dispose() when done.</p>
+<p>Events:</p>
+<ul>
+<li>change - triggered when the data for a given extension changes. Second parameter is the extension id.</li>
+<li>filter - triggered whenever the filtered set changes (including on initialize).</li>
+</ul>
+</em>
+            
+            <dl>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function ThemesViewModel() {
+        ExtensionManagerViewModel.call(this);
+    }
+
+    &#x2F;&#x2F; Inheritance setup
+    ThemesViewModel.prototype = Object.create(ExtensionManagerViewModel.prototype);
+    ThemesViewModel.prototype.constructor = ThemesViewModel;</code></pre>
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        source 
+        <a class="anchor" href="#ThemesViewModel-source" id="ThemesViewModel-source"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ThemesViewModel.prototype.source = ExtensionManagerViewModel.prototype.SOURCE_THEMES;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getEntry 
+        <a class="anchor" href="#ThemesViewModel-_getEntry" id="ThemesViewModel-_getEntry"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>of the theme extension</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object?</span>
+</dt>
+    <dd>extension metadata or null if there's no matching extension</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ThemesViewModel.prototype._getEntry = function (id) {
+        var entry = this.extensions[id];
+        if (entry) {
+            return entry.registryInfo;
+        }
+        return entry;
+    };
+
+    exports.RegistryViewModel = RegistryViewModel;
+    exports.ThemesViewModel = ThemesViewModel;
+    exports.InstalledViewModel = InstalledViewModel;
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _initializeFromSource 
+        <a class="anchor" href="#ThemesViewModel-_initializeFromSource" id="ThemesViewModel-_initializeFromSource"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Initializes the model from the remote extension registry.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>a promise that's resolved with the registry JSON data.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ThemesViewModel.prototype._initializeFromSource = function () {
+        var self = this;
+        return ExtensionManager.downloadRegistry()
+            .done(function () {
+                self.extensions = ExtensionManager.extensions;
+
+                &#x2F;&#x2F; Sort the registry by last published date and store the sorted list of IDs.
+                self.sortedFullSet = registry_utils.sortRegistry(self.extensions, &quot;registryInfo&quot;)
+                    .filter(function (entry) {
+                        return entry.registryInfo !== undefined &amp;&amp; entry.registryInfo.metadata.theme;
+                    })
+                    .map(function (entry) {
+                        return entry.registryInfo.metadata.name;
+                    });
+                self._setInitialFilter();
+            })
+            .fail(function () {
+                self.extensions = [];
+                self.sortedFullSet = [];
+                self.filterSet = [];
+            });
     };</code></pre></div>
         </section>
 

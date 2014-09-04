@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -619,6 +621,16 @@ a global object, window.brackets.</p>
                 node = node.parentElement;
             }
         }, true);
+        
+        &#x2F;&#x2F; Prevent extensions from using window.open() to insecurely load untrusted web content
+        var real_windowOpen = window.open;
+        window.open = function (url) {
+            &#x2F;&#x2F; Allow file:&#x2F;&#x2F; URLs, relative URLs (implicitly file: also), and about:blank
+            if (!url.match(&#x2F;^file:\&#x2F;\&#x2F;&#x2F;) &amp;&amp; url !== &quot;about:blank&quot; &amp;&amp; url.indexOf(&quot;:&quot;) !== -1) {
+                throw new Error(&quot;Brackets-shell is not a secure general purpose web browser. Use NativeApp.openURLInDefaultBrowser() to open URLs in the user&#39;s main browser&quot;);
+            }
+            return real_windowOpen.apply(window, arguments);
+        };
     }
     
     &#x2F;&#x2F; Wait for view state to load.

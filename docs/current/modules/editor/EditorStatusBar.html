@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -378,9 +380,11 @@
         <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -395,6 +399,24 @@
 </label>    </h3>
 
 <div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        LANGUAGE_SET_AS_DEFAULT 
+        <a class="anchor" href="#-LANGUAGE_SET_AS_DEFAULT" id="-LANGUAGE_SET_AS_DEFAULT"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Special list item for the &#39;set as default&#39; gesture in language switcher dropdown</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var LANGUAGE_SET_AS_DEFAULT = {};</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -585,8 +607,14 @@
         
         languageSelect      = new DropdownButton(&quot;&quot;, [], function (item, index) {
             var document = EditorManager.getActiveEditor().document,
-                defaultLang = LanguageManager.getLanguageForPath(document.file.fullPath, true),
-                html = _.escape(item.getName());
+                defaultLang = LanguageManager.getLanguageForPath(document.file.fullPath, true);
+            
+            if (item === LANGUAGE_SET_AS_DEFAULT) {
+                var label = _.escape(StringUtils.format(Strings.STATUSBAR_SET_DEFAULT_LANG, FileUtils.getSmartFileExtension(document.file.fullPath)));
+                return { html: label, enabled: document.getLanguage() !== defaultLang };
+            }
+            
+            var html = _.escape(item.getName());
             
             &#x2F;&#x2F; Show indicators for currently selected &amp; default languages for the current file
             if (item === defaultLang) {
@@ -601,6 +629,7 @@
         languageSelect.dropdownExtraClasses = &quot;dropdown-status-bar&quot;;
         languageSelect.$button.addClass(&quot;btn-status-bar&quot;);
         $(&quot;#status-language&quot;).append(languageSelect.$button);
+        languageSelect.$button.attr(&quot;title&quot;, Strings.STATUSBAR_LANG_TOOLTIP);
         
         &#x2F;&#x2F; indentation event handlers
         $indentType.on(&quot;click&quot;, _toggleIndentType);
@@ -630,13 +659,22 @@
         $indentWidthInput.focus(function () { $indentWidthInput.select(); });
 
         &#x2F;&#x2F; Language select change handler
-        $(languageSelect).on(&quot;select&quot;, function (e, lang, index) {
+        $(languageSelect).on(&quot;select&quot;, function (e, lang) {
             var document = EditorManager.getActiveEditor().document,
-                fullPath = document.file.fullPath,
-                defaultLang = LanguageManager.getLanguageForPath(fullPath, true);
-            &#x2F;&#x2F; if default language selected, don&#39;t &quot;force&quot; it
-            &#x2F;&#x2F; (passing in null will reset the force flag)
-            document.setLanguageOverride(lang === defaultLang ? null : lang);
+                fullPath = document.file.fullPath;
+            
+            if (lang === LANGUAGE_SET_AS_DEFAULT) {
+                &#x2F;&#x2F; Set file&#39;s current language in preferences as a file extension override (only enabled if not default already)
+                var fileExtensionMap = PreferencesManager.get(&quot;language.fileExtensions&quot;);
+                fileExtensionMap[FileUtils.getSmartFileExtension(fullPath)] = document.getLanguage().getId();
+                PreferencesManager.set(&quot;language.fileExtensions&quot;, fileExtensionMap);
+                
+            } else {
+                &#x2F;&#x2F; Set selected language as a path override for just this one file (not persisted)
+                var defaultLang = LanguageManager.getLanguageForPath(fullPath, true);
+                &#x2F;&#x2F; if default language selected, pass null to clear the override
+                LanguageManager.setLanguageOverrideForPath(fullPath, lang === defaultLang ? null : lang);
+            }
         });
 
         $statusOverwrite.on(&quot;click&quot;, _updateEditorOverwriteMode);
@@ -648,7 +686,11 @@
     $(EditorManager).on(&quot;activeEditorChange&quot;, _onActiveEditorChange);
     
     AppInit.htmlReady(_init);
-    AppInit.appReady(_populateLanguageDropdown);
+    AppInit.appReady(function () {
+        &#x2F;&#x2F; Populate language switcher with all languages after startup; update it later if this set changes
+        _populateLanguageDropdown();
+        $(LanguageManager).on(&quot;languageAdded languageModified&quot;, _populateLanguageDropdown);
+    });
 });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -676,6 +718,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _initOverwriteMode(currentEditor) {
         currentEditor.toggleOverwrite($statusOverwrite.text() === Strings.STATUSBAR_OVERWRITE);
+        $statusOverwrite.attr(&quot;title&quot;, Strings.STATUSBAR_INSOVR_TOOLTIP);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -780,6 +823,9 @@
         
         languageSelect.items = languages;
         
+        &#x2F;&#x2F; Add option to top of menu for persisting the override
+        languageSelect.items.unshift(&quot;---&quot;);
+        languageSelect.items.unshift(LANGUAGE_SET_AS_DEFAULT);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -483,7 +485,27 @@ with new data from the registry.</li>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var extensions = {};</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var extensions = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        pendingDownloadRegistry 
+        <a class="anchor" href="#-pendingDownloadRegistry" id="-pendingDownloadRegistry"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>$.Deferred</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var pendingDownloadRegistry = null;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -719,7 +741,12 @@ extension info.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function downloadRegistry() {
-        var result = new $.Deferred();
+        if (pendingDownloadRegistry) {
+            return pendingDownloadRegistry.promise();
+        }
+
+        pendingDownloadRegistry = new $.Deferred();
+
         $.ajax({
             url: brackets.config.extension_registry,
             dataType: &quot;json&quot;,
@@ -734,12 +761,17 @@ extension info.</p>
                     synchronizeEntry(id);
                 });
                 $(exports).triggerHandler(&quot;registryDownload&quot;);
-                result.resolve();
+                pendingDownloadRegistry.resolve();
             })
             .fail(function () {
-                result.reject();
+                pendingDownloadRegistry.reject();
+            })
+            .always(function () {
+                &#x2F;&#x2F; Make sure to clean up the pending registry so that new requests can be made.
+                pendingDownloadRegistry = null;
             });
-        return result.promise();
+
+        return pendingDownloadRegistry.promise();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1434,7 +1466,11 @@ downloaded package file.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function update(id, packagePath, keepFile) {
-        return Package.installUpdate(packagePath, id, keepFile);
+        return Package.installUpdate(packagePath, id).done(function () {
+            if (!keepFile) {
+                FileSystem.getFileForPath(packagePath).unlink();
+            }
+        });
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1494,6 +1530,10 @@ turn off the removal mark.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function updateFromDownload(installationResult) {
+        if (installationResult.keepFile === undefined) {
+            installationResult.keepFile = false;
+        }
+
         var installationStatus = installationResult.installationStatus;
         if (installationStatus === Package.InstallationStatuses.ALREADY_INSTALLED ||
                 installationStatus === Package.InstallationStatuses.NEEDS_UPDATE ||

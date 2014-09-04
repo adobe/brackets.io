@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (149)</h2>
+            <h2 class="number-of-modules">Modules (151)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -213,6 +213,7 @@
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
               <li><a href="../../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
@@ -299,6 +300,7 @@
               <li><a href="../../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
               <li><a href="../../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
               <li><a href="../../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
               <li><a href="../../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
@@ -589,6 +591,7 @@ The 2nd argument to the listener will be this CSSDocument.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.getResponseData = function getResponseData(enabled) {
+        &#x2F;&#x2F; Serve up the in-memory text, including any unsaved changes
         return {
             body: this.doc.getText()
         };
@@ -616,13 +619,27 @@ The 2nd argument to the listener will be this CSSDocument.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.getSourceFromBrowser = function getSourceFromBrowser() {
+        function getOnlyValue(obj) {
+            var key;
+            for (key in obj) {
+                if (_.has(obj, key)) {
+                    return obj[key];
+                }
+            }
+            return null;
+        }
+
         var deferred = new $.Deferred(),
-            styleSheetId = this._getStyleSheetHeader().styleSheetId,
-            inspectorPromise = Inspector.CSS.getStyleSheetText(styleSheetId);
+            styleSheetHeader = this._getStyleSheetHeader(),
+            styleSheet = getOnlyValue(styleSheetHeader);
         
-        inspectorPromise.then(function (res) {
-            deferred.resolve(res.text);
-        }, deferred.reject);
+        if (styleSheet) {
+            Inspector.CSS.getStyleSheetText(styleSheet.styleSheetId).then(function (res) {
+                deferred.resolve(res.text);
+            }, deferred.reject);
+        } else {
+            deferred.reject();
+        }
         
         return deferred.promise();
     };</code></pre></div><div class="member deprecated">
@@ -809,12 +826,12 @@ Get the browser version of the StyleSheet object</p>
         Inspector.CSS.getMatchedStylesForNode(node.nodeId, function onGetMatchesStyles(res) {
             &#x2F;&#x2F; res = {matchedCSSRules, pseudoElements, inherited}
             var codeMirror = this.editor._codeMirror,
-                styleSheetId = this._getStyleSheetHeader().styleSheetId;
+                styleSheetIds = this._getStyleSheetHeader();
 
             var i, rule, from, to;
             for (i in res.matchedCSSRules) {
                 rule = res.matchedCSSRules[i];
-                if (rule.ruleId &amp;&amp; rule.ruleId.styleSheetId === styleSheetId) {
+                if (rule.ruleId &amp;&amp; styleSheetIds[rule.ruleId.styleSheetId]) {
                     from = codeMirror.posFromIndex(rule.selectorRange.start);
                     to = codeMirror.posFromIndex(rule.style.range.end);
                     this._highlight.push(codeMirror.markText(from, to, { className: &quot;highlight&quot; }));
