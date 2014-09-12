@@ -377,55 +377,59 @@ filter: none;
             }).fail(function () {
                 shortLocale = "en";
                 versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
+            }).always(function () {
+                recentRelease(versionInfoUrl);
             });
         }
 
-        $.ajax({
-            dataType: "json",
-            url: versionInfoUrl,
-            cache: false
-        }).done( function (data) {
-            i18nLoaded.done(function () {
-                var build = data[0];
-                var buildName = build.versionString;
-
-                if (buildName) {
-                    var buildNum = buildName.match(/([\d.]+)/);
-                    if (buildNum) {
-                        buildNum = buildNum[1];
-                    }
-
-                    // update button
-                    if (OS != "OTHER" && buildNum) {
-                        var tag = buildName.toLowerCase().split(" ").join("-"),
-                            url = "https://github.com/adobe/brackets/releases/" + tag;
-                        if (ext) {
-                            url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+        function recentRelease(versionInfoUrl) {
+            $.ajax({
+                dataType: "json",
+                url: versionInfoUrl,
+                cache: false
+            }).done( function (data) {
+                i18nLoaded.done(function () {
+                    var build = data[0];
+                    var buildName = build.versionString;
+    
+                    if (buildName) {
+                        var buildNum = buildName.match(/([\d.]+)/);
+                        if (buildNum) {
+                            buildNum = buildNum[1];
                         }
-
-                        ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
-                        ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-
-                        var version_label = buildName;
-                        if (OS != "UNKNOWN") version_label += " (" + OS + ")";
-                        $("#download-version").html(version_label);
-                        logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
+    
+                        // update button
+                        if (OS != "OTHER" && buildNum) {
+                            var tag = buildName.toLowerCase().split(" ").join("-"),
+                                url = "https://github.com/adobe/brackets/releases/" + tag;
+                            if (ext) {
+                                url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+                            }
+    
+                            ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
+                            ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
+    
+                            var version_label = buildName;
+                            if (OS != "UNKNOWN") version_label += " (" + OS + ")";
+                            $("#download-version").html(version_label);
+                            logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
+                        }
+    
+                        // other-download track
+                        logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
                     }
-
-                    // other-download track
-                    logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
-                }
-
-                // update features (limit 5)
-                var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
-                build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
-                    feature_content += "<h3>" + $("<div/>").text(feature.name).html() + "</h3>";
-                    feature_content += "<p>" + $("<div/>").text(feature.description).html() + "</p>";
+    
+                    // update features (limit 5)
+                    var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
+                    build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
+                        feature_content += "<h3>" + $("<div/>").text(feature.name).html() + "</h3>";
+                        feature_content += "<p>" + $("<div/>").text(feature.description).html() + "</p>";
+                    });
+                    feature_content += "<p><a href='" + build.releaseNotesURL + "'>" + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + "</a></p>";
+                    $("#features").html(feature_content);
                 });
-                feature_content += "<p><a href='" + build.releaseNotesURL + "'>" + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + "</a></p>";
-                $("#features").html(feature_content);
             });
-        });
+        }
 
         function logAndGo(elementID, _url, tagObj) {
             var elem = document.getElementById(elementID);
