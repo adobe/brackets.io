@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -380,9 +388,13 @@ The UI allows the user to see what files are open/dirty and allows them to close
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
+        <li><a href="..&#x2F;../modules/text!htmlContent/working-set.html.html">working-set.html</a></li>
     </ul>
 
 </section>
@@ -415,7 +427,35 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var LEFT_BUTTON = 1,
-        MIDDLE_BUTTON = 2;</code></pre></div><div class="member private">
+        MIDDLE_BUTTON = 2;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        NOMANSLAND     <span class="label label-info">Enumeration</span>
+
+        <a class="anchor" href="#-NOMANSLAND" id="-NOMANSLAND"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Constants for hitTest.where </p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var NOMANSLAND = &quot;nomansland&quot;,
+        NOMOVEITEM = &quot;nomoveitem&quot;,
+        ABOVEITEM  = &quot;aboveitem&quot;,
+        BELOWITEM  = &quot;belowitem&quot;,
+        TOPSCROLL  = &quot;topscroll&quot;,
+        BOTSCROLL  = &quot;bottomscroll&quot;,
+        BELOWVIEW  = &quot;belowview&quot;,
+        ABOVEVIEW  = &quot;aboveview&quot;;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -427,37 +467,79 @@ The UI allows the user to see what files are open/dirty and allows them to close
     </h4>
 
     
-    <div class="description"><p>Each list item in the working set stores a references to the related document in the list item&#39;s data.<br> Use listItem.data(_FILE_KEY) to get the document reference</p>
+    <div class="description"><p>Each list item in the working set stores a references to the related document in the list item&#39;s data.<br> Use <code>listItem.data(_FILE_KEY)</code> to get the document reference</p>
 </div>
     
 <dl>
+    <dt>Type</dt>
+    <dd>string</dd>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _FILE_KEY = &quot;file&quot;,
-        $workingSetHeader,
-        $openFilesContainer,
-        $openFilesList;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    var _FILE_KEY = &quot;file&quot;;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
     <h4>
-        _suppressSortRedraw 
-        <a class="anchor" href="#-_suppressSortRedraw" id="-_suppressSortRedraw"><span class="icon-link"></span></a>
+        _classProviders 
+        <a class="anchor" href="#-_classProviders" id="-_classProviders"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Class Providers</p>
+</div>
     
 <dl>
-    <dt>Type</dt>
-    <dd>boolean</dd>
+    <dt>See</dt>
+    <dd><a href='#'>{@link WorkingSetView#addClassProvider()}</a></dd>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _suppressSortRedraw = false;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _classProviders = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _iconProviders 
+        <a class="anchor" href="#-_iconProviders" id="-_iconProviders"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Icon Providers</p>
+</div>
+    
+<dl>
+    <dt>See</dt>
+    <dd><a href='#'>{@link WorkingSetView#addIconProvider()}</a></dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _iconProviders = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _views 
+        <a class="anchor" href="#-_views" id="-_views"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Open view dictionary<br>Maps PaneId to WorkingSetView</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, WorkingSetView&gt;</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _views = {};</code></pre></div>
 </section>
 
 <section id="functions">
@@ -474,12 +556,1064 @@ The UI allows the user to see what files are open/dirty and allows them to close
     
 </span>
     <h4>
-        _addDirectoryNamesToWorkingTreeFiles 
-        <a class="anchor" href="#-_addDirectoryNamesToWorkingTreeFiles" id="-_addDirectoryNamesToWorkingTreeFiles"><span class="icon-link"></span></a>
+        _deactivateAllViews 
+        <a class="anchor" href="#-_deactivateAllViews" id="-_deactivateAllViews"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Deactivates all views so the selection marker does not show</p>
+</div>
+    
+<dl>
+    <dt>
+        deactivate
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>- true to deactivate, false to reactivate</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _deactivateAllViews(deactivate) {
+        _.forEach(_views, function (view) {
+            if (deactivate) {
+                if (view.$el.hasClass(&quot;active&quot;)) {
+                    view.$el.removeClass(&quot;active&quot;).addClass(&quot;reactivate&quot;);
+                    view.$openFilesList.trigger(&quot;selectionHide&quot;);
+                }
+            } else {
+                if (view.$el.hasClass(&quot;reactivate&quot;)) {
+                    view.$el.removeClass(&quot;reactivate&quot;).addClass(&quot;active&quot;);
+                }
+                &#x2F;&#x2F; don&#39;t update the scroll pos
+                view._fireSelectionChanged(false);
+            }
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _isOpenAndDirty 
+        <a class="anchor" href="#-_isOpenAndDirty" id="-_isOpenAndDirty"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Determines if a file is dirty</p>
+</div>
+    
+<dl>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>- file to test</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if the file is dirty, false otherwise</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isOpenAndDirty(file) {
+        &#x2F;&#x2F; working set item might never have been opened; if so, then it&#39;s definitely not dirty
+        var docIfOpen = DocumentManager.getOpenDocumentForPath(file.fullPath);
+        return (docIfOpen &amp;&amp; docIfOpen.isDirty);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _makeDraggable 
+        <a class="anchor" href="#-_makeDraggable" id="-_makeDraggable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Makes the specified element draggable</p>
+</div>
+    
+<dl>
+    <dt>
+        $el
+        <span class="label label-info">jQuery</span>
+    </dt>
+    <dd>- the element to make draggable</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _makeDraggable($el) {
+        var interval,
+            sourceFile = $el.data(_FILE_KEY);
+
+        &#x2F;&#x2F; turn off the &quot;hover-scroll&quot; 
+        function endScroll($el) {
+            if (interval) {
+                window.clearInterval(interval);
+                interval = undefined;
+            }
+        }
+        
+        &#x2F;&#x2F;  We scroll the list while hovering over the first or last visible list element
+        &#x2F;&#x2F;  in the working set, so that positioning a working set item before or after one
+        &#x2F;&#x2F;  that has been scrolled out of view can be performed.
+        &#x2F;&#x2F; 
+        &#x2F;&#x2F;  This function will call the drag interface repeatedly on an interval to allow
+        &#x2F;&#x2F;  the item to be dragged while scrolling the list until the mouse is moved off 
+        &#x2F;&#x2F;  the first or last item or endScroll is called
+        function scroll($container, $el, dir, callback) {
+            var container = $container[0],
+                maxScroll = container.scrollHeight - container.clientHeight;
+            if (maxScroll &amp;&amp; dir &amp;&amp; !interval) {
+                &#x2F;&#x2F; Scroll view if the mouse is over the first or last pixels of the container
+                interval = window.setInterval(function () {
+                    var scrollTop = $container.scrollTop();
+                    if ((dir === -1 &amp;&amp; scrollTop &lt;= 0) || (dir === 1 &amp;&amp; scrollTop &gt;= maxScroll)) {
+                        endScroll($el);
+                    } else {
+                        $container.scrollTop(scrollTop + 7 * dir);
+                        callback($el);
+                    }
+                }, 50);
+            }
+        }
+        
+        &#x2F;&#x2F; The mouse down handler pretty much handles everything
+        $el.mousedown(function (e) {
+            var scrollDir = 0,
+                dragged = false,
+                startPageY = e.pageY,
+                lastPageY = startPageY,
+                itemHeight = $el.height(),
+                tryClosing = $(e.target).hasClass(&quot;can-close&quot;),
+                offset = $el.offset(),
+                $copy = $el.clone(),
+                $ghost = $(&quot;&lt;div class=&#39;open-files-container wsv-drag-ghost&#39; style=&#39;overflow: hidden; display: inline-block;&#39;&gt;&quot;).append($(&quot;&lt;ul&gt;&quot;).append($copy).css(&quot;padding&quot;, &quot;0&quot;)),
+                sourceView = _viewFromEl($el),
+                currentFile = MainViewManager.getCurrentlyViewedFile(),
+                activePaneId = MainViewManager.getActivePaneId(),
+                activeView = _views[activePaneId],
+                draggingCurrentFile = ($el.hasClass(&quot;selected&quot;) &amp;&amp; sourceView.paneId === activePaneId),
+                startingIndex = MainViewManager.findInWorkingSet(sourceView.paneId, sourceFile.fullPath),
+                currentView = sourceView,
+                lastHit = { where: NOMANSLAND };
+            
+            &#x2F;&#x2F; Switches the view context to match the hit context
+            function updateContext(hit) {
+                &#x2F;&#x2F; just set the container and update
+                currentView = _viewFromEl(hit.which);
+            }
+            
+            &#x2F;&#x2F; Determines where the mouse hit was
+            function hitTest(e) {
+                var pageY = $ghost.offset().top,
+                    direction =  e.pageY - lastPageY,
+                    result = {
+                        where: NOMANSLAND
+                    },
+                    lookCount = 0,
+                    hasScroller = false,
+                    onTopScroller = false,
+                    onBottomScroller = false,
+                    $workingFilesContainer =  $(&quot;#working-set-list-container&quot;),
+                    $container,
+                    $hit,
+                    $item,
+                    $view,
+                    gTop,
+                    gHeight,
+                    gBottom,
+                    deltaY,
+                    containerOffset,
+                    scrollerTopArea,
+                    scrollerBottomArea;
+                
+                &#x2F;&#x2F; if the mouse is outside of the view then
+                &#x2F;&#x2F;  return nomansland -- this prevents some UI glitches
+                &#x2F;&#x2F;  that appear when dragging onto a second monitor
+                if (e.pageX &lt; 0 || e.pageX &gt; $workingFilesContainer.width()) {
+                    return result;
+                }
+                
+                do {
+                    &#x2F;&#x2F; Turn off the ghost so elementFromPoint ignores it
+                    $ghost.hide();
+
+                    $hit = $(window.document.elementFromPoint(e.pageX, pageY));
+                    $view = $hit.closest(&quot;.working-set-view&quot;);
+                    $item = $hit.closest(&quot;#working-set-list-container li&quot;);
+
+                    &#x2F;&#x2F; Show the ghost again
+                    $ghost.show();
+
+                    $container = $view.children(&quot;.open-files-container&quot;);
+
+                    if ($container.length) {
+                        containerOffset = $container.offset();
+
+                        &#x2F;&#x2F; Compute &quot;scrollMe&quot; regions
+                        scrollerTopArea = { top: containerOffset.top - 14,
+                                            bottom: containerOffset.top + 7};
+
+                        scrollerBottomArea = { top: containerOffset.top + $container.height() - 7,
+                                               bottom: containerOffset.top + $container.height() + 14};
+                    }
+
+                    &#x2F;&#x2F; If we hit ourself then look for another 
+                    &#x2F;&#x2F;  element to insert before&#x2F;after
+                    if ($item[0] === $el[0]) {
+                        if (direction &gt; 0) {
+                            $item = $item.next();
+                            if ($item.length) {
+                                pageY += itemHeight;
+                            }
+                        } else {
+                            $item = $item.prev();
+                            if ($item.length) {
+                                pageY -= itemHeight;
+                            }
+                        }
+                    }
+                    
+                    &#x2F;&#x2F; If we didn&#39;t hit anything then
+                    &#x2F;&#x2F;  back up and try again in the other direction
+                    if (!$item.length) {
+                        pageY += itemHeight;
+                    }
+                    
+                    &#x2F;&#x2F; look one more time below the mouse
+                    &#x2F;&#x2F;  if we didn&#39;t get a hit
+                } while (!$item.length &amp;&amp; ++lookCount &lt; 2);
+                
+                &#x2F;&#x2F; if we hit a span or an anchor tag and didn&#39;t
+                &#x2F;&#x2F;  find an item then force the selection hit to
+                &#x2F;&#x2F;  the item so we can bail out on the scrollMe 
+                &#x2F;&#x2F;  region at the top and bottom of the list
+                if ($item.length === 0 &amp;&amp; ($hit.is(&quot;a&quot;) || $hit.is(&quot;span&quot;))) {
+                    $item = $hit.parents(&quot;#working-set-list-container li&quot;);
+                }
+              
+                &#x2F;&#x2F; compute ghost location, we compute the insertion point based
+                &#x2F;&#x2F;  on where the ghost is, not where the  mouse is
+                gTop = $ghost.offset().top;
+                gHeight = $ghost.height();
+                gBottom = gTop + gHeight;
+                deltaY = pageY - e.pageY;
+                
+                &#x2F;&#x2F; data to help us determine if we have a scroller
+                hasScroller = $item.length &amp;&amp; $container.length &amp;&amp; $container[0].scrollHeight &gt; $container[0].clientHeight;
+                
+                &#x2F;&#x2F; data to help determine if the ghost is in either of the scrollMe regions
+                onTopScroller = hasScroller &amp;&amp; scrollerTopArea &amp;&amp; ((gTop &gt;= scrollerTopArea.top &amp;&amp; gTop &lt;= scrollerTopArea.bottom)  ||
+                                                    (gBottom &gt;= scrollerTopArea.top &amp;&amp; gBottom &lt;= scrollerTopArea.bottom));
+                onBottomScroller = hasScroller &amp;&amp; scrollerBottomArea &amp;&amp; ((gTop &gt;= scrollerBottomArea.top &amp;&amp; gTop &lt;= scrollerBottomArea.bottom) ||
+                                                         (gBottom &gt;= scrollerBottomArea.top &amp;&amp; gBottom &lt;= scrollerBottomArea.bottom));
+
+                
+                &#x2F;&#x2F; helpers 
+                function mouseIsInTopHalf($elem) {
+                    var top = $elem.offset().top,
+                        height = $elem.height();
+                    
+                    return (pageY &lt; top + (height &#x2F; 2));
+                }
+                
+                function ghostIsAbove($elem) {
+                    var top = $elem.offset().top,
+                        checkVal = gTop;
+                    
+                    if (direction &gt; 0) {
+                        checkVal += gHeight;
+                    }
+                    
+                    return (checkVal &lt;=  (top + (itemHeight &#x2F; 2)));
+                }
+                
+                function ghostIsBelow($elem) {
+                    var top = $elem.offset().top,
+                        checkVal = gTop;
+                    
+                    if (direction &gt; 0) {
+                        checkVal += gHeight;
+                    }
+                    
+                    return (checkVal &gt;= (top + (itemHeight &#x2F; 2)));
+                }
+                
+                function elIsClearBelow($a, $b) {
+                    var aTop = $a.offset().top,
+                        bTop = $b.offset().top;
+                    
+                    return (aTop &gt;= bTop + $b.height());
+                }
+                
+                function draggingBelowWorkingSet() {
+                    return ($hit.length === 0 || elIsClearBelow($hit, $workingFilesContainer));
+                }
+                
+                function targetIsContainer() {
+                    return ($hit.is(&quot;.working-set-view&quot;) ||
+                            $hit.is(&quot;.open-files-container&quot;) ||
+                            ($hit.is(&quot;ul&quot;) &amp;&amp; $hit.parent().is(&quot;.open-files-container&quot;)));
+                }
+                
+                function targetIsNoDrop() {
+                    return $hit.is(&quot;.working-set-header&quot;) ||
+                           $hit.is(&quot;.working-set-header-title&quot;) ||
+                           $hit.is(&quot;.scroller-shadow&quot;) ||
+                           $hit.is(&quot;.scroller-shadow&quot;);
+                }
+                
+                function findViewFor($elem) {
+                    if ($elem.is(&quot;.working-set-view&quot;)) {
+                        return $elem;
+                    }
+                    return $elem.parents(&quot;.working-set-view&quot;);
+                }
+                
+                if ($item.length) {
+                    &#x2F;&#x2F; We hit an item (li)
+                    if (onTopScroller &amp;&amp; (direction &lt;= 0 || lastHit.where === TOPSCROLL)) {
+                        result = {
+                            where: TOPSCROLL,
+                            which: $item
+                        };
+                    } else if (onBottomScroller &amp;&amp; (direction &gt;= 0 || lastHit.where === BOTSCROLL)) {
+                        result = {
+                            where: BOTSCROLL,
+                            which: $item
+                        };
+                    } else if (ghostIsAbove($item)) {
+                        result = {
+                            where: ABOVEITEM,
+                            which: $item
+                        };
+                    } else if (ghostIsBelow($item)) {
+                        result = {
+                            where: BELOWITEM,
+                            which: $item
+                        };
+                    }
+                } else if ($el.parent()[0] !== $hit[0]) {
+                    &#x2F;&#x2F; Didn&#39;t hit an li, figure out 
+                    &#x2F;&#x2F;  where to go from here
+                    $view = $el.parents(&quot;.working-set-view&quot;);
+                    
+                    if (targetIsNoDrop()) {
+                        if (direction &lt; 0) {
+                            if (ghostIsBelow($hit)) {
+                                return result;
+                            }
+                        } else {
+                            return result;
+                        }
+                    }
+
+                    if (draggingBelowWorkingSet()) {
+                        return result;
+                    }
+                    
+                    if (targetIsContainer()) {
+                        if (mouseIsInTopHalf($hit)) {
+                            result = {
+                                where: ABOVEVIEW,
+                                which: findViewFor($hit)
+                            };
+                        } else {
+                            result = {
+                                where: BELOWVIEW,
+                                which: findViewFor($hit)
+                            };
+                        }
+                        return result;
+                    }
+                    
+                    &#x2F;&#x2F; Data to determine to help determine if we should
+                    &#x2F;&#x2F;  append to the previous or prepend to the next
+                    var $prev = $view.prev(),
+                        $next = $view.next();
+                    
+                    if (direction &lt; 0) {
+                        &#x2F;&#x2F; moving up, if there is a view above
+                        &#x2F;&#x2F;  then we want to append to the view above
+                        &#x2F;&#x2F; otherwise we&#39;re in nomandsland
+                        if ($prev.length) {
+                            result = {
+                                where: BELOWVIEW,
+                                which: $prev
+                            };
+                        }
+                    } else if (direction &gt; 0) {
+                        &#x2F;&#x2F; moving down, if there is a view below
+                        &#x2F;&#x2F; then we want to append to the view below
+                        &#x2F;&#x2F;  otherwise we&#39;re in nomandsland
+                        if ($next.length) {
+                            result = {
+                                where: ABOVEVIEW,
+                                which: $next
+                            };
+                        }
+                    } else if (mouseIsInTopHalf($view)) {
+                        &#x2F;&#x2F; we&#39;re inside the top half of
+                        &#x2F;&#x2F;  a view so prepend to the view we hit
+                        result = {
+                            where: ABOVEVIEW,
+                            which: $view
+                        };
+                    } else {
+                        &#x2F;&#x2F; we&#39;re inside the bottom half of 
+                        &#x2F;&#x2F;  a view so append to the view we hit
+                        result = {
+                            where: BELOWVIEW,
+                            which: $view
+                        };
+                    }
+                } else {
+                    &#x2F;&#x2F; The item doesn&#39;t need updating
+                    result = {
+                        where: NOMOVEITEM,
+                        which: $hit
+                    };
+                }
+
+                return result;
+            }
+   
+            &#x2F;&#x2F; mouse move handler -- this pretty much does
+            &#x2F;&#x2F;  the heavy lifting for dragging the item around
+            $(window).on(&quot;mousemove.wsvdragging&quot;, function (e) {
+                &#x2F;&#x2F; The drag function
+                function drag(e) {
+                    if (!dragged) {
+                        
+                        &#x2F;&#x2F; sort redraw and scroll shadows
+                        &#x2F;&#x2F;  cause problems during drag so disable them
+                        _suppressSortRedrawForAllViews(true);
+                        _suppressScrollShadowsOnAllViews(true);
+                        
+                        &#x2F;&#x2F; remove the &quot;active&quot; class to remove the 
+                        &#x2F;&#x2F;  selection indicator so we don&#39;t have to 
+                        &#x2F;&#x2F;  keep it in sync while we&#39;re dragging
+                        _deactivateAllViews(true);
+                        
+                        &#x2F;&#x2F; add a &quot;dragging&quot; class to the outer container
+                        $(&quot;#working-set-list-container&quot;).addClass(&quot;dragging&quot;);
+                        
+                        &#x2F;&#x2F; add a class to the element we&#39;re dragging if 
+                        &#x2F;&#x2F;  its the currently selected file so that we 
+                        &#x2F;&#x2F;  can show it as selected while dragging it
+                        if (!draggingCurrentFile) {
+                            $(activeView._findListItemFromFile(currentFile)).addClass(&quot;drag-show-as-selected&quot;);
+                        }
+                        
+                        &#x2F;&#x2F; we&#39;ve dragged the item so set
+                        &#x2F;&#x2F;  dragged to true so we don&#39;t try and open it
+                        dragged = true;
+                    }
+                    
+                    &#x2F;&#x2F; reset the scrolling direction to no-scroll
+                    scrollDir = 0;
+                    
+                    &#x2F;&#x2F; Find out where to to drag it to
+                    lastHit = hitTest(e);
+
+                    &#x2F;&#x2F; if the drag goes into nomansland then
+                    &#x2F;&#x2F;  drop the opacity on the drag affordance
+                    &#x2F;&#x2F;  and show the inserted item at reduced opacity
+                    switch (lastHit.where) {
+                    case NOMANSLAND:
+                    case BELOWVIEW:
+                    case ABOVEVIEW:
+                        $el.css({opacity: &quot;.75&quot;});
+                        $ghost.css(&quot;opacity&quot;, &quot;.25&quot;);
+                        break;
+                    default:
+                        $el.css({opacity: &quot;.0001&quot;});
+                        $ghost.css(&quot;opacity&quot;, &quot;&quot;);
+                        break;
+                    }
+                    
+                    &#x2F;&#x2F; now do the insertion
+                    switch (lastHit.where) {
+                    case TOPSCROLL:
+                    case ABOVEITEM:
+                        if (lastHit.where === TOPSCROLL) {
+                            scrollDir = -1;
+                        }
+                        $el.insertBefore(lastHit.which);
+                        updateContext(lastHit);
+                        break;
+                    case BOTSCROLL:
+                    case BELOWITEM:
+                        if (lastHit.where === BOTSCROLL) {
+                            scrollDir = 1;
+                        }
+                        $el.insertAfter(lastHit.which);
+                        updateContext(lastHit);
+                        break;
+                    case BELOWVIEW:
+                        $el.appendTo(lastHit.which.find(&quot;ul&quot;));
+                        updateContext(lastHit);
+                        break;
+                    case ABOVEVIEW:
+                        $el.prependTo(lastHit.which.find(&quot;ul&quot;));
+                        updateContext(lastHit);
+                        break;
+                    }
+                    
+                    &#x2F;&#x2F; we need to scroll
+                    if (scrollDir) {
+                        &#x2F;&#x2F; we&#39;re in range to scroll
+                        scroll(currentView.$openFilesContainer, $el, scrollDir, function () {
+                            &#x2F;&#x2F; as we scroll, recompute the element and insert
+                            &#x2F;&#x2F;  it before&#x2F;after the item to drag it in to place
+                            drag(e);
+                        });
+                    } else {
+                        &#x2F;&#x2F; we&#39;ve moved away from the top&#x2F;bottom &quot;scrolling&quot; region
+                        endScroll($el);
+                    }
+                }
+
+                &#x2F;&#x2F; move the drag affordance
+                $ghost.css(&quot;top&quot;, $ghost.offset().top + (e.pageY - lastPageY));
+
+                &#x2F;&#x2F; if we have&#39;t started dragging yet then we wait until
+                &#x2F;&#x2F;  the mouse has moved 3 pixels before we start dragging
+                &#x2F;&#x2F;  to avoid the item moving when clicked or double clicked
+                if (dragged || Math.abs(e.pageY - startPageY) &gt; 3) {
+                    drag(e);
+                }
+
+                lastPageY = e.pageY;
+                e.stopPropagation();
+            });
+            
+
+            function scrollCurrentViewToBottom() {
+                var $container = currentView.$openFilesContainer,
+                    container = $container[0],
+                    maxScroll = container.scrollHeight - container.clientHeight;
+                
+                if (maxScroll) {
+                    $container.scrollTop(maxScroll);
+                }
+            }
+            
+            &#x2F;&#x2F; Close down the drag operation
+            function preDropCleanup() {
+                $(&quot;#working-set-list-container&quot;).removeClass(&quot;dragging&quot;);
+                $(&quot;#working-set-list-container .drag-show-as-selected&quot;).removeClass(&quot;drag-show-as-selected&quot;);
+                endScroll($el);
+                &#x2F;&#x2F; re-activate the views (adds the &quot;active&quot; class to the view that was previously active)
+                _deactivateAllViews(false);
+                &#x2F;&#x2F; turn scroll wheel back on
+                window.onmousewheel = window.document.onmousewheel = null;
+                $(window).off(&quot;.wsvdragging&quot;);
+                $ghost.remove();
+                $el.css(&quot;opacity&quot;, &quot;&quot;);
+                
+                if (dragged &amp;&amp; $el.next().length === 0) {
+                    scrollCurrentViewToBottom();
+                }
+            }
+        
+            &#x2F;&#x2F; Final Cleanup
+            function postDropCleanup(noRefresh) {
+                if (dragged) {
+                    &#x2F;&#x2F; re-enable stuff we turned off
+                    _suppressSortRedrawForAllViews(false);
+                    _suppressScrollShadowsOnAllViews(false);
+                }
+                
+                
+                &#x2F;&#x2F; we don&#39;t need to refresh if the item
+                &#x2F;&#x2F;  was dragged but not enough to not change 
+                &#x2F;&#x2F;  its order in the working set
+                if (!noRefresh) {
+                    &#x2F;&#x2F; rebuild the view
+                    refresh(true);
+                }
+                &#x2F;&#x2F; focus the editor
+                MainViewManager.focusActivePane();
+            }
+            
+            &#x2F;&#x2F; Drop
+            function drop() {
+                preDropCleanup();
+                if (sourceView.paneId === currentView.paneId &amp;&amp; startingIndex === $el.index()) {
+                    &#x2F;&#x2F; if the item was dragged but not moved then don&#39;t open or close 
+                    if (!dragged) {
+                        &#x2F;&#x2F; Click on close icon, or middle click anywhere - close the item without selecting it first
+                        if (tryClosing || e.which === MIDDLE_BUTTON) {
+                            CommandManager
+                                .execute(Commands.FILE_CLOSE, {file: sourceFile,
+                                                               paneId: sourceView.paneId})
+                                .always(function () {
+                                    postDropCleanup();
+                                });
+                        } else {
+                            &#x2F;&#x2F; Normal right and left click - select the item
+                            FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
+                            CommandManager
+                                .execute(Commands.FILE_OPEN, {fullPath: sourceFile.fullPath,
+                                                               paneId: currentView.paneId})
+                                .always(function () {
+                                    postDropCleanup();
+                                });
+                        }
+                    } else {
+                        &#x2F;&#x2F; no need to refresh
+                        postDropCleanup(true);
+                    }
+                } else if (sourceView.paneId === currentView.paneId) {
+                    &#x2F;&#x2F; item was reordered 
+                    MainViewManager._moveWorkingSetItem(sourceView.paneId, startingIndex, $el.index());
+                    postDropCleanup();
+                } else {
+                    &#x2F;&#x2F; item was dragged to another working set
+                    MainViewManager._moveView(sourceView.paneId, currentView.paneId, sourceFile, $el.index())
+                        .always(function () {
+                            &#x2F;&#x2F; if the current document was dragged to another working set 
+                            &#x2F;&#x2F;  then reopen it to make it the currently selected file
+                            if (draggingCurrentFile) {
+                                CommandManager
+                                    .execute(Commands.FILE_OPEN, {fullPath: sourceFile.fullPath,
+                                                                   paneId: currentView.paneId})
+                                    .always(function () {
+                                        postDropCleanup();
+                                    });
+                            } else {
+                                postDropCleanup();
+                            }
+                        });
+                }
+            }
+
+            &#x2F;&#x2F; prevent working set from grabbing focus no matter what type of click&#x2F;drag occurs
+            e.preventDefault();
+            
+            &#x2F;&#x2F; initialization
+            $(window).on(&quot;mouseup.wsvdragging&quot;, function () {
+                drop();
+            });
+            
+            &#x2F;&#x2F; let escape cancel the drag
+            $(window).on(&quot;keydown.wsvdragging&quot;, function (e) {
+                if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+                    preDropCleanup();
+                    postDropCleanup();
+                    e.stopPropagation();
+                }
+            });
+            
+            &#x2F;&#x2F; turn off scroll wheel
+            window.onmousewheel = window.document.onmousewheel = function (e) {
+                e.preventDefault();
+            };
+
+            &#x2F;&#x2F; close all menus, and disable sorting 
+            Menus.closeAll();
+            
+            &#x2F;&#x2F; Dragging only happens with the left mouse button
+            &#x2F;&#x2F;  or (on the Mac) when the ctrl key isn&#39;t pressed
+            if (e.which !== LEFT_BUTTON || (e.ctrlKey &amp;&amp; brackets.platform === &quot;mac&quot;)) {
+                drop();
+                return;
+            }
+            
+            &#x2F;&#x2F; setup our ghost element as position absolute
+            &#x2F;&#x2F;  so we can put it wherever we want to while dragging
+            if (draggingCurrentFile) {
+                $ghost.addClass(&quot;dragging-current-file&quot;);
+            }
+
+            $ghost.css({
+                top: offset.top,
+                left: offset.left,
+                width: $el.width() + 8
+            });
+            
+            &#x2F;&#x2F; this will give the element the appearence that it&#39;s ghosted if the user
+            &#x2F;&#x2F;  drags the element out of the view and goes off into no mans land
+            $ghost.appendTo($(&quot;body&quot;));
+            
+            e.stopPropagation();
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _suppressScrollShadowsOnAllViews 
+        <a class="anchor" href="#-_suppressScrollShadowsOnAllViews" id="-_suppressScrollShadowsOnAllViews"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>turns off the scroll shadow on view containers so they don&#39;t interfere with dragging</p>
+</div>
+    
+<dl>
+    <dt>
+        disable
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>- true to disable, false to enable</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _suppressScrollShadowsOnAllViews(disable) {
+        _.forEach(_views, function (view) {
+            if (disable) {
+                ViewUtils.removeScrollerShadow(view.$openFilesContainer[0], null);
+            } else if (view.$openFilesContainer[0].scrollHeight &gt; view.$openFilesContainer[0].clientHeight) {
+                ViewUtils.addScrollerShadow(view.$openFilesContainer[0], null, true);
+            }
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _suppressSortRedrawForAllViews 
+        <a class="anchor" href="#-_suppressSortRedrawForAllViews" id="-_suppressSortRedrawForAllViews"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Turns on/off the flag which suppresses rebuilding of the working set 
+when the &quot;workingSetSort&quot; event is dispatched from MainViewManager.
+Only used while dragging things around in the working set to disable
+rebuilding the list while dragging.</p>
+</div>
+    
+<dl>
+    <dt>
+        suppress
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>- true suppress, false to allow sort redrawing</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _suppressSortRedrawForAllViews(suppress) {
+        _.forEach(_views, function (view) {
+            view.suppressSortRedraw = suppress;
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateListItemSelection 
+        <a class="anchor" href="#-_updateListItemSelection" id="-_updateListItemSelection"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates the appearance of the list element based on the parameters provided.</p>
+</div>
+    
+<dl>
+    <dt>
+        listElement
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">HTMLLIElement</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        selectedFile
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateListItemSelection(listItem, selectedFile) {
+        var shouldBeSelected = (selectedFile &amp;&amp; $(listItem).data(_FILE_KEY).fullPath === selectedFile.fullPath);
+        
+        ViewUtils.toggleClass($(listItem), &quot;selected&quot;, shouldBeSelected);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _viewFromEl 
+        <a class="anchor" href="#-_viewFromEl" id="-_viewFromEl"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Finds the WorkingSetView object for the specified element</p>
+</div>
+    
+<dl>
+    <dt>
+        $el
+        <span class="label label-info">jQuery</span>
+    </dt>
+    <dd>- the element to find the view for</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">View</span>
+</dt>
+    <dd>view object</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _viewFromEl($el) {
+        if (!$el.hasClass(&quot;working-set-view&quot;)) {
+            $el = $el.parents(&quot;.working-set-view&quot;);
+        }
+
+        var id = $el.attr(&quot;id&quot;).match(&#x2F;working\-set\-list\-([\w]+[\w\d\-\.\:\_]*)&#x2F;).pop();
+        return _views[id];
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        addClassProvider 
+        <a class="anchor" href="#-addClassProvider" id="-addClassProvider"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>adds a list item class provider to the view.<br>Class providers are called when a working set item is created</p>
+</div>
+    
+<dl>
+    <dt>
+        callback
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">function(!{fullPath:string, name:string, isFile:boolean}):?string</span>
+    </dt>
+    <dd>- the function to call for each item The callback can return a string that contains the class (or classes) to add to the list item</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addClassProvider(callback) {
+        if (!callback) {
+            return;
+        }
+        _classProviders.push(callback);
+        &#x2F;&#x2F; build all views so the provider has a chance to style
+        &#x2F;&#x2F;    all items that have already been created
+        refresh(true);
+    }
+    
+    &#x2F;&#x2F; Public API
+    exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
+    exports.refresh                       = refresh;
+    exports.addIconProvider               = addIconProvider;
+    exports.addClassProvider              = addClassProvider;
+    exports.syncSelectionIndicator        = syncSelectionIndicator;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        addIconProvider 
+        <a class="anchor" href="#-addIconProvider" id="-addIconProvider"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>adds an icon provider to the view.<br>Icon providers are called when a working set item is created</p>
+</div>
+    
+<dl>
+    <dt>
+        callback
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">function(!{fullPath:string, name:string, isFile:boolean}):?string, jQuery</span>
+    </dt>
+    <dd>- the function to call for each item The callback must return the html to place before the link of each WSV item. The return value can be a string representing the HTML, a jQuery object or undefined. if a falsy value is returned then nothing is prepended to the list item</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addIconProvider(callback) {
+        if (!callback) {
+            return;
+        }
+        _iconProviders.push(callback);
+        &#x2F;&#x2F; build all views so the provider has a chance to add icons
+        &#x2F;&#x2F;    to all items that have already been created
+        refresh(true);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        createWorkingSetViewForPane 
+        <a class="anchor" href="#-createWorkingSetViewForPane" id="-createWorkingSetViewForPane"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Creates a new WorkingSetView object for the specified pane</p>
+</div>
+    
+<dl>
+    <dt>
+        $container
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery</span>
+    </dt>
+    <dd>- the WorkingSetView's DOM parent node</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane the view is being created for</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createWorkingSetViewForPane($container, paneId) {
+        var view = _views[paneId];
+        if (!view) {
+            view = new WorkingSetView($container, paneId);
+            _views[view.paneId] = view;
+        }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        refresh 
+        <a class="anchor" href="#-refresh" id="-refresh"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Refreshes all Pane View List Views</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function refresh(rebuild) {
+        _.forEach(_views, function (view) {
+            var top = view.$openFilesContainer.scrollTop();
+            if (rebuild) {
+                view._rebuildViewList(true);
+            } else {
+                view._redraw();
+            }
+            view.$openFilesContainer.scrollTop(top);
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        syncSelectionIndicator 
+        <a class="anchor" href="#-syncSelectionIndicator" id="-syncSelectionIndicator"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Synchronizes the selection indicator for all views</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function syncSelectionIndicator() {
+        _.forEach(_views, function (view) {
+            view.$openFilesContainer.triggerHandler(&quot;scroll&quot;);
+        });
+    }</code></pre></div>
+</section>
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                WorkingSetView
+                
+            </h4>
+            
+            <em><p>WorkingSetView constructor</p>
+</em>
+            
+            <dl>
+                <dt>$container <span class="label label-info pull-left">jQuery</span></dt>
+                <dd>- owning container</dd>
+                <dt>paneId <span class="label label-info pull-left">string</span></dt>
+                <dd>- paneId of this view pertains to</dd>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function WorkingSetView($container, paneId) {
+        var id = &quot;working-set-list-&quot; + paneId;
+        
+        this.$header = null;
+        this.$openFilesList = null;
+        this.$container = $container;
+        this.$el = $container.append(Mustache.render(paneListTemplate, _.extend({id: id}, Strings))).find(&quot;#&quot; + id);
+        this.suppressSortRedraw = false;
+        this.paneId = paneId;
+        
+        this.init();
+    }</code></pre>
+        </div>
+        
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _addDirectoryNamesToWorkingTreeFiles 
+        <a class="anchor" href="#WorkingSetView-_addDirectoryNamesToWorkingTreeFiles" id="WorkingSetView-_addDirectoryNamesToWorkingTreeFiles"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds directory names to elements representing passed files in working tree</p>
+</div>
     
 <dl>
     <dt>
@@ -491,7 +1625,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _addDirectoryNamesToWorkingTreeFiles(filesList) {
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._addDirectoryNamesToWorkingTreeFiles = function (filesList) {
         &#x2F;&#x2F; filesList must have at least two files in it for this to make sense
         if (filesList.length &lt;= 1) {
             return;
@@ -500,7 +1634,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
         var displayPaths = ViewUtils.getDirNamesForDuplicateFiles(filesList);
 
         &#x2F;&#x2F; Go through open files and add directories to appropriate entries
-        $openFilesContainer.find(&quot;ul &gt; li&quot;).each(function () {
+        this.$openFilesContainer.find(&quot;ul &gt; li&quot;).each(function () {
             var $li = $(this);
             var io = filesList.indexOf($li.data(_FILE_KEY));
             if (io !== -1) {
@@ -513,7 +1647,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 $li.children(&quot;a&quot;).append($dir);
             }
         });
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -521,26 +1655,27 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _adjustForScrollbars 
-        <a class="anchor" href="#-_adjustForScrollbars" id="-_adjustForScrollbars"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_adjustForScrollbars" id="WorkingSetView-_adjustForScrollbars"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>adds the style &#39;vertical-scroll&#39; if a vertical scroll bar is present</p>
+</div>
     
 <dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _adjustForScrollbars() {
-        if ($openFilesContainer[0].scrollHeight &gt; $openFilesContainer[0].clientHeight) {
-            if (!$openFilesContainer.hasClass(&quot;vertical-scroll&quot;)) {
-                $openFilesContainer.addClass(&quot;vertical-scroll&quot;);
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._adjustForScrollbars = function () {
+        if (this.$openFilesContainer[0].scrollHeight &gt; this.$openFilesContainer[0].clientHeight) {
+            if (!this.$openFilesContainer.hasClass(&quot;vertical-scroll&quot;)) {
+                this.$openFilesContainer.addClass(&quot;vertical-scroll&quot;);
             }
         } else {
-            $openFilesContainer.removeClass(&quot;vertical-scroll&quot;);
+            this.$openFilesContainer.removeClass(&quot;vertical-scroll&quot;);
         }
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -548,23 +1683,26 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _checkForDuplicatesInWorkingTree 
-        <a class="anchor" href="#-_checkForDuplicatesInWorkingTree" id="-_checkForDuplicatesInWorkingTree"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_checkForDuplicatesInWorkingTree" id="WorkingSetView-_checkForDuplicatesInWorkingTree"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Looks for files with the same name in the working set
+and adds a parent directory name to them</p>
+</div>
     
 <dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _checkForDuplicatesInWorkingTree() {
-        var map = {},
-            fileList = DocumentManager.getWorkingSet();
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._checkForDuplicatesInWorkingTree = function () {
+        var self = this,
+            map = {},
+            fileList = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES);
 
         &#x2F;&#x2F; We need to always clear current directories as files could be removed from working tree.
-        $openFilesContainer.find(&quot;ul &gt; li &gt; a &gt; span.directory&quot;).remove();
+        this.$openFilesContainer.find(&quot;ul &gt; li &gt; a &gt; span.directory&quot;).remove();
 
         &#x2F;&#x2F; Go through files and fill map with arrays of files.
         fileList.forEach(function (file) {
@@ -580,10 +1718,10 @@ The UI allows the user to see what files are open/dirty and allows them to close
         &#x2F;&#x2F; Go through the map and solve the arrays with length over 1. Ignore the rest.
         _.forEach(map, function (value) {
             if (value.length &gt; 1) {
-                _addDirectoryNamesToWorkingTreeFiles(value);
+                self._addDirectoryNamesToWorkingTreeFiles(value);
             }
         });
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -591,7 +1729,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _createNewListItem 
-        <a class="anchor" href="#-_createNewListItem" id="-_createNewListItem"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_createNewListItem" id="WorkingSetView-_createNewListItem"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -611,35 +1749,47 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _createNewListItem(file) {
-        var curDoc = DocumentManager.getCurrentDocument();
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._createNewListItem = function (file) {
+        var self = this,
+            selectedFile = MainViewManager.getCurrentlyViewedFile(this.paneId),
+            data = {fullPath: file.fullPath,
+                    name: file.name,
+                    isFile: file.isFile};
 
         &#x2F;&#x2F; Create new list item with a link
         var $link = $(&quot;&lt;a href=&#39;#&#39;&gt;&lt;&#x2F;a&gt;&quot;).html(ViewUtils.getFileEntryDisplay(file));
+           
+        _iconProviders.forEach(function (provider) {
+            var icon = provider(data);
+            if (icon) {
+                $link.prepend($(icon));
+            }
+        });
+        
         var $newItem = $(&quot;&lt;li&gt;&lt;&#x2F;li&gt;&quot;)
             .append($link)
             .data(_FILE_KEY, file);
 
-        $openFilesContainer.find(&quot;ul&quot;).append($newItem);
+        this.$openFilesContainer.find(&quot;ul&quot;).append($newItem);
+        
+        _classProviders.forEach(function (provider) {
+            $newItem.addClass(provider(data));
+        });
         
         &#x2F;&#x2F; Update the listItem&#39;s apperance
-        _updateFileStatusIcon($newItem, isOpenAndDirty(file), false);
-        _updateListItemSelection($newItem, curDoc);
-
-        $newItem.mousedown(function (e) {
-            _reorderListItem(e, $(this));
-            e.preventDefault();
-        });
+        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false);
+        _updateListItemSelection($newItem, selectedFile);
+        _makeDraggable($newItem);
         
         $newItem.hover(
             function () {
-                _updateFileStatusIcon($(this), isOpenAndDirty(file), true);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true);
             },
             function () {
-                _updateFileStatusIcon($(this), isOpenAndDirty(file), false);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false);
             }
         );
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -647,7 +1797,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _findListItemFromFile 
-        <a class="anchor" href="#-_findListItemFromFile" id="-_findListItemFromFile"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_findListItemFromFile" id="WorkingSetView-_findListItemFromFile"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -664,27 +1814,26 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl><dl>
     <dt>Returns: <span class="label label-info">HTMLLIItem</span>
 </dt>
-    <dd></dd>
+    <dd>returns the DOM element of the item. null if one could not be found</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _findListItemFromFile(file) {
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._findListItemFromFile = function (file) {
         var result = null;
 
         if (file) {
-            var items = $openFilesContainer.find(&quot;ul&quot;).children();
+            var items = this.$openFilesContainer.find(&quot;ul&quot;).children();
             items.each(function () {
                 var $listItem = $(this);
                 if ($listItem.data(_FILE_KEY).fullPath === file.fullPath) {
                     result = $listItem;
-                    return false;
-                    &#x2F;&#x2F; breaks each
+                    return false; &#x2F;&#x2F; breaks each
                 }
             });
         }
 
         return result;
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -692,26 +1841,61 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _fireSelectionChanged 
-        <a class="anchor" href="#-_fireSelectionChanged" id="-_fireSelectionChanged"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_fireSelectionChanged" id="WorkingSetView-_fireSelectionChanged"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Redraw selection when list size changes or DocumentManager currentDocument changes.</p>
+</div>
+    
+<dl>
+    <dt>
+        scrollIntoView
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>= Scrolls the selected item into view (the default behavior)</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._fireSelectionChanged = function (scrollIntoView) {
+        var reveal = (scrollIntoView === undefined || scrollIntoView === true);
+        
+        if (reveal) {
+            this._scrollSelectedFileIntoView();
+        }
+
+        if (FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW &amp;&amp; this.$el.hasClass(&quot;active&quot;)) {
+            this.$openFilesList.trigger(&quot;selectionChanged&quot;, reveal);
+        } else {
+            this.$openFilesList.trigger(&quot;selectionHide&quot;);
+        }
+        &#x2F;&#x2F; in-lieu of resize events, manually trigger contentChanged to update scroll shadows
+        this.$openFilesContainer.trigger(&quot;contentChanged&quot;);
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleActivePaneChange 
+        <a class="anchor" href="#WorkingSetView-_handleActivePaneChange" id="WorkingSetView-_handleActivePaneChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>activePaneChange event handler</p>
+</div>
     
 <dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _fireSelectionChanged() {
-        _scrollSelectedDocIntoView();
-
-        &#x2F;&#x2F; redraw selection
-        $openFilesList.trigger(&quot;selectionChanged&quot;);
-
-        &#x2F;&#x2F; in-lieu of resize events, manually trigger contentChanged to update scroll shadows
-        $openFilesContainer.triggerHandler(&quot;contentChanged&quot;);
-    }</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleActivePaneChange = function () {
+        this._redraw();
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -719,30 +1903,35 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _handleDirtyFlagChanged 
-        <a class="anchor" href="#-_handleDirtyFlagChanged" id="-_handleDirtyFlagChanged"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_handleDirtyFlagChanged" id="WorkingSetView-_handleDirtyFlagChanged"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>dirtyFlagChange event handler</p>
+</div>
     
 <dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
     <dt>
         doc
         <span class="label label-info">Document</span>
     </dt>
-    <dd></dd>
+    <dd>- document whose dirty state has changed</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleDirtyFlagChanged(doc) {
-        var listItem = _findListItemFromFile(doc.file);
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleDirtyFlagChanged = function (e, doc) {
+        var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
             var canClose = $(listItem).find(&quot;.can-close&quot;).length === 1;
-            _updateFileStatusIcon(listItem, doc.isDirty, canClose);
+            this._updateFileStatusIcon(listItem, doc.isDirty, canClose);
         }
-
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -750,27 +1939,48 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _handleFileAdded 
-        <a class="anchor" href="#-_handleFileAdded" id="-_handleFileAdded"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_handleFileAdded" id="WorkingSetView-_handleFileAdded"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>workingSetAdd event handler</p>
+</div>
     
 <dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
+        fileAdded
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>- the file that was added</dd>
+    <dt>
+        index
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>- index where the file was added</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane the item that was to</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleFileAdded(file, index) {
-        if (index === DocumentManager.getWorkingSet().length - 1) {
-            &#x2F;&#x2F; Simple case: append item to list
-            _createNewListItem(file);
-            _redraw();
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleFileAdded = function (e, fileAdded, index, paneId) {
+        if (paneId === this.paneId) {
+            this._rebuildViewList(true);
         } else {
-            &#x2F;&#x2F; Insertion mid-list: just rebuild whole list UI
-            _rebuildWorkingSet(true);
+            this._checkForDuplicatesInWorkingTree();
         }
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -778,112 +1988,42 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _handleFileListAdded 
-        <a class="anchor" href="#-_handleFileListAdded" id="-_handleFileListAdded"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_handleFileListAdded" id="WorkingSetView-_handleFileListAdded"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>workingSetAddList event handler</p>
+</div>
     
 <dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
+        files
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;File&gt;</span>
+    </dt>
+    <dd>- the files that were added</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane the item that was to</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleFileListAdded(files) {
-        files.forEach(function (file) {
-            _createNewListItem(file);
-        });
-        _redraw();
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _handleFileNameChanged 
-        <a class="anchor" href="#-_handleFileNameChanged" id="-_handleFileNameChanged"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        oldName
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        newName
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleFileNameChanged(oldName, newName) {
-        &#x2F;&#x2F; Rebuild the working set if any file or folder name changed.
-        &#x2F;&#x2F; We could be smarter about this and only update the
-        &#x2F;&#x2F; nodes that changed, if needed...
-        _rebuildWorkingSet(true);
-    }
-    
-    function refresh() {
-        _redraw();
-    }
-    
-    function create(element) {
-        &#x2F;&#x2F; Init DOM element
-        $openFilesContainer = element;
-        $workingSetHeader = $(&quot;#working-set-header&quot;);
-        $openFilesList = $openFilesContainer.find(&quot;ul&quot;);
-        
-        &#x2F;&#x2F; Register listeners
-        $(DocumentManager).on(&quot;workingSetAdd&quot;, function (event, addedFile) {
-            _handleFileAdded(addedFile);
-        });
-
-        $(DocumentManager).on(&quot;workingSetAddList&quot;, function (event, addedFiles) {
-            _handleFileListAdded(addedFiles);
-        });
-
-        $(DocumentManager).on(&quot;workingSetRemove&quot;, function (event, removedFile, suppressRedraw) {
-            _handleFileRemoved(removedFile, suppressRedraw);
-        });
-
-        $(DocumentManager).on(&quot;workingSetRemoveList&quot;, function (event, removedFiles) {
-            _handleRemoveList(removedFiles);
-        });
-        
-        $(DocumentManager).on(&quot;workingSetSort&quot;, function (event) {
-            _handleWorkingSetSort();
-        });
-
-        $(DocumentManager).on(&quot;dirtyFlagChange&quot;, function (event, doc) {
-            _handleDirtyFlagChanged(doc);
-        });
-    
-        $(DocumentManager).on(&quot;fileNameChange&quot;, function (event, oldName, newName) {
-            _handleFileNameChanged(oldName, newName);
-        });
-        
-        $(FileViewController).on(&quot;documentSelectionFocusChange fileViewFocusChange&quot;, _updateListSelection);
-        
-        &#x2F;&#x2F; Show scroller shadows when open-files-container scrolls
-        ViewUtils.addScrollerShadow($openFilesContainer[0], null, true);
-        ViewUtils.sidebarList($openFilesContainer);
-        
-        &#x2F;&#x2F; Disable horizontal scrolling until WebKit bug #99379 is fixed
-        $openFilesContainer.css(&quot;overflow-x&quot;, &quot;hidden&quot;);
-        
-        _redraw();
-    }
-    
-    exports.create  = create;
-    exports.refresh = refresh;
-});</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleFileListAdded = function (e, files, paneId) {
+        if (paneId === this.paneId) {
+            this._rebuildViewList(true);
+        } else {
+            this._checkForDuplicatesInWorkingTree();
+        }
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -891,57 +2031,124 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _handleFileRemoved 
-        <a class="anchor" href="#-_handleFileRemoved" id="-_handleFileRemoved"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_handleFileRemoved" id="WorkingSetView-_handleFileRemoved"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>workingSetRemove event handler</p>
+</div>
     
 <dl>
     <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
         file
+        <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">File</span>
     </dt>
-    <dd></dd>
+    <dd>- the file that was removed</dd>
     <dt>
         suppressRedraw
-        <span class="label label-optional">optional</span>
+        <span class="label label-nullable">nullable</span>
         <span class="label label-info">boolean</span>
     </dt>
     <dd>If true, suppress redraw</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane the item that was to</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleFileRemoved(file, suppressRedraw) {
-        if (!suppressRedraw) {
-            var $listItem = _findListItemFromFile(file);
-            if ($listItem) {
-                &#x2F;&#x2F; Make the next file in the list show the close icon, 
-                &#x2F;&#x2F; without having to move the mouse, if there is a next file.
-                var $nextListItem = $listItem.next();
-                if ($nextListItem &amp;&amp; $nextListItem.length &gt; 0) {
-                    var canClose = ($listItem.find(&quot;.can-close&quot;).length === 1);
-                    var isDirty = isOpenAndDirty($nextListItem.data(_FILE_KEY));
-                    _updateFileStatusIcon($nextListItem, isDirty, canClose);
-                }
-                $listItem.remove();
-            }
-            
-            _redraw();
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleFileRemoved = function (e, file, suppressRedraw, paneId) {</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handlePaneLayoutChange 
+        <a class="anchor" href="#WorkingSetView-_handlePaneLayoutChange" id="WorkingSetView-_handlePaneLayoutChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>paneLayoutChange event listener</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handlePaneLayoutChange = function () {
+        var $titleEl = this.$el.find(&quot;.working-set-header-title&quot;),
+            title = Strings.WORKING_FILES;
+        
+        this._updateVisibility();
+        
+        if (MainViewManager.getPaneCount() &gt; 1) {
+            title = MainViewManager.getPaneTitle(this.paneId);
         }
-    }
+        
+        $titleEl.text(title);
+    };</code></pre></div><div class="member private">
 
-    function _handleRemoveList(removedFiles) {
-        removedFiles.forEach(function (file) {
-            var $listItem = _findListItemFromFile(file);
-            if ($listItem) {
-                $listItem.remove();
-            }
-        });
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleRemoveList 
+        <a class="anchor" href="#WorkingSetView-_handleRemoveList" id="WorkingSetView-_handleRemoveList"><span class="icon-link"></span></a>
+    </h4>
 
-        _redraw();
-    }</code></pre></div><div class="member private">
+    
+    <div class="description"><p>workingSetRemoveList event handler</p>
+</div>
+    
+<dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
+        files
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;File&gt;</span>
+    </dt>
+    <dd>- the files that were removed</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane the item that was to</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleRemoveList = function (e, files, paneId) {
+        var self = this;
+        if (paneId === this.paneId) {
+            files.forEach(function (file) {
+                var $listItem = self._findListItemFromFile(file);
+                if ($listItem) {
+                    $listItem.remove();
+                }
+            });
+
+            this._redraw();
+        } else {
+            this._checkForDuplicatesInWorkingTree();
+        }
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -949,30 +2156,107 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _handleWorkingSetSort 
-        <a class="anchor" href="#-_handleWorkingSetSort" id="-_handleWorkingSetSort"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_handleWorkingSetSort" id="WorkingSetView-_handleWorkingSetSort"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>workingSetSort event handler</p>
+</div>
     
 <dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane to sort</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleWorkingSetSort() {
-        if (!_suppressSortRedraw) {
-            _rebuildWorkingSet(true);
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleWorkingSetSort = function (e, paneId) {
+        if (!this.suppressSortRedraw &amp;&amp; paneId === this.paneId) {
+            this._rebuildViewList(true);
         }
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
     <h4>
-        _rebuildWorkingSet 
-        <a class="anchor" href="#-_rebuildWorkingSet" id="-_rebuildWorkingSet"><span class="icon-link"></span></a>
+        _handleWorkingSetUpdate 
+        <a class="anchor" href="#WorkingSetView-_handleWorkingSetUpdate" id="WorkingSetView-_handleWorkingSetUpdate"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>workingSetUpdate event handler</p>
+</div>
+    
+<dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event object</dd>
+    <dt>
+        paneId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the id of the pane to update</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._handleWorkingSetUpdate = function (e, paneId) {
+        if (this.paneId === paneId) {
+            this._rebuildViewList(true);
+        } else {
+            this._checkForDuplicatesInWorkingTree();
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _makeEventName 
+        <a class="anchor" href="#WorkingSetView-_makeEventName" id="WorkingSetView-_makeEventName"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>creates a name that is namespaced to this pane</p>
+</div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- name of the event to create. use an empty string to get just the event name to turn off all events in the namespace</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._makeEventName = function (name) {
+        return name + &quot;.paneList&quot; + this.paneId;
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _rebuildViewList 
+        <a class="anchor" href="#WorkingSetView-_rebuildViewList" id="WorkingSetView-_rebuildViewList"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -984,17 +2268,20 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _rebuildWorkingSet(forceRedraw) {
-        $openFilesContainer.find(&quot;ul&quot;).empty();
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._rebuildViewList = function (forceRedraw) {
+        var self = this,
+            fileList = MainViewManager.getWorkingSet(this.paneId);
 
-        DocumentManager.getWorkingSet().forEach(function (file) {
-            _createNewListItem(file);
+        this.$openFilesContainer.find(&quot;ul&quot;).empty();
+        
+        fileList.forEach(function (file) {
+            self._createNewListItem(file);
         });
 
         if (forceRedraw) {
-            _redraw();
+            self._redraw();
         }
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1002,289 +2289,58 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _redraw 
-        <a class="anchor" href="#-_redraw" id="-_redraw"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_redraw" id="WorkingSetView-_redraw"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _redraw() {
-        if (DocumentManager.getWorkingSet().length === 0) {
-            $openFilesContainer.hide();
-            $workingSetHeader.hide();
-        } else {
-            $openFilesContainer.show();
-            $workingSetHeader.show();
-            _checkForDuplicatesInWorkingTree();
-        }
-        _adjustForScrollbars();
-        _fireSelectionChanged();
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _reorderListItem 
-        <a class="anchor" href="#-_reorderListItem" id="-_reorderListItem"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Starts the drag and drop working set view reorder.</p>
+    <div class="description"><p>Shows/Hides open files list based on working set content.</p>
 </div>
     
 <dl>
-    <dt>
-        event
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Event</span>
-    </dt>
-    <dd>- jQuery event</dd>
-    <dt>
-        $listItem
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">HTMLLIElement</span>
-    </dt>
-    <dd>- jQuery element</dd>
-    <dt>
-        fromClose
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">bool</span>
-    </dt>
-    <dd>- true if reorder was called from the close icon</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _reorderListItem(event, $listItem, fromClose) {
-        var $prevListItem   = $listItem.prev(),
-            $nextListItem   = $listItem.next(),
-            selected        = $listItem.hasClass(&quot;selected&quot;),
-            prevSelected    = $prevListItem.hasClass(&quot;selected&quot;),
-            nextSelected    = $nextListItem.hasClass(&quot;selected&quot;),
-            index           = DocumentManager.findInWorkingSet($listItem.data(_FILE_KEY).fullPath),
-            height          = $listItem.height(),
-            startPageY      = event.pageY,
-            listItemTop     = startPageY - $listItem.offset().top,
-            listItemBottom  = $listItem.offset().top + height - startPageY,
-            offsetTop       = $openFilesContainer.offset().top,
-            scrollElement   = $openFilesContainer.get(0),
-            containerHeight = scrollElement.clientHeight,
-            maxScroll       = scrollElement.scrollHeight - containerHeight,
-            hasScroll       = scrollElement.scrollHeight &gt; containerHeight,
-            hasBottomShadow = scrollElement.scrollHeight &gt; scrollElement.scrollTop + containerHeight,
-            addBottomShadow = false,
-            interval        = false,
-            moved           = false;
-        
-        &#x2F;&#x2F; Don&#39;t redraw the working set for the next events
-        _suppressSortRedraw = true;
-        
-        function drag(e) {
-            var top = e.pageY - startPageY;
-            
-            &#x2F;&#x2F; Drag if the item is not the first and moving it up or
-            &#x2F;&#x2F; if the item is not the last and moving down
-            if (($prevListItem.length &amp;&amp; top &lt; 0) || ($nextListItem.length &amp;&amp; top &gt; 0)) {
-                &#x2F;&#x2F; Reorder the list once the item is halfway to the new position
-                if (Math.abs(top) &gt; height &#x2F; 2) {
-                    &#x2F;&#x2F; If moving up, place the previows item after the moving item
-                    if (top &lt; 0) {
-                        $prevListItem.insertAfter($listItem);
-                        startPageY -= height;
-                        top = top + height;
-                        DocumentManager.swapWorkingSetIndexes(index, --index);
-                    &#x2F;&#x2F; If moving down, place the next item before the moving item
-                    } else {
-                        $nextListItem.insertBefore($listItem);
-                        startPageY += height;
-                        top = top - height;
-                        DocumentManager.swapWorkingSetIndexes(index, ++index);
-                    }
-                    
-                    &#x2F;&#x2F; Update the selection when the previows or next element were selected
-                    if (!selected &amp;&amp; ((top &gt; 0 &amp;&amp; prevSelected) || (top &lt; 0 &amp;&amp; nextSelected))) {
-                        _fireSelectionChanged();
-                    }
-                    
-                    &#x2F;&#x2F; Update the previows and next items
-                    $prevListItem = $listItem.prev();
-                    $nextListItem = $listItem.next();
-                    prevSelected  = $prevListItem.hasClass(&quot;selected&quot;);
-                    nextSelected  = $nextListItem.hasClass(&quot;selected&quot;);
-
-                    &#x2F;&#x2F; If the last item of the list was selected and the previows was moved to its location, then
-                    &#x2F;&#x2F; the it will show a bottom shadow even if it shouldnt because of the way the scrollHeight is 
-                    &#x2F;&#x2F; handle with relative position. This will remove that shadow and add it on drop. 
-                    if (!addBottomShadow &amp;&amp; !hasBottomShadow &amp;&amp; !$nextListItem.length &amp;&amp; prevSelected) {
-                        ViewUtils.removeScrollerShadow($openFilesContainer[0], null);
-                        ViewUtils.addScrollerShadow($openFilesContainer[0], null, false);
-                        addBottomShadow = true;
-                    }
-                }
-            &#x2F;&#x2F; Set the top to 0 as the event probably didnt fired at the exact start&#x2F;end of the list 
-            } else {
-                top = 0;
-            }
-            
-            &#x2F;&#x2F; Move the item
-            $listItem.css(&quot;top&quot;, top + &quot;px&quot;);
-            
-            &#x2F;&#x2F; Update the selection position
-            if (selected) {
-                _fireSelectionChanged();
-            }
-            
-            &#x2F;&#x2F; Once the movement is greater than 3 pixels, it is assumed that the user wantes to reorder files and not open
-            if (!moved &amp;&amp; Math.abs(top) &gt; 3) {
-                Menus.closeAll();
-                moved = true;
-            }
-        }
-        
-        function endScroll() {
-            window.clearInterval(interval);
-            interval = false;
-        }
-        
-        function scroll(e) {
-            var dir = 0;
-            &#x2F;&#x2F; Mouse over the first visible pixels and moving up
-            if (e.pageY - listItemTop &lt; offsetTop + 7) {
-                dir = -1;
-            &#x2F;&#x2F; Mouse over the last visible pixels and moving down
-            } else if (e.pageY + listItemBottom &gt; offsetTop + containerHeight - 7) {
-                dir = 1;
-            }
-            
-            if (dir &amp;&amp; !interval) {
-                &#x2F;&#x2F; Scroll view if the mouse is over the first or last pixels of the container
-                interval = window.setInterval(function () {
-                    var scrollTop = $openFilesContainer.scrollTop();
-                    &#x2F;&#x2F; End scroll if there isn&#39;t more to scroll
-                    if ((dir === -1 &amp;&amp; scrollTop &lt;= 0) || (dir === 1 &amp;&amp; scrollTop &gt;= maxScroll)) {
-                        endScroll();
-                    &#x2F;&#x2F; Scroll and drag list item
-                    } else {
-                        $openFilesContainer.scrollTop(scrollTop + 7 * dir);
-                        startPageY -= 7 * dir;
-                        drag(e);
-                    }
-                }, 100);
-            } else if (!dir &amp;&amp; interval) {
-                endScroll();
-            }
-        }
-        
-        function drop() {
-            &#x2F;&#x2F; Enable Mousewheel
-            window.onmousewheel = window.document.onmousewheel = null;
-            
-            &#x2F;&#x2F; Removes the styles, placing the item in the chosen place
-            $listItem.removeAttr(&quot;style&quot;);
-            
-            &#x2F;&#x2F; End the scrolling if needed
-            if (interval) {
-                window.clearInterval(interval);
-            }
-            
-            &#x2F;&#x2F; If item wasn&#39;t dragged, treat as a click
-            if (!moved) {
-                &#x2F;&#x2F; Click on close icon, or middle click anywhere - close the item without selecting it first
-                if (fromClose || event.which === MIDDLE_BUTTON) {
-                    CommandManager.execute(Commands.FILE_CLOSE, {file: $listItem.data(_FILE_KEY)});
-                } else {
-                    &#x2F;&#x2F; Normal right and left click - select the item
-                    FileViewController.openAndSelectDocument($listItem.data(_FILE_KEY).fullPath, FileViewController.WORKING_SET_VIEW);
-                }
-            
-            } else {
-                &#x2F;&#x2F; Update the file selection
-                if (selected) {
-                    _fireSelectionChanged();
-                    ViewUtils.scrollElementIntoView($openFilesContainer, $listItem, false);
-                }
-                
-                &#x2F;&#x2F; Restore the shadow
-                if (addBottomShadow) {
-                    ViewUtils.addScrollerShadow($openFilesContainer[0], null, true);
-                }
-            }
-            
-            &#x2F;&#x2F; The drag is done, so set back to the default
-            _suppressSortRedraw = false;
-        }
-        
-        
-        &#x2F;&#x2F; Only drag with the left mouse button, and control key is not down
-        &#x2F;&#x2F; on Mac, end the drop in other cases
-        if (event.which !== LEFT_BUTTON || (event.ctrlKey &amp;&amp; brackets.platform === &quot;mac&quot;)) {
-            drop();
-            return;
-        }
-        
-        &#x2F;&#x2F; Disable Mousewheel while dragging
-        window.onmousewheel = window.document.onmousewheel = function (e) {
-            e.preventDefault();
-        };
-        
-        &#x2F;&#x2F; Style the element
-        $listItem.css(&quot;position&quot;, &quot;relative&quot;).css(&quot;z-index&quot;, 1);
-        
-        &#x2F;&#x2F; Envent Handlers
-        var $holder = $(window);
-        $holder.on(&quot;mousemove.workingSet&quot;, function (e) {
-            if (hasScroll) {
-                scroll(e);
-            }
-            drag(e);
-        });
-        $holder.on(&quot;mouseup.workingSet&quot;, function (e) {
-            $holder.off(&quot;.workingSet&quot;);
-            drop();
-        });
-    }</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._redraw = function () {
+        this._updateViewState();
+        this._updateVisibility();
+        this._updateItemClasses();
+        this._adjustForScrollbars();
+        this._fireSelectionChanged();
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
     <h4>
-        _scrollSelectedDocIntoView 
-        <a class="anchor" href="#-_scrollSelectedDocIntoView" id="-_scrollSelectedDocIntoView"><span class="icon-link"></span></a>
+        _scrollSelectedFileIntoView 
+        <a class="anchor" href="#WorkingSetView-_scrollSelectedFileIntoView" id="WorkingSetView-_scrollSelectedFileIntoView"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Scrolls the selected file into view</p>
+</div>
     
 <dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _scrollSelectedDocIntoView() {
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._scrollSelectedFileIntoView = function () {
         if (FileViewController.getFileSelectionFocus() !== FileViewController.WORKING_SET_VIEW) {
             return;
         }
 
-        var doc = DocumentManager.getCurrentDocument();
-        if (!doc) {
+        var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
+
+        var $selectedFile = this._findListItemFromFile(file);
+        if (!$selectedFile) {
             return;
         }
 
-        var $selectedDoc = _findListItemFromFile(doc.file);
-        if (!$selectedDoc) {
-            return;
-        }
-
-        ViewUtils.scrollElementIntoView($openFilesContainer, $selectedDoc, false);
-    }</code></pre></div><div class="member private">
+        ViewUtils.scrollElementIntoView(this.$openFilesContainer, $selectedFile, false);
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1292,7 +2348,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _updateFileStatusIcon 
-        <a class="anchor" href="#-_updateFileStatusIcon" id="-_updateFileStatusIcon"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_updateFileStatusIcon" id="WorkingSetView-_updateFileStatusIcon"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -1320,9 +2376,9 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _updateFileStatusIcon(listElement, isDirty, canClose) {
-        var $fileStatusIcon = listElement.find(&quot;.file-status-icon&quot;);
-        var showIcon = isDirty || canClose;
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose) {
+        var $fileStatusIcon = listElement.find(&quot;.file-status-icon&quot;),
+            showIcon = isDirty || canClose;
 
         &#x2F;&#x2F; remove icon if its not needed
         if (!showIcon &amp;&amp; $fileStatusIcon.length !== 0) {
@@ -1333,17 +2389,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
         } else if (showIcon &amp;&amp; $fileStatusIcon.length === 0) {
             
             $fileStatusIcon = $(&quot;&lt;div class=&#39;file-status-icon&#39;&gt;&lt;&#x2F;div&gt;&quot;)
-                .prependTo(listElement)
-                .mousedown(function (e) {
-                    &#x2F;&#x2F; Try to drag if that is what is wanted if not it will be the equivalent to File &gt; Close;
-                    &#x2F;&#x2F; it doesn&#39;t merely remove a file from the working set
-                    _reorderListItem(e, $(this).parent(), true);
-                    
-                    &#x2F;&#x2F; stopPropagation of mousedown for fileStatusIcon so the parent &lt;LI&gt; item, which
-                    &#x2F;&#x2F; selects documents on mousedown, doesn&#39;t select the document in the case 
-                    &#x2F;&#x2F; when the click is on fileStatusIcon
-                    e.stopPropagation();
-                });
+                .prependTo(listElement);
         }
 
         &#x2F;&#x2F; Set icon&#39;s class
@@ -1351,49 +2397,41 @@ The UI allows the user to see what files are open/dirty and allows them to close
             ViewUtils.toggleClass($fileStatusIcon, &quot;dirty&quot;, isDirty);
             ViewUtils.toggleClass($fileStatusIcon, &quot;can-close&quot;, canClose);
         }
-    }</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
     <h4>
-        _updateListItemSelection 
-        <a class="anchor" href="#-_updateListItemSelection" id="-_updateListItemSelection"><span class="icon-link"></span></a>
+        _updateItemClasses 
+        <a class="anchor" href="#WorkingSetView-_updateItemClasses" id="WorkingSetView-_updateItemClasses"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Updates the appearance of the list element based on the parameters provided.</p>
+    <div class="description"><p>Updates the working set item class list</p>
 </div>
     
 <dl>
-    <dt>
-        listElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">HTMLLIElement</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        selectedDoc
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Document</span>
-    </dt>
-    <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _updateListItemSelection(listItem, selectedDoc) {
-        var shouldBeSelected = (selectedDoc &amp;&amp; $(listItem).data(_FILE_KEY).fullPath === selectedDoc.file.fullPath);
-        
-        ViewUtils.toggleClass($(listItem), &quot;selected&quot;, shouldBeSelected);
-    }
-
-    function isOpenAndDirty(file) {
-        &#x2F;&#x2F; working set item might never have been opened; if so, then it&#39;s definitely not dirty
-        var docIfOpen = DocumentManager.getOpenDocumentForPath(file.fullPath);
-        return (docIfOpen &amp;&amp; docIfOpen.isDirty);
-    }</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateItemClasses = function () {
+        if (_classProviders.length &gt; 0) {
+            this.$openFilesContainer.find(&quot;ul &gt; li&quot;).each(function () {
+                var $li = $(this),
+                    file = $li.data(_FILE_KEY),
+                    data = {fullPath: file.fullPath,
+                            name: file.name,
+                            isFile: file.isFile};
+                $li.removeAttr(&quot;class&quot;);
+                _classProviders.forEach(function (provider) {
+                    $li.addClass(provider(data));
+                });
+            });
+        }
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1401,37 +2439,176 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </span>
     <h4>
         _updateListSelection 
-        <a class="anchor" href="#-_updateListSelection" id="-_updateListSelection"><span class="icon-link"></span></a>
+        <a class="anchor" href="#WorkingSetView-_updateListSelection" id="WorkingSetView-_updateListSelection"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Updates the pane view&#39;s selection marker and scrolls the item into view</p>
+</div>
     
 <dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _updateListSelection() {
-        var doc;
-        if (FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW) {
-            doc = DocumentManager.getCurrentDocument();
-        } else {
-            doc = null;
-        }
-            
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateListSelection = function () {
+        var file = MainViewManager.getCurrentlyViewedFile(this.paneId);
+        
+        this._updateViewState();
+        
         &#x2F;&#x2F; Iterate through working set list and update the selection on each
-        var items = $openFilesContainer.find(&quot;ul&quot;).children().each(function () {
-            _updateListItemSelection(this, doc);
+        this.$openFilesContainer.find(&quot;ul&quot;).children().each(function () {
+            _updateListItemSelection(this, file);
         });
 
         &#x2F;&#x2F; Make sure selection is in view
-        _scrollSelectedDocIntoView();
+        this._scrollSelectedFileIntoView();
+        this._fireSelectionChanged();
+    };</code></pre></div><div class="member private">
 
-        _fireSelectionChanged();
-    }</code></pre></div>
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateViewState 
+        <a class="anchor" href="#WorkingSetView-_updateViewState" id="WorkingSetView-_updateViewState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates the pane view&#39;s selection state </p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateViewState = function () {
+        var paneId = MainViewManager.getActivePaneId();
+        if ((FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW) &amp;&amp;
+                (paneId === this.paneId)) {
+            this.$el.addClass(&quot;active&quot;);
+            this.$openFilesContainer.addClass(&quot;active&quot;);
+        } else {
+            this.$el.removeClass(&quot;active&quot;);
+            this.$openFilesContainer.removeClass(&quot;active&quot;);
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateVisibility 
+        <a class="anchor" href="#WorkingSetView-_updateVisibility" id="WorkingSetView-_updateVisibility"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Hides or shows the WorkingSetView</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateVisibility = function () {
+        var fileList = MainViewManager.getWorkingSet(this.paneId);
+        if (MainViewManager.getPaneCount() === 1 &amp;&amp; (!fileList || fileList.length === 0)) {
+            this.$openFilesContainer.hide();
+            this.$workingSetListViewHeader.hide();
+        } else {
+            this.$openFilesContainer.show();
+            this.$workingSetListViewHeader.show();
+            this._checkForDuplicatesInWorkingTree();
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        destroy 
+        <a class="anchor" href="#WorkingSetView-destroy" id="WorkingSetView-destroy"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Destroys the WorkingSetView DOM element and removes all event handlers</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype.destroy = function () {
+        ViewUtils.removeScrollerShadow(this.$openFilesContainer[0], null);
+        this.$openFilesContainer.off(&quot;.workingSetView&quot;);
+        this.$el.remove();
+        $(MainViewManager).off(this._makeEventName(&quot;&quot;));
+        $(DocumentManager).off(this._makeEventName(&quot;&quot;));
+        $(FileViewController).off(this._makeEventName(&quot;&quot;));
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        init 
+        <a class="anchor" href="#WorkingSetView-init" id="WorkingSetView-init"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Initializes the WorkingSetView object</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype.init = function () {
+        this.$openFilesContainer = this.$el.find(&quot;.open-files-container&quot;);
+        this.$workingSetListViewHeader = this.$el.find(&quot;.working-set-header&quot;);
+        
+        this.$openFilesList = this.$el.find(&quot;ul&quot;);
+        
+        &#x2F;&#x2F; Register listeners
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetAdd&quot;), _.bind(this._handleFileAdded, this));
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetAddList&quot;), _.bind(this._handleFileListAdded, this));
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetRemove&quot;), _.bind(this._handleFileRemoved, this));
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetRemoveList&quot;), _.bind(this._handleRemoveList, this));
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetSort&quot;), _.bind(this._handleWorkingSetSort, this));
+        $(MainViewManager).on(this._makeEventName(&quot;activePaneChange&quot;), _.bind(this._handleActivePaneChange, this));
+        $(MainViewManager).on(this._makeEventName(&quot;paneLayoutChange&quot;), _.bind(this._handlePaneLayoutChange, this));
+        $(MainViewManager).on(this._makeEventName(&quot;workingSetUpdate&quot;), _.bind(this._handleWorkingSetUpdate, this));
+
+        $(DocumentManager).on(this._makeEventName(&quot;dirtyFlagChange&quot;), _.bind(this._handleDirtyFlagChanged, this));
+
+        $(FileViewController).on(this._makeEventName(&quot;documentSelectionFocusChange&quot;) + &quot; &quot; + this._makeEventName(&quot;fileViewFocusChange&quot;), _.bind(this._updateListSelection, this));
+        
+        &#x2F;&#x2F; Show scroller shadows when open-files-container scrolls
+        ViewUtils.addScrollerShadow(this.$openFilesContainer[0], null, true);
+        ViewUtils.sidebarList(this.$openFilesContainer);
+        
+        &#x2F;&#x2F; Disable horizontal scrolling until WebKit bug #99379 is fixed
+        this.$openFilesContainer.css(&quot;overflow-x&quot;, &quot;hidden&quot;);
+
+        this.$openFilesContainer.on(&quot;contextmenu.workingSetView&quot;, function (e) {
+            Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
+        });
+
+        this._redraw();
+    };</code></pre></div>
+        </section>
+
+    </div>
+
 </section>
-
         </div>
       </div>
     </div>

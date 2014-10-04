@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ThemeView - Brackets API</title>
+    <title>WorkspaceManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -368,13 +368,20 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ThemeView</h1>
+<h1>WorkspaceManager</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div></div>
+    <div><p>Manages layout of panels surrounding the editor area, and size of the editor area (but not its contents).</p>
+<p>Updates panel sizes when the window is resized. Maintains the max resizing limits for panels, based on
+currently available window size.</p>
+<p>Events:
+<code>workspaceUpdateLayout</code> When workspace size changes for any reason (including panel show/hide panel resize, or the window resize).
+             The 2nd arg is the available workspace height.
+             The 3rd arg is a refreshHint flag for internal use (passed in to recomputeLayout)</p>
+</div>
     
 </section>
 
@@ -382,10 +389,79 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Resizer.html">Resizer</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $editorHolder 
+        <a class="anchor" href="#-$editorHolder" id="-$editorHolder"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror instance (or the no-editor placeholder) </p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $editorHolder;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $windowContent 
+        <a class="anchor" href="#-$windowContent" id="-$windowContent"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The &quot;.content&quot; vertical stack (editor + all header/footer panels) </p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $windowContent;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        windowResizing 
+        <a class="anchor" href="#-windowResizing" id="-windowResizing"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Have we already started listening for the end of the ongoing window resize? </p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var windowResizing = false;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -395,39 +471,65 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
+<div class="member private public">
 
 <span class="pull-right scope">
-    
+    Private
     Public API
 </span>
     <h4>
-        updateScrollbars 
-        <a class="anchor" href="#-updateScrollbars" id="-updateScrollbars"><span class="icon-link"></span></a>
+        _setMockDOM 
+        <a class="anchor" href="#-_setMockDOM" id="-_setMockDOM"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Load scrollbar styling based on whether or not theme scrollbars are enabled.</p>
+    <div class="description"><p>Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor()</p>
 </div>
     
 <dl>
-    <dt>
-        theme
-        <span class="label label-info">ThemeManager.Theme</span>
-    </dt>
-    <dd>Is the theme object with the corresponding scrollbar style to be updated</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateScrollbars(theme) {
-        theme = theme || {};
-        if (prefs.get(&quot;themeScrollbars&quot;)) {
-            var scrollbar = (theme.scrollbar || []).join(&quot; &quot;);
-            $scrollbars.text(scrollbar || &quot;&quot;);
-        } else {
-            $scrollbars.text(&quot;&quot;);
-        }
+<pre class="code language-javascript"><code class="language-javascript">    function _setMockDOM($mockWindowContent, $mockEditorHolder) {
+        $windowContent = $mockWindowContent;
+        $editorHolder = $mockEditorHolder;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        calcAvailableHeight 
+        <a class="anchor" href="#-calcAvailableHeight" id="-calcAvailableHeight"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Calculates the available height for the full-size Editor (or the no-editor placeholder),
+accounting for the current size of all visible panels, toolbar, &amp; status bar.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function calcAvailableHeight() {
+        var availableHt = $windowContent.height();
+        
+        $editorHolder.siblings().each(function (i, elem) {
+            var $elem = $(elem);
+            if ($elem.css(&quot;display&quot;) !== &quot;none&quot; &amp;&amp; $elem.css(&quot;position&quot;) !== &quot;absolute&quot;) {
+                availableHt -= $elem.outerHeight();
+            }
+        });
+        
+        &#x2F;&#x2F; Clip value to 0 (it could be negative if a panel wants more space than we have)
+        return Math.max(availableHt, 0);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -435,44 +537,393 @@
     Public API
 </span>
     <h4>
-        updateThemes 
-        <a class="anchor" href="#-updateThemes" id="-updateThemes"><span class="icon-link"></span></a>
+        createBottomPanel 
+        <a class="anchor" href="#-createBottomPanel" id="-createBottomPanel"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Handles updating codemirror with the current selection of themes.</p>
+    <div class="description"><p>Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
+The panel&#39;s size &amp; visibility are automatically saved &amp; restored as a view-state preference.</p>
 </div>
     
 <dl>
     <dt>
-        cm
-        <span class="label label-info">CodeMirror</span>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
     </dt>
-    <dd>is the CodeMirror instance currently loaded</dd>
+    <dd>Unique id for this panel. Use package-style naming, e.g. "myextension.feature.panelname"</dd>
+    <dt>
+        $panel
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQueryObject</span>
+    </dt>
+    <dd>DOM content to use as the panel. Need not be in the document yet. Must have an id attribute, for use as a preferences key.</dd>
+    <dt>
+        minSize
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Minimum height of panel in px.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!Panel</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function createBottomPanel(id, $panel, minSize) {
+        $panel.insertBefore(&quot;#status-bar&quot;);
+        $panel.hide();
+        updateResizeLimits();  &#x2F;&#x2F; initialize panel&#39;s max size
+        
+        return new Panel($panel, minSize);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        handleWindowResize 
+        <a class="anchor" href="#-handleWindowResize" id="-handleWindowResize"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Trigger editor area resize whenever the window is resized</p>
+</div>
+    
+<dl>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateThemes(cm) {
-        var newTheme = prefs.get(&quot;theme&quot;),
-            cmTheme  = (cm.getOption(&quot;theme&quot;) || &quot;&quot;).replace(&#x2F;[\s]*&#x2F;, &quot;&quot;); &#x2F;&#x2F; Normalize themes string
-
-        &#x2F;&#x2F; Check if the editor already has the theme applied...
-        if (cmTheme === newTheme) {
+<pre class="code language-javascript"><code class="language-javascript">    function handleWindowResize() {
+        &#x2F;&#x2F; These are not initialized in Jasmine Spec Runner window until a test
+        &#x2F;&#x2F; is run that creates a mock document.
+        if (!$windowContent || !$editorHolder) {
             return;
         }
+        
+        &#x2F;&#x2F; FIXME (issue #4564) Workaround https:&#x2F;&#x2F;github.com&#x2F;marijnh&#x2F;CodeMirror&#x2F;issues&#x2F;1787
+        triggerUpdateLayout();
+        
+        if (!windowResizing) {
+            windowResizing = true;
+            
+            &#x2F;&#x2F; We don&#39;t need any fancy debouncing here - we just need to react before the user can start
+            &#x2F;&#x2F; resizing any panels at the new window size. So just listen for first mousemove once the
+            &#x2F;&#x2F; window resize releases mouse capture.
+            $(window.document).one(&quot;mousemove&quot;, function () {
+                windowResizing = false;
+                updateResizeLimits();
+            });
+        }
+    }</code></pre></div><div class="member">
 
-        &#x2F;&#x2F; Setup current and further documents to get the new theme...
-        CodeMirror.defaults.theme = newTheme;
-        cm.setOption(&quot;theme&quot;, newTheme);
-    }
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        listenToResize 
+        <a class="anchor" href="#-listenToResize" id="-listenToResize"><span class="icon-link"></span></a>
+    </h4>
 
+    
+    <div class="description"><p>Trigger editor area resize whenever the given panel is shown/hidden/resized 
+ @param {!jQueryObject} $panel the jquery object in which to attach event handlers</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function listenToResize($panel) {
+        &#x2F;&#x2F; Update editor height when shown&#x2F;hidden, &amp; continuously as panel is resized
+        $panel.on(&quot;panelCollapsed panelExpanded panelResizeUpdate&quot;, function () {
+            triggerUpdateLayout();
+        });
+        &#x2F;&#x2F; Update max size of sibling panels when shown&#x2F;hidden, &amp; at *end* of resize gesture
+        $panel.on(&quot;panelCollapsed panelExpanded panelResizeEnd&quot;, function () {
+            updateResizeLimits();
+        });
+    }</code></pre></div><div class="member public">
 
-    exports.updateScrollbars = updateScrollbars;
-    exports.updateThemes     = updateThemes;
-});</code></pre></div>
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        recomputeLayout 
+        <a class="anchor" href="#-recomputeLayout" id="-recomputeLayout"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Called when an external widget has appeared and needs some of the space occupied 
+ by the mainview manager</p>
+</div>
+    
+<dl>
+    <dt>
+        refreshHint
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to refresh the editor, false if not</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function recomputeLayout(refreshHint) {
+        triggerUpdateLayout(refreshHint);
+        updateResizeLimits();
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        triggerUpdateLayout 
+        <a class="anchor" href="#-triggerUpdateLayout" id="-triggerUpdateLayout"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Calculates a new size for editor-holder and resizes it accordingly, then and dispatches the &quot;workspaceUpdateLayout&quot;
+event. (The editors within are resized by EditorManager, in response to that event).</p>
+</div>
+    
+<dl>
+    <dt>
+        refreshHint
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to force a complete refresh</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function triggerUpdateLayout(refreshHint) {
+        &#x2F;&#x2F; Find how much space is left for the editor
+        var editorAreaHeight = calcAvailableHeight();
+        
+        $editorHolder.height(editorAreaHeight);  &#x2F;&#x2F; affects size of &quot;not-editor&quot; placeholder as well
+        
+        &#x2F;&#x2F; Resize editor to fill the space
+        $(exports).trigger(&quot;workspaceUpdateLayout&quot;, [editorAreaHeight, refreshHint]);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        updateResizeLimits 
+        <a class="anchor" href="#-updateResizeLimits" id="-updateResizeLimits"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates panel resize limits to disallow making panels big enough to shrink editor area below 0</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function updateResizeLimits() {
+        var editorAreaHeight = $editorHolder.height();
+        
+        $editorHolder.siblings().each(function (i, elem) {
+            var $elem = $(elem);
+            if ($elem.css(&quot;display&quot;) === &quot;none&quot;) {
+                $elem.data(&quot;maxsize&quot;, editorAreaHeight);
+            } else {
+                $elem.data(&quot;maxsize&quot;, editorAreaHeight + $elem.outerHeight());
+            }
+        });
+    }</code></pre></div>
 </section>
 
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                Panel
+                
+            </h4>
+            
+            <em><p>Represents a panel below the editor area (a child of &quot;.content&quot;).</p>
+</em>
+            
+            <dl>
+                <dt>$panel <span class="label label-info pull-left">jQueryObject</span></dt>
+                <dd>The entire panel, including any chrome, already in the DOM.</dd>
+                <dt>minSize <span class="label label-info pull-left">number</span></dt>
+                <dd>Minimum height of panel in px.</dd>
+            </dl>
+          
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function Panel($panel, minSize) {
+        this.$panel = $panel;
+        
+        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize, false, undefined, true);
+        listenToResize($panel);
+    }</code></pre>
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $panel 
+        <a class="anchor" href="#Panel-$panel" id="Panel-$panel"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Dom node holding the rendered panel </p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.$panel = null;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        hide 
+        <a class="anchor" href="#Panel-hide" id="Panel-hide"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Hides the panel</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.hide = function () {
+        Resizer.hide(this.$panel[0]);
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        isVisible 
+        <a class="anchor" href="#Panel-isVisible" id="Panel-isVisible"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Determines if the panel is visible</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if visible, false if not</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.isVisible = function () {
+        return this.$panel.is(&quot;:visible&quot;);
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setVisible 
+        <a class="anchor" href="#Panel-setVisible" id="Panel-setVisible"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets the panel&#39;s visibility state</p>
+</div>
+    
+<dl>
+    <dt>
+        visible
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to show, false to hide</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.setVisible = function (visible) {
+        if (visible) {
+            Resizer.show(this.$panel[0]);
+        } else {
+            Resizer.hide(this.$panel[0]);
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        show 
+        <a class="anchor" href="#Panel-show" id="Panel-show"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Shows the panel</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.show = function () {
+        Resizer.show(this.$panel[0]);
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

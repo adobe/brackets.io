@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ThemeView - Brackets API</title>
+    <title>ViewStateManager - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -368,13 +368,20 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ThemeView</h1>
+<h1>ViewStateManager</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div></div>
+    <div><p>ViewStateManager is a singleton for views to park their global viwe state. The state is saved
+with project data but the View or View Factory is responsible for restoring the view state
+when the view is created.</p>
+<p>Views should implement <code>getViewState()</code> so that the view state can be saved and that data is cached
+for later use.</p>
+<p>Views or View Factories are responsible for restoring the view state when the view of that file is created
+by recalling the cached state.  Views determine what data is store in the view state and how to restore it.</p>
+</div>
     
 </section>
 
@@ -382,10 +389,39 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _viewStateCache 
+        <a class="anchor" href="#-_viewStateCache" id="-_viewStateCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The view state cache.</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, *&gt;</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _viewStateCache = {};</code></pre></div>
 </section>
 
 <section id="functions">
@@ -395,39 +431,40 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
+<div class="member private">
 
 <span class="pull-right scope">
+    Private
     
-    Public API
 </span>
     <h4>
-        updateScrollbars 
-        <a class="anchor" href="#-updateScrollbars" id="-updateScrollbars"><span class="icon-link"></span></a>
+        _setViewState 
+        <a class="anchor" href="#-_setViewState" id="-_setViewState"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Load scrollbar styling based on whether or not theme scrollbars are enabled.</p>
+    <div class="description"><p>Sets the view state for the specfied file</p>
 </div>
     
 <dl>
     <dt>
-        theme
-        <span class="label label-info">ThemeManager.Theme</span>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
     </dt>
-    <dd>Is the theme object with the corresponding scrollbar style to be updated</dd>
+    <dd>- the file to record the view state for</dd>
+    <dt>
+        viewState
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">*</span>
+    </dt>
+    <dd>- any data that the view needs to restore the view state.</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateScrollbars(theme) {
-        theme = theme || {};
-        if (prefs.get(&quot;themeScrollbars&quot;)) {
-            var scrollbar = (theme.scrollbar || []).join(&quot; &quot;);
-            $scrollbars.text(scrollbar || &quot;&quot;);
-        } else {
-            $scrollbars.text(&quot;&quot;);
-        }
+<pre class="code language-javascript"><code class="language-javascript">    function _setViewState(file, viewState) {
+        _viewStateCache[file.fullPath] = viewState;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -435,42 +472,117 @@
     Public API
 </span>
     <h4>
-        updateThemes 
-        <a class="anchor" href="#-updateThemes" id="-updateThemes"><span class="icon-link"></span></a>
+        addViewStates 
+        <a class="anchor" href="#-addViewStates" id="-addViewStates"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Handles updating codemirror with the current selection of themes.</p>
+    <div class="description"><p>adds an array of view states</p>
 </div>
     
 <dl>
     <dt>
-        cm
-        <span class="label label-info">CodeMirror</span>
+        viewStates
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">object.&lt;string, *&gt;</span>
     </dt>
-    <dd>is the CodeMirror instance currently loaded</dd>
+    <dd>- View State object to append to the current set of view states</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateThemes(cm) {
-        var newTheme = prefs.get(&quot;theme&quot;),
-            cmTheme  = (cm.getOption(&quot;theme&quot;) || &quot;&quot;).replace(&#x2F;[\s]*&#x2F;, &quot;&quot;); &#x2F;&#x2F; Normalize themes string
+<pre class="code language-javascript"><code class="language-javascript">    function addViewStates(viewStates) {
+        _viewStateCache = _.extend(_viewStateCache, viewStates);
+    }</code></pre></div><div class="member public">
 
-        &#x2F;&#x2F; Check if the editor already has the theme applied...
-        if (cmTheme === newTheme) {
-            return;
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getViewState 
+        <a class="anchor" href="#-getViewState" id="-getViewState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>gets the view state for the specified file</p>
+</div>
+    
+<dl>
+    <dt>
+        file
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>- the file to record the view state for</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?*</span>
+</dt>
+    <dd>whatever data that was saved earlier with a call setViewState</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getViewState(file) {
+        return _viewStateCache[file.fullPath];
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        reset 
+        <a class="anchor" href="#-reset" id="-reset"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>resets the view state cache</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function reset() {
+        _viewStateCache = {};
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        updateViewState 
+        <a class="anchor" href="#-updateViewState" id="-updateViewState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates the view state for the specified view</p>
+</div>
+    
+<dl>
+    <dt>
+        view
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{!getFile:function():File, getViewState:function():*}</span>
+    </dt>
+    <dd>- the to save state</dd>
+    <dt>
+        viewState
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">*</span>
+    </dt>
+    <dd>- any data that the view needs to restore the view state.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function updateViewState(view) {
+        if (view.getViewState) {
+            _setViewState(view.getFile(), view.getViewState());
         }
-
-        &#x2F;&#x2F; Setup current and further documents to get the new theme...
-        CodeMirror.defaults.theme = newTheme;
-        cm.setOption(&quot;theme&quot;, newTheme);
-    }
-
-
-    exports.updateScrollbars = updateScrollbars;
-    exports.updateThemes     = updateThemes;
-});</code></pre></div>
+    }</code></pre></div>
 </section>
 
         </div>

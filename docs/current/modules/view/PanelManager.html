@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -362,21 +370,15 @@
         <div class="module span9">
 <h1>PanelManager</h1>
 
+    <div class="alert alert-error">
+        <span class="label label-warn pull-right">deprecated</span>
+        <div>This module provided for backwards compatibility. Use WorkspaceManager instead.</div>
+    </div>
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>Manages layout of panels surrounding the editor area, and size of the editor area (but not its contents).</p>
-<p>Updates panel sizes when the window is resized. Maintains the max resizing limits for panels, based on
-currently available window size.</p>
-<p>Events:</p>
-<ul>
-<li>editorAreaResize -- When editor-holder&#39;s size changes for any reason (including panel show/hide
-panel resize, or the window resize).
-The 2nd arg is the new editor-holder height.
-The 3rd arg is a refreshHint flag for internal EditorManager use.</li>
-</ul>
-</div>
+    <div></div>
     
 </section>
 
@@ -384,80 +386,10 @@ The 3rd arg is a refreshHint flag for internal EditorManager use.</li>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-        <li><a href="..&#x2F;../modules/utils/Resizer.html">Resizer</a></li>
+        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
     </ul>
 
-</section>
-<section id="variables">
-    
-    <h3>Variables 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        $editorHolder 
-        <a class="anchor" href="#-$editorHolder" id="-$editorHolder"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror
-instance (or the no-editor placeholder)</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>jQueryObject</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var $editorHolder;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        $windowContent 
-        <a class="anchor" href="#-$windowContent" id="-$windowContent"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>The &quot;.content&quot; vertical stack (editor + all header/footer panels)</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>jQueryObject</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var $windowContent;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        windowResizing 
-        <a class="anchor" href="#-windowResizing" id="-windowResizing"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Have we already started listening for the end of the ongoing window resize?</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>boolean</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var windowResizing = false;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -467,326 +399,56 @@ instance (or the no-editor placeholder)</p>
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        Panel 
-        <a class="anchor" href="#-Panel" id="-Panel"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Represents a panel below the editor area (a child of &quot;.content&quot;).</p>
-</div>
-    
-<dl>
-    <dt>
-        $panel
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQueryObject</span>
-    </dt>
-    <dd>The entire panel, including any chrome, already in the DOM.</dd>
-    <dt>
-        minSize
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">number</span>
-    </dt>
-    <dd>Minimum height of panel in px.</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function Panel($panel, minSize) {
-        this.$panel = $panel;
-        
-        Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize, false, undefined, true);
-        listenToResize($panel);
-    }</code></pre></div><div class="member private public">
+<div class="member private">
 
 <span class="pull-right scope">
     Private
-    Public API
+    
 </span>
     <h4>
-        _notifyLayoutChange 
-        <a class="anchor" href="#-_notifyLayoutChange" id="-_notifyLayoutChange"><span class="icon-link"></span></a>
+        _deprecateEvent 
+        <a class="anchor" href="#-_deprecateEvent" id="-_deprecateEvent"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Used by EditorManager to notify us of layout changes our normal panel/window listeners wouldn&#39;t detect.
-For internal use only: most code should call EditorManager.resizeEditor().</p>
+    <div class="description"><p>Creates a deprecation warning event handler</p>
 </div>
     
 <dl>
+    <dt>
+        the
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>event being deprecated</dd>
+    <dt>
+        the
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>new event to use</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _notifyLayoutChange(refreshHint) {
-        triggerEditorResize(refreshHint);
-        updateResizeLimits();
+<pre class="code language-javascript"><code class="language-javascript">    function _deprecateEvent(oldEventName, newEventName) {
+        DeprecationWarning.deprecateEvent(exports,
+                                          WorkspaceManager,
+                                          oldEventName,
+                                          newEventName,
+                                          &quot;PanelManager.&quot; + oldEventName,
+                                          &quot;MainViewManager.&quot; + newEventName);
     }
-    
-    
-    &#x2F;&#x2F; Attach to key parts of the overall UI, once created
-    AppInit.htmlReady(function () {
-        $windowContent = $(&quot;.content&quot;);
-        $editorHolder = $(&quot;#editor-holder&quot;);
-        
-        &#x2F;&#x2F; Sidebar is a special case: it isn&#39;t a Panel, and is not created dynamically. Need to explicitly
-        &#x2F;&#x2F; listen for resize here.
-        listenToResize($(&quot;#sidebar&quot;));
-    });
-    
-    &#x2F;&#x2F; Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor()
-    function _setMockDOM($mockWindowContent, $mockEditorHolder) {
-        $windowContent = $mockWindowContent;
-        $editorHolder = $mockEditorHolder;
-    }
-    
-    &#x2F;&#x2F; If someone adds a panel in the .content stack the old way, make sure we still listen for resize&#x2F;show&#x2F;hide
-    &#x2F;&#x2F; (Resizer emits a deprecation warning for us - no need to log anything here)
-    $(Resizer).on(&quot;deprecatedPanelAdded&quot;, function (event, $panel) {
-        listenToResize($panel);
-    });
-    
-    &#x2F;&#x2F; Add this as a capture handler so we&#39;re guaranteed to run it before the editor does its own
-    &#x2F;&#x2F; refresh on resize.
-    window.addEventListener(&quot;resize&quot;, handleWindowResize, true);
-    
     
     &#x2F;&#x2F; Define public API
-    exports.createBottomPanel    = createBottomPanel;
-    exports._notifyLayoutChange  = _notifyLayoutChange;
-    exports._setMockDOM          = _setMockDOM;
-});</code></pre></div><div class="member">
-
-<span class="pull-right scope">
+    exports.createBottomPanel   = function (id, $panel, minSize) {
+        DeprecationWarning.deprecationWarning(&quot;Use WorkspaceManager.createBottomPanel() instead of PanelManager.createBottomPanel().&quot;, true);
+        return WorkspaceManager.createBottomPanel(id, $panel, minSize);
+    };
     
-    
-</span>
-    <h4>
-        calcEditorHeight 
-        <a class="anchor" href="#-calcEditorHeight" id="-calcEditorHeight"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Calculates the available height for the full-size Editor (or the no-editor placeholder),
-accounting for the current size of all visible panels, toolbar, &amp; status bar.</p>
-</div>
-    
-<dl>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">number</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function calcEditorHeight() {
-        var availableHt = $windowContent.height();
-        
-        $editorHolder.siblings().each(function (i, elem) {
-            var $elem = $(elem);
-            if ($elem.css(&quot;display&quot;) !== &quot;none&quot; &amp;&amp; $elem.css(&quot;position&quot;) !== &quot;absolute&quot;) {
-                availableHt -= $elem.outerHeight();
-            }
-        });
-        
-        &#x2F;&#x2F; Clip value to 0 (it could be negative if a panel wants more space than we have)
-        return Math.max(availableHt, 0);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        createBottomPanel 
-        <a class="anchor" href="#-createBottomPanel" id="-createBottomPanel"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
-The panel&#39;s size &amp; visibility are automatically saved &amp; restored as a view-state preference.</p>
-</div>
-    
-<dl>
-    <dt>
-        id
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>Unique id for this panel. Use package-style naming, e.g. "myextension.feature.panelname"</dd>
-    <dt>
-        $panel
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQueryObject</span>
-    </dt>
-    <dd>DOM content to use as the panel. Need not be in the document yet. Must have an id attribute, for use as a preferences key.</dd>
-    <dt>
-        minSize
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">number</span>
-    </dt>
-    <dd>Minimum height of panel in px.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">!Panel</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function createBottomPanel(id, $panel, minSize) {
-        $panel.insertBefore(&quot;#status-bar&quot;);
-        $panel.hide();
-        updateResizeLimits();  &#x2F;&#x2F; initialize panel&#39;s max size
-        
-        return new Panel($panel, minSize);
-    }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        handleWindowResize 
-        <a class="anchor" href="#-handleWindowResize" id="-handleWindowResize"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Trigger editor area resize whenever the window is resized</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function handleWindowResize() {
-        &#x2F;&#x2F; These are not initialized in Jasmine Spec Runner window until a test
-        &#x2F;&#x2F; is run that creates a mock document.
-        if (!$windowContent || !$editorHolder) {
-            return;
-        }
-        
-        &#x2F;&#x2F; Immediately adjust editor&#39;s height, but skip the refresh since CodeMirror will call refresh()
-        &#x2F;&#x2F; itself when it sees the window resize event
-        &#x2F;&#x2F; triggerEditorResize(&quot;skip&quot;);
-
-        &#x2F;&#x2F; FIXME (issue #4564) Workaround https:&#x2F;&#x2F;github.com&#x2F;marijnh&#x2F;CodeMirror&#x2F;issues&#x2F;1787
-        triggerEditorResize();
-        
-        if (!windowResizing) {
-            windowResizing = true;
-            
-            &#x2F;&#x2F; We don&#39;t need any fancy debouncing here - we just need to react before the user can start
-            &#x2F;&#x2F; resizing any panels at the new window size. So just listen for first mousemove once the
-            &#x2F;&#x2F; window resize releases mouse capture.
-            $(window.document).one(&quot;mousemove&quot;, function () {
-                windowResizing = false;
-                updateResizeLimits();
-            });
-        }
-    }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        listenToResize 
-        <a class="anchor" href="#-listenToResize" id="-listenToResize"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Trigger editor area resize whenever the given panel is shown/hidden/resized</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function listenToResize($panel) {
-        &#x2F;&#x2F; Update editor height when shown&#x2F;hidden, &amp; continuously as panel is resized
-        $panel.on(&quot;panelCollapsed panelExpanded panelResizeUpdate&quot;, function () {
-            triggerEditorResize();
-        });
-        &#x2F;&#x2F; Update max size of sibling panels when shown&#x2F;hidden, &amp; at *end* of resize gesture
-        $panel.on(&quot;panelCollapsed panelExpanded panelResizeEnd&quot;, function () {
-            updateResizeLimits();
-        });
-    }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        triggerEditorResize 
-        <a class="anchor" href="#-triggerEditorResize" id="-triggerEditorResize"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Calculates a new size for editor-holder and resizes it accordingly, then and dispatches the &quot;editorAreaResize&quot;
-event. (The editors within are resized by EditorManager, in response to that event).</p>
-</div>
-    
-<dl>
-    <dt>
-        refreshHint
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>One of "skip", "force", or undefined. See EditorManager docs.</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function triggerEditorResize(refreshHint) {
-        &#x2F;&#x2F; Find how much space is left for the editor
-        var editorAreaHeight = calcEditorHeight();
-        
-        $editorHolder.height(editorAreaHeight);  &#x2F;&#x2F; affects size of &quot;not-editor&quot; placeholder as well
-        
-        &#x2F;&#x2F; Resize editor to fill the space
-        $(exports).trigger(&quot;editorAreaResize&quot;, [editorAreaHeight, refreshHint]);
-    }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        updateResizeLimits 
-        <a class="anchor" href="#-updateResizeLimits" id="-updateResizeLimits"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Updates panel resize limits to disallow making panels big enough to shrink editor area below 0</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateResizeLimits() {
-        var editorAreaHeight = $editorHolder.height();
-        
-        $editorHolder.siblings().each(function (i, elem) {
-            var $elem = $(elem);
-            if ($elem.css(&quot;display&quot;) === &quot;none&quot;) {
-                $elem.data(&quot;maxsize&quot;, editorAreaHeight);
-            } else {
-                $elem.data(&quot;maxsize&quot;, editorAreaHeight + $elem.outerHeight());
-            }
-        });
-    }</code></pre></div>
+    &#x2F;&#x2F; Deprecated PanelManager events
+    _deprecateEvent(&quot;editorAreaResize&quot;, &quot;workspaceUpdateLayout&quot;);
+});</code></pre></div>
 </section>
 
         </div>

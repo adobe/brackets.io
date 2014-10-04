@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ThemeView - Brackets API</title>
+    <title>MainViewFactory - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -368,13 +368,43 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ThemeView</h1>
+<h1>MainViewFactory</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div></div>
+    <div><p>MainViewFactory is a singleton for managing view factories.</p>
+<p>Registering a view factory:</p>
+<pre><code> registerViewFactory({
+      canOpen: function (fullPath) {
+          return (fullPath.slice(-4) === &quot;.ico&quot;);
+      },
+      open: function(file, pane) {
+          return createIconView(file, pane);
+      }
+ });
+</code></pre><p> The open method is used to open the file and construct
+ a view of it.  Implementation should add the view to the pane</p>
+<pre><code> function createIconView(file, pane) {
+     // IconView will construct its DOM and append 
+     //  it to pane.$el
+     var view = new IconView(file, pane.$el);
+     // Then tell the pane to add it to
+     //  its view map and show it
+     pane.addView(view, true); 
+     return new $.Deferred().resolve().promise();
+ }
+</code></pre><p> Factories should only create 1 view of a file per pane.  Brackets currently only supports 1 view of 
+ a file open at a given time but that may change to allow the same file open in more than 1 pane. Therefore
+ Factories can do a simple check to see if a view already exists and show it before creating a new one:</p>
+<pre><code> var view = pane.getViewForPath(file.fullPath);
+ if (view) {
+     pane.showView(view);
+ } else {
+     return createIconView(file, pane);
+ }
+</code></pre></div>
     
 </section>
 
@@ -382,10 +412,39 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
-        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _factories 
+        <a class="anchor" href="#-_factories" id="-_factories"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The view registration Database</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;Factory&gt;</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _factories = [];</code></pre></div>
 </section>
 
 <section id="functions">
@@ -402,32 +461,36 @@
     Public API
 </span>
     <h4>
-        updateScrollbars 
-        <a class="anchor" href="#-updateScrollbars" id="-updateScrollbars"><span class="icon-link"></span></a>
+        findSuitableFactoryForPath 
+        <a class="anchor" href="#-findSuitableFactoryForPath" id="-findSuitableFactoryForPath"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Load scrollbar styling based on whether or not theme scrollbars are enabled.</p>
+    <div class="description"><p>Finds a factory that can open the specified file</p>
 </div>
     
 <dl>
     <dt>
-        theme
-        <span class="label label-info">ThemeManager.Theme</span>
+        fullPath
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
     </dt>
-    <dd>Is the theme object with the corresponding scrollbar style to be updated</dd>
+    <dd>- the file to open</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">?Factory</span>
+</dt>
+    <dd>A factory that can create a view for the path or undefined if there isn't one.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateScrollbars(theme) {
-        theme = theme || {};
-        if (prefs.get(&quot;themeScrollbars&quot;)) {
-            var scrollbar = (theme.scrollbar || []).join(&quot; &quot;);
-            $scrollbars.text(scrollbar || &quot;&quot;);
-        } else {
-            $scrollbars.text(&quot;&quot;);
-        }
+<pre class="code language-javascript"><code class="language-javascript">    function findSuitableFactoryForPath(fullPath) {
+        return _.find(_factories, function (factory) {
+            &#x2F;&#x2F; This could get more complex in the future by searching in this order
+            &#x2F;&#x2F;  1) a factory that can open the file by fullPath
+            &#x2F;&#x2F;  2) a factory that can open the file by name
+            &#x2F;&#x2F;  3) a factory that can open the file by filetype
+            return factory.canOpenFile(fullPath);
+        });
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -435,42 +498,28 @@
     Public API
 </span>
     <h4>
-        updateThemes 
-        <a class="anchor" href="#-updateThemes" id="-updateThemes"><span class="icon-link"></span></a>
+        registerViewFactory 
+        <a class="anchor" href="#-registerViewFactory" id="-registerViewFactory"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Handles updating codemirror with the current selection of themes.</p>
+    <div class="description"><p>Registers a view factory</p>
 </div>
     
 <dl>
     <dt>
-        cm
-        <span class="label label-info">CodeMirror</span>
+        factory
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Factory</span>
     </dt>
-    <dd>is the CodeMirror instance currently loaded</dd>
+    <dd>- the view factory to register</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function updateThemes(cm) {
-        var newTheme = prefs.get(&quot;theme&quot;),
-            cmTheme  = (cm.getOption(&quot;theme&quot;) || &quot;&quot;).replace(&#x2F;[\s]*&#x2F;, &quot;&quot;); &#x2F;&#x2F; Normalize themes string
-
-        &#x2F;&#x2F; Check if the editor already has the theme applied...
-        if (cmTheme === newTheme) {
-            return;
-        }
-
-        &#x2F;&#x2F; Setup current and further documents to get the new theme...
-        CodeMirror.defaults.theme = newTheme;
-        cm.setOption(&quot;theme&quot;, newTheme);
-    }
-
-
-    exports.updateScrollbars = updateScrollbars;
-    exports.updateThemes     = updateThemes;
-});</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    function registerViewFactory(factory) {
+        _factories.push(factory);
+    }</code></pre></div>
 </section>
 
         </div>
