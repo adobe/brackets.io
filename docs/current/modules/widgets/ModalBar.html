@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -377,8 +385,9 @@ appears at the top of the editor area for operations like Find and Quick Open.</
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
-        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
     </ul>
 
 </section>
@@ -443,9 +452,7 @@ appears at the top of the editor area for operations like Find and Quick Open.</
         &#x2F;&#x2F; to the editor here, before opening up the new modal bar. This ensures that the old
         &#x2F;&#x2F; focused item has time to react and close before the new modal bar is opened.
         &#x2F;&#x2F; See bugs #4287 and #3424
-        if (!EditorManager.getFocusedEditor()) {
-            EditorManager.focusEditor();
-        }
+        MainViewManager.focusActivePane();
         
         if (autoClose) {
             this._autoClose = true;
@@ -464,15 +471,9 @@ appears at the top of the editor area for operations like Find and Quick Open.</
         
         &#x2F;&#x2F; Preserve scroll position of the current full editor across the editor refresh, adjusting for the 
         &#x2F;&#x2F; height of the modal bar so the code doesn&#39;t appear to shift if possible.
-        var fullEditor = EditorManager.getCurrentFullEditor(),
-            scrollPos;
-        if (fullEditor) {
-            scrollPos = fullEditor.getScrollPos();
-        }
-        EditorManager.resizeEditor();
-        if (fullEditor) {
-            fullEditor._codeMirror.scrollTo(scrollPos.x, scrollPos.y + this.height());
-        }
+        MainViewManager.cacheScrollState(MainViewManager.ALL_PANES);
+        WorkspaceManager.recomputeLayout();  &#x2F;&#x2F; changes available ht for editor area
+        MainViewManager.restoreAdjustedScrollState(MainViewManager.ALL_PANES, this.height());
     }</code></pre>
         </div>
         
@@ -682,7 +683,7 @@ resolved when the bar is fully closed and the container is removed from the DOM.
             doRemove();
         }
         
-        EditorManager.focusEditor();
+        MainViewManager.focusActivePane();
 
         return result.promise();
     };</code></pre></div><div class="member">
@@ -780,18 +781,16 @@ If you don&#39;t call this explicitly, it will get called at the beginning of <c
             this._$root.css(&quot;top&quot;, top + &quot;px&quot;);
         }
         
-        &#x2F;&#x2F; Preserve scroll position of the current full editor across the editor refresh, adjusting for the 
-        &#x2F;&#x2F; height of the modal bar so the code doesn&#39;t appear to shift if possible.
-        var fullEditor = EditorManager.getCurrentFullEditor(),
-            barHeight,
-            scrollPos;
-        if (restoreScrollPos &amp;&amp; fullEditor) {
-            barHeight = this.height();
-            scrollPos = fullEditor.getScrollPos();
+        &#x2F;&#x2F; Preserve scroll position of all visible views
+        &#x2F;&#x2F;  adjusting for the height of the modal bar so the code doesn&#39;t appear to shift if possible.
+        var barHeight = this.height();
+        if (restoreScrollPos) {
+            MainViewManager.cacheScrollState(MainViewManager.ALL_PANES);
         }
-        EditorManager.resizeEditor();
-        if (restoreScrollPos &amp;&amp; fullEditor) {
-            fullEditor._codeMirror.scrollTo(scrollPos.x, scrollPos.y - barHeight);
+        WorkspaceManager.recomputeLayout();  &#x2F;&#x2F; changes available ht for editor area
+        &#x2F;&#x2F; restore scroll position of all vies
+        if (restoreScrollPos) {
+            MainViewManager.restoreAdjustedScrollState(MainViewManager.ALL_PANES, -barHeight);
         }
     };</code></pre></div>
         </section>

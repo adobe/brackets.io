@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -370,6 +378,7 @@
 <p>This module defines 2 methods for client modules to attach callbacks:</p>
 <ul>
 <li>htmlReady - When the main application template is rendered</li>
+<li>extensionsRead - When the extension manager has loaded all extensions</li>
 <li>appReady - When Brackets completes loading all modules and extensions</li>
 </ul>
 <p>These are <em>not</em> jQuery events. Each method is similar to $(document).ready
@@ -385,6 +394,124 @@ loading.</p>
 
     <span class="alert alert-info">This module has no dependencies</span>
 </section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        APP_READY     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-APP_READY" id="-APP_READY"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Fires when all extensions are loaded</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var APP_READY   = &quot;appReady&quot;;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        EXTENSIONS_LOADED     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-EXTENSIONS_LOADED" id="-EXTENSIONS_LOADED"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Fires after extensions have been loaded</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var EXTENSIONS_LOADED = &quot;extensionsLoaded&quot;;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        HTML_READY     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-HTML_READY" id="-HTML_READY"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Fires when the base htmlContent/main-view.html is loaded</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var HTML_READY  = &quot;htmlReady&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _callbacks 
+        <a class="anchor" href="#-_callbacks" id="-_callbacks"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Map of callbacks to states</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, Array.&lt;function()&gt;&gt;</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _callbacks   = {};
+
+    _callbacks[HTML_READY]        = [];
+    _callbacks[APP_READY]         = [];
+    _callbacks[EXTENSIONS_LOADED] = [];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _status 
+        <a class="anchor" href="#-_status" id="-_status"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Map of each state&#39;s trigger</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Object.&lt;string, boolean&gt;</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _status      = { HTML_READY : false, APP_READY : false, EXTENSIONS_LOADED: false };</code></pre></div>
+</section>
 
 <section id="functions">
 
@@ -393,7 +520,116 @@ loading.</p>
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _addListener 
+        <a class="anchor" href="#-_addListener" id="-_addListener"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>adds a callback to the list of functions to call for the specified event type</p>
+</div>
+    
+<dl>
+    <dt>
+        type
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the event type to dispatch (APP_READY, EXTENSIONS_READY, HTML_READY)</dd>
+    <dt>
+        handler
+        <span class="label label-info">function</span>
+    </dt>
+    <dd>- callback funciton to call when the event is triggered</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _addListener(type, handler) {
+        if (_status[type]) {
+            _callHandler(handler);
+        } else {
+            _callbacks[type].push(handler);
+        }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _callHandler 
+        <a class="anchor" href="#-_callHandler" id="-_callHandler"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>calls the specified handler inside a try/catch handler</p>
+</div>
+    
+<dl>
+    <dt>
+        handler
+        <span class="label label-info">function()</span>
+    </dt>
+    <dd>- the callback to call</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _callHandler(handler) {
+        try {
+            &#x2F;&#x2F; TODO (issue 1034): We *could* use a $.Deferred for this, except deferred objects enter a broken
+            &#x2F;&#x2F; state if any resolution callback throws an exception. Since third parties (e.g. extensions) may
+            &#x2F;&#x2F; add callbacks to this, we need to be robust to exceptions
+            handler();
+        } catch (e) {
+            console.error(&quot;Exception when calling a &#39;brackets done loading&#39; handler:&quot;);
+            console.log(e.stack);
+        }
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _dispatchReady 
+        <a class="anchor" href="#-_dispatchReady" id="-_dispatchReady"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>dispatches the event by calling all handlers registered for that type</p>
+</div>
+    
+<dl>
+    <dt>
+        type
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the event type to dispatch (APP_READY, EXTENSIONS_READY, HTML_READY)</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _dispatchReady(type) {
+        var i,
+            myHandlers = _callbacks[type];
+
+        &#x2F;&#x2F; mark this status complete
+        _status[type] = true;
+
+        for (i = 0; i &lt; myHandlers.length; i++) {
+            _callHandler(myHandlers[i]);
+        }
+
+        &#x2F;&#x2F; clear all callbacks after being called
+        _callbacks[type] = [];
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -412,17 +648,58 @@ loaded.</p>
     
 <dl>
     <dt>
-        callback
+        handler
         <span class="label label-info">function</span>
     </dt>
-    <dd></dd>
+    <dd>- callback function to call when the event is fired</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function appReady(callback) {
-        _addListener(APP_READY, callback);
+<pre class="code language-javascript"><code class="language-javascript">    function appReady(handler) {
+        _addListener(APP_READY, handler);
     }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        extensionsLoaded 
+        <a class="anchor" href="#-extensionsLoaded" id="-extensionsLoaded"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds a callback for the extensionsLoaded hook. Handlers are called after the
+extensions have been loaded</p>
+</div>
+    
+<dl>
+    <dt>
+        handler
+        <span class="label label-info">function</span>
+    </dt>
+    <dd>- callback function to call when the event is fired</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function extensionsLoaded(handler) {
+        _addListener(EXTENSIONS_LOADED, handler);
+    }
+
+    &#x2F;&#x2F; Public API
+    exports.appReady = appReady;
+    exports.htmlReady = htmlReady;
+    exports.extensionsLoaded = extensionsLoaded;
+    
+    exports.HTML_READY = HTML_READY;
+    exports.APP_READY = APP_READY;
+    exports.EXTENSIONS_LOADED = EXTENSIONS_LOADED;
+
+    &#x2F;&#x2F; Unit Test API
+    exports._dispatchReady = _dispatchReady;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -440,27 +717,17 @@ main application html template is rendered.</p>
     
 <dl>
     <dt>
-        callback
+        handler
         <span class="label label-info">function</span>
     </dt>
-    <dd></dd>
+    <dd>- callback function to call when the event is fired</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function htmlReady(callback) {
-        _addListener(HTML_READY, callback);
-    }
-
-    exports.appReady = appReady;
-    exports.htmlReady = htmlReady;
-    
-    exports.HTML_READY = HTML_READY;
-    exports.APP_READY = APP_READY;
-
-    &#x2F;&#x2F; internal use only
-    exports._dispatchReady = _dispatchReady;
-});</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    function htmlReady(handler) {
+        _addListener(HTML_READY, handler);
+    }</code></pre></div>
 </section>
 
         </div>

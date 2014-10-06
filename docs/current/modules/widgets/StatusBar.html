@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -379,9 +387,9 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/text!widgets/StatusBar.html.html">StatusBar.html</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
     </ul>
 
 </section>
@@ -509,8 +517,31 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
         
         if ($statusBar.is(&quot;:visible&quot;)) {
             $statusBar.hide();
-            EditorManager.resizeEditor();  &#x2F;&#x2F; changes available ht for editor area
+            WorkspaceManager.recomputeLayout();
         }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        hideAllPanes 
+        <a class="anchor" href="#-hideAllPanes" id="-hideAllPanes"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Hides all panels but not the status bar</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function hideAllPanes() {
+        hideInformation();
+        hideIndicators();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -552,6 +583,50 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
     Public API
 </span>
     <h4>
+        hideIndicators 
+        <a class="anchor" href="#-hideIndicators" id="-hideIndicators"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Hide the statusbar Indicators</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function hideIndicators() {
+        $indicators.css(&quot;display&quot;, &quot;none&quot;);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        hideInformation 
+        <a class="anchor" href="#-hideInformation" id="-hideInformation"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Hide the statusbar Information Panel</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function hideInformation() {
+        $statusInfo.css(&quot;display&quot;, &quot;none&quot;);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         show 
         <a class="anchor" href="#-show" id="-show"><span class="icon-link"></span></a>
     </h4>
@@ -573,7 +648,7 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
 
         if (!$statusBar.is(&quot;:visible&quot;)) {
             $statusBar.show();
-            EditorManager.resizeEditor();  &#x2F;&#x2F; changes available ht for editor area
+            WorkspaceManager.recomputeLayout();
         }
     }
     
@@ -585,6 +660,7 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
         $statusBar          = $(&quot;#status-bar&quot;);
         $indicators         = $(&quot;#status-indicators&quot;);
         $busyIndicator      = $(&quot;#status-bar .spinner&quot;);
+        $statusInfo         = $(&quot;#status-info&quot;);
 
         _init = true;
 
@@ -592,13 +668,42 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
         hide();
     });
 
+    exports.hideInformation   = hideInformation;
+    exports.showInformation   = showInformation;
     exports.showBusyIndicator = showBusyIndicator;
     exports.hideBusyIndicator = hideBusyIndicator;
-    exports.addIndicator = addIndicator;
-    exports.updateIndicator = updateIndicator;
-    exports.hide = hide;
-    exports.show = show;
+    exports.hideIndicators    = hideIndicators;
+    exports.showIndicators    = showIndicators;
+    exports.hideAllPanes      = hideAllPanes;
+    exports.showAllPanes      = showAllPanes;
+    exports.addIndicator      = addIndicator;
+    exports.updateIndicator   = updateIndicator;
+    exports.hide              = hide;
+    exports.show              = show;
 });</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        showAllPanes 
+        <a class="anchor" href="#-showAllPanes" id="-showAllPanes"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Shows all panels (will not show a hidden statusbar)</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showAllPanes() {
+        showInformation();
+        showIndicators();
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -635,6 +740,50 @@ assume it&#39;s only used for this one purpose, and all the APIs are on a single
         }
         
         $busyIndicator.addClass(&quot;spin&quot;);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        showIndicators 
+        <a class="anchor" href="#-showIndicators" id="-showIndicators"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Show the statusbar Indicators</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showIndicators() {
+        $indicators.css(&quot;display&quot;, &quot;&quot;);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        showInformation 
+        <a class="anchor" href="#-showInformation" id="-showInformation"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Show the statusbar Information Panel</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showInformation() {
+        $statusInfo.css(&quot;display&quot;, &quot;&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

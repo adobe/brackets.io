@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -388,6 +396,7 @@
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
@@ -693,16 +702,36 @@
         $dlg = dialog.getElement();
         $search = $(&quot;.search&quot;, $dlg);
         $searchClear = $(&quot;.search-clear&quot;, $dlg);
-        
+
+        function setActiveTab($tab) {
+            models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
+            $tab.tab(&quot;show&quot;);
+            $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
+            $searchClear.click();
+        }
+
         &#x2F;&#x2F; Dialog tabs
         $dlg.find(&quot;.nav-tabs a&quot;)
             .on(&quot;click&quot;, function (event) {
-                models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
-                $(this).tab(&quot;show&quot;);
-                $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
-                $searchClear.click();
+                setActiveTab($(this));
             });
-        
+
+        &#x2F;&#x2F; navigate through tabs via Ctrl-(Shift)-Tab
+        $dlg.on(&quot;keyup&quot;, function (event) {
+            if (event.keyCode === KeyEvent.DOM_VK_TAB &amp;&amp; event.ctrlKey) {
+                var $tabs = $(&quot;.nav-tabs a&quot;, $dlg),
+                    tabIndex = _activeTabIndex;
+
+                if (event.shiftKey) {
+                    tabIndex--;
+                } else {
+                    tabIndex++;
+                }
+                tabIndex %= $tabs.length;
+                setActiveTab($tabs.eq(tabIndex));
+            }
+        });
+
         &#x2F;&#x2F; Update &amp; hide&#x2F;show the notification overlay on a tab&#39;s icon, based on its model&#39;s notifyCount
         function updateNotificationIcon(index) {
             var model = models[index],

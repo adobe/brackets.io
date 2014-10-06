@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../modules/view/Pane.html">Pane</a></li>
               <li><a href="../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -441,6 +449,8 @@ a global object, window.brackets.</p>
         <li><a href="../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="../modules/LiveDevelopment/main.html">main</a></li>
         <li><a href="../modules/text!htmlContent/main-view.html.html">main-view.html</a></li>
+        <li><a href="../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+        <li><a href="../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/selection/mark-selection.html">mark-selection</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/search/match-highlighter.html">match-highlighter</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/edit/matchbrackets.html">matchbrackets</a></li>
@@ -454,6 +464,7 @@ a global object, window.brackets.</p>
         <li><a href="../modules/utils/NodeConnection.html">NodeConnection</a></li>
         <li><a href="../modules/utils/NodeDomain.html">NodeDomain</a></li>
         <li><a href="../modules/thirdparty/CodeMirror2/addon/mode/overlay.html">overlay</a></li>
+        <li><a href="../modules/view/PanelManager.html">PanelManager</a></li>
         <li><a href="../modules/thirdparty/path-utils/path-utils.min.html">path-utils.min</a></li>
         <li><a href="../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
@@ -560,9 +571,9 @@ a global object, window.brackets.</p>
                 if (event.originalEvent.dataTransfer.files) {
                     event.stopPropagation();
                     event.preventDefault();
-                    brackets.app.getDroppedFiles(function (err, files) {
+                    brackets.app.getDroppedFiles(function (err, paths) {
                         if (!err) {
-                            DragAndDrop.openDroppedFiles(files);
+                            DragAndDrop.openDroppedFiles(paths);
                         }
                     });
                 }
@@ -596,7 +607,7 @@ a global object, window.brackets.</p>
                     $target.is(&quot;input:not([type])&quot;) || &#x2F;&#x2F; input with no type attribute defaults to text
                     $target.is(&quot;textarea&quot;) ||
                     $target.is(&quot;select&quot;);
-    
+
             if (!isFormElement) {
                 e.preventDefault();
             }
@@ -700,6 +711,8 @@ a global object, window.brackets.</p>
             LanguageManager         : LanguageManager,
             LiveDevelopment         : require(&quot;LiveDevelopment&#x2F;LiveDevelopment&quot;),
             LiveDevServerManager    : require(&quot;LiveDevelopment&#x2F;LiveDevServerManager&quot;),
+            MainViewManager         : MainViewManager,
+            MainViewFactory         : require(&quot;view&#x2F;MainViewFactory&quot;),
             Menus                   : Menus,
             MultiRangeInlineEditor  : require(&quot;editor&#x2F;MultiRangeInlineEditor&quot;).MultiRangeInlineEditor,
             NativeApp               : NativeApp,
@@ -710,7 +723,6 @@ a global object, window.brackets.</p>
             ScrollTrackMarkers      : require(&quot;search&#x2F;ScrollTrackMarkers&quot;),
             UpdateNotification      : require(&quot;utils&#x2F;UpdateNotification&quot;),
             WorkingSetView          : WorkingSetView,
-
             doneLoading             : false
         };
 
@@ -739,8 +751,6 @@ a global object, window.brackets.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onReady() {
         PerfUtils.addMeasurement(&quot;window.document Ready&quot;);
-
-        EditorManager.setEditorHolder($(&quot;#editor-holder&quot;));
 
         &#x2F;&#x2F; Let the user know Brackets doesn&#39;t run in a web browser yet
         if (brackets.inBrowser) {
@@ -775,6 +785,9 @@ a global object, window.brackets.</p>
             
             &#x2F;&#x2F; Load the initial project after extensions have loaded
             extensionLoaderPromise.always(function () {
+               &#x2F;&#x2F; Signal that extensions are loaded
+                AppInit._dispatchReady(AppInit.EXTENSIONS_LOADED);
+
                 &#x2F;&#x2F; Finish UI initialization
                 ViewCommandHandlers.restoreFontSize();
                 var initialProjectPath = ProjectManager.getInitialProjectPath();
@@ -792,7 +805,7 @@ a global object, window.brackets.</p>
                         if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
                             FileSystem.resolve(initialProjectPath + &quot;index.html&quot;, function (err, file) {
                                 if (!err) {
-                                    var promise = CommandManager.execute(Commands.FILE_ADD_TO_WORKING_SET, { fullPath: file.fullPath });
+                                    var promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: file.fullPath });
                                     promise.then(deferred.resolve, deferred.reject);
                                 } else {
                                     deferred.reject();
@@ -826,8 +839,8 @@ a global object, window.brackets.</p>
                     
                     &#x2F;&#x2F; See if any startup files were passed to the application
                     if (brackets.app.getPendingFilesToOpen) {
-                        brackets.app.getPendingFilesToOpen(function (err, files) {
-                            DragAndDrop.openDroppedFiles(files);
+                        brackets.app.getPendingFilesToOpen(function (err, paths) {
+                            DragAndDrop.openDroppedFiles(paths);
                         });
                     }
                 });

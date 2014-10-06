@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -510,7 +518,6 @@
             var clientHeight        = scrollElement.clientHeight,
                 outerHeight         = $displayElement.outerHeight(),
                 scrollHeight        = scrollElement.scrollHeight,
-                bottomOffset        = outerHeight - clientHeight,
                 bottomShadowOffset  = SCROLL_SHADOW_HEIGHT; &#x2F;&#x2F; outside of shadow div viewport
             
             if (scrollHeight &gt; clientHeight) {
@@ -596,6 +603,11 @@
             _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed);
         };
         
+        &#x2F;&#x2F; remove any previously installed listeners on this node
+        $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
+        $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
+        
+        &#x2F;&#x2F; add new ones
         $scrollElement.on(&quot;scroll.scroller-shadow&quot;, doUpdate);
         $displayElement.on(&quot;contentChanged.scroller-shadow&quot;, doUpdate);
         
@@ -683,6 +695,32 @@ for each file in list.</p>
         return displayPaths;
     }
 
+    function traverseViewArray(viewArray, startIndex, direction) {
+        if (Math.abs(direction) !== 1) {
+            console.error(&quot;traverseViewArray called with unsupported direction: &quot; + direction.toString());
+            return null;
+        }
+        if (startIndex === -1) {
+            &#x2F;&#x2F; If doc not in view list, return most recent view list item
+            if (viewArray.length &gt; 0) {
+                return viewArray[0];
+            }
+        } else if (viewArray.length &gt; 1) {
+            &#x2F;&#x2F; If doc is in view list, return next&#x2F;prev item with wrap-around
+            startIndex += direction;
+            if (startIndex &gt;= viewArray.length) {
+                startIndex = 0;
+            } else if (startIndex &lt; 0) {
+                startIndex = viewArray.length - 1;
+            }
+
+            return viewArray[startIndex];
+        }
+        
+        &#x2F;&#x2F; If no doc open or view list empty, there is no &quot;next&quot; file
+        return null;
+    }
+    
     &#x2F;&#x2F; handle all resize handlers in a single listener
     $(window).resize(_handleResize);
 
@@ -696,6 +734,7 @@ for each file in list.</p>
     exports.getFileEntryDisplay          = getFileEntryDisplay;
     exports.toggleClass                  = toggleClass;
     exports.getDirNamesForDuplicateFiles = getDirNamesForDuplicateFiles;
+    exports.traverseViewArray            = traverseViewArray;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -734,8 +773,7 @@ for each file in list.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function getElementClipSize($view, elementRect) {
         var delta,
             clip = { top: 0, right: 0, bottom: 0, left: 0 },
-            viewOffset = $view.offset() || { top: 0, left: 0},
-            viewScroller = $view.get(0);
+            viewOffset = $view.offset() || { top: 0, left: 0};
 
         &#x2F;&#x2F; Check if element extends below viewport
         delta = (elementRect.top + elementRect.height) - (viewOffset.top + $view.height());
@@ -902,10 +940,7 @@ for each file in list.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function scrollElementIntoView($view, $element, scrollHorizontal) {
-        var viewOffset = $view.offset(),
-            viewScroller = $view.get(0),
-            element = $element.get(0),
-            elementOffset = $element.offset();
+        var elementOffset = $element.offset();
 
         &#x2F;&#x2F; scroll minimum amount
         var elementRect = {
@@ -973,9 +1008,9 @@ selectedClassName is assigned to a new list item</li>
 <pre class="code language-javascript"><code class="language-javascript">    function sidebarList($scrollerElement, selectedClassName, leafClassName) {
         var $listElement = $scrollerElement.find(&quot;ul&quot;),
             $selectionMarker,
-            $selectionTriangle,
+            $selectionExtension,
             $sidebar = $(&quot;#sidebar&quot;),
-            showTriangle = true;
+            showExtension = true;
         
         &#x2F;&#x2F; build selectionMarker and position absolute within the scroller
         $selectionMarker = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection&quot;);
@@ -987,36 +1022,40 @@ selectedClassName is assigned to a new list item</li>
         &#x2F;&#x2F; use relative postioning for clipping the selectionMarker within the scrollElement
         $scrollerElement.css(&quot;position&quot;, &quot;relative&quot;);
         
-        &#x2F;&#x2F; build selectionTriangle and position fixed to the window
-        $selectionTriangle = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection-triangle&quot;);
+        &#x2F;&#x2F; build selectionExtension and position fixed to the window
+        $selectionExtension = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection-extension&quot;);
         
-        $scrollerElement.append($selectionTriangle);
+        $scrollerElement.append($selectionExtension);
         
         selectedClassName = &quot;.&quot; + (selectedClassName || &quot;selected&quot;);
         
-        var updateSelectionTriangle = function () {
+        var updateSelectionExtension = function () {
             var selectionMarkerHeight = $selectionMarker.height(),
                 selectionMarkerOffset = $selectionMarker.offset(),  &#x2F;&#x2F; offset relative to *document*
                 scrollerOffset = $scrollerElement.offset(),
-                triangleHeight = $selectionTriangle.outerHeight(),
+                selectionExtensionHeight = $selectionExtension.outerHeight(),
                 scrollerTop = scrollerOffset.top,
                 scrollerBottom = scrollerTop + $scrollerElement.outerHeight(),
-                scrollerLeft = scrollerOffset.left,
-                triangleTop = selectionMarkerOffset.top;
+                selectionExtensionTop = selectionMarkerOffset.top;
             
-            $selectionTriangle.css(&quot;top&quot;, triangleTop);
-            $selectionTriangle.css(&quot;left&quot;, $sidebar.width() - $selectionTriangle.outerWidth());
-            toggleClass($selectionTriangle, &quot;triangle-visible&quot;, showTriangle);
+            $selectionExtension.css(&quot;top&quot;, selectionExtensionTop);
+            $selectionExtension.css(&quot;left&quot;, $sidebar.width() - $selectionExtension.outerWidth());
+            toggleClass($selectionExtension, &quot;selectionExtension-visible&quot;, showExtension);
                 
-            var triangleClipOffsetYBy = Math.floor((selectionMarkerHeight - triangleHeight) &#x2F; 2),
-                triangleBottom = triangleTop + triangleHeight + triangleClipOffsetYBy;
+            var selectionExtensionClipOffsetYBy = Math.floor((selectionMarkerHeight - selectionExtensionHeight) &#x2F; 2),
+                selectionExtensionBottom = selectionExtensionTop + selectionExtensionHeight + selectionExtensionClipOffsetYBy;
             
-            if (triangleTop &lt; scrollerTop || triangleBottom &gt; scrollerBottom) {
-                $selectionTriangle.css(&quot;clip&quot;, &quot;rect(&quot; + Math.max(scrollerTop - triangleTop - triangleClipOffsetYBy, 0) + &quot;px, auto, &quot; +
-                                           (triangleHeight - Math.max(triangleBottom - scrollerBottom, 0)) + &quot;px, auto)&quot;);
+            if (selectionExtensionTop &lt; scrollerTop || selectionExtensionBottom &gt; scrollerBottom) {
+                $selectionExtension.css(&quot;clip&quot;, &quot;rect(&quot; + Math.max(scrollerTop - selectionExtensionTop - selectionExtensionClipOffsetYBy, 0) + &quot;px, auto, &quot; +
+                                           (selectionExtensionHeight - Math.max(selectionExtensionBottom - scrollerBottom, 0)) + &quot;px, auto)&quot;);
             } else {
-                $selectionTriangle.css(&quot;clip&quot;, &quot;&quot;);
+                $selectionExtension.css(&quot;clip&quot;, &quot;&quot;);
             }
+        };
+        
+        var hideSelectionMarker = function (event) {
+            $selectionExtension.addClass(&quot;forced-hidden&quot;);
+            $selectionMarker.addClass(&quot;forced-hidden&quot;);
         };
         
         var updateSelectionMarker = function (event, reveal) {
@@ -1024,11 +1063,14 @@ selectedClassName is assigned to a new list item</li>
             var $listItem = $listElement.find(selectedClassName).closest(&quot;li&quot;);
             
             if (leafClassName) {
-                showTriangle = $listItem.hasClass(leafClassName);
+                showExtension = $listItem.hasClass(leafClassName);
             }
+
+            $selectionExtension.removeClass(&quot;forced-hidden&quot;);
+            $selectionMarker.removeClass(&quot;forced-hidden&quot;);
             
             &#x2F;&#x2F; always hide selection visuals first to force layout (issue #719)
-            $selectionTriangle.hide();
+            $selectionExtension.hide();
             $selectionMarker.hide();
             
             if ($listItem.length === 1) {
@@ -1042,8 +1084,8 @@ selectedClassName is assigned to a new list item</li>
                 $selectionMarker.css(&quot;top&quot;, selectionMarkerTop);
                 $selectionMarker.show();
                 
-                updateSelectionTriangle();
-                $selectionTriangle.show();
+                updateSelectionExtension();
+                $selectionExtension.show();
             
                 &#x2F;&#x2F; fully scroll to the selectionMarker if it&#39;s not initially in the viewport
                 var scrollerElement = $scrollerElement.get(0),
@@ -1064,14 +1106,15 @@ selectedClassName is assigned to a new list item</li>
         };
         
         $listElement.on(&quot;selectionChanged&quot;, updateSelectionMarker);
-        $scrollerElement.on(&quot;scroll&quot;, updateSelectionTriangle);
-        $scrollerElement.on(&quot;selectionRedraw&quot;, updateSelectionTriangle);
+        $scrollerElement.on(&quot;scroll&quot;, updateSelectionExtension);
+        $scrollerElement.on(&quot;selectionRedraw&quot;, updateSelectionExtension);
+        $scrollerElement.on(&quot;selectionHide&quot;, hideSelectionMarker);
         
         &#x2F;&#x2F; update immediately
         updateSelectionMarker();
         
         &#x2F;&#x2F; update clipping when the window resizes
-        _resizeHandlers.push(updateSelectionTriangle);
+        _resizeHandlers.push(updateSelectionExtension);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

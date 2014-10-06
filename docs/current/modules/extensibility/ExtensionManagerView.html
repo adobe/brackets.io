@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -605,8 +613,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerView.prototype._render = function () {
-        var self = this,
-            $item;
+        var self = this;
         
         this._$table.empty();
         this._updateMessage();
@@ -686,6 +693,22 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             context.isCompatible = context.isCompatibleLatest = true;
         }
 
+        &#x2F;&#x2F; Check if extension metadata contains localized content.
+        var lang            = brackets.getLocale(),
+            shortLang       = lang.split(&quot;-&quot;)[0];
+        if (info.metadata[&quot;package-i18n&quot;]) {
+            [shortLang, lang].forEach(function (locale) {
+                if (info.metadata[&quot;package-i18n&quot;].hasOwnProperty(locale)) {
+                    &#x2F;&#x2F; only overlay specific properties with the localized values
+                    [&quot;title&quot;, &quot;description&quot;, &quot;homepage&quot;, &quot;keywords&quot;].forEach(function (prop) {
+                        if (info.metadata[&quot;package-i18n&quot;][locale].hasOwnProperty(prop)) {
+                            info.metadata[prop] = info.metadata[&quot;package-i18n&quot;][locale][prop];
+                        }
+                    });
+                }
+            });
+        }
+
         if (info.metadata.description !== undefined) {
             info.metadata.shortdescription = StringUtils.truncate(info.metadata.description, 200);
         }
@@ -699,12 +722,12 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         context.allowInstall = context.isCompatible &amp;&amp; !context.isInstalled;
 
         if (Array.isArray(info.metadata.i18n) &amp;&amp; info.metadata.i18n.length &gt; 0) {
-            var lang      = brackets.getLocale(),
-                shortLang = lang.split(&quot;-&quot;)[0];
-
             context.translated = true;
             context.translatedLangs =
                 info.metadata.i18n.map(function (value) {
+                    if (value === &quot;root&quot;) {
+                        value = &quot;en&quot;;
+                    }
                     return { name: LocalizationUtils.getLocalizedLabel(value), locale: value };
                 })
                 .sort(function (lang1, lang2) {
@@ -812,12 +835,12 @@ with initialize(). When the view is closed, dispose() must be called.</p>
                     ExtensionManager.markForRemoval($target.attr(&quot;data-extension-id&quot;), true);
                 } else if ($target.hasClass(&quot;undo-update&quot;)) {
                     ExtensionManager.removeUpdate($target.attr(&quot;data-extension-id&quot;));
-                } else if ($target.attr(&quot;data-toggle-desc&quot;) === &quot;expand-desc&quot;) {
-                    ExtensionManager.toggleDescription($target.attr(&quot;data-extension-id&quot;), $target, true);
-                } else if ($target.attr(&quot;data-toggle-desc&quot;) === &quot;trunc-desc&quot;) {
-                    ExtensionManager.toggleDescription($target.attr(&quot;data-extension-id&quot;), $target, false);
+                } else if ($target.data(&quot;toggle-desc&quot;) === &quot;expand-desc&quot;) {
+                    this._toggleDescription($target.attr(&quot;data-extension-id&quot;), $target, true);
+                } else if ($target.data(&quot;toggle-desc&quot;) === &quot;trunc-desc&quot;) {
+                    this._toggleDescription($target.attr(&quot;data-extension-id&quot;), $target, false);
                 }
-            })
+            }.bind(this))
             .on(&quot;click&quot;, &quot;button.install&quot;, function (e) {
                 self._installUsingDialog($(e.target).attr(&quot;data-extension-id&quot;));
             })
@@ -827,6 +850,58 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             .on(&quot;click&quot;, &quot;button.remove&quot;, function (e) {
                 ExtensionManager.markForRemoval($(e.target).attr(&quot;data-extension-id&quot;), true);
             });
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _toggleDescription 
+        <a class="anchor" href="#ExtensionManagerView-_toggleDescription" id="ExtensionManagerView-_toggleDescription"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Toggles between truncated and full length extension descriptions</p>
+</div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension clicked</dd>
+    <dt>
+        $element
+        <span class="label label-info">JQueryElement</span>
+    </dt>
+    <dd>The DOM element of the extension clicked</dd>
+    <dt>
+        showFull
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true if full length description should be shown, false for shortened version.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerView.prototype._toggleDescription = function (id, $element, showFull) {
+        var description, linkTitle,
+            info = this.model._getEntry(id);
+
+        &#x2F;&#x2F; Toggle between appropriate descriptions and link title,
+        &#x2F;&#x2F; depending on if extension is installed or not
+        if (showFull) {
+            description = info.metadata.description;
+            linkTitle = Strings.VIEW_TRUNCATED_DESCRIPTION;
+        } else {
+            description = info.metadata.shortdescription;
+            linkTitle = Strings.VIEW_COMPLETE_DESCRIPTION;
+        }
+
+        $element.data(&quot;toggle-desc&quot;, showFull ? &quot;trunc-desc&quot; : &quot;expand-desc&quot;)
+                .attr(&quot;title&quot;, linkTitle)
+                .prev(&quot;.ext-full-description&quot;).text(description);
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
