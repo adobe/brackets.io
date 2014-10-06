@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -429,12 +437,136 @@ this deprecation warning.</p>
     Public API
 </span>
     <h4>
+        deprecateConstant 
+        <a class="anchor" href="#-deprecateConstant" id="-deprecateConstant"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Create a deprecation warning and action for updated constants</p>
+</div>
+    
+<dl>
+    <dt>
+        old
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Menu Id</dd>
+    <dt>
+        new
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Menu Id</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function deprecateConstant(obj, oldId, newId) {
+        var warning     = &quot;Use Menus.&quot; + newId + &quot; instead of Menus.&quot; + oldId,
+            newValue    = obj[newId];
+        
+        Object.defineProperty(obj, oldId, {
+            get: function () {
+                deprecationWarning(warning, true);
+                return newValue;
+            }
+        });
+    }
+    
+    &#x2F;&#x2F; Define public API
+    exports.deprecationWarning   = deprecationWarning;
+    exports.deprecateEvent       = deprecateEvent;
+    exports.getEventHandlerCount = getEventHandlerCount;
+    exports.deprecateConstant      = deprecateConstant;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        deprecateEvent 
+        <a class="anchor" href="#-deprecateEvent" id="-deprecateEvent"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Show a deprecation warning if there are listeners for the event</p>
+<pre><code>   DeprecationWarning.deprecateEvent($(exports), 
+                                     $(MainViewManager), 
+                                     &quot;workingSetAdd&quot;, 
+                                     &quot;workingSetAdd&quot;, 
+                                     &quot;DocumentManager.workingSetAdd&quot;, 
+                                     &quot;MainViewManager.workingSetAdd&quot;);
+</code></pre></div>
+    
+<dl>
+    <dt>
+        outbound
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>- the object with the old event to dispatch</dd>
+    <dt>
+        inbound
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>- the object with the new event to map to the old event</dd>
+    <dt>
+        oldEventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the name of the old event</dd>
+    <dt>
+        newEventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the name of the new event</dd>
+    <dt>
+        canonicalOutboundName
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the canonical name of the old event</dd>
+    <dt>
+        canonicalInboundName
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the canonical name of the new event</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function deprecateEvent(outbound, inbound, oldEventName, newEventName, canonicalOutboundName, canonicalInboundName) {
+        &#x2F;&#x2F; create an event handler for the new event to listen for 
+        $(inbound).on(newEventName, function () {
+            &#x2F;&#x2F; Get the jQuery event data from the outbound object -- usually the module&#39;s exports
+            var listenerCount = getEventHandlerCount(outbound, oldEventName);
+            if (listenerCount &gt; 0) {
+                var message = &quot;The Event &quot; + (canonicalOutboundName || oldEventName) + &quot; has been deprecated. Use &quot; + (canonicalInboundName || newEventName) + &quot; instead.&quot;;
+                &#x2F;&#x2F; We only want to show the deprecation warning once
+                if (!displayedWarnings[message]) {
+                    displayedWarnings[message] = true;
+                    console.warn(message);
+                }
+            }
+
+            &#x2F;&#x2F; dispatch the event even if there are no listeners just in case the jQuery data is wrong for some reason
+            $(outbound).trigger(oldEventName, Array.prototype.slice.call(arguments, 1));
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         deprecationWarning 
         <a class="anchor" href="#-deprecationWarning" id="-deprecationWarning"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Show deprecation message with the call stack if it 
+    <div class="description"><p>Show deprecation warning with the call stack if it 
 has never been displayed before.</p>
 </div>
     
@@ -478,11 +610,59 @@ has never been displayed before.</p>
             displayedWarnings[message] = {};
         }
         displayedWarnings[message][callerLocation] = true;
-    }
+    }</code></pre></div><div class="member public">
 
-    &#x2F;&#x2F; Define public API
-    exports.deprecationWarning = deprecationWarning;
-});</code></pre></div>
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getEventHandlerCount 
+        <a class="anchor" href="#-getEventHandlerCount" id="-getEventHandlerCount"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Counts the number of event handlers listening for the specified event on the specified object</p>
+</div>
+    
+<dl>
+    <dt>
+        object
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>- the object with the old event to dispatch</dd>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- the name of the event</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!number</span>
+</dt>
+    <dd>count of event handlers</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getEventHandlerCount(object, name) {
+        var count = 0,
+            events = $._data(object, &quot;events&quot;);
+        
+        &#x2F;&#x2F; If there are there any listeners then display a deprecation warning
+        if (events &amp;&amp; events.hasOwnProperty(name)) {
+            var listeners = events[name];
+            count = listeners.length;
+            
+            if (listeners.hasOwnProperty(&quot;delegateCount&quot;)) {
+                &#x2F;&#x2F; we need to subtract 1 since delegateCount is counted 
+                &#x2F;&#x2F;  in the length computed above.
+                count += (listeners.delegateCount - 1);
+            }
+        }
+        
+        return count;
+    }</code></pre></div>
 </section>
 
         </div>

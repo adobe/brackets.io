@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -439,6 +447,8 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     PreferencesManager.convertPreferences(module, {&quot;panelState&quot;: &quot;user&quot;}, true, _isPanelPreferences);
     
     exports.makeResizable   = makeResizable;
+    exports.removeSizable   = removeSizable;
+    exports.resyncSizer     = resyncSizer;
     exports.toggle          = toggle;
     exports.show            = show;
     exports.hide            = hide;
@@ -449,6 +459,8 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     exports.DIRECTION_HORIZONTAL = DIRECTION_HORIZONTAL;
     exports.POSITION_TOP         = POSITION_TOP;
     exports.POSITION_RIGHT       = POSITION_RIGHT;
+    exports.POSITION_BOTTOM      = POSITION_BOTTOM;
+    exports.POSITION_LEFT        = POSITION_LEFT;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -583,17 +595,22 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     </dt>
     <dd>CSS selector indicating element whose 'left' should be locked to the the resizable element's size (useful for siblings laid out to the right of the element). Must lie in element's parent's subtree.</dd>
     <dt>
-        createdByPanelManager
+        createdByWorkspaceManager
         <span class="label label-nullable">nullable</span>
         <span class="label label-info">boolean</span>
     </dt>
     <dd>For internal use only</dd>
+    <dt>
+        usePercentages
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Maintain the size of the element as a percentage of its parent the default is to maintain the size of the element in pixels</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByPanelManager) {
-        
+<pre class="code language-javascript"><code class="language-javascript">    function makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByWorkspaceManager, usePercentages) {
         var $resizer            = $(&#39;&lt;div class=&quot;&#39; + direction + &#39;-resizer&quot;&gt;&lt;&#x2F;div&gt;&#39;),
             $element            = $(element),
             $parent             = $element.parent(),
@@ -604,7 +621,40 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             animationRequest    = null,
             directionProperty   = direction === DIRECTION_HORIZONTAL ? &quot;clientX&quot; : &quot;clientY&quot;,
             directionIncrement  = (position === POSITION_TOP || position === POSITION_LEFT) ? 1 : -1,
-            elementSizeFunction = direction === DIRECTION_HORIZONTAL ? $element.width : $element.height,
+            parentSizeFunction  = direction === DIRECTION_HORIZONTAL ? $parent.innerWidth : $parent.innerHeight,
+            
+            elementSizeFunction = function (newSize) {
+                if (!newSize) {
+                    &#x2F;&#x2F; calling the function as a getter
+                    if (direction === DIRECTION_HORIZONTAL) {
+                        return this.width();
+                    } else {
+                        return this.height();
+                    }
+                } else if (!usePercentages) {
+                    if (direction === DIRECTION_HORIZONTAL) {
+                        return this.width(newSize);
+                    } else {
+                        return this.height(newSize);
+                    }
+                } else {
+                    &#x2F;&#x2F; calling the function as a setter
+                    var parentSize = parentSizeFunction.apply($parent),
+                        percentage,
+                        prop;
+
+                    if (direction === DIRECTION_HORIZONTAL) {
+                        prop = &quot;width&quot;;
+                    } else {
+                        prop = &quot;height&quot;;
+                    }
+                    percentage = newSize &#x2F; parentSize;
+                    this.css(prop, (percentage * 100) + &quot;%&quot;);
+                    
+                    return this; &#x2F;&#x2F; chainable
+                }
+            },
+            
             resizerCSSPosition  = direction === DIRECTION_HORIZONTAL ? &quot;left&quot; : &quot;top&quot;,
             contentSizeFunction = direction === DIRECTION_HORIZONTAL ? $resizableElement.width : $resizableElement.height;
 
@@ -624,9 +674,9 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         &#x2F;&#x2F; Important so min&#x2F;max sizes behave predictably
         $element.css(&quot;box-sizing&quot;, &quot;border-box&quot;);
         
-        &#x2F;&#x2F; Detect legacy cases where panels in the editor area are created without using PanelManager APIs
-        if ($parent[0] &amp;&amp; $parent.is(&quot;.content&quot;) &amp;&amp; !createdByPanelManager) {
-            console.warn(&quot;Deprecated: resizable panels should be created via PanelManager.createBottomPanel(). Using Resizer directly will stop working in the future. \nElement:&quot;, element);
+        &#x2F;&#x2F; Detect legacy cases where panels in the editor area are created without using WorkspaceManager APIs
+        if ($parent[0] &amp;&amp; $parent.is(&quot;.content&quot;) &amp;&amp; !createdByWorkspaceManager) {
+            console.warn(&quot;Deprecated: resizable panels should be created via WorkspaceManager.createBottomPanel(). Using Resizer directly will stop working in the future. \nElement:&quot;, element);
             $(exports).triggerHandler(&quot;deprecatedPanelAdded&quot;, [$element]);
         }
         
@@ -644,11 +694,34 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             }
         }
         
+        &#x2F;&#x2F; If the resizer is positioned right or bottom of the panel, we need to listen to
+        &#x2F;&#x2F; reposition it if the element size changes externally
+        function repositionResizer(elementSize) {
+            var resizerPosition = elementSize || 1;
+            if (position === POSITION_RIGHT || position === POSITION_BOTTOM) {
+                $resizer.css(resizerCSSPosition, resizerPosition);
+            }
+        }
+            
+        $element.data(&quot;removeSizable&quot;, function () {
+            $resizer.off(&quot;.resizer&quot;);
+            
+            $element.removeData(&quot;show&quot;);
+            $element.removeData(&quot;hide&quot;);
+            $element.removeData(&quot;resyncSizer&quot;);
+            $element.removeData(&quot;removeSizable&quot;);
+            
+            $resizer.remove();
+        });
+        
+        $element.data(&quot;resyncSizer&quot;, function () {
+            repositionResizer(elementSizeFunction.apply($element));
+        });
+        
         $element.data(&quot;show&quot;, function () {
             var elementOffset   = $element.offset(),
                 elementSize     = elementSizeFunction.apply($element) || elementPrefs.size,
-                contentSize     = contentSizeFunction.apply($resizableElement) || elementPrefs.contentSize,
-                resizerSize     = elementSizeFunction.apply($resizer);
+                contentSize     = contentSizeFunction.apply($resizableElement) || elementPrefs.contentSize;
             
             &#x2F;&#x2F; Resize the element before showing it again. If the panel was collapsed by dragging
             &#x2F;&#x2F; the resizer, the size of the element should be 0, so we restore size in preferences
@@ -695,16 +768,8 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
         
-        &#x2F;&#x2F; If the resizer is positioned right or bottom of the panel, we need to listen to
-        &#x2F;&#x2F; reposition it if the element size changes externally
-        function repositionResizer(elementSize) {
-            var resizerPosition = elementSize || 1;
-            if (position === POSITION_RIGHT || position === POSITION_BOTTOM) {
-                $resizer.css(resizerCSSPosition, resizerPosition);
-            }
-        }
-    
-        $resizer.on(&quot;mousedown&quot;, function (e) {
+
+        $resizer.on(&quot;mousedown.resizer&quot;, function (e) {
             var $resizeShield   = $(&quot;&lt;div class=&#39;resizing-container &quot; + direction + &quot;-resizing&#39; &#x2F;&gt;&quot;),
                 startPosition   = e[directionProperty],
                 startSize       = $element.is(&quot;:visible&quot;) ? elementSizeFunction.apply($element) : 0,
@@ -775,7 +840,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                 &#x2F;&#x2F; between starting and current position, capped at minSize
                 newSize = Math.max(startSize + directionIncrement * (startPosition - e[directionProperty]), minSize);
                 
-                &#x2F;&#x2F; respect max size if one provided (e.g. by PanelManager)
+                &#x2F;&#x2F; respect max size if one provided (e.g. by WorkspaceManager)
                 var maxSize = $element.data(&quot;maxsize&quot;);
                 if (maxSize !== undefined) {
                     newSize = Math.min(newSize, maxSize);
@@ -856,7 +921,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             }
         }
     }
-	
+
     &#x2F;&#x2F; Scan DOM for horz-resizable and vert-resizable classes and make them resizable
     AppInit.htmlReady(function () {
         var minSize = DEFAULT_MIN_SIZE;
@@ -893,6 +958,67 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             }
         });
     });</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        removeSizable 
+        <a class="anchor" href="#-removeSizable" id="-removeSizable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Removes the resizability of an element if it&#39;s resizable</p>
+</div>
+    
+<dl>
+    <dt>
+        element
+        <span class="label label-info">DOMNode</span>
+    </dt>
+    <dd>Html element in which to remove sizing</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeSizable(element) {
+        var removeSizableFunc = $(element).data(&quot;removeSizable&quot;);
+        if (removeSizableFunc) {
+            removeSizableFunc.apply(element);
+        }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        resyncSizer 
+        <a class="anchor" href="#-resyncSizer" id="-resyncSizer"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates the sizing div by resyncing to the sizing edge of the element
+Call this method after manually changing the size of the element</p>
+</div>
+    
+<dl>
+    <dt>
+        element
+        <span class="label label-info">DOMNode</span>
+    </dt>
+    <dd>Html element whose sizer should be resynchronized</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function resyncSizer(element) {
+        var resyncSizerFunc = $(element).data(&quot;resyncSizer&quot;);
+        if (resyncSizerFunc) {
+            resyncSizerFunc.apply(element);
+        }
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

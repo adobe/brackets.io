@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -374,17 +382,19 @@ not a pure headless model. Each Document encapsulates an editor instance, and th
 must have some knowledge about Document&#39;s internal state (we access its _editor property).</p>
 <p>This module dispatches the following events:</p>
 <ul>
-<li>activeEditorChange --  Fires after the active editor (full or inline) changes and size/visibility
-are complete. Doesn&#39;t fire when editor temporarily loses focus to a non-editor
-control (e.g. search toolbar or modal dialog, or window deactivation). Does
-fire when focus moves between inline editor and its full-size container.
-This event tracks <code>getActiveEditor()</code> changes, while DocumentManager&#39;s
-<code>currentDocumentChange</code> tracks <code>getCurrentFullEditor()</code> changes.
-The 2nd arg to the listener is which Editor became active; the 3rd arg is
+<li><p>activeEditorChange --  Fires after the active editor (full or inline). </p>
+<p>Doesn&#39;t fire when editor temporarily loses focus to a non-editor
+control (e.g. search toolbar or modal dialog, or window deactivation). </p>
+<p>Does fire when focus moves between inline editor and its full-size container.</p>
+<p>This event tracks <code>MainViewManagers&#39;s</code>currentFileChange` event and all editor
+objects &quot;focus&quot; event.</p>
+<pre><code>(e, editorGainingFocus:editor, editorLosingFocus:editor)
+</code></pre><p>The 2nd arg to the listener is which Editor became active; the 3rd arg is
 which Editor is deactivated as a result. Either one may be null.
 NOTE (#1257): <code>getFocusedEditor()</code> sometimes lags behind this event. Listeners
 should use the arguments or call <code>getActiveEditor()</code> to reliably see which Editor 
-just gained focus.</li>
+just gained focus.</p>
+</li>
 </ul>
 </div>
     
@@ -396,14 +406,17 @@ just gained focus.</li>
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-        <li><a href="..&#x2F;../modules/view/PanelManager.html">PanelManager</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
     </ul>
 
 </section>
@@ -414,196 +427,28 @@ just gained focus.</li>
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        REFRESH_FORCE     <span class="label label-info">Constant</span>
-
-        <a class="anchor" href="#-REFRESH_FORCE" id="-REFRESH_FORCE"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to always force refresh.</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>string</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var REFRESH_FORCE = &quot;force&quot;;</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        REFRESH_SKIP     <span class="label label-info">Constant</span>
-
-        <a class="anchor" href="#-REFRESH_SKIP" id="-REFRESH_SKIP"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Flag for <code>_onEditorAreaResize()</code> to never refresh.</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>string</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var REFRESH_SKIP = &quot;skip&quot;;</code></pre></div><div class="member private">
+<div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
     <h4>
-        _$currentCustomViewer 
-        <a class="anchor" href="#-_$currentCustomViewer" id="-_$currentCustomViewer"><span class="icon-link"></span></a>
+        _$hiddenEditorsContainer 
+        <a class="anchor" href="#-_$hiddenEditorsContainer" id="-_$hiddenEditorsContainer"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>DOM node representing UI of custom view  </p>
+    <div class="description"><p>DOM element to house any hidden editors created soley for inline widgets</p>
 </div>
     
 <dl>
     <dt>Type</dt>
-    <dd>?JQuery</dd>
+    <dd>jQuery</dd>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _$currentCustomViewer = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _currentEditor 
-        <a class="anchor" href="#-_currentEditor" id="-_currentEditor"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Currently visible full-size Editor, or null if no editors open</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Editor</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _currentEditor = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _currentEditorsDocument 
-        <a class="anchor" href="#-_currentEditorsDocument" id="-_currentEditorsDocument"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Document in current editor</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Document</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _currentEditorsDocument = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _currentViewProvider 
-        <a class="anchor" href="#-_currentViewProvider" id="-_currentViewProvider"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>view provider</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Object</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _currentViewProvider = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _currentlyViewedPath 
-        <a class="anchor" href="#-_currentlyViewedPath" id="-_currentlyViewedPath"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>full path to file</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?string</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _currentlyViewedPath = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _customViewerRegistry 
-        <a class="anchor" href="#-_customViewerRegistry" id="-_customViewerRegistry"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>view provider registry</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Object</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _customViewerRegistry = {};</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _editorHolder 
-        <a class="anchor" href="#-_editorHolder" id="-_editorHolder"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>DOM node that contains all editors (visible and hidden alike)</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>jQueryObject</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _editorHolder = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    var _$hiddenEditorsContainer;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -615,11 +460,12 @@ just gained focus.</li>
     </h4>
 
     
-    <div class="description"><p>Registered inline documentation widget providers sorted descending by priority.
-See {@link #registerInlineDocsProvider()}.</p>
+    <div class="description"><p>Registered inline documentation widget providers sorted descending by priority.</p>
 </div>
     
 <dl>
+    <dt>See</dt>
+    <dd><a href='#'>{@link #registerInlineDocsProvider()}.</a></dd>
     <dt>Type</dt>
     <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
     <dt>Private</dt>
@@ -637,11 +483,12 @@ See {@link #registerInlineDocsProvider()}.</p>
     </h4>
 
     
-    <div class="description"><p>Registered inline-editor widget providers sorted descending by priority. 
-See {@link #registerInlineEditProvider()}.</p>
+    <div class="description"><p>Registered inline-editor widget providers sorted descending by priority. </p>
 </div>
     
 <dl>
+    <dt>See</dt>
+    <dd><a href='#'>{@link #registerInlineEditProvider()}.</a></dd>
     <dt>Type</dt>
     <dd>Array.&lt;{priority:number, provider:function(...)}&gt;</dd>
     <dt>Private</dt>
@@ -659,35 +506,18 @@ See {@link #registerInlineEditProvider()}.</p>
     </h4>
 
     
-    <div class="description"><p>Registered jump-to-definition providers. See {@link #registerJumpToDefProvider()}.</p>
+    <div class="description"><p>Registered jump-to-definition providers. </p>
 </div>
     
 <dl>
+    <dt>See</dt>
+    <dd><a href='#'>{@link #registerJumpToDefProvider()}.</a></dd>
     <dt>Type</dt>
     <dd>Array.&lt;function(...)&gt;</dd>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _jumpToDefProviders = [];</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _lastEditorWidth 
-        <a class="anchor" href="#-_lastEditorWidth" id="-_lastEditorWidth"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Last known editor area width, used to detect when the window is resized horizontally.</p>
-</div>
-    
-<dl>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _lastEditorWidth = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -708,29 +538,7 @@ See {@link #registerInlineEditProvider()}.</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _lastFocusedEditor = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _viewStateCache 
-        <a class="anchor" href="#-_viewStateCache" id="-_viewStateCache"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Maps full path to scroll pos &amp; cursor/selection info. Not kept up to date while an editor is current.
-Only updated when switching / closing editor, or when requested explicitly via _getViewState().</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>Object&lt;string, {scrollPos:{x:number, y:number}, selection:{start:{line:number, ch:number}, end:{line:number, ch:number}}}&gt;</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _viewStateCache = {};</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _lastFocusedEditor = null;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -740,32 +548,7 @@ Only updated when switching / closing editor, or when requested explicitly via _
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        _closeCustomViewer 
-        <a class="anchor" href="#-_closeCustomViewer" id="-_closeCustomViewer"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Closes the customViewer currently displayed, shows the NoEditor view
-and notifies the ProjectManager to update the file selection</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _closeCustomViewer() {
-        _removeCustomViewer();
-        _setCurrentlyViewedPath();
-        _showNoEditor();
-    }</code></pre></div><div class="member private">
+<div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -820,6 +603,12 @@ The editor is appended to the given container as a visible child.</p>
             _notifyActiveEditorChanged(this);
         });
         
+        $(editor).on(&quot;beforeDestroy&quot;, function () {
+            if (editor.$el.is(&quot;:visible&quot;)) {
+                _saveEditorViewState(editor);
+            }
+        });
+        
         return editor;
     }</code></pre></div><div class="member private public">
 
@@ -842,15 +631,22 @@ The editor is appended to the given container as a visible child.</p>
         <span class="label label-info">Document</span>
     </dt>
     <dd>Document whose main/full Editor to create</dd>
+    <dt>
+        pane
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Pane</span>
+    </dt>
+    <dd>Pane in which the editor will be hosted</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document) {
+<pre class="code language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document, pane) {
         &#x2F;&#x2F; Create editor; make it initially invisible
-        var container = _editorHolder.get(0);
-        var editor = _createEditorForDocument(document, true, container);
+        var editor = _createEditorForDocument(document, true, pane.$content);
         editor.setVisible(false);
+        pane.addView(editor);
+        $(exports).triggerHandler(&quot;_fullEditorCreatedForDocument&quot;, [document, editor, pane.id]);
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -858,55 +654,38 @@ The editor is appended to the given container as a visible child.</p>
     Public API
 </span>
     <h4>
-        _destroyEditorIfUnneeded 
-        <a class="anchor" href="#-_destroyEditorIfUnneeded" id="-_destroyEditorIfUnneeded"><span class="icon-link"></span></a>
+        _createUnattachedMasterEditor 
+        <a class="anchor" href="#-_createUnattachedMasterEditor" id="-_createUnattachedMasterEditor"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Disposes the given Document&#39;s full-size editor if the doc is no longer &quot;open&quot; from the user&#39;s
-standpoint - not in the working set and not currentDocument).</p>
-<p>Destroying the full-size editor releases ONE ref to the Document; if inline editors or other
-UI elements are still referencing the Document it will still be &#39;open&#39; (kept alive) from
-DocumentManager&#39;s standpoint. However, destroying the full-size editor does remove the backing
-&quot;master&quot; editor from the Document, rendering it immutable until either inline-editor edits or
-currentDocument change triggers <code>_createFullEditorForDocument()</code> full-size editor again.</p>
-<p>In certain edge cases, this is called directly by DocumentManager; see <code>_gcDocuments()</code> for details.</p>
+    <div class="description"><p>Creates a hidden, unattached master editor that is needed when a document is created for the 
+sole purpose of creating an inline editor so operations that require a master editor can be performed
+Only called from Document._ensureMasterEditor()
+The editor view is placed in a hidden part of the DOM but can later be moved to a visible pane 
+when the document is opened using pane.addView()</p>
 </div>
     
 <dl>
     <dt>
-        document
+        doc
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">Document</span>
     </dt>
-    <dd>Document whose "master" editor we may destroy</dd>
+    <dd>- document to create a hidden editor for</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _destroyEditorIfUnneeded(document) {
-        var editor = document._masterEditor;
-
-        if (!editor) {
-            if (!(document instanceof DocumentManager.Document)) {
-                throw new Error(&quot;_destroyEditorIfUnneeded() should be passed a Document&quot;);
-            }
-            return;
+<pre class="code language-javascript"><code class="language-javascript">    function _createUnattachedMasterEditor(doc) {
+        &#x2F;&#x2F; attach to the hidden containers DOM node if necessary
+        if (!_$hiddenEditorsContainer) {
+            _$hiddenEditorsContainer = $(&quot;#hidden-editors&quot;);
         }
-        
-        &#x2F;&#x2F; If outgoing editor is no longer needed, dispose it
-        var isCurrentDocument = (DocumentManager.getCurrentDocument() === document);
-        var isInWorkingSet = (DocumentManager.findInWorkingSet(document.file.fullPath) !== -1);
-        if (!isCurrentDocument &amp;&amp; !isInWorkingSet) {
-            &#x2F;&#x2F; Destroy the editor widget (which un-refs the Document and reverts it to read-only mode)
-            editor.destroy();
-            
-            &#x2F;&#x2F; Our callers should really ensure this, but just for safety...
-            if (_currentEditor === editor) {
-                _currentEditorsDocument = null;
-                _currentEditor = null;
-            }
-        }
+        &#x2F;&#x2F; Create an editor
+        var editor = _createEditorForDocument(doc, true, _$hiddenEditorsContainer);
+        &#x2F;&#x2F; and hide it
+        editor.setVisible(false);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -937,6 +716,7 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
             result = new $.Deferred();
         
         var editor = getActiveEditor();
+        
         if (editor) {
             var pos = editor.getCursorPos();
 
@@ -969,101 +749,6 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
         }
         
         return result.promise();
-    }
-    
-    &#x2F;&#x2F; File-based preferences handling
-    $(exports).on(&quot;activeEditorChange&quot;, function (e, current) {
-        if (current &amp;&amp; current.document &amp;&amp; current.document.file) {
-            PreferencesManager._setCurrentEditingFile(current.document.file.fullPath);
-        }
-    });
-    
-    &#x2F;&#x2F; Initialize: command handlers
-    CommandManager.register(Strings.CMD_TOGGLE_QUICK_EDIT, Commands.TOGGLE_QUICK_EDIT, function () {
-        return _toggleInlineWidget(_inlineEditProviders, Strings.ERROR_QUICK_EDIT_PROVIDER_NOT_FOUND);
-    });
-    CommandManager.register(Strings.CMD_TOGGLE_QUICK_DOCS, Commands.TOGGLE_QUICK_DOCS, function () {
-        return _toggleInlineWidget(_inlineDocsProviders, Strings.ERROR_QUICK_DOCS_PROVIDER_NOT_FOUND);
-    });
-    CommandManager.register(Strings.CMD_JUMPTO_DEFINITION, Commands.NAVIGATE_JUMPTO_DEFINITION, _doJumpToDef);
-
-    &#x2F;&#x2F; Create PerfUtils measurement
-    PerfUtils.createPerfMeasurement(&quot;JUMP_TO_DEFINITION&quot;, &quot;Jump-To-Definiiton&quot;);
-
-    &#x2F;&#x2F; Initialize: register listeners
-    $(DocumentManager).on(&quot;currentDocumentChange&quot;, _onCurrentDocumentChange);
-    $(DocumentManager).on(&quot;workingSetRemove&quot;,      _onWorkingSetRemove);
-    $(DocumentManager).on(&quot;workingSetRemoveList&quot;,  _onWorkingSetRemoveList);
-    $(DocumentManager).on(&quot;fileNameChange&quot;,        _onFileNameChange);
-    $(PanelManager).on(&quot;editorAreaResize&quot;,         _onEditorAreaResize);
-
-
-    &#x2F;&#x2F; For unit tests and internal use only
-    exports._openInlineWidget             = _openInlineWidget;
-    exports._createFullEditorForDocument  = _createFullEditorForDocument;
-    exports._destroyEditorIfUnneeded      = _destroyEditorIfUnneeded;
-    exports._getViewState                 = _getViewState;
-    exports._resetViewStates              = _resetViewStates;
-    exports._doShow                       = _doShow;
-    exports._notifyActiveEditorChanged    = _notifyActiveEditorChanged;
-    exports._showCustomViewer             = _showCustomViewer;
-    exports._closeCustomViewer            = _closeCustomViewer;
-    
-    
-    
-    exports.REFRESH_FORCE = REFRESH_FORCE;
-    exports.REFRESH_SKIP  = REFRESH_SKIP;
-    
-    &#x2F;&#x2F; Define public API
-    exports.setEditorHolder               = setEditorHolder;
-    exports.getCurrentFullEditor          = getCurrentFullEditor;
-    exports.createInlineEditorForDocument = createInlineEditorForDocument;
-    exports.focusEditor                   = focusEditor;
-    exports.getFocusedEditor              = getFocusedEditor;
-    exports.getActiveEditor               = getActiveEditor;
-    exports.getCurrentlyViewedPath        = getCurrentlyViewedPath;
-    exports.getFocusedInlineWidget        = getFocusedInlineWidget;
-    exports.resizeEditor                  = resizeEditor;
-    exports.registerInlineEditProvider    = registerInlineEditProvider;
-    exports.registerInlineDocsProvider    = registerInlineDocsProvider;
-    exports.registerJumpToDefProvider     = registerJumpToDefProvider;
-    exports.getInlineEditors              = getInlineEditors;
-    exports.closeInlineWidget             = closeInlineWidget;
-    exports.registerCustomViewer          = registerCustomViewer;
-    exports.getCustomViewerForPath        = getCustomViewerForPath;
-    exports.notifyPathDeleted             = notifyPathDeleted;
-    exports.showingCustomViewerForPath    = showingCustomViewerForPath;
-});</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        _doShow 
-        <a class="anchor" href="#-_doShow" id="-_doShow"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _doShow(document) {
-        &#x2F;&#x2F; Show new editor
-        _currentEditorsDocument = document;
-        _currentEditor = document._masterEditor;
-        
-        &#x2F;&#x2F; Skip refreshing the editor since we&#39;re going to refresh it more explicitly below
-        _currentEditor.setVisible(true, false);
-        _currentEditor.focus();
-        
-        &#x2F;&#x2F; Resize and refresh the editor, since it might have changed size or had other edits applied
-        &#x2F;&#x2F; since it was last visible.
-        PanelManager._notifyLayoutChange(REFRESH_FORCE);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1093,32 +778,154 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
             return focusedWidget.getFocusedEditor();
         }
         return null;
-    }</code></pre></div><div class="member private public">
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
-    Public API
+    
 </span>
     <h4>
-        _getViewState 
-        <a class="anchor" href="#-_getViewState" id="-_getViewState"><span class="icon-link"></span></a>
+        _handleCurrentFileChange 
+        <a class="anchor" href="#-_handleCurrentFileChange" id="-_handleCurrentFileChange"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Returns up-to-date view state for the given file, or null if file not open and no state cached</p>
+    <div class="description"><p>Current File Changed handler
+MainViewManager dispatches a &quot;currentFileChange&quot; event whenever the currently viewed 
+file changes.  Which could mean that the previously viewed file has been closed or a 
+non-editor view (image) has been given focus.  _notifyAcitveEditorChanged is also hooked 
+up to editor.focus to handle focus events for editors which handles changing focus between
+two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quot; state, we have to
+&quot;nullify&quot; that state whenever the focus goes to a non-editor or when the current editor is closed</p>
 </div>
     
 <dl>
+    <dt>
+        e
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd>- event</dd>
+    <dt>
+        file
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>- current file (can be null)</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _getViewState(fullPath) {
-        if (_currentEditorsDocument &amp;&amp; _currentEditorsDocument.file.fullPath === fullPath) {
-            _saveEditorViewState(_currentEditor);
-        }
-        return _viewStateCache[fullPath];
+<pre class="code language-javascript"><code class="language-javascript">    function _handleCurrentFileChange(e, file) {
+        var doc = file &amp;&amp; DocumentManager.getOpenDocumentForPath(file.fullPath);
+        _notifyActiveEditorChanged(doc &amp;&amp; doc._masterEditor);
     }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleRemoveFromPaneView 
+        <a class="anchor" href="#-_handleRemoveFromPaneView" id="-_handleRemoveFromPaneView"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>file removed from pane handler.</p>
+</div>
+    
+<dl>
+    <dt>
+        e
+        <span class="label label-info">jQuery.Event</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        removedFiles
+        <span class="label label-info">File,Array.&lt;File&gt;</span>
+    </dt>
+    <dd>- file, path or array of files or paths that are being removed</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleRemoveFromPaneView(e, removedFiles) {
+        var handleFileRemoved = function (file) {
+            var doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
+
+            if (doc) {
+                MainViewManager._destroyEditorIfNotNeeded(doc);
+            }
+        };
+        
+        &#x2F;&#x2F; when files are removed from a pane then
+        &#x2F;&#x2F;    we should destroy any unnecssary views
+        if ($.isArray(removedFiles)) {
+            removedFiles.forEach(function (removedFile) {
+                handleFileRemoved(removedFile);
+            });
+        } else {
+            handleFileRemoved(removedFiles);
+        }
+    }
+
+    
+    &#x2F;&#x2F; File-based preferences handling
+    $(exports).on(&quot;activeEditorChange&quot;, function (e, current) {
+        if (current &amp;&amp; current.document &amp;&amp; current.document.file) {
+            PreferencesManager._setCurrentEditingFile(current.document.file.fullPath);
+        }
+    });
+    
+    &#x2F;&#x2F; Initialize: command handlers
+    CommandManager.register(Strings.CMD_TOGGLE_QUICK_EDIT, Commands.TOGGLE_QUICK_EDIT, function () {
+        return _toggleInlineWidget(_inlineEditProviders, Strings.ERROR_QUICK_EDIT_PROVIDER_NOT_FOUND);
+    });
+    CommandManager.register(Strings.CMD_TOGGLE_QUICK_DOCS, Commands.TOGGLE_QUICK_DOCS, function () {
+        return _toggleInlineWidget(_inlineDocsProviders, Strings.ERROR_QUICK_DOCS_PROVIDER_NOT_FOUND);
+    });
+    CommandManager.register(Strings.CMD_JUMPTO_DEFINITION, Commands.NAVIGATE_JUMPTO_DEFINITION, _doJumpToDef);
+
+    &#x2F;&#x2F; Create PerfUtils measurement
+    PerfUtils.createPerfMeasurement(&quot;JUMP_TO_DEFINITION&quot;, &quot;Jump-To-Definiiton&quot;);
+
+    $(MainViewManager).on(&quot;currentFileChange&quot;, _handleCurrentFileChange);
+    $(MainViewManager).on(&quot;workingSetRemove workingSetRemoveList&quot;, _handleRemoveFromPaneView);
+
+    
+    &#x2F;&#x2F; For unit tests and internal use only
+    exports._createFullEditorForDocument  = _createFullEditorForDocument;
+    exports._notifyActiveEditorChanged    = _notifyActiveEditorChanged;
+
+    &#x2F;&#x2F; Internal Use only
+    exports._saveEditorViewState          = _saveEditorViewState;
+    exports._createUnattachedMasterEditor = _createUnattachedMasterEditor;
+    
+    &#x2F;&#x2F; Define public API
+    exports.createInlineEditorForDocument = createInlineEditorForDocument;
+    exports.getFocusedInlineWidget        = getFocusedInlineWidget;
+    exports.getInlineEditors              = getInlineEditors;
+    exports.closeInlineWidget             = closeInlineWidget;
+    exports.openDocument                  = openDocument;
+    exports.canOpenPath                   = canOpenPath;
+
+    &#x2F;&#x2F; Convenience Methods
+    exports.getActiveEditor               = getActiveEditor;
+    exports.getCurrentFullEditor          = getCurrentFullEditor;
+    exports.getFocusedEditor              = getFocusedEditor;
+    
+    
+    exports.registerInlineEditProvider    = registerInlineEditProvider;
+    exports.registerInlineDocsProvider    = registerInlineDocsProvider;
+    exports.registerJumpToDefProvider     = registerJumpToDefProvider;
+    
+    &#x2F;&#x2F; Deprecated
+    exports.registerCustomViewer          = registerCustomViewer;
+    exports.resizeEditor                  = resizeEditor;
+    exports.focusEditor                   = focusEditor;
+    exports.getCurrentlyViewedPath        = getCurrentlyViewedPath;
+    exports.setEditorHolder               = setEditorHolder;
+});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1179,7 +986,8 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
     </h4>
 
     
-    <div class="description"></div>
+    <div class="description"><p>Editor focus handler to change the currently active editor</p>
+</div>
     
 <dl>
     <dt>
@@ -1187,7 +995,7 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
         <span class="label label-nullable">nullable</span>
         <span class="label label-info">Editor</span>
     </dt>
-    <dd></dd>
+    <dd>- the editor that will be the active editor</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -1207,214 +1015,6 @@ currentDocument change triggers <code>_createFullEditorForDocument()</code> full
 <span class="pull-right scope">
     Private
     
-</span>
-    <h4>
-        _nullifyEditor 
-        <a class="anchor" href="#-_nullifyEditor" id="-_nullifyEditor"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Resets editor state to make sure <code>getFocusedEditor()</code>, <code>getActiveEditor()</code>,
-and <code>getCurrentFullEditor()</code> return null when an image or the NoEditor 
-placeholder is displayed.</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _nullifyEditor() {
-        if (_currentEditor) {
-            _saveEditorViewState(_currentEditor);
-            
-            &#x2F;&#x2F; This is a hack to deal with #5589. The issue is that CodeMirror&#39;s logic for polling its
-            &#x2F;&#x2F; hidden input field relies on whether there&#39;s a selection in the input field or not. When
-            &#x2F;&#x2F; we hide the editor, the input field loses its selection. Somehow, CodeMirror&#39;s readInput()
-            &#x2F;&#x2F; poll can get called before the resulting blur event is asynchronously sent. (Our guess is
-            &#x2F;&#x2F; that if the setTimeout() that the poll is on is overdue, it gets serviced before the backlog
-            &#x2F;&#x2F; of asynchronous events is flushed.) That means that readInput() thinks CM still has focus,
-            &#x2F;&#x2F; but that the hidden input has lost its selection, meaning the user has typed something, which
-            &#x2F;&#x2F; causes it to replace the editor selection (with the same text), leading to the erroneous
-            &#x2F;&#x2F; change event and selection change. To work around this, we simply blur CM&#39;s input field
-            &#x2F;&#x2F; before hiding the editor, which forces the blur event to be sent synchronously, before the
-            &#x2F;&#x2F; next readInput() triggers.
-            &#x2F;&#x2F;
-            &#x2F;&#x2F; Note that we only need to do this here, not in _showEditor(), because _showEditor()
-            &#x2F;&#x2F; ends up synchronously setting focus to another editor, which has the effect of
-            &#x2F;&#x2F; forcing a synchronous blur event as well.
-            _currentEditor._codeMirror.getInputField().blur();
-            
-            _currentEditor.setVisible(false);
-            _destroyEditorIfUnneeded(_currentEditorsDocument);
-            
-            _currentEditorsDocument = null;
-            _currentEditor = null;
-            _currentlyViewedPath = null;
-            
-            &#x2F;&#x2F; No other Editor is gaining focus, so in this one special case we must trigger event manually
-            _notifyActiveEditorChanged(null);
-        }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _onCurrentDocumentChange 
-        <a class="anchor" href="#-_onCurrentDocumentChange" id="-_onCurrentDocumentChange"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Handles changes to DocumentManager.getCurrentDocument()</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _onCurrentDocumentChange() {
-        var doc = DocumentManager.getCurrentDocument(),
-            container = _editorHolder.get(0);
-        
-        var perfTimerName = PerfUtils.markStart(&quot;EditorManager._onCurrentDocumentChange():\t&quot; + (!doc || doc.file.fullPath));
-        
-        &#x2F;&#x2F; When the document or file in view changes clean up.
-        _removeCustomViewer();
-        &#x2F;&#x2F; Update the UI to show the right editor (or nothing), and also dispose old editor if no
-        &#x2F;&#x2F; longer needed.
-        if (doc) {
-            _showEditor(doc);
-            _setCurrentlyViewedPath(doc.file.fullPath);
-        } else {
-            _clearCurrentlyViewedPath();
-            _showNoEditor();
-        }
-
-        PerfUtils.addMeasurement(perfTimerName);
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _onEditorAreaResize 
-        <a class="anchor" href="#-_onEditorAreaResize" id="-_onEditorAreaResize"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Update the current CodeMirror editor&#39;s size. Must be called any time the contents of the editor area
-are swapped or any time the editor-holder area has changed height. EditorManager calls us in the swap
-case. PanelManager calls us in the most common height-change cases (panel and/or window resize), but
-some other cases are handled by external code calling <code>resizeEditor()</code> (e.g. ModalBar hide/show).</p>
-</div>
-    
-<dl>
-    <dt>
-        editorAreaHt
-        <span class="label label-info">number</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        refreshFlag
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>For internal use. Set to "force" to ensure the editor will refresh, "skip" to ensure the editor does not refresh, or leave undefined to let `_onEditorAreaResize()` determine whether it needs to refresh.</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _onEditorAreaResize(event, editorAreaHt, refreshFlag) {
-        if (_currentEditor) {
-            var curRoot = _currentEditor.getRootElement(),
-                curWidth = $(curRoot).width();
-            if (!curRoot.style.height || $(curRoot).height() !== editorAreaHt) {
-                &#x2F;&#x2F; Call setSize() instead of $.height() to allow CodeMirror to
-                &#x2F;&#x2F; check for options like line wrapping
-                _currentEditor.setSize(null, editorAreaHt);
-                if (refreshFlag === undefined) {
-                    refreshFlag = REFRESH_FORCE;
-                }
-            } else if (curWidth !== _lastEditorWidth) {
-                if (refreshFlag === undefined) {
-                    refreshFlag = REFRESH_FORCE;
-                }
-            }
-            _lastEditorWidth = curWidth;
-
-            if (refreshFlag === REFRESH_FORCE) {
-                _currentEditor.refreshAll(true);
-            }
-        }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _onFileNameChange 
-        <a class="anchor" href="#-_onFileNameChange" id="-_onFileNameChange"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Update file name if necessary</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _onFileNameChange(e, oldName, newName) {
-        if (_currentlyViewedPath === oldName) {
-            _setCurrentlyViewedPath(newName);
-        }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _onWorkingSetRemove 
-        <a class="anchor" href="#-_onWorkingSetRemove" id="-_onWorkingSetRemove"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Handles removals from DocumentManager&#39;s working set list</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _onWorkingSetRemove(event, removedFile) {
-        &#x2F;&#x2F; There&#39;s one case where an editor should be disposed even though the current document
-        &#x2F;&#x2F; didn&#39;t change: removing a document from the working set (via the &quot;X&quot; button). (This may
-        &#x2F;&#x2F; also cover the case where the document WAS current, if the editor-swap happens before the
-        &#x2F;&#x2F; removal from the working set.
-        var doc = DocumentManager.getOpenDocumentForPath(removedFile.fullPath);
-        if (doc) {
-            _destroyEditorIfUnneeded(doc);
-        }
-        &#x2F;&#x2F; else, file was listed in working set but never shown in the editor - ignore
-    }
-
-    function _onWorkingSetRemoveList(event, removedFiles) {
-        removedFiles.forEach(function (removedFile) {
-            _onWorkingSetRemove(event, removedFile);
-        });
-    }</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
 </span>
     <h4>
         _openInlineWidget 
@@ -1512,92 +1112,36 @@ some other cases are handled by external code calling <code>resizeEditor()</code
     
 </span>
     <h4>
-        _removeCustomViewer 
-        <a class="anchor" href="#-_removeCustomViewer" id="-_removeCustomViewer"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Remove existing custom view if present</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _removeCustomViewer() {
-        
-        if (_$currentCustomViewer) {
-            _$currentCustomViewer.remove();
-            if (_currentViewProvider.onRemove) {
-                _currentViewProvider.onRemove();
-            }
-        }
-        _$currentCustomViewer = null;
-        _currentViewProvider = null;
-    }</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        _resetViewStates 
-        <a class="anchor" href="#-_resetViewStates" id="-_resetViewStates"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Removes all cached view state info and replaces it with the given mapping</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _resetViewStates(viewStates) {
-        _viewStateCache = viewStates;
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
         _restoreEditorViewState 
         <a class="anchor" href="#-_restoreEditorViewState" id="-_restoreEditorViewState"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Updates the given editor&#39;s actual state from _viewStateCache, if any state stored</p>
+    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state </p>
 </div>
     
 <dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>- editor restore cached data </dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _restoreEditorViewState(editor) {
-        &#x2F;&#x2F; We want to ignore the current state of the editor, so don&#39;t call _getViewState()
-        var viewState = _viewStateCache[editor.document.file.fullPath];
+        &#x2F;&#x2F; We want to ignore the current state of the editor, so don&#39;t call __getViewState()
+        var viewState = ViewStateManager.getViewState(editor.document.file);
         if (viewState) {
-            if (viewState.selection) {
-                &#x2F;&#x2F; We no longer write out single-selection, but there might be some view state
-                &#x2F;&#x2F; from an older version.
-                editor.setSelection(viewState.selection.start, viewState.selection.end);
-            }
-            if (viewState.selections) {
-                editor.setSelections(viewState.selections);
-            }
-            if (viewState.scrollPos) {
-                editor.setScrollPos(viewState.scrollPos.x, viewState.scrollPos.y);
-            }
+            editor.restoreViewState(viewState);
         }
-    }</code></pre></div><div class="member private">
+    }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
-    
+    Public API
 </span>
     <h4>
         _saveEditorViewState 
@@ -1605,73 +1149,22 @@ some other cases are handled by external code calling <code>resizeEditor()</code
     </h4>
 
     
-    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state</p>
+    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state </p>
 </div>
     
 <dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>- editor to cache data for</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _saveEditorViewState(editor) {
-        _viewStateCache[editor.document.file.fullPath] = {
-            selections: editor.getSelections(),
-            scrollPos: editor.getScrollPos()
-        };
-    }</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        _showCustomViewer 
-        <a class="anchor" href="#-_showCustomViewer" id="-_showCustomViewer"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Append custom view to editor-holder</p>
-</div>
-    
-<dl>
-    <dt>
-        provider
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Object</span>
-    </dt>
-    <dd>custom view provider</dd>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>path to the file displayed in the custom view</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showCustomViewer(provider, fullPath) {
-        &#x2F;&#x2F; Don&#39;t show the same custom view again if file path
-        &#x2F;&#x2F; and view provider are still the same.
-        if (_currentlyViewedPath === fullPath &amp;&amp;
-                _currentViewProvider === provider) {
-            return;
-        }
-        
-        &#x2F;&#x2F; Clean up currently viewing document or custom viewer
-        DocumentManager._clearCurrentDocument();
-        _removeCustomViewer();
-    
-        &#x2F;&#x2F; Hide the not-editor or reset current editor
-        $(&quot;#not-editor&quot;).css(&quot;display&quot;, &quot;none&quot;);
-        _nullifyEditor();
-        
-        _currentViewProvider = provider;
-        
-        &#x2F;&#x2F; add path, dimensions and file size to the view after loading image
-        _$currentCustomViewer = provider.render(fullPath, $(&quot;#editor-holder&quot;));
-        
-        _setCurrentlyViewedPath(fullPath);
+        ViewStateManager.updateViewState(editor);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1684,8 +1177,7 @@ some other cases are handled by external code calling <code>resizeEditor()</code
     </h4>
 
     
-    <div class="description"><p>Make the given document&#39;s editor visible in the UI, hiding whatever was
-visible before. Creates a new editor if none is assigned.</p>
+    <div class="description"><p>Create and/or show the editor for the specified document</p>
 </div>
     
 <dl>
@@ -1694,24 +1186,23 @@ visible before. Creates a new editor if none is assigned.</p>
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">Document</span>
     </dt>
-    <dd></dd>
+    <dd>- document to edit</dd>
+    <dt>
+        pane
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Pane</span>
+    </dt>
+    <dd>- pane to show it in</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showEditor(document) {
-        &#x2F;&#x2F; Hide whatever was visible before
-        if (!_currentEditor) {
-            $(&quot;#not-editor&quot;).css(&quot;display&quot;, &quot;none&quot;);
-        } else {
-            _saveEditorViewState(_currentEditor);
-            _currentEditor.setVisible(false);
-            _destroyEditorIfUnneeded(_currentEditorsDocument);
-        }
-        
+<pre class="code language-javascript"><code class="language-javascript">    function _showEditor(document, pane) {
         &#x2F;&#x2F; Ensure a main editor exists for this document to show in the UI
-        var createdNewEditor = false;
-        if (!document._masterEditor) {
+        var createdNewEditor = false,
+            editor = document._masterEditor;
+        
+        if (!editor) {
             createdNewEditor = true;
 
             &#x2F;&#x2F; Performance (see #4757) Chrome wastes time messing with selection
@@ -1721,51 +1212,24 @@ visible before. Creates a new editor if none is assigned.</p>
             }
             
             &#x2F;&#x2F; Editor doesn&#39;t exist: populate a new Editor with the text
-            _createFullEditorForDocument(document);
+            _createFullEditorForDocument(document, pane);
+        } else if (editor.$el.parent() !== pane.$el) {
+            &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the 
+            &#x2F;&#x2F;  pane (which will switch the view&#39;s container as well)
+            pane.addView(editor);
         }
-        
-        _doShow(document);
-        
+
+        &#x2F;&#x2F; show the view
+        pane.showView(document._masterEditor);
+
+        if (MainViewManager.getActivePaneId() === pane.id) {
+            &#x2F;&#x2F; give it focus
+            document._masterEditor.focus();
+        }
+
         if (createdNewEditor) {
             _restoreEditorViewState(document._masterEditor);
         }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _showNoEditor 
-        <a class="anchor" href="#-_showNoEditor" id="-_showNoEditor"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Hide the currently visible editor and show a placeholder UI in its place</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showNoEditor() {
-        $(&quot;#not-editor&quot;).css(&quot;display&quot;, &quot;&quot;);
-        _nullifyEditor();
-    }
-    
-    function getCurrentlyViewedPath() {
-        return _currentlyViewedPath;
-    }
-    
-    function _clearCurrentlyViewedPath() {
-        _currentlyViewedPath = null;
-        $(exports).triggerHandler(&quot;currentlyViewedFileChange&quot;);
-    }
-    
-    function _setCurrentlyViewedPath(fullPath) {
-        _currentlyViewedPath = fullPath;
-        $(exports).triggerHandler(&quot;currentlyViewedFileChange&quot;);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1803,8 +1267,10 @@ visible before. Creates a new editor if none is assigned.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _toggleInlineWidget(providers, errorMsg) {
         var result = new $.Deferred();
         
-        if (_currentEditor) {
-            var inlineWidget = getFocusedInlineWidget();
+        var currentEditor = getCurrentFullEditor();
+        
+        if (currentEditor) {
+            var inlineWidget = currentEditor.getFocusedInlineWidget();
             
             if (inlineWidget) {
                 &#x2F;&#x2F; an inline widget&#39;s editor has focus, so close it
@@ -1816,7 +1282,7 @@ visible before. Creates a new editor if none is assigned.</p>
                 });
             } else {
                 &#x2F;&#x2F; main editor has focus, so create an inline editor
-                _openInlineWidget(_currentEditor, providers, errorMsg).done(function () {
+                _openInlineWidget(currentEditor, providers, errorMsg).done(function () {
                     result.resolve(true);
                 }).fail(function () {
                     result.reject();
@@ -1828,6 +1294,37 @@ visible before. Creates a new editor if none is assigned.</p>
         }
         
         return result.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        canOpenPath 
+        <a class="anchor" href="#-canOpenPath" id="-canOpenPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Determines if the file can be opened in an editor</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>- file to be opened</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if the file can be opened in an editor, false if not</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function canOpenPath(fullPath) {
+        return !LanguageManager.getLanguageForPath(fullPath).isBinary();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1959,9 +1456,8 @@ removed. For example, after a dialog with editable text is closed.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function focusEditor() {
-        if (_lastFocusedEditor) {
-            _lastFocusedEditor.focus();
-        }
+        DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.focusActivePane() instead of EditorManager.focusEditor().&quot;, true);
+        MainViewManager.focusActivePane();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -2001,51 +1497,61 @@ focus. Returns null if no editors are active.</p>
     </h4>
 
     
-    <div class="description"><p>Returns the visible full-size Editor corresponding to DocumentManager.getCurrentDocument()</p>
+    <div class="description"><p>Retrieves the visible full-size Editor for the currently opened file in the ACTIVE_PANE</p>
 </div>
     
 <dl>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">?Editor</span>
+</dt>
+    <dd>editor of the current view or null</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCurrentFullEditor() {
-        &#x2F;&#x2F; This *should* always be equivalent to DocumentManager.getCurrentDocument()._masterEditor
-        return _currentEditor;
-    }</code></pre></div><div class="member public">
+        var currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE),
+            doc = currentPath &amp;&amp; DocumentManager.getOpenDocumentForPath(currentPath);
+        return doc &amp;&amp; doc._masterEditor;
+    }</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
-        getCustomViewerForPath 
-        <a class="anchor" href="#-getCustomViewerForPath" id="-getCustomViewerForPath"><span class="icon-link"></span></a>
+            <span class="label label-deprecated label-inverse">deprecated</span>
+        getCurrentlyViewedPath 
+        <a class="anchor" href="#-getCurrentlyViewedPath" id="-getCurrentlyViewedPath"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Return the provider of a custom viewer for the given path if one exists.
-Otherwise, return null.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>- file path to be checked for a custom viewer</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?Object</span>
+    <dt>Returns: <span class="label label-info">string=</span>
 </dt>
-    <dd></dd>
+    <dd>path of the file currently viewed in the active, full sized editor or null when there is no active editor</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getCustomViewerForPath(fullPath) {
-        var lang = LanguageManager.getLanguageForPath(fullPath);
+<pre class="code language-javascript"><code class="language-javascript">    function getCurrentlyViewedPath() {
+        DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.getCurrentlyViewedFile() instead of EditorManager.getCurrentlyViewedPath().&quot;, true);
         
-        return _customViewerRegistry[lang.getId()];
+        &#x2F;&#x2F; We only want to return a path of a document object
+        &#x2F;&#x2F; not other things like images, etc...
+        var currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE),
+            doc;
+        
+        if (currentPath) {
+            doc = DocumentManager.getOpenDocumentForPath(currentPath);
+        }
+        
+        if (doc) {
+            return currentPath;
+        }
+        
+        return null;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -2075,7 +1581,8 @@ is open).</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getFocusedEditor() {
-        if (_currentEditor) {
+        var currentEditor = getCurrentFullEditor();
+        if (currentEditor) {
             
             &#x2F;&#x2F; See if any inlines have focus
             var focusedInline = _getFocusedInlineEditor();
@@ -2084,8 +1591,8 @@ is open).</p>
             }
 
             &#x2F;&#x2F; otherwise, see if full-sized editor has focus
-            if (_currentEditor.hasFocus()) {
-                return _currentEditor;
+            if (currentEditor.hasFocus()) {
+                return currentEditor;
             }
         }
         
@@ -2114,17 +1621,11 @@ is open).</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getFocusedInlineWidget() {
-        var result = null;
-        
-        if (_currentEditor) {
-            _currentEditor.getInlineWidgets().forEach(function (widget) {
-                if (widget.hasFocus()) {
-                    result = widget;
-                }
-            });
+        var currentEditor = getCurrentFullEditor();
+        if (currentEditor) {
+            return currentEditor.getFocusedInlineWidget();
         }
-        
-        return result;
+        return null;
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -2172,100 +1673,64 @@ is open).</p>
     Public API
 </span>
     <h4>
-        notifyPathDeleted 
-        <a class="anchor" href="#-notifyPathDeleted" id="-notifyPathDeleted"><span class="icon-link"></span></a>
+        openDocument 
+        <a class="anchor" href="#-openDocument" id="-openDocument"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Clears custom viewer for a file with a given path and displays 
-an alternate file or the no editor view. 
-If no param fullpath is passed an alternate file will be opened 
-regardless of the current value of _currentlyViewedPath.
-If param fullpath is provided then only if fullpath matches 
-the currently viewed file an alternate file will be opened.</p>
+    <div class="description"><p>Opens the specified document in the given pane</p>
 </div>
     
 <dl>
     <dt>
-        fullPath
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">string</span>
+        doc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Document</span>
     </dt>
-    <dd>- file path of deleted file.</dd>
+    <dd>- the document to open</dd>
+    <dt>
+        pane
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Pane</span>
+    </dt>
+    <dd>- the pane to open the document in</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if the file can be opened, false if not</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function notifyPathDeleted(fullPath) {
-        function openAlternateFile() {
-            var fileToOpen = DocumentManager.getNextPrevFile(1);
-            if (fileToOpen) {
-                CommandManager.execute(Commands.FILE_OPEN, {fullPath: fileToOpen.fullPath});
-            } else {
-                _removeCustomViewer();
-                _showNoEditor();
-                _setCurrentlyViewedPath();
-            }
+<pre class="code language-javascript"><code class="language-javascript">    function openDocument(doc, pane) {
+        var perfTimerName = PerfUtils.markStart(&quot;EditorManager.openDocument():\t&quot; + (!doc || doc.file.fullPath));
+
+        if (doc &amp;&amp; pane) {
+            _showEditor(doc, pane);
         }
-        if (!fullPath || _currentlyViewedPath === fullPath) {
-            openAlternateFile();
-        }
-    }</code></pre></div><div class="member public">
+
+        PerfUtils.addMeasurement(perfTimerName);
+    }</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
+            <span class="label label-deprecated label-inverse">deprecated</span>
         registerCustomViewer 
         <a class="anchor" href="#-registerCustomViewer" id="-registerCustomViewer"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Registers a new custom viewer provider. To create an extension 
-that enables Brackets to view files that cannot be shown as<br>text such as binary files, use this method to register a CustomViewer.</p>
-<p>A CustomViewer, such as ImageViewer in Brackets core needs to 
-implement and export two methods: </p>
-<ul>
-<li>render
-  @param {!string} fullPath Path to the image file
-  @param {!jQueryObject} $editorHolder The DOM element to append the view to.     </li>
-<li>onRemove
-signs off listeners and performs any required clean up when editor manager closes
-the custom viewer</li>
-</ul>
-<p>By registering a CustomViewer with EditorManager  Brackets is
-enabled to view files for one or more given file extensions. 
-The first argument defines a so called languageId which bundles
-file extensions to be handled by the custom viewer, see more
-in LanguageManager JSDocs.
-The second argument is an instance of the custom viewer that is ready to display 
-files.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>
-        languageId,
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">String</span>
-    </dt>
-    <dd>i.e. string such as image, audio, etc to identify a language known to LanguageManager </dd>
-    <dt>
-        provider
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Object</span>
-    </dt>
-    <dd>custom view provider instance</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function registerCustomViewer(langId, provider) {
-        if (!_customViewerRegistry[langId]) {
-            _customViewerRegistry[langId] = provider;
-        } else {
-            console.error(&quot;There already is a custom viewer registered for language id  \&quot;&quot; + langId + &quot;\&quot;&quot;);
-        }
+<pre class="code language-javascript"><code class="language-javascript">    function registerCustomViewer() {
+        throw new Error(&quot;EditorManager.registerCustomViewer() has been removed.&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -2373,21 +1838,20 @@ the current editor and cursor location. </p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function registerJumpToDefProvider(provider) {
         _jumpToDefProviders.push(provider);
-    }</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
+            <span class="label label-deprecated label-inverse">deprecated</span>
         resizeEditor 
         <a class="anchor" href="#-resizeEditor" id="-resizeEditor"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Must be called whenever the size/visibility of editor area siblings is changed without going through
-PanelManager or Resizer. Resizable panels created via PanelManager do not require this manual call.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
 </dl><dl>
@@ -2395,92 +1859,30 @@ PanelManager or Resizer. Resizable panels created via PanelManager do not requir
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function resizeEditor() {
-        if (!_editorHolder) {
-            return;  &#x2F;&#x2F; still too early during init
-        }
-        &#x2F;&#x2F; PanelManager computes the correct editor-holder size &amp; calls us back with it, via _onEditorAreaResize()
-        PanelManager._notifyLayoutChange();
-    }</code></pre></div><div class="member public">
+        DeprecationWarning.deprecationWarning(&quot;Use WorkspaceManager.recomputeLayout() instead of EditorManager.resizeEditor().&quot;, true);
+        WorkspaceManager.recomputeLayout();
+    }</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
+            <span class="label label-deprecated label-inverse">deprecated</span>
         setEditorHolder 
         <a class="anchor" href="#-setEditorHolder" id="-setEditorHolder"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Note: there are several paths that can lead to an editor getting destroyed</p>
-<ul>
-<li>file was in working set, but not in current editor; then closed (via working set &quot;X&quot; button)
-  --&gt; handled by _onWorkingSetRemove()</li>
-<li>file was in current editor, but not in working set; then navigated away from
-  --&gt; handled by _onCurrentDocumentChange()</li>
-<li>file was in current editor, but not in working set; then closed (via File &gt; Close) (and thus
-implicitly navigated away from)
-  --&gt; handled by _onCurrentDocumentChange()</li>
-<li>file was in current editor AND in working set; then closed (via File &gt; Close OR working set
-&quot;X&quot; button) (and thus implicitly navigated away from)
-  --&gt; handled by _onWorkingSetRemove() currently, but could be _onCurrentDocumentChange()
-  just as easily (depends on the order of events coming from DocumentManager)
-Designates the DOM node that will contain the currently active editor instance. EditorManager
-will own the content of this DOM node.</li>
-</ul>
-</div>
+    <div class="description"></div>
     
 <dl>
-    <dt>
-        holder
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQueryObject</span>
-    </dt>
-    <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function setEditorHolder(holder) {
-        if (_currentEditor) {
-            console.error(&quot;Cannot change editor area after an editor has already been created!&quot;);
-            return;
-        }
-        
-        _editorHolder = holder;
-        
-        resizeEditor();  &#x2F;&#x2F; if no files open at startup, we won&#39;t get called back later to resize the &quot;no-editor&quot; placeholder
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        showingCustomViewerForPath 
-        <a class="anchor" href="#-showingCustomViewerForPath" id="-showingCustomViewerForPath"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Check whether the given file is currently open in a custom viewer.</p>
-</div>
-    
-<dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>file path to check</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
-    <dd>true if we have a custom viewer showing and the given file path matches the one in the custom viewer, false otherwise.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function showingCustomViewerForPath(fullPath) {
-        return (_currentViewProvider &amp;&amp; _currentlyViewedPath === fullPath);
+<pre class="code language-javascript"><code class="language-javascript">    function setEditorHolder() {
+        throw new Error(&quot;EditorManager.setEditorHolder() has been removed.&quot;);
     }</code></pre></div>
 </section>
 

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -375,11 +383,11 @@
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -511,7 +519,7 @@ will do the replacement there, otherwise does it directly on disk.</p>
         options = options || {};
         &#x2F;&#x2F; If we&#39;re forcing files open, or if the document is in the working set but not actually open
         &#x2F;&#x2F; yet, we want to open the file and do the replacement in memory.
-        if (!doc &amp;&amp; (options.forceFilesOpen || DocumentManager.findInWorkingSet(fullPath) !== -1)) {
+        if (!doc &amp;&amp; (options.forceFilesOpen || MainViewManager.findInWorkingSet(MainViewManager.ALL_PANES, fullPath) !== -1)) {
             return DocumentManager.getDocumentForPath(fullPath).then(function (newDoc) {
                 return _doReplaceInDocument(newDoc, matchInfo, replaceText, options.isRegexp);
             });
@@ -692,15 +700,7 @@ will do the replacement there, otherwise does it directly on disk.</p>
         } else {
             return Strings.FIND_IN_FILES_NO_SCOPE;
         }
-    }
-
-    exports.parseDollars                    = parseDollars;
-    exports.getInitialQueryFromSelection    = getInitialQueryFromSelection;
-    exports.hasCheckedMatches               = hasCheckedMatches;
-    exports.performReplacements             = performReplacements;
-    exports.labelForScope                   = labelForScope;
-    exports.ERROR_FILE_CHANGED              = &quot;fileChanged&quot;;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -760,6 +760,72 @@ extracted from the original text and so might be missing some context that the r
         replaceWith = replaceWith.replace(&#x2F;\$\$&#x2F;g, &quot;$&quot;);
         return replaceWith;
     }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        parseQueryInfo 
+        <a class="anchor" href="#-parseQueryInfo" id="-parseQueryInfo"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Parses the given query into a regexp, and returns whether it was valid or not.</p>
+</div>
+    
+<dl>
+    <dt>
+        queryInfo
+        <span class="label label-info">{query: string,caseSensitive: boolean,isRegexp: boolean}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{queryExpr: RegExp,valid: boolean,empty: boolean,error: string}</span>
+</dt>
+    <dd>queryExpr - the regexp representing the query valid - set to true if query is a nonempty string or a valid regexp. empty - set to true if query was empty. error - set to an error string if valid is false and query is nonempty.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function parseQueryInfo(queryInfo) {
+        var queryExpr;
+
+        &#x2F;&#x2F; TODO: only major difference between this one and the one in FindReplace is that
+        &#x2F;&#x2F; this always returns a regexp even for simple strings. Reconcile.
+        if (!queryInfo || !queryInfo.query) {
+            return {empty: true};
+        }
+
+        &#x2F;&#x2F; For now, treat all matches as multiline (i.e. ^&#x2F;$ match on every line, not the whole
+        &#x2F;&#x2F; document). This is consistent with how single-file find works. Eventually we should add
+        &#x2F;&#x2F; an option for this.
+        var flags = &quot;gm&quot;;
+        if (!queryInfo.isCaseSensitive) {
+            flags += &quot;i&quot;;
+        }
+
+        &#x2F;&#x2F; Is it a (non-blank) regex?
+        if (queryInfo.isRegexp) {
+            try {
+                queryExpr = new RegExp(queryInfo.query, flags);
+            } catch (e) {
+                return {valid: false, error: e.message};
+            }
+        } else {
+            &#x2F;&#x2F; Query is a plain string. Turn it into a regexp
+            queryExpr = new RegExp(StringUtils.regexEscape(queryInfo.query), flags);
+        }
+        return {valid: true, queryExpr: queryExpr};
+    }
+
+    exports.parseDollars                    = parseDollars;
+    exports.getInitialQueryFromSelection    = getInitialQueryFromSelection;
+    exports.hasCheckedMatches               = hasCheckedMatches;
+    exports.performReplacements             = performReplacements;
+    exports.labelForScope                   = labelForScope;
+    exports.parseQueryInfo                  = parseQueryInfo;
+    exports.ERROR_FILE_CHANGED              = &quot;fileChanged&quot;;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -830,7 +896,7 @@ the time performReplacements() is called and the time the replacement actually h
                         var newDoc = DocumentManager.getOpenDocumentForPath(firstPath);
                         &#x2F;&#x2F; newDoc might be null if the replacement failed.
                         if (newDoc) {
-                            DocumentManager.setCurrentDocument(newDoc);
+                            MainViewManager._edit(MainViewManager.ACTIVE_PANE, newDoc);
                         }
                     }
                 }

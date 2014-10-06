@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -388,7 +396,6 @@ with new data from the registry.</li>
         <li><a href="..&#x2F;../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
         <li><a href="..&#x2F;../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
         <li><a href="..&#x2F;../modules/extensibility/node/node_modules/semver/semver.browser.html">semver.browser</a></li>
@@ -684,7 +691,45 @@ This function is designed to work without the necessity to download extension re
 
             return arr;
         }, []);
-    }</code></pre></div><div class="member public">
+    }
+
+    &#x2F;&#x2F; Listen to extension load and loadFailed events
+    $(ExtensionLoader)
+        .on(&quot;load&quot;, _handleExtensionLoad)
+        .on(&quot;loadFailed&quot;, _handleExtensionLoad);
+
+    &#x2F;&#x2F; Public exports
+    exports.downloadRegistry        = downloadRegistry;
+    exports.getCompatibilityInfo    = getCompatibilityInfo;
+    exports.getExtensionURL         = getExtensionURL;
+    exports.remove                  = remove;
+    exports.update                  = update;
+    exports.extensions              = extensions;
+    exports.cleanupUpdates          = cleanupUpdates;
+    exports.markForRemoval          = markForRemoval;
+    exports.isMarkedForRemoval      = isMarkedForRemoval;
+    exports.unmarkAllForRemoval     = unmarkAllForRemoval;
+    exports.hasExtensionsToRemove   = hasExtensionsToRemove;
+    exports.updateFromDownload      = updateFromDownload;
+    exports.removeUpdate            = removeUpdate;
+    exports.isMarkedForUpdate       = isMarkedForUpdate;
+    exports.hasExtensionsToUpdate   = hasExtensionsToUpdate;
+    exports.removeMarkedExtensions  = removeMarkedExtensions;
+    exports.updateExtensions        = updateExtensions;
+    exports.getAvailableUpdates     = getAvailableUpdates;
+    exports.cleanAvailableUpdates   = cleanAvailableUpdates;
+    exports.ENABLED       = ENABLED;
+    exports.START_FAILED  = START_FAILED;
+
+    exports.LOCATION_DEFAULT  = LOCATION_DEFAULT;
+    exports.LOCATION_DEV      = LOCATION_DEV;
+    exports.LOCATION_USER     = LOCATION_USER;
+    exports.LOCATION_UNKNOWN  = LOCATION_UNKNOWN;
+
+    &#x2F;&#x2F; For unit testing only
+    exports._reset          = _reset;
+    exports._setExtensions  = _setExtensions;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -1314,97 +1359,6 @@ downloaded package file.</p>
 
         $(exports).triggerHandler(&quot;registryUpdate&quot;, [id]);
     }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        toggleDescription 
-        <a class="anchor" href="#-toggleDescription" id="-toggleDescription"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Toggles between truncated and full length extension descriptions</p>
-</div>
-    
-<dl>
-    <dt>
-        id
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The id of the extension clicked</dd>
-    <dt>
-        $element
-        <span class="label label-info">JQueryElement</span>
-    </dt>
-    <dd>The DOM element of the extension clicked</dd>
-    <dt>
-        showFull
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd>true if full length description should be shown, false for shorten version.</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function toggleDescription(id, $element, showFull) {
-        var description, linkTitle,
-            entry = extensions[id];
-
-        &#x2F;&#x2F; Toggle between appropriate descriptions and link title,
-        &#x2F;&#x2F; depending on if extension is installed or not
-        if (showFull) {
-            description = entry.installInfo ? entry.installInfo.metadata.description : entry.registryInfo.metadata.description;
-            linkTitle = Strings.VIEW_TRUNCATED_DESCRIPTION;
-        } else {
-            description = entry.installInfo ? entry.installInfo.metadata.shortdescription : entry.registryInfo.metadata.shortdescription;
-            linkTitle = Strings.VIEW_COMPLETE_DESCRIPTION;
-        }
-
-        $element.attr(&quot;data-toggle-desc&quot;, showFull ? &quot;trunc-desc&quot; : &quot;expand-desc&quot;)
-                .attr(&quot;title&quot;, linkTitle)
-                .prev(&quot;.ext-full-description&quot;).html(description);
-    }
-
-    &#x2F;&#x2F; Listen to extension load and loadFailed events
-    $(ExtensionLoader)
-        .on(&quot;load&quot;, _handleExtensionLoad)
-        .on(&quot;loadFailed&quot;, _handleExtensionLoad);
-
-    &#x2F;&#x2F; Public exports
-    exports.downloadRegistry        = downloadRegistry;
-    exports.getCompatibilityInfo    = getCompatibilityInfo;
-    exports.getExtensionURL         = getExtensionURL;
-    exports.remove                  = remove;
-    exports.update                  = update;
-    exports.extensions              = extensions;
-    exports.cleanupUpdates          = cleanupUpdates;
-    exports.markForRemoval          = markForRemoval;
-    exports.isMarkedForRemoval      = isMarkedForRemoval;
-    exports.unmarkAllForRemoval     = unmarkAllForRemoval;
-    exports.hasExtensionsToRemove   = hasExtensionsToRemove;
-    exports.updateFromDownload      = updateFromDownload;
-    exports.removeUpdate            = removeUpdate;
-    exports.isMarkedForUpdate       = isMarkedForUpdate;
-    exports.hasExtensionsToUpdate   = hasExtensionsToUpdate;
-    exports.removeMarkedExtensions  = removeMarkedExtensions;
-    exports.updateExtensions        = updateExtensions;
-    exports.getAvailableUpdates     = getAvailableUpdates;
-    exports.cleanAvailableUpdates   = cleanAvailableUpdates;
-    exports.toggleDescription       = toggleDescription;
-    exports.ENABLED       = ENABLED;
-    exports.START_FAILED  = START_FAILED;
-
-    exports.LOCATION_DEFAULT  = LOCATION_DEFAULT;
-    exports.LOCATION_DEV      = LOCATION_DEV;
-    exports.LOCATION_USER     = LOCATION_USER;
-    exports.LOCATION_UNKNOWN  = LOCATION_UNKNOWN;
-
-    &#x2F;&#x2F; For unit testing only
-    exports._reset          = _reset;
-    exports._setExtensions  = _setExtensions;
-});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

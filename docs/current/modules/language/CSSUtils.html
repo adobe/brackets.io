@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -496,7 +504,7 @@ appends those new objects to the given &#39;resultSelectors&#39; Array.</p>
     
     <div class="description"><p>Finds all instances of the specified selector in &quot;text&quot;.
 Returns an Array of Objects with start and end properties.</p>
-<p>For Sprint 4, we only support simple selectors. This function will need to change
+<p>For now, we only support simple selectors. This function will need to change
 dramatically to support full selectors.</p>
 <p>FUTURE: (JRB) It would be nice to eventually use the browser/jquery to do the selector evaluation.
 One way to do this would be to take the user&#39;s HTML, add a special attribute to every tag with a UID,
@@ -534,12 +542,10 @@ we know the selector applies.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _findAllMatchingSelectorsInText(text, selector, mode) {
         var allSelectors = extractAllSelectors(text, mode);
         var result = [];
-        var i;
         
-        &#x2F;&#x2F; For sprint 4 we only match the rightmost simple selector, and ignore 
+        &#x2F;&#x2F; For now, we only match the rightmost simple selector, and ignore
         &#x2F;&#x2F; attribute selectors and pseudo selectors
         var classOrIdSelector = selector[0] === &quot;.&quot; || selector[0] === &quot;#&quot;;
-        var prefix = &quot;&quot;;
         
         &#x2F;&#x2F; Escape initial &quot;.&quot; in selector, if present.
         if (selector[0] === &quot;.&quot;) {
@@ -553,11 +559,17 @@ we know the selector applies.</p>
         
         var re = new RegExp(selector + &quot;(\\[[^\\]]*\\]|:{1,2}[\\w-()]+|\\.[\\w-]+|#[\\w-]+)*\\s*$&quot;, classOrIdSelector ? &quot;&quot; : &quot;i&quot;);
         allSelectors.forEach(function (entry) {
-            if (entry.selector.search(re) !== -1) {
+            var actualSelector = entry.selector;
+            if (entry.selector.indexOf(&quot;&amp;&quot;) !== -1 &amp;&amp; entry.parentSelectors) {
+                var selectorArray = entry.parentSelectors.split(&quot; &#x2F; &quot;);
+                selectorArray.push(entry.selector);
+                actualSelector = _getSelectorInFinalCSSForm(selectorArray);
+            }
+            if (actualSelector.search(re) !== -1) {
                 result.push(entry);
             } else if (!classOrIdSelector) {
                 &#x2F;&#x2F; Special case for tag selectors - match &quot;*&quot; as the rightmost character
-                if (&#x2F;\*\s*$&#x2F;.test(entry.selector)) {
+                if (&#x2F;\*\s*$&#x2F;.test(actualSelector)) {
                     result.push(entry);
                 }
             }
@@ -687,16 +699,13 @@ we know the selector applies.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getImportUrlInfo(ctx, editor) {
-        var propNamePos = $.extend({}, ctx.pos),
-            backwardPos = $.extend({}, ctx.pos),
+        var backwardPos = $.extend({}, ctx.pos),
             forwardPos  = $.extend({}, ctx.pos),
             backwardCtx,
             forwardCtx,
             index = 0,
             propValues = [],
-            offset = TokenUtils.offsetInToken(ctx),
-            testPos = {ch: ctx.pos.ch + 1, line: ctx.pos.line},
-            testToken = editor._codeMirror.getTokenAt(testPos, true);
+            offset = TokenUtils.offsetInToken(ctx);
 
         &#x2F;&#x2F; Currently only support url. May be null if starting to type
         if (ctx.token.type &amp;&amp; ctx.token.type !== &quot;string&quot;) {
@@ -863,6 +872,10 @@ we know the selector applies.</p>
                     testToken.type === &quot;tag&quot;) {
                 propName = testToken.string;
                 offset = 0;
+            } else if (testToken.type === &quot;meta&quot; || testToken.string === &quot;-&quot;) {
+                ctx.pos = testPos;
+                ctx.token = testToken;
+                return _getPropNameInfo(ctx);
             }
         }
 
@@ -1098,6 +1111,62 @@ we know the selector applies.</p>
     
 </span>
     <h4>
+        _getSelectorInFinalCSSForm 
+        <a class="anchor" href="#-_getSelectorInFinalCSSForm" id="-_getSelectorInFinalCSSForm"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Converts the given selector array into the actual CSS selectors similar to 
+those generated by a CSS preprocessor.</p>
+</div>
+    
+<dl>
+    <dt>
+        selectorArray
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getSelectorInFinalCSSForm(selectorArray) {
+        var finalSelectorArray = [&quot;&quot;],
+            parentSelectorArray = [],
+            group = [];
+        _.forEach(selectorArray, function (selector) {
+            selector = _stripAtRules(selector);
+            group = selector.split(&quot;,&quot;);
+            parentSelectorArray = [];
+            _.forEach(group, function (cs) {
+                var ampersandIndex = cs.indexOf(&quot;&amp;&quot;);
+                _.forEach(finalSelectorArray, function (ps) {
+                    if (ampersandIndex === -1) {
+                        cs = _stripAtRules(cs);
+                        if (ps.length &amp;&amp; cs.length) {
+                            ps += &quot; &quot;;
+                        }
+                        ps += cs;
+                    } else {
+                        &#x2F;&#x2F; Replace all instances of &amp; with regexp
+                        ps = _stripAtRules(cs.replace(&#x2F;&amp;&#x2F;g, ps));
+                    }
+                    parentSelectorArray.push(ps);
+                });
+            });
+            finalSelectorArray = parentSelectorArray;
+        });
+        return finalSelectorArray.join(&quot;, &quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _getSucceedingPropValues 
         <a class="anchor" href="#-_getSucceedingPropValues" id="-_getSucceedingPropValues"><span class="icon-link"></span></a>
     </h4>
@@ -1125,7 +1194,6 @@ we know the selector applies.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getSucceedingPropValues(ctx, currentValue) {
         var lastValue = currentValue,
-            curValue,
             propValues = [];
         
         while (ctx.token.string !== &quot;;&quot; &amp;&amp; ctx.token.string !== &quot;}&quot; &amp;&amp; TokenUtils.moveNextToken(ctx)) {
@@ -1391,6 +1459,41 @@ we know the selector applies.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeStrings(content) {
         return content.replace(&#x2F;[^\\]\&quot;(.*)[^\\]\&quot;|[^\\]\&#39;(.*)[^\\]\&#39;+&#x2F;g, &quot;&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _stripAtRules 
+        <a class="anchor" href="#-_stripAtRules" id="-_stripAtRules"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Helper function to remove whitespaces before and after a selector
+Returns trimmed selector if it is not an at-rule, or null if it starts with @.</p>
+</div>
+    
+<dl>
+    <dt>
+        selector
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _stripAtRules(selector) {
+        selector = selector.trim();
+        if (selector.indexOf(&quot;@&quot;) === 0) {
+            return &quot;&quot;;
+        }
+        return selector;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1841,17 +1944,18 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
         }
 
         function _maybeProperty() {
-            return (state.state !== &quot;top&quot; &amp;&amp; state.state !== &quot;block&quot; &amp;&amp;
+            return (&#x2F;^-(moz|ms|o|webkit)-$&#x2F;.test(token) ||
+                    (state.state !== &quot;top&quot; &amp;&amp; state.state !== &quot;block&quot; &amp;&amp;
                     &#x2F;&#x2F; Has a semicolon as in &quot;rgb(0,0,0);&quot;, but not one of those after a LESS 
                     &#x2F;&#x2F; mixin parameter variable as in &quot;.size(@width; @height)&quot;
-                    stream.string.indexOf(&quot;;&quot;) !== -1 &amp;&amp; !&#x2F;\([^)]+;&#x2F;.test(stream.string));
+                    stream.string.indexOf(&quot;;&quot;) !== -1 &amp;&amp; !&#x2F;\([^)]+;&#x2F;.test(stream.string)));
         }
 
         function _skipProperty() {
             var prevToken = &quot;&quot;;
             while (token !== &quot;;&quot;) {
                 &#x2F;&#x2F; Skip tokens until the closing brace if we find an interpolated variable.
-                if (&#x2F;#\{$&#x2F;.test(token) || (token === &quot;{&quot; &amp;&amp; &#x2F;@$&#x2F;.test(prevToken))) {
+                if (&#x2F;#\{$&#x2F;.test(token) || (token === &quot;{&quot; &amp;&amp; &#x2F;[#@]$&#x2F;.test(prevToken))) {
                     _skipToClosingBracket(&quot;{&quot;);
                     if (token === &quot;}&quot;) {
                         _nextToken();   &#x2F;&#x2F; Skip the closing brace
@@ -1863,13 +1967,14 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                 &#x2F;&#x2F; If there is a &#39;{&#39; or &#39;}&#39; before the &#39;;&#39;,
                 &#x2F;&#x2F; then stop skipping.
                 if (token === &quot;{&quot; || token === &quot;}&quot;) {
-                    return;
+                    return false;   &#x2F;&#x2F; can&#39;t tell if the entire property is skipped
                 }
                 prevToken = token;
                 if (!_nextTokenSkippingComments()) {
                     break;
                 }
             }
+            return true;    &#x2F;&#x2F; skip the entire property
         }
         
         function _getParentSelectors() {
@@ -1890,7 +1995,8 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
             
             &#x2F;&#x2F; Everything until the next &#39;,&#39; or &#39;{&#39; is part of the current selector
             while ((token !== &quot;,&quot; &amp;&amp; token !== &quot;{&quot;) ||
-                    (token === &quot;{&quot; &amp;&amp; &#x2F;@$&#x2F;.test(currentSelector))) {
+                    (token === &quot;{&quot; &amp;&amp; &#x2F;[#@]$&#x2F;.test(currentSelector)) ||
+                    (token === &quot;,&quot; &amp;&amp; !_hasNonWhitespace(currentSelector))) {
                 if (token === &quot;{&quot;) {
                     &#x2F;&#x2F; Append the interpolated variable to selector
                     currentSelector += _skipToClosingBracket(&quot;{&quot;);
@@ -1911,7 +2017,14 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     &#x2F;&#x2F; Collect everything inside the parentheses as a whole chunk so that
                     &#x2F;&#x2F; commas inside the parentheses won&#39;t be identified as selector separators
                     &#x2F;&#x2F; by while loop.
-                    currentSelector += _skipToClosingBracket(&quot;(&quot;);
+                    if (_hasNonWhitespace(currentSelector)) {
+                        currentSelector += _skipToClosingBracket(&quot;(&quot;);
+                    } else {
+                        &#x2F;&#x2F; Nothing in currentSelector yet. Skip to the closing parenthesis
+                        &#x2F;&#x2F; without collecting the selector since a selector cannot start with 
+                        &#x2F;&#x2F; an opening parenthesis.
+                        _skipToClosingBracket(&quot;(&quot;);
+                    }
                 } else if (_hasNonWhitespace(token) || _hasNonWhitespace(currentSelector)) {
                     currentSelector += token;
                 }
@@ -2014,7 +2127,7 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     if (sgLine === declListStartLine) {
                         endChar = declListStartChar;
                     }
-                    selectorGroup += lines[sgLine].substring(startChar, endChar);
+                    selectorGroup += lines[sgLine].substring(startChar, endChar).trim();
                 }
                 selectorGroup = selectorGroup.trim();
             }
@@ -2113,13 +2226,13 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                 &#x2F;&#x2F; Skip everything until the opening &#39;{&#39;
                 while (token !== &quot;{&quot;) {
                     if (!_nextTokenSkippingComments()) {
-                        return false; &#x2F;&#x2F; eof
+                        return; &#x2F;&#x2F; eof
                     }
                 }
 
                 &#x2F;&#x2F; skip past &#39;{&#39;, to next non-ws token
                 if (!_nextTokenSkippingWhitespace()) {
-                    return false; &#x2F;&#x2F; eof
+                    return; &#x2F;&#x2F; eof
                 }
 
                 if (currentLevel &lt;= level) {
@@ -2135,30 +2248,25 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     currentLevel--;
                 }
 
-            } else if (&#x2F;@(charset|import|namespace|include|extend|warn)&#x2F;i.test(token) ||
-                            !&#x2F;\{&#x2F;.test(stream.string)) {
-                
+            } else {
                 &#x2F;&#x2F; This code handles @rules in this format:
                 &#x2F;&#x2F;   @rule ... ;
                 &#x2F;&#x2F; Or any less variable that starts with @var ... ;
                 &#x2F;&#x2F; Skip everything until the next &#39;;&#39;
                 while (token !== &quot;;&quot;) {
+                    &#x2F;&#x2F; This code handle @rules that use this format:
+                    &#x2F;&#x2F;    @rule ... { ... }
+                    &#x2F;&#x2F; such as @page, @keyframes (also -webkit-keyframes, etc.), and @font-face.
+                    &#x2F;&#x2F; Skip everything including nested braces until the next matching &#39;}&#39;
+                    if (token === &quot;{&quot;) {
+                        _skipToClosingBracket(&quot;{&quot;);
+                        return;
+                    }
                     if (!_nextTokenSkippingComments()) {
-                        return false; &#x2F;&#x2F; eof
+                        return; &#x2F;&#x2F; eof
                     }
                 }
-                
-            } else {
-                &#x2F;&#x2F; This code handle @rules that use this format:
-                &#x2F;&#x2F;    @rule ... { ... }
-                &#x2F;&#x2F; such as @page, @keyframes (also -webkit-keyframes, etc.), and @font-face.
-                &#x2F;&#x2F; Skip everything including nested braces until the next matching &#39;}&#39;
-                _skipToClosingBracket(&quot;{&quot;);
-                if (token === &quot;}&quot;) {
-                    return false;
-                }
             }
-            return true;
         }
 
         &#x2F;&#x2F; parse a style rule
@@ -2172,17 +2280,16 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
         }
         
         _parseRuleList = function (escapeToken, level) {
-            var skipNext = true;
             while ((!escapeToken) || token !== escapeToken) {
                 if (_isVariableInterpolatedProperty()) {
-                    _skipProperty();
+                    if (!_skipProperty()) {
+                        &#x2F;&#x2F; We found a &quot;{&quot; or &quot;}&quot; while skipping a property. Return false to handle the 
+                        &#x2F;&#x2F; opening or closing of a block properly.
+                        return false;
+                    }
                 } else if (_isStartAtRule()) {
                     &#x2F;&#x2F; @rule
-                    if (!_parseAtRule(level) &amp;&amp; level &gt; 0) {
-                        skipNext = false;
-                    } else {
-                        skipNext = true;
-                    }
+                    _parseAtRule(level);
                 } else if (_isStartComment()) {
                     &#x2F;&#x2F; comment - make this part of style rule
                     if (includeCommentInNextRule()) {
@@ -2192,15 +2299,12 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     _parseComment();
                 } else if (_maybeProperty()) {
                     &#x2F;&#x2F; Skip the property.
-                    _skipProperty();
-                    &#x2F;&#x2F; If we find a &quot;{&quot; or &quot;}&quot; while skipping a property, then don&#39;t skip it in
-                    &#x2F;&#x2F; this while loop. Otherwise, we will get into an infinite loop in parsing
-                    &#x2F;&#x2F; since we miss to handle the opening or closing of a block properly.
-                    if (token === &quot;{&quot; || token === &quot;}&quot;) {
+                    if (!_skipProperty()) {
+                        &#x2F;&#x2F; We found a &quot;{&quot; or &quot;}&quot; while skipping a property. Return false to handle the 
+                        &#x2F;&#x2F; opening or closing of a block properly.
                         return false;
                     }
                 } else {
-                    skipNext = true;    &#x2F;&#x2F; reset skipNext
                     &#x2F;&#x2F; Otherwise, it&#39;s style rule
                     if (!_parseRule(level === undefined ? 0 : level) &amp;&amp; level &gt; 0) {
                         return false;
@@ -2214,7 +2318,7 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     ruleStartLine = -1;
                 }
                 
-                if (skipNext &amp;&amp; !_nextTokenSkippingWhitespace()) {
+                if (!_nextTokenSkippingWhitespace()) {
                     break;
                 }
             }
@@ -2244,7 +2348,7 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
 
     
     <div class="description"><p>Return all rules matching the specified selector.
-For Sprint 4, we only look at the rightmost simple selector. For example, searching for &quot;.foo&quot; will 
+For now, we only look at the rightmost simple selector. For example, searching for &quot;.foo&quot; will
 match these rules:
  .foo {}
  div .foo {}
@@ -2338,45 +2442,10 @@ is not within a style rule.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function findSelectorAtDocumentPos(editor, pos) {
         var cm = editor._codeMirror;
         var ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
-        var selector = &quot;&quot;, inSelector = false, foundChars = false;
+        var selector = &quot;&quot;, foundChars = false;
         var isPreprocessorDoc = FileUtils.isCSSPreprocessorFile(editor.document.file.fullPath);
         var selectorArray = [];
 
-        function _stripAtRules(selector) {
-            selector = selector.trim();
-            if (selector.indexOf(&quot;@&quot;) === 0) {
-                return &quot;&quot;;
-            }
-            return selector;
-        }
-        
-        function _getSelectorInFinalCSSForm() {
-            var finalSelectorArray = [&quot;&quot;],
-                parentSelectorArray = [],
-                group = [];
-            _.forEach(selectorArray, function (selector) {
-                selector = _stripAtRules(selector);
-                group = selector.split(&quot;, &quot;);
-                parentSelectorArray = [];
-                _.forEach(group, function (cs) {
-                    var ampersandIndex = cs.indexOf(&quot;&amp;&quot;);
-                    _.forEach(finalSelectorArray, function (ps) {
-                        if (ampersandIndex === -1) {
-                            if (ps.length) {
-                                ps += &quot; &quot;;
-                            }
-                            ps += cs;
-                        } else {
-                            ps = cs.replace(&quot;&amp;&quot;, ps);
-                        }
-                        parentSelectorArray.push(ps);
-                    });
-                });
-                finalSelectorArray = parentSelectorArray;
-            });
-            return finalSelectorArray.join(&quot;, &quot;);
-        }
-        
         function _skipToOpeningBracket(ctx, startChar) {
             var unmatchedBraces = 0;
             if (!startChar) {
@@ -2443,7 +2512,7 @@ is not within a style rule.</p>
         }
         
         &#x2F;&#x2F; scan backwards to see if the cursor is in a rule
-        while (true) {
+        do {
             if (ctx.token.type !== &quot;comment&quot;) {
                 if (ctx.token.string === &quot;}&quot;) {
                     if (isPreprocessorDoc) {
@@ -2459,7 +2528,7 @@ is not within a style rule.</p>
                 } else if (ctx.token.string === &quot;{&quot;) {
                     selector = _parseSelector(ctx);
                     if (isPreprocessorDoc) {
-                        if (!skipPrevSibling &amp;&amp; !&#x2F;^\s*@media&#x2F;i.test(selector)) {
+                        if (!skipPrevSibling &amp;&amp; !&#x2F;^\s*@&#x2F;.test(selector)) {
                             selectorArray.unshift(selector);
                         }
                         if (skipPrevSibling) {
@@ -2472,13 +2541,12 @@ is not within a style rule.</p>
                     if (!isPreprocessorDoc &amp;&amp; _hasNonWhitespace(ctx.token.string)) {
                         foundChars = true;
                     }
+                    TokenUtils.movePrevToken(ctx);
                 }
+            } else {
+                TokenUtils.movePrevToken(ctx);
             }
-            
-            if (ctx.token.string !== &quot;{&quot; &amp;&amp; ctx.token.string !== &quot;}&quot; &amp;&amp; !TokenUtils.movePrevToken(ctx)) {
-                break;
-            }
-        }
+        } while (!TokenUtils.isAtStart(ctx));
         
         selector = _stripAtRules(selector);
         
@@ -2500,14 +2568,14 @@ is not within a style rule.</p>
         &#x2F;&#x2F; At this point if we haven&#39;t found a selector, but have seen chars when
         &#x2F;&#x2F; scanning, assume we are in the middle of a selector. For a preprocessor 
         &#x2F;&#x2F; document we also need to collect the current selector if the cursor is 
-        &#x2F;&#x2F; is within the selector or whitespaces immediately before or after it.
+        &#x2F;&#x2F; within the selector or whitespaces immediately before or after it.
         if ((!selector || isPreprocessorDoc) &amp;&amp; foundChars) {
             &#x2F;&#x2F; scan forward to see if the cursor is in a selector
             while (true) {
                 if (ctx.token.type !== &quot;comment&quot;) {
                     if (ctx.token.string === &quot;{&quot;) {
                         selector = _parseSelector(ctx);
-                        if (isPreprocessorDoc) {
+                        if (isPreprocessorDoc &amp;&amp; !&#x2F;^\s*@&#x2F;.test(selector)) {
                             selectorArray.push(selector);
                         }
                         break;
@@ -2522,7 +2590,7 @@ is not within a style rule.</p>
         }
         
         if (isPreprocessorDoc) {
-            return _getSelectorInFinalCSSForm();
+            return _getSelectorInFinalCSSForm(selectorArray);
         }
         
         return _stripAtRules(selector);
@@ -2572,6 +2640,8 @@ in info.</p>
                 completeSelectors += info.selector;
             }
             return completeSelectors;
+        } else if (useGroup &amp;&amp; info.selectorGroup) {
+            return info.selectorGroup;
         }
         
         return info.selector;
@@ -2614,8 +2684,6 @@ in info.</p>
         &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.	
         var pos = $.extend({}, constPos),
             ctx = TokenUtils.getInitialContext(editor._codeMirror, pos),
-            offset = TokenUtils.offsetInToken(ctx),
-            propName = &quot;&quot;,
             mode = editor.getModeForSelection();
         
         &#x2F;&#x2F; Check if this is inside a style block or in a css&#x2F;less document.

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -424,6 +432,7 @@ The status codes are:</p>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/utils/NativeApp.html">NativeApp</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Agents/NetworkAgent.html">NetworkAgent</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
@@ -573,7 +582,7 @@ The status codes are:</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _server;
-    
+
     function _isPromisePending(promise) {
         return promise &amp;&amp; promise.state() === &quot;pending&quot;;
     }
@@ -1004,8 +1013,7 @@ if the related file has been deleted on disk).</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _docIsOutOfSync(doc) {
-        var docClass    = _classForDocument(doc),
-            liveDoc     = _server &amp;&amp; _server.get(doc.file.fullPath),
+        var liveDoc = _server &amp;&amp; _server.get(doc.file.fullPath),
             isLiveEditingEnabled = liveDoc &amp;&amp; liveDoc.isLiveEditingEnabled();
 
         return doc.isDirty &amp;&amp; !isLiveEditingEnabled;
@@ -1207,7 +1215,6 @@ _adds extension, url and root to the document</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleLiveDocumentStatusChanged(liveDocument) {
         var startLine,
             endLine,
-            lineInfo,
             i,
             lineHandle,
             status = (liveDocument.errors.length) ? STATUS_SYNC_ERROR : STATUS_ACTIVE;
@@ -1302,6 +1309,35 @@ _adds extension, url and root to the document</p>
     
 </span>
     <h4>
+        _makeTroubleshootingMessage 
+        <a class="anchor" href="#-_makeTroubleshootingMessage" id="-_makeTroubleshootingMessage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        msg
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Original message</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>Original message plus link to troubleshooting page.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _makeTroubleshootingMessage(msg) {
+        return msg + &quot; &quot; + StringUtils.format(Strings.LIVE_DEVELOPMENT_TROUBLESHOOTING, brackets.config.troubleshoot_url);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _onConnect 
         <a class="anchor" href="#-_onConnect" id="-_onConnect"><span class="icon-link"></span></a>
     </h4>
@@ -1329,7 +1365,7 @@ _adds extension, url and root to the document</p>
                 Dialogs.showModalDialog(
                     DefaultDialogs.DIALOG_ID_ERROR,
                     Strings.LIVE_DEVELOPMENT_ERROR_TITLE,
-                    Strings.LIVE_DEV_LOADING_ERROR_MESSAGE
+                    _makeTroubleshootingMessage(Strings.LIVE_DEV_LOADING_ERROR_MESSAGE)
                 );
             })
             .done(_onInterstitialPageLoad);
@@ -1339,7 +1375,7 @@ _adds extension, url and root to the document</p>
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.LIVE_DEVELOPMENT_ERROR_TITLE,
-            Strings.LIVE_DEV_NEED_HTML_MESSAGE
+            _makeTroubleshootingMessage(Strings.LIVE_DEV_NEED_HTML_MESSAGE)
         );
         _openDeferred.reject();
     }
@@ -1348,7 +1384,7 @@ _adds extension, url and root to the document</p>
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.LIVE_DEVELOPMENT_ERROR_TITLE,
-            Strings.LIVE_DEV_SERVER_NOT_READY_MESSAGE
+            _makeTroubleshootingMessage(Strings.LIVE_DEV_SERVER_NOT_READY_MESSAGE)
         );
         _openDeferred.reject();
     }
@@ -1370,7 +1406,7 @@ _adds extension, url and root to the document</p>
                 var dialogPromise = Dialogs.showModalDialog(
                     DefaultDialogs.DIALOG_ID_LIVE_DEVELOPMENT,
                     Strings.LIVE_DEVELOPMENT_RELAUNCH_TITLE,
-                    Strings.LIVE_DEVELOPMENT_ERROR_MESSAGE,
+                    _makeTroubleshootingMessage(Strings.LIVE_DEVELOPMENT_ERROR_MESSAGE),
                     [
                         {
                             className: Dialogs.DIALOG_BTN_CLASS_LEFT,
@@ -1438,15 +1474,10 @@ _adds extension, url and root to the document</p>
                             message = StringUtils.format(Strings.ERROR_LAUNCHING_BROWSER, err);
                         }
                         
-                        &#x2F;&#x2F; Append a message to direct users to the troubleshooting page.
-                        if (message) {
-                            message += &quot; &quot; + StringUtils.format(Strings.LIVE_DEVELOPMENT_TROUBLESHOOTING, brackets.config.troubleshoot_url);
-                        }
-
                         Dialogs.showModalDialog(
                             DefaultDialogs.DIALOG_ID_ERROR,
                             Strings.ERROR_LAUNCHING_BROWSER_TITLE,
-                            message
+                            _makeTroubleshootingMessage(message)
                         );
 
                         _openDeferred.reject(&quot;OPEN_LIVE_BROWSER&quot;);
@@ -1614,59 +1645,6 @@ _adds extension, url and root to the document</p>
     
 </span>
     <h4>
-        _onDocumentChange 
-        <a class="anchor" href="#-_onDocumentChange" id="-_onDocumentChange"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _onDocumentChange() {
-        var doc = _getCurrentDocument();
-        
-        if (!doc || !Inspector.connected()) {
-            return;
-        }
-        
-        &#x2F;&#x2F; close the current session and begin a new session if the current
-        &#x2F;&#x2F; document changes to an HTML document that was not loaded yet
-        var docUrl = _server &amp;&amp; _server.pathToUrl(doc.file.fullPath),
-            wasRequested = agents.network &amp;&amp; agents.network.wasURLRequested(docUrl),
-            isViewable = exports.config.experimental || (_server &amp;&amp; _server.canServe(doc.file.fullPath));
-        
-        if (!wasRequested &amp;&amp; isViewable) {
-            &#x2F;&#x2F; Update status
-            _setStatus(STATUS_CONNECTING);
-
-            &#x2F;&#x2F; clear live doc and related docs
-            _closeDocuments();
-
-            &#x2F;&#x2F; create new live doc
-            _createLiveDocumentForFrame(doc);
-
-            &#x2F;&#x2F; Navigate to the new page within this site. Agents must handle
-            &#x2F;&#x2F; frameNavigated event to clear any saved state.
-            Inspector.Page.navigate(docUrl).then(function () {
-                _setStatus(STATUS_ACTIVE);
-            }, function () {
-                _close(false, &quot;closed_unknown_reason&quot;);
-            });
-        } else if (wasRequested) {
-            &#x2F;&#x2F; Update highlight
-            showHighlight();
-        }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
         _onDocumentSaved 
         <a class="anchor" href="#-_onDocumentSaved" id="-_onDocumentSaved"><span class="icon-link"></span></a>
     </h4>
@@ -1787,6 +1765,59 @@ _adds extension, url and root to the document</p>
                 }
             }
         });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _onFileChanged 
+        <a class="anchor" href="#-_onFileChanged" id="-_onFileChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onFileChanged() {
+        var doc = _getCurrentDocument();
+        
+        if (!doc || !Inspector.connected()) {
+            return;
+        }
+        
+        &#x2F;&#x2F; close the current session and begin a new session if the current
+        &#x2F;&#x2F; document changes to an HTML document that was not loaded yet
+        var docUrl = _server &amp;&amp; _server.pathToUrl(doc.file.fullPath),
+            wasRequested = agents.network &amp;&amp; agents.network.wasURLRequested(docUrl),
+            isViewable = exports.config.experimental || (_server &amp;&amp; _server.canServe(doc.file.fullPath));
+        
+        if (!wasRequested &amp;&amp; isViewable) {
+            &#x2F;&#x2F; Update status
+            _setStatus(STATUS_CONNECTING);
+
+            &#x2F;&#x2F; clear live doc and related docs
+            _closeDocuments();
+
+            &#x2F;&#x2F; create new live doc
+            _createLiveDocumentForFrame(doc);
+
+            &#x2F;&#x2F; Navigate to the new page within this site. Agents must handle
+            &#x2F;&#x2F; frameNavigated event to clear any saved state.
+            Inspector.Page.navigate(docUrl).then(function () {
+                _setStatus(STATUS_ACTIVE);
+            }, function () {
+                _close(false, &quot;closed_unknown_reason&quot;);
+            });
+        } else if (wasRequested) {
+            &#x2F;&#x2F; Update highlight
+            showHighlight();
+        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -2126,10 +2157,13 @@ the status accordingly.</p>
         &#x2F;&#x2F; We may get interim added&#x2F;removed events when pushing incremental updates
         $(CSSAgent).on(&quot;styleSheetAdded.livedev&quot;, _styleSheetAdded);
         
-        $(DocumentManager).on(&quot;currentDocumentChange&quot;, _onDocumentChange)
+        $(MainViewManager)
+            .on(&quot;currentFileChange&quot;, _onFileChanged);
+        $(DocumentManager)
             .on(&quot;documentSaved&quot;, _onDocumentSaved)
             .on(&quot;dirtyFlagChange&quot;, _onDirtyFlagChange);
-        $(ProjectManager).on(&quot;beforeProjectClose beforeAppClose&quot;, close);
+        $(ProjectManager)
+            .on(&quot;beforeProjectClose beforeAppClose&quot;, close);
         
         &#x2F;&#x2F; Register user defined server provider
         LiveDevServerManager.registerServer({ create: _createUserServer }, 99);
@@ -2196,8 +2230,6 @@ the status accordingly.</p>
         }
         
         var result = new $.Deferred(),
-            promises = [],
-            enableAgentsPromise,
             allAgentsPromise;
         
         _loadAgentsPromise = result.promise();
@@ -2245,7 +2277,7 @@ the status accordingly.</p>
                 Dialogs.showModalDialog(
                     Dialogs.DIALOG_ID_ERROR,
                     Strings.LIVE_DEVELOPMENT_ERROR_TITLE,
-                    Strings.LIVE_DEV_LOADING_ERROR_MESSAGE
+                    _makeTroubleshootingMessage(Strings.LIVE_DEV_LOADING_ERROR_MESSAGE)
                 );
             })
             .always(function () {
@@ -2355,18 +2387,18 @@ file you edit is probably related to the live preview.</p>
             }
         }
         
-        &#x2F;&#x2F; TODO: need to run _onDocumentChange() after load if doc != currentDocument here? Maybe not, since activeEditorChange
+        &#x2F;&#x2F; TODO: need to run _onFileChanged() after load if doc != currentDocument here? Maybe not, since activeEditorChange
         &#x2F;&#x2F; doesn&#39;t trigger it, while inline editors can still cause edits in doc other than currentDoc...
         _getInitialDocFromCurrent().done(function (doc) {
             var prepareServerPromise = (doc &amp;&amp; _prepareServer(doc)) || new $.Deferred().reject(),
                 otherDocumentsInWorkingFiles;
 
             if (doc &amp;&amp; !doc._masterEditor) {
-                otherDocumentsInWorkingFiles = DocumentManager.getWorkingSet().length;
-                DocumentManager.addToWorkingSet(doc.file);
+                otherDocumentsInWorkingFiles = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES).length;
+                MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
 
                 if (!otherDocumentsInWorkingFiles) {
-                    DocumentManager.setCurrentDocument(doc);
+                    MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
                 }
             }
 

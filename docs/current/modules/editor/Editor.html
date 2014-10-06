@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -392,6 +400,8 @@ eventually go away).</li>
 <li>optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
 is a string containing the editor option that is changing. The 3rd arg, which can be any
 data type, is the new value for the editor option.</li>
+<li>beforeDestroy - Triggered before the object is about to dispose of all its internal state data 
+so that listeners can cache things like scroll pos, etc...</li>
 </ul>
 <p>The Editor also dispatches &quot;change&quot; events internally, but you should listen for those on
 Documents, not Editors.</p>
@@ -413,7 +423,6 @@ Documents, not Editors.</p>
         <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="..&#x2F;../modules/widgets/PopUpManager.html">PopUpManager</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/document/TextRange.html">TextRange</a></li>
         <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
@@ -456,6 +465,24 @@ Documents, not Editors.</p>
     
 </span>
     <h4>
+        CENTERING_MARGIN     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-CENTERING_MARGIN" id="-CENTERING_MARGIN"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var CENTERING_MARGIN = 0.15;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         CLOSE_BRACKETS 
         <a class="anchor" href="#-CLOSE_BRACKETS" id="-CLOSE_BRACKETS"><span class="icon-link"></span></a>
     </h4>
@@ -467,18 +494,19 @@ Documents, not Editors.</p>
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var CLOSE_BRACKETS    = &quot;closeBrackets&quot;,
-        CLOSE_TAGS        = &quot;closeTags&quot;,
-        HIGHLIGHT_MATCHES = &quot;highlightMatches&quot;,
-        SCROLL_PAST_END   = &quot;scrollPastEnd&quot;,
-        SHOW_LINE_NUMBERS = &quot;showLineNumbers&quot;,
-        SMART_INDENT      = &quot;smartIndent&quot;,
-        SOFT_TABS         = &quot;softTabs&quot;,
-        SPACE_UNITS       = &quot;spaceUnits&quot;,
-        STYLE_ACTIVE_LINE = &quot;styleActiveLine&quot;,
-        TAB_SIZE          = &quot;tabSize&quot;,
-        WORD_WRAP         = &quot;wordWrap&quot;,
-        USE_TAB_CHAR      = &quot;useTabChar&quot;;
+<pre class="code language-javascript"><code class="language-javascript">    var CLOSE_BRACKETS      = &quot;closeBrackets&quot;,
+        CLOSE_TAGS          = &quot;closeTags&quot;,
+        HIGHLIGHT_MATCHES   = &quot;highlightMatches&quot;,
+        SCROLL_PAST_END     = &quot;scrollPastEnd&quot;,
+        SHOW_CURSOR_SELECT  = &quot;showCursorWhenSelecting&quot;,
+        SHOW_LINE_NUMBERS   = &quot;showLineNumbers&quot;,
+        SMART_INDENT        = &quot;smartIndent&quot;,
+        SOFT_TABS           = &quot;softTabs&quot;,
+        SPACE_UNITS         = &quot;spaceUnits&quot;,
+        STYLE_ACTIVE_LINE   = &quot;styleActiveLine&quot;,
+        TAB_SIZE            = &quot;tabSize&quot;,
+        WORD_WRAP           = &quot;wordWrap&quot;,
+        USE_TAB_CHAR        = &quot;useTabChar&quot;;
     
     var cmOptions         = {};</code></pre></div><div class="member">
 
@@ -512,6 +540,7 @@ Documents, not Editors.</p>
     cmOptions[CLOSE_TAGS]         = &quot;autoCloseTags&quot;;
     cmOptions[HIGHLIGHT_MATCHES]  = &quot;highlightSelectionMatches&quot;;
     cmOptions[SCROLL_PAST_END]    = &quot;scrollPastEnd&quot;;
+    cmOptions[SHOW_CURSOR_SELECT] = &quot;showCursorWhenSelecting&quot;;
     cmOptions[SHOW_LINE_NUMBERS]  = &quot;lineNumbers&quot;;
     cmOptions[SMART_INDENT]       = &quot;smartIndent&quot;;
     cmOptions[SPACE_UNITS]        = &quot;indentUnit&quot;;
@@ -520,22 +549,23 @@ Documents, not Editors.</p>
     cmOptions[USE_TAB_CHAR]       = &quot;indentWithTabs&quot;;
     cmOptions[WORD_WRAP]          = &quot;lineWrapping&quot;;
     
-    PreferencesManager.definePreference(CLOSE_BRACKETS,    &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(CLOSE_TAGS,        &quot;Object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] });
-    PreferencesManager.definePreference(HIGHLIGHT_MATCHES, &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(SCROLL_PAST_END,   &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(SHOW_LINE_NUMBERS, &quot;boolean&quot;, true);
-    PreferencesManager.definePreference(SMART_INDENT,      &quot;boolean&quot;, true);
-    PreferencesManager.definePreference(SOFT_TABS,         &quot;boolean&quot;, true);
-    PreferencesManager.definePreference(SPACE_UNITS,       &quot;number&quot;, DEFAULT_SPACE_UNITS, {
+    PreferencesManager.definePreference(CLOSE_BRACKETS,     &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(CLOSE_TAGS,         &quot;Object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] });
+    PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(SCROLL_PAST_END,    &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(SHOW_CURSOR_SELECT, &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(SHOW_LINE_NUMBERS,  &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(SMART_INDENT,       &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(SOFT_TABS,          &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(SPACE_UNITS,        &quot;number&quot;, DEFAULT_SPACE_UNITS, {
         validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_SPACE_UNITS, MAX_SPACE_UNITS)
     });
-    PreferencesManager.definePreference(STYLE_ACTIVE_LINE, &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(TAB_SIZE,          &quot;number&quot;, DEFAULT_TAB_SIZE, {
+    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(TAB_SIZE,           &quot;number&quot;, DEFAULT_TAB_SIZE, {
         validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE)
     });
-    PreferencesManager.definePreference(USE_TAB_CHAR,      &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(WORD_WRAP,         &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(USE_TAB_CHAR,       &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true);
     
     var editorOptions = Object.keys(cmOptions);</code></pre></div><div class="member private">
 
@@ -752,7 +782,7 @@ Document modifiable.</p>
                 <dd></dd>
                 <dt>makeMasterEditor <span class="label label-info pull-left">boolean</span></dt>
                 <dd>If true, this Editor will set itself as the (secret) "master" Editor for the Document. If false, this Editor will attach to the Document as a "slave"/ secondary editor.</dd>
-                <dt>container <span class="label label-info pull-left">jQueryObject</span></dt>
+                <dt>container <span class="label label-info pull-left">jQueryObject, DomNode</span></dt>
                 <dd>Container to add the editor to.</dd>
                 <dt>range <span class="label label-info pull-left">{startLine: number, endLine: number}</span></dt>
                 <dd>If specified, range of lines within the document to display in this editor. Inclusive.</dd>
@@ -768,6 +798,13 @@ Document modifiable.</p>
         &#x2F;&#x2F; Attach to document: add ref &amp; handlers
         this.document = document;
         document.addRef();
+        
+        if (container.jquery) {
+            &#x2F;&#x2F; CodeMirror wants a DOM element, not a jQuery wrapper
+            container = container.get(0);
+        }
+        
+        var $container = $(container);
         
         if (range) {    &#x2F;&#x2F; attach this first: want range updated before we process a change
             this._visibleRange = new TextRange(document, range.startLine, range.endLine);
@@ -788,6 +825,7 @@ Document modifiable.</p>
         this._inlineWidgets = [];
         this._inlineWidgetQueues = {};
         this._hideMarks = [];
+        this._lastEditorWidth = null;
         
         this._$messagePopover = null;
         
@@ -815,7 +853,10 @@ Document modifiable.</p>
                     self.removeAllInlineWidgets();
                 }
             },
-            &quot;Cmd-Left&quot;: &quot;goLineStartSmart&quot;
+            &quot;Home&quot;:      &quot;goLineLeftSmart&quot;,
+            &quot;Cmd-Left&quot;:  &quot;goLineLeftSmart&quot;,
+            &quot;End&quot;:       &quot;goLineRight&quot;,
+            &quot;Cmd-Right&quot;: &quot;goLineRight&quot;
         };
         
         var currentOptions = this._currentOptions = _.zipObject(
@@ -824,6 +865,13 @@ Document modifiable.</p>
                 return self._getOption(prefName);
             })
         );
+        
+        &#x2F;&#x2F; When panes are created *after* the showLineNumbers option has been turned off
+        &#x2F;&#x2F;  we need to apply the show-line-padding class or the text will be juxtaposed 
+        &#x2F;&#x2F;  to the edge of the editor which makes it not easy to read.  The code below to handle
+        &#x2F;&#x2F;  that the option change only applies the class to panes that have already been created
+        &#x2F;&#x2F; This line ensures that the class is applied to any editor created after the fact
+        $container.toggleClass(&quot;show-line-padding&quot;, Boolean(!this._getOption(&quot;showLineNumbers&quot;)));
         
         &#x2F;&#x2F; Create the CodeMirror instance
         &#x2F;&#x2F; (note: CodeMirror doesn&#39;t actually require using &#39;new&#39;, but jslint complains without it)
@@ -842,6 +890,7 @@ Document modifiable.</p>
             lineWrapping                : currentOptions[WORD_WRAP],
             matchBrackets               : { maxScanLineLength: 50000, maxScanLines: 1000 },
             matchTags                   : { bothTags: true },
+            showCursorWhenSelecting     : currentOptions[SHOW_CURSOR_SELECT],
             scrollPastEnd               : !range &amp;&amp; currentOptions[SCROLL_PAST_END],
             smartIndent                 : currentOptions[SMART_INDENT],
             styleActiveLine             : currentOptions[STYLE_ACTIVE_LINE],
@@ -888,6 +937,13 @@ Document modifiable.</p>
         Object.defineProperty(this, &quot;scrollTop&quot;, {
             get: function () {
                 return this._codeMirror.getScrollInfo().top;
+            }
+        });
+        
+        &#x2F;&#x2F; Add an $el getter for Pane Views
+        Object.defineProperty(this,  &quot;$el&quot;, {
+            get: function () {
+                return $(this.getRootElement());
             }
         });
     }</code></pre>
@@ -1003,6 +1059,28 @@ events caused by us (vs. change events caused by others, which we need to pay at
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype._inlineWidgets = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _lastEditorWidth 
+        <a class="anchor" href="#Editor-_lastEditorWidth" id="Editor-_lastEditorWidth"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The Editor&#39;s last known width.<br>Used in conjunction with updateLayout to recompute the layout 
+if the the parent container changes its size since our last layout update.</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?number</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype._lastEditorWidth = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1417,8 +1495,6 @@ the document an editor change that originated with us</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype._handleDocumentChange = function (event, doc, changeList) {
-        var change;
-        
         &#x2F;&#x2F; we&#39;re currently syncing to the Document, so don&#39;t echo back FROM the Document
         if (this._duringSync) {
             return;
@@ -1680,12 +1756,6 @@ to a Document change</li>
     <div class="description"></div>
     
 <dl>
-    <dt>
-        instance
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">CodeMirror</span>
-    </dt>
-    <dd>CodeMirror instance.</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -2010,7 +2080,18 @@ Semi-private: only Document should call this.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor._toggleLinePadding = function (showLinePadding) {
-        $(&quot;#editor-holder&quot;).toggleClass(&quot;show-line-padding&quot;, showLinePadding);
+        &#x2F;&#x2F; apply class to all pane DOM nodes
+        var $holders = [];
+        _instances.forEach(function (editor) {
+            var $editorHolder = editor.$el.parent();
+            if ($holders.indexOf($editorHolder) === -1) {
+                $holders.push($editorHolder);
+            }
+        });
+        
+        _.each($holders, function ($holder) {
+            $holder.toggleClass(&quot;show-line-padding&quot;, Boolean(showLinePadding));
+        });
     };
     
     &#x2F;&#x2F; Set up listeners for preference changes
@@ -2168,9 +2249,7 @@ the desired visible range.</p>
         } else {
             this._codeMirror.setOption(&quot;styleActiveLine&quot;, this._currentOptions[STYLE_ACTIVE_LINE]);
         }
-    };
-    
-    &#x2F;&#x2F; Global settings that affect Editor instances that share the same preference locations</code></pre></div><div class="member">
+    };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -2225,6 +2304,39 @@ line, it is closed without warning.</p>
             return deferred.promise();
         });
         return deferred.promise();
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        adjustScrollPos 
+        <a class="anchor" href="#Editor-adjustScrollPos" id="Editor-adjustScrollPos"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Restores and adjusts the current scroll position of the editor.</p>
+</div>
+    
+<dl>
+    <dt>
+        scrollPos
+        <span class="label label-info">{x:number,y:number}</span>
+    </dt>
+    <dd>- The x,y scroll position in pixels</dd>
+    <dt>
+        heightDelta
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>- The amount of delta H to apply to the scroll position</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.adjustScrollPos = function (scrollPos, heightDelta) {
+        this._codeMirror.scrollTo(scrollPos.x, scrollPos.y + heightDelta);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2372,6 +2484,8 @@ a read-only string-backed mode.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.destroy = function () {
+        $(this).triggerHandler(&quot;beforeDestroy&quot;, [this]);
+
         &#x2F;&#x2F; CodeMirror docs for getWrapperElement() say all you have to do is &quot;Remove this from your
         &#x2F;&#x2F; tree to delete an editor instance.&quot;
         $(this.getRootElement()).remove();
@@ -2429,7 +2543,6 @@ cursor if space allows, otherwise below.</p>
         var arrowBelow, cursorPos, cursorCoord, popoverRect,
             top, left, clip, arrowCenter, arrowLeft,
             self = this,
-            $editorHolder = $(&quot;#editor-holder&quot;),
             POPOVER_MARGIN = 10,
             POPOVER_ARROW_HALF_WIDTH = 10,
             POPOVER_ARROW_HALF_BASE = POPOVER_ARROW_HALF_WIDTH + 3; &#x2F;&#x2F; 3 is border radius
@@ -2501,7 +2614,7 @@ cursor if space allows, otherwise below.</p>
         };
         
         &#x2F;&#x2F; See if popover is clipped on any side
-        clip = ViewUtils.getElementClipSize($editorHolder, popoverRect);
+        clip = ViewUtils.getElementClipSize($(&quot;#editor-holder&quot;), popoverRect);
 
         &#x2F;&#x2F; Prevent horizontal clipping
         if (clip.left &gt; 0) {
@@ -2744,9 +2857,9 @@ when the line contains preceding \t chars. Result depends on the current tab siz
     </dt>
     <dd>Optional string indicating which end of the selection to return. It may be "start", "end", "head" (the side of the selection that moves when you press shift+arrow), or "anchor" (the fixed side of the selection). Omitting the argument is the same as passing "head". A {line, ch} object will be returned.)</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">!{line:number,</span>
+    <dt>Returns: <span class="label label-info">!{line:number,ch:number}</span>
 </dt>
-    <dd>ch:number}</dd>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -2765,6 +2878,32 @@ when the line contains preceding \t chars. Result depends on the current tab siz
             cursor.ch = this.getColOffset(cursor);
         }
         return cursor;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getFile 
+        <a class="anchor" href="#Editor-getFile" id="Editor-getFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets the file associated with this editor
+This is a required Pane-View interface method</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!File</span>
+</dt>
+    <dd>the file associated with this editor</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.getFile = function () {
+        return this.document.file;
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2797,6 +2936,39 @@ when the line contains preceding \t chars. Result depends on the current tab siz
     
 </span>
     <h4>
+        getFocusedInlineWidget 
+        <a class="anchor" href="#Editor-getFocusedInlineWidget" id="Editor-getFocusedInlineWidget"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the currently focused inline widget, if any.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?InlineWidget</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.getFocusedInlineWidget = function () {
+        var result = null;
+        
+        this.getInlineWidgets().forEach(function (widget) {
+            if (widget.hasFocus()) {
+                result = widget;
+            }
+        });
+        
+        return result;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         getInlineWidgets 
         <a class="anchor" href="#Editor-getInlineWidgets" id="Editor-getInlineWidgets"><span class="icon-link"></span></a>
     </h4>
@@ -2816,6 +2988,31 @@ inline&#39;s id, and the data parameter that was passed to addInlineWidget().</p
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.getInlineWidgets = function () {
         return this._inlineWidgets;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getLanguageForSelection 
+        <a class="anchor" href="#Editor-getLanguageForSelection" id="Editor-getLanguageForSelection"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML document, etc...)</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!Language</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.getLanguageForSelection = function () {
+        return this.document.getLanguage().getLanguageForMode(this.getModeForSelection());
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2906,7 +3103,7 @@ A-B-A would return A as the mode, not null).</p>
 </dl><dl>
     <dt>Returns: <span class="label label-info">?(Object,string)</span>
 </dt>
-    <dd>Name of syntax-highlighting mode, or object containing a "name" property naming the mode along with configuration options required by the mode. See {@link LanguageManager#getLanguageForPath()} and {@link Language#getMode()}.</dd>
+    <dd>Name of syntax-highlighting mode, or object containing a "name" property naming the mode along with configuration options required by the mode.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -2945,7 +3142,7 @@ consistent and resolve to the same mode.</p>
 </dl><dl>
     <dt>Returns: <span class="label label-info">?(Object,string)</span>
 </dt>
-    <dd>Name of syntax-highlighting mode, or object containing a "name" property naming the mode along with configuration options required by the mode. See {@link LanguageManager#getLanguageForPath()} and {@link Language#getMode()}.</dd>
+    <dd>Name of syntax-highlighting mode, or object containing a "name" property naming the mode along with configuration options required by the mode.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -2987,10 +3184,6 @@ consistent and resolve to the same mode.</p>
             &#x2F;&#x2F; Mode does not vary: just use the editor-wide mode
             return this._codeMirror.getOption(&quot;mode&quot;);
         }
-    };
-    
-    Editor.prototype.getLanguageForSelection = function () {
-        return this.document.getLanguage().getLanguageForMode(this.getModeForSelection());
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -3367,6 +3560,35 @@ If <code>primary</code> is set, then that selection is the primary selection.</p
     
 </span>
     <h4>
+        getViewState 
+        <a class="anchor" href="#Editor-getViewState" id="Editor-getViewState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>returns the view state for the editor</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!EditorViewState</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.getViewState = function () {
+        return {
+            selections: this.getSelections(),
+            scrollPos: this.getScrollPos()
+        };
+        
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         getVirtualScrollAreaTop 
         <a class="anchor" href="#Editor-getVirtualScrollAreaTop" id="Editor-getVirtualScrollAreaTop"><span class="icon-link"></span></a>
     </h4>
@@ -3607,6 +3829,46 @@ visible, and has a non-zero width/height.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.lineCount = function () {
         return this._codeMirror.lineCount();
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        notifyVisibilityChange 
+        <a class="anchor" href="#Editor-notifyVisibilityChange" id="Editor-notifyVisibilityChange"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>View API Visibility Change Notification handler.  This is also
+called by the native &quot;setVisible&quot; API which refresh can be optimized</p>
+</div>
+    
+<dl>
+    <dt>
+        show
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to show the editor, false to hide it</dd>
+    <dt>
+        refresh
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true (default) to refresh the editor, false to skip refreshing it</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.notifyVisibilityChange = function (show, refresh) {
+        if (show &amp;&amp; (refresh || refresh === undefined)) {
+            this.refresh();
+        }
+        if (show) {
+            this._inlineWidgets.forEach(function (inlineWidget) {
+                inlineWidget.onParentShown();
+            });
+        }
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -3868,8 +4130,6 @@ but overridable via the endInclusive flag).</p>
         }
             
         if (!inlineWidget.closePromise) {
-            var lineNum = this._getInlineWidgetLineNumber(inlineWidget);
-            
             &#x2F;&#x2F; Remove the inline widget from our internal list immediately, so
             &#x2F;&#x2F; everyone external to us knows it&#39;s essentially already gone. We
             &#x2F;&#x2F; don&#39;t want to wait until it&#39;s done animating closed (but we do want
@@ -3890,6 +4150,44 @@ but overridable via the endInclusive flag).</p>
             inlineWidget.closePromise = deferred.promise();
         }
         return inlineWidget.closePromise;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        restoreViewState 
+        <a class="anchor" href="#Editor-restoreViewState" id="Editor-restoreViewState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Restores the view state</p>
+</div>
+    
+<dl>
+    <dt>
+        viewState
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">EditorViewState</span>
+    </dt>
+    <dd>- the view state object to restore</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.restoreViewState = function (viewState) {
+        if (viewState.selection) {
+            &#x2F;&#x2F; We no longer write out single-selection, but there might be some view state
+            &#x2F;&#x2F; from an older version.
+            this.setSelection(viewState.selection.start, viewState.selection.end);
+        }
+        if (viewState.selections) {
+            this.setSelections(viewState.selections);
+        }
+        if (viewState.scrollPos) {
+            this.setScrollPos(viewState.scrollPos.x, viewState.scrollPos.y);
+        }
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -4394,9 +4692,7 @@ Affects any editors that share the same preference location.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.setSize = function (width, height) {
         this._codeMirror.setSize(width, height);
-    };
-    
-    var CENTERING_MARGIN = 0.15;</code></pre></div><div class="member">
+    };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -4545,15 +4841,8 @@ become visible.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.setVisible = function (show, refresh) {
-        $(this.getRootElement()).css(&quot;display&quot;, (show ? &quot;&quot; : &quot;none&quot;));
-        if (show &amp;&amp; (refresh || refresh === undefined)) {
-            this.refresh();
-        }
-        if (show) {
-            this._inlineWidgets.forEach(function (inlineWidget) {
-                inlineWidget.onParentShown();
-            });
-        }
+        this.$el.css(&quot;display&quot;, (show ? &quot;&quot; : &quot;none&quot;));
+        this.notifyVisibilityChange(show, refresh);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -4668,7 +4957,60 @@ Affects any editors that share the same preference location.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.undo = function () {
         this._codeMirror.undo();
-    };</code></pre></div>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        updateLayout 
+        <a class="anchor" href="#Editor-updateLayout" id="Editor-updateLayout"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>resizes the editor to fill its parent container
+should not be used on inline editors</p>
+</div>
+    
+<dl>
+    <dt>
+        forceRefresh
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>- forces the editor to update its layout even if it already matches the container's height / width</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.updateLayout = function (forceRefresh) {
+        var curRoot = this.getRootElement(),
+            curWidth = $(curRoot).width(),
+            $editorHolder = this.$el.parent(),
+            editorAreaHt = $editorHolder.height();
+        
+        if (!curRoot.style.height || $(curRoot).height() !== editorAreaHt) {
+            &#x2F;&#x2F; Call setSize() instead of $.height() to allow CodeMirror to
+            &#x2F;&#x2F; check for options like line wrapping
+            this.setSize(null, editorAreaHt);
+            if (forceRefresh === undefined) {
+                forceRefresh = true;
+            }
+        } else if (curWidth !== this._lastEditorWidth) {
+            if (forceRefresh === undefined) {
+                forceRefresh = true;
+            }
+        }
+        this._lastEditorWidth = curWidth;
+
+        if (forceRefresh) {
+            this.refreshAll(forceRefresh);
+        }
+    };
+    
+    
+    &#x2F;&#x2F; Global settings that affect Editor instances that share the same preference locations</code></pre></div>
         </section>
 
     </div>

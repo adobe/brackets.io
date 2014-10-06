@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -385,9 +393,8 @@ panelCollapsed and panelExpanded:</p>
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-        <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/utils/Resizer.html">Resizer</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
@@ -404,6 +411,155 @@ panelCollapsed and panelExpanded:</p>
 </label>    </h3>
 
 <div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleSplitViewHorizontal 
+        <a class="anchor" href="#-_handleSplitViewHorizontal" id="-_handleSplitViewHorizontal"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Handle Horizontal Split Command</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleSplitViewHorizontal() {
+        MainViewManager.setLayoutScheme(2, 1);
+    }
+    
+    &#x2F;&#x2F; Initialize items dependent on HTML DOM
+    AppInit.htmlReady(function () {
+        $sidebar                  = $(&quot;#sidebar&quot;);
+        $gearMenu                 = $sidebar.find(&quot;.working-set-option-btn&quot;);
+        $splitViewMenu            = $sidebar.find(&quot;.working-set-splitview-btn&quot;);
+        $projectTitle             = $sidebar.find(&quot;#project-title&quot;);
+        $projectFilesContainer    = $sidebar.find(&quot;#project-files-container&quot;);
+        $workingSetViewsContainer = $sidebar.find(&quot;#working-set-list-container&quot;);
+    
+        function _resizeSidebarSelection() {
+            var $element;
+            $sidebar.find(&quot;.sidebar-selection&quot;).each(function (index, element) {
+                $element = $(element);
+                $element.width($element.parent()[0].scrollWidth);
+            });
+        }
+
+        &#x2F;&#x2F; init
+        $sidebar.on(&quot;panelResizeStart&quot;, function (evt, width) {
+            $sidebar.find(&quot;.sidebar-selection-extension&quot;).css(&quot;display&quot;, &quot;none&quot;);
+            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;none&quot;);
+        });
+        
+        $sidebar.on(&quot;panelResizeUpdate&quot;, function (evt, width) {
+            $sidebar.find(&quot;.sidebar-selection&quot;).width(width);
+            ProjectManager._setFileTreeSelectionWidth(width);
+        });
+        
+        $sidebar.on(&quot;panelResizeEnd&quot;, function (evt, width) {
+            _resizeSidebarSelection();
+            $sidebar.find(&quot;.sidebar-selection-extension&quot;).css(&quot;display&quot;, &quot;block&quot;).css(&quot;left&quot;, width);
+            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;block&quot;);
+            $projectFilesContainer.triggerHandler(&quot;scroll&quot;);
+            WorkingSetView.syncSelectionIndicator();
+        });
+		
+        $sidebar.on(&quot;panelCollapsed&quot;, function (evt, width) {
+            CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_SHOW_SIDEBAR);
+        });
+        
+        $sidebar.on(&quot;panelExpanded&quot;, function (evt, width) {
+            WorkingSetView.refresh();
+            _resizeSidebarSelection();
+            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;block&quot;);
+            $sidebar.find(&quot;.sidebar-selection-extension&quot;).css(&quot;left&quot;, width);
+            $projectFilesContainer.triggerHandler(&quot;scroll&quot;);
+            WorkingSetView.syncSelectionIndicator();
+            CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_HIDE_SIDEBAR);
+        });
+        
+        &#x2F;&#x2F; AppInit.htmlReady in utils&#x2F;Resizer executes before, so it&#39;s possible that the sidebar
+        &#x2F;&#x2F; is collapsed before we add the event. Check here initially
+        if (!$sidebar.is(&quot;:visible&quot;)) {
+            $sidebar.trigger(&quot;panelCollapsed&quot;);
+        }
+        
+        &#x2F;&#x2F; wire up an event handler to monitor when panes are created
+        $(MainViewManager).on(&quot;paneCreate&quot;, function (evt, paneId) {
+            WorkingSetView.createWorkingSetViewForPane($workingSetViewsContainer, paneId);
+        });
+        
+        $(MainViewManager).on(&quot;paneLayoutChange&quot;, function () {
+            _updateUIStates();
+        });
+        
+        $(MainViewManager).on(&quot;workingSetAdd workingSetAddList workingSetRemove workingSetRemoveList workingSetUpdate&quot;, function () {
+            _updateWorkingSetState();
+        });
+        
+        &#x2F;&#x2F; create WorkingSetViews for each pane already created
+        _.forEach(MainViewManager.getPaneIdList(), function (paneId) {
+            WorkingSetView.createWorkingSetViewForPane($workingSetViewsContainer, paneId);
+        });
+        
+        _updateUIStates();
+        
+        &#x2F;&#x2F; Tooltips
+        $gearMenu.attr(&quot;title&quot;, Strings.GEAR_MENU_TOOLTIP);
+        $splitViewMenu.attr(&quot;title&quot;, Strings.SPLITVIEW_MENU_TOOLTIP);
+    });
+    
+    $(ProjectManager).on(&quot;projectOpen&quot;, _updateProjectTitle);</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleSplitViewNone 
+        <a class="anchor" href="#-_handleSplitViewNone" id="-_handleSplitViewNone"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Handle No Split Command</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleSplitViewNone() {
+        MainViewManager.setLayoutScheme(1, 1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _handleSplitViewVertical 
+        <a class="anchor" href="#-_handleSplitViewVertical" id="-_handleSplitViewVertical"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Handle Vertical Split Command</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleSplitViewVertical() {
+        MainViewManager.setLayoutScheme(1, 2);
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -436,6 +592,79 @@ panelCollapsed and panelExpanded:</p>
         &#x2F;&#x2F; Trigger a scroll on the project files container to 
         &#x2F;&#x2F; reposition the scroller shadows and avoid issue #2255
         $projectFilesContainer.trigger(&quot;scroll&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateUIStates 
+        <a class="anchor" href="#-_updateUIStates" id="-_updateUIStates"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Update state of splitview and option elements</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateUIStates() {
+        var spriteIndex,
+            ICON_CLASSES = [&quot;splitview-icon-none&quot;, &quot;splitview-icon-vertical&quot;, &quot;splitview-icon-horizontal&quot;],
+            layoutScheme = MainViewManager.getLayoutScheme();
+
+        if (layoutScheme.columns &gt; 1) {
+            spriteIndex = 1;
+        } else if (layoutScheme.rows &gt; 1) {
+            spriteIndex = 2;
+        } else {
+            spriteIndex = 0;
+        }
+        
+        &#x2F;&#x2F; SplitView Icon
+        $splitViewMenu.removeClass(ICON_CLASSES.join(&quot; &quot;))
+                      .addClass(ICON_CLASSES[spriteIndex]);
+
+        &#x2F;&#x2F; SplitView Menu
+        _cmdSplitNone.setChecked(spriteIndex === 0);
+        _cmdSplitVertical.setChecked(spriteIndex === 1);
+        _cmdSplitHorizontal.setChecked(spriteIndex === 2);
+        
+        &#x2F;&#x2F; Options icon
+        _updateWorkingSetState();
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateWorkingSetState 
+        <a class="anchor" href="#-_updateWorkingSetState" id="-_updateWorkingSetState"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Update state of working set</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateWorkingSetState() {
+        if (MainViewManager.getPaneCount() === 1 &amp;&amp;
+                MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE) === 0) {
+            $workingSetViewsContainer.hide();
+            $gearMenu.hide();
+        } else {
+            $workingSetViewsContainer.show();
+            $gearMenu.show();
+        }
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -483,74 +712,7 @@ panelCollapsed and panelExpanded:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function isVisible() {
         return Resizer.isVisible($sidebar);
-    }
-    
-    &#x2F;&#x2F; Initialize items dependent on HTML DOM
-    AppInit.htmlReady(function () {
-        $sidebar                = $(&quot;#sidebar&quot;);
-        $sidebarMenuText        = $(&quot;#menu-view-hide-sidebar span&quot;);
-        $openFilesContainer     = $(&quot;#open-files-container&quot;);
-        $projectTitle           = $(&quot;#project-title&quot;);
-        $projectFilesContainer  = $(&quot;#project-files-container&quot;);
-    
-        function _resizeSidebarSelection() {
-            var $element;
-            $sidebar.find(&quot;.sidebar-selection&quot;).each(function (index, element) {
-                $element = $(element);
-                $element.width($element.parent()[0].scrollWidth);
-            });
-        }
-
-        &#x2F;&#x2F; init
-        WorkingSetView.create($openFilesContainer);
-        
-        $sidebar.on(&quot;panelResizeStart&quot;, function (evt, width) {
-            $sidebar.find(&quot;.sidebar-selection-triangle&quot;).css(&quot;display&quot;, &quot;none&quot;);
-            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;none&quot;);
-        });
-        
-        $sidebar.on(&quot;panelResizeUpdate&quot;, function (evt, width) {
-            $sidebar.find(&quot;.sidebar-selection&quot;).width(width);
-        });
-        
-        $sidebar.on(&quot;panelResizeEnd&quot;, function (evt, width) {
-            _resizeSidebarSelection();
-            $sidebar.find(&quot;.sidebar-selection-triangle&quot;).css(&quot;display&quot;, &quot;block&quot;).css(&quot;left&quot;, width);
-            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;block&quot;);
-            $projectFilesContainer.triggerHandler(&quot;scroll&quot;);
-            $openFilesContainer.triggerHandler(&quot;scroll&quot;);
-        });
-		
-        $sidebar.on(&quot;panelCollapsed&quot;, function (evt, width) {
-            CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_SHOW_SIDEBAR);
-        });
-        
-        $sidebar.on(&quot;panelExpanded&quot;, function (evt, width) {
-            WorkingSetView.refresh();
-            _resizeSidebarSelection();
-            $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;block&quot;);
-            $sidebar.find(&quot;.sidebar-selection-triangle&quot;).css(&quot;left&quot;, width);
-            $projectFilesContainer.triggerHandler(&quot;scroll&quot;);
-            $openFilesContainer.triggerHandler(&quot;scroll&quot;);
-            CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_HIDE_SIDEBAR);
-        });
-        
-        &#x2F;&#x2F; AppInit.htmlReady in utils&#x2F;Resizer executes before, so it&#39;s possible that the sidebar
-        &#x2F;&#x2F; is collapsed before we add the event. Check here initially
-        if (!$sidebar.is(&quot;:visible&quot;)) {
-            $sidebar.trigger(&quot;panelCollapsed&quot;);
-        }
-    });
-    
-    $(ProjectManager).on(&quot;projectOpen&quot;, _updateProjectTitle);
-    CommandManager.register(Strings.CMD_HIDE_SIDEBAR, Commands.VIEW_HIDE_SIDEBAR, toggle);
-    
-    &#x2F;&#x2F; Define public API
-    exports.toggle      = toggle;
-    exports.show        = show;
-    exports.hide        = hide;
-    exports.isVisible   = isVisible;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (151)</h2>
+            <h2 class="number-of-modules">Modules (159)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -265,8 +265,11 @@
             <ul id="package_project" class="nav nav-list">
               <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
               <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
               <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
               <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
@@ -329,11 +332,16 @@
               </li>
             </ul>
             <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
               <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
               <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -376,23 +384,17 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
         <li><a href="..&#x2F;../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-        <li><a href="..&#x2F;../modules/view/PanelManager.html">PanelManager</a></li>
-        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-        <li><a href="..&#x2F;../modules/utils/Resizer.html">Resizer</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
-        <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
@@ -454,26 +456,6 @@
     
 </span>
     <h4>
-        currentDocument 
-        <a class="anchor" href="#-currentDocument" id="-currentDocument"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Instance of the currently opened document when replaceAllPanel is visible</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Document</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var currentDocument = null;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
         findBar 
         <a class="anchor" href="#-findBar" id="-findBar"><span class="icon-link"></span></a>
     </h4>
@@ -520,7 +502,7 @@
         if (!queryInfo || !queryInfo.query) {
             return &quot;&quot;;
         }
-
+    
         &#x2F;&#x2F; Is it a (non-blank) regex?
         if (queryInfo.isRegexp) {
             try {
@@ -829,8 +811,8 @@ is not a range after expansion.</p>
     
 </span>
     <h4>
-        _handleDocumentChange 
-        <a class="anchor" href="#-_handleDocumentChange" id="-_handleDocumentChange"><span class="icon-link"></span></a>
+        _handleFileChanged 
+        <a class="anchor" href="#-_handleFileChanged" id="-_handleFileChanged"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -841,17 +823,17 @@ is not a range after expansion.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleDocumentChange() {
+<pre class="code language-javascript"><code class="language-javascript">    function _handleFileChanged() {
         if (findBar) {
             findBar.close();
         }
     }
-    
+
     function doReplace(editor, all) {
         var cm = editor._codeMirror,
             state = getSearchState(cm),
             replaceText = findBar.getReplaceText();
-        
+
         if (all) {
             findBar.close();
             &#x2F;&#x2F; Delegate to Replace in Files.
@@ -916,8 +898,8 @@ is not a range after expansion.</p>
             replace(editor);
         }
     }
-    
-    $(DocumentManager).on(&quot;currentDocumentChange&quot;, _handleDocumentChange);
+
+    $(MainViewManager).on(&quot;currentFileChange&quot;, _handleFileChanged);
 
     CommandManager.register(Strings.CMD_FIND,                   Commands.CMD_FIND,                  _launchFind);
     CommandManager.register(Strings.CMD_FIND_NEXT,              Commands.CMD_FIND_NEXT,             _findNext);
@@ -1399,7 +1381,7 @@ the first matching result, starting from the original cursor position.</p>
                 $(findBar).off(&quot;.FindReplace&quot;);
                 findBar = null;
             });
-  
+        
         handleQueryChange(editor, state, true);
     }</code></pre></div><div class="member private">
 
@@ -1465,7 +1447,7 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
         function indicateHasMatches(numResults) {
             &#x2F;&#x2F; Make the field red if it&#39;s not blank and it has no matches (which also covers invalid regexes)
             findBar.showNoResults(!state.foundAny &amp;&amp; findBar.getQueryInfo().query);
-
+            
             &#x2F;&#x2F; Navigation buttons enabled if we have a query and more than one match
             findBar.enableNavigation(state.foundAny &amp;&amp; numResults &gt; 1);
             findBar.enableReplace(state.foundAny);
