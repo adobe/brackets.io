@@ -118,6 +118,10 @@ filter: none;
         -->
 
     <div id="hero-wrapper" class="gradient">
+        <div id="browser-alert" class="alert-box warning" data-alert>
+            Looks like you're using an outdated browser. We strongly recommend updating it or <a href="http://www.whatbrowser.org/">downloading another browser</a> to get the best experience.
+            <a href="#" class="close">&times;</a>
+        </div>
         <div id="hero" class="row">
             <div class="large-12 columns">
                 <h1>Code the Web</h1>
@@ -330,6 +334,13 @@ filter: none;
     </section>
 
     <script src="js/vendor/custom.modernizr.js"></script>
+    <script>
+        // Detect old browsers using feature detection
+        if (!(Modernizr.cors && Modernizr.cssanimations && Modernizr.cssgradients && Modernizr.generatedcontent && Modernizr.json)) {
+            // don't use jQuery here as we want to support as many browsers as we possibly can
+            document.getElementById("browser-alert").style.display = "block";
+        }
+    </script>
 
     <!-- Source Sans Pro - Regular, Italic, Semibold -->
     <script src="//use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
