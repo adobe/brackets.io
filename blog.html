@@ -29,13 +29,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title data-i18n="index.head.title">Brackets - The Free, Open Source Code Editor for the Web</title>
+    <title data-i18n="index.head.title">Brackets Blog - The Free, Open Source Code Editor for the Web</title>
 
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/foundation.min.css" />
-
-    <link rel="stylesheet" href="css/reveal.css">
-
     <link rel="shortcut icon" href="favicon.ico" />
 
     <!-- social media images -->
@@ -44,6 +41,10 @@
 
     <!-- Only Edit brackets.io.css -->
     <link rel="stylesheet" href="css/brackets.io.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <!-- This needs to be at the top, not at the bottom like the other JS. Source Sans Pro - Light, Regular, Italic, Semibold -->
+    <script src="//use.edgefonts.net/source-sans-pro:n3,n4,n6,i3,i4;source-code-pro:n4.js"></script>
 
     <!-- These stop FOUT -->
     <style type="text/css">
@@ -75,7 +76,7 @@ filter: none;
 <![endif]-->
 </head>
 
-<body>
+<body id="blog">
     <div id="header-wrapper">
         <div id="header" class="row">
             <div class="large-12 columns clearfix">
@@ -88,19 +89,14 @@ filter: none;
                 </div>
                 <div class="nav clearfix">
                     <div class="nav-links">
-                        <a href="contribute.html" class="contribute" data-i18n="nav.contribute">Contribute</a>
-                        <a href="docs/current/modules/brackets.html" data-i18n="nav.apidocs">API Docs</a>
-                        <a href="http://blog.brackets.io" data-i18n="nav.blog">Blog</a>
-                        <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="nav.support">Support</a>
+                        <a class="nav-contribute" href="contribute.html" data-i18n="nav.contribute">Contribute</a>
+                        <a class="nav-api-docs" href="docs/current/modules/brackets.html" data-i18n="nav.apidocs">API Docs</a>
+                        <a class="nav-blog" href="http://blog.brackets.io" data-i18n="nav.blog">Blog</a>
+                        <a class="nav-support" href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="nav.support">Support</a>
                     </div>
                     <div class="social-links">
                         <a class="social-links-item github-icon" href="https://www.github.com/adobe/brackets" title="GitHub">GitHub</a>
-                        <a class="social-links-item mail-icon" href="https://groups.google.com/forum/#!forum/brackets-dev" title="Google Groups">Google Groups</a>
-                        <a class="social-links-item irc-icon" href="http://webchat.freenode.net/?channels=brackets" title="IRC">IRC</a>
                         <a class="social-links-item twitter-icon" href="https://twitter.com/brackets" title="Twitter">Twitter</a>
-                        <a class="social-links-item google-plus-icon" href="https://plus.google.com/b/115365194873502050036/" title="Google Plus">Google Plus</a>
-                        <a class="social-links-item facebook-icon" href="https://www.facebook.com/codebrackets" title="Facebook">Facebook</a>
-                        <a class="social-links-item youtube-icon" href="https://www.youtube.com/codebrackets" title="YouTube">YouTube</a>
                     </div>
                 </div>
             </div>
@@ -118,148 +114,61 @@ filter: none;
         -->
 
     <div id="hero-wrapper" class="gradient">
-        <div id="hero" class="row">
+        <div id="hero-blog" class="row">
             <div class="large-12 columns">
-                <h1>Code the Web</h1>
-                <p data-i18n="index.page.hero.description">Brackets is an open source code editor for web designers and front-end developers.</p>
-                <div id="download">
-                    <a id="hero-cta-button" href="https://github.com/adobe/brackets/releases/latest" class="large rounded radius button"><div data-i18n="index.page.hero.download">Download Brackets</div>
-                        <span id="download-version" class="nowrap" data-i18n="index.page.hero.latest-release">Latest Release</span>
-                    </a>
-                    <div id="os-alert" class="alert-box radius" data-alert>
-
-                    </div>
-                    <p>
-                        <a id="other-downloads" href="https://github.com/adobe/brackets/releases" data-i18n="index.page.hero.other-downloads">Other Downloads</a>
-                        <a data-reveal-id="system-requirements" href="#" data-i18n="index.page.hero.requirements">Requirements</a>
-                        <a data-reveal-id="installation-instructions" href="#" data-i18n="index.page.hero.installation">Installation</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="sub-hero-wrapper">
-        <div id="sub-hero" class="row">
-            <div class="large-3 columns">
-                <h2 data-i18n="index.page.sub-hero.live-html.header">Live HTML Development</h2>
-                <p><span data-i18n="index.page.sub-hero.live-html.content">As you code, HTML changes are instantly pushed to browser without having to save or reload the page.</span>
-                    <br>
-                    <a href="http://youtu.be/Nhvj1NYC3Uc" data-i18n="index.page.sub-hero.live-html.more" data-yt-id="Nhvj1NYC3Uc">See it in action.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="index.page.sub-hero.theseus.header">JS Debugging with Theseus</h2>
-                <p><span data-i18n="index.page.sub-hero.theseus.content">Theseus makes inspecting variables and control flow easy, even in asynchronous code.</span>
-                    <br>
-                    <a href="http://blog.brackets.io/2013/08/28/theseus-javascript-debugger-for-chrome-and-nodejs/" data-i18n="index.page.sub-hero.theseus.more">Learn more.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="index.page.sub-hero.linux.header">Linux: New &amp; Improved</h2>
-                <p><span data-i18n="index.page.sub-hero.linux.content">Over the last few releases we’ve made progress on Linux (Debian/Ubuntu) support for Brackets.</span>
-                    <br>
-                    <a href="https://github.com/adobe/brackets/wiki/Linux-Version" data-i18n="index.page.sub-hero.linux.more">Check it out.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="index.page.sub-hero.dev.header">Effective Development</h2>
-                <p><span data-i18n="index.page.sub-hero.dev.content">Imagine the ability to fluently edit external styles and code without even leaving your document!</span>
-                    <br>
-                    <a href="http://dev.brackets.io/preso/intro/assets/features/brackets-quick-edit-js.PNG" data-i18n="index.page.sub-hero.dev.more">See how it looks.</a>
-                </p>
+                <h1>Blog</h1>
             </div>
         </div>
     </div>
 
     <div id="content" class="row">
-        <div class="large-4 columns">
-            <h2 data-i18n="index.page.content.why.header">Why Use Brackets?</h2>
+        <div class="large-10 columns collapse content">
+            <div class="row">
+                <div class="large-2 columns">
+                    <span class="post-date">October 6, 2014</span>
+                    <span class="post-author">Ryan Stewart</span>
+                    <span class="post-tags">news, releases</span>
+                </div>
+                <div class="large-10 columns">
+                    <h2 data-i18n="index.page.content.new-features.new-features">New Features</h2>
+                    <p>Split view has been one of our most requested features for Brackets and with Release 0.44 it‚Äôs finally landed. In this release we‚Äôve also overhauled the file tree which should make it more robust. You can see the full list of enhancements¬†here and grab the release¬†here.
+        Split View
+        With release 0.44 you can now view two documents side-by-side in either horizontal view or vertical view. To enable split view, use the¬† icon and then decide between a vertical split or a horizontal split. Then select the panel you want to open the file in and double-click the file to open it in that pane. You‚Äôll now see two working sets, one for each pane.
 
-            <h3 data-i18n="index.page.content.why.in-browser.header">Design In The Browser</h3>
-            <p data-i18n="index.page.content.why.in-browser.content">Brackets doesn't get in the way of your creative process. It blends visual tools into the editor while pushing HTML and CSS to the browser as you code.</p>
+        File Tree Enhancements
+        We rewrote our file tree to use React which will make it much easier to maintain going forward. During the upgrade we also fixed an issue that wouldn‚Äôt let users right-click on files that Brackets doesn‚Äôt support.
+        Quick Docs for Prefixes and other CSS Fixes
+        As of this release you can now use Quick Docs when you‚Äôre on a browser-prefixed CSS property. We‚Äôve also fixed two¬†important issues with editing¬†CSS code: one where Brackets stopped working when using Live Preview if you placed your cursor on¬†a non-indented } character inside a comment,¬†and one where the inline editor was blank if your CSS rule contained a vendor-prefixed property that used rgb() color values.
+        The entire team is excited about this release. We hope you enjoy split view as well as all the other features and fixes that went into this release. And as always, we appreciate those of you who have contributed translations and fixes this release. 
 
-            <h3 data-i18n="index.page.content.why.experience.header">An Elevated Experience</h3>
-            <p data-i18n="index.page.content.why.experience.content">Brackets isn't just pretty, it's also powerful. You'll enjoy writing code in Brackets. It will stay out of your way and provide just the right amount of help when you ask for it.</p>
+        =Ryan and the Comp to Code Team
+        ryan@adobe.com</p>
 
-            <h3 data-i18n="[html]index.page.content.why.love-and-js.header">Made with
-                <a href="contribute.html">&hearts;</a> and JavaScript</h3>
-            <p data-i18n="index.page.content.why.love-and-js.content">Brackets is an open-source project, with an active and growing developer community. It's made by other web developers like you!</p>
-
-            <h3 data-i18n="index.page.content.why.evolving.header">It's Evolving</h3>
-            <p data-i18n="index.page.content.why.evolving.content">Brackets is a sandbox for trying out new ideas for web tooling. New features and extensions are released every 2.5 weeks. It's like getting presents all year long.</p>
-
-            <p>
-                <a href="http://www.youtube.com/watch?v=VKitqLpJtAY&list=PL4BC6BE6AA61BE69D" data-i18n="index.page.content.why.video" data-yt-id="VKitqLpJtAY?listType=playlist&list=PL4BC6BE6AA61BE69D">Watch the Video&hellip;</a>
-            </p>
+                    <p class="comment-count"><a href="http://blog.brackets.io/2014/10/06/brackets-0-44-release-split-view/#comments" class="button secondary radius">22 Responses</a></p>
+    
+                </div>
+            </div>
         </div>
-        <div class="large-4 columns" id="features">
-            <h2 data-i18n="index.page.content.new-features.new-features">New Features</h2>
-            <div class="spinner">
-            </div>
-
-            <!-- JS generated content -->
-
-            <p>
-                <a href="http://blog.brackets.io/category/releases/" data-i18n="index.page.content.new-features.release-notes.past">Read Past Release Notes&hellip;</a>
-            </p>
-
-        </div>
-        <div class="large-4 columns">
-            <h2 data-i18n="index.page.content.blog.header">Recent Blog Posts</h2>
-            <div class="spinner" id="blogposts-spinner">
-            </div>
-            <div id="blogposts">
-                <!-- this will be filled dynamically -->
-            </div>
-            <p>
-                <a href="http://blog.brackets.io" data-i18n="index.page.content.blog.more">More on blog.brackets.io&hellip;</a>
-            </p>
+        <div class="large-2 columns">
+            <ul class="blog-menu">
+                <li><a href="#">Design</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Extensions</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Releases</a></li>
+                <li><a href="#">Research</a></li>
+                <li><a href="#">Team</a></li>
+            </ul>
         </div>
     </div>
     <div id="instructions" class="row"></div>
     <div id="footer-wrapper" class="gradient">
         <div id="footer" class="row">
-            <div class="large-4 columns">
-                <h2 id="contribute" data-i18n="footer.get-involved.header">Get Involved</h2>
-                <ul>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/wiki/Suggest-a-Feature" data-i18n="footer.get-involved.content.suggest">Suggest a Feature</a>
-                    </li>
-                    <li>
-                        <a href="https://groups.google.com/forum/#!forum/brackets-dev" data-i18n="footer.get-involved.content.devlist">Developer List on Google Groups</a>
-                    </li>
-                    <li>
-                        <a href="http://webchat.freenode.net?channels=brackets&uio=d4" data-i18n="footer.get-involved.content.irc">Chat on IRC at Freenode/#Brackets</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/issues" data-i18n="footer.get-involved.content.issues">Current Issues on GitHub</a>
-                    </li>
-                    <li>
-                        <a href="http://bit.ly/BracketsBacklog" data-i18n="footer.get-involved.content.trello">Feature Backlog on Trello</a>
-                    </li>
-                </ul>
+            <div class="large-3 columns">
+                &nbsp;
             </div>
-            <div class="large-4 columns">
-                <h2 id="try-it" data-i18n="footer.videos.header">Videos</h2>
-                <ul>
-                    <li>
-                        <a href="http://youtu.be/rvo3Mv1Z4qU" data-i18n="footer.videos.content.intro" data-yt-id="rvo3Mv1Z4qU">Introducing Brackets</a>
-                    </li>
-                    <li>
-                        <a href="http://youtu.be/Nhvj1NYC3Uc" data-i18n="footer.videos.content.livedev" data-yt-id="Nhvj1NYC3Uc">Brackets Live Development for HTML</a>
-                    </li>
-                    <li>
-                        <a href="http://youtu.be/T6d5C3rLeFY" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">JavaScript Debugger for Brackets</a>
-                    </li>
-                    <li>
-                        <a href="http://tutsplus.com/courses/introduction-to-brackets?utm_source=Bracketsio&utm_medium=website&utm_campaign=BracketsWebsite" data-i18n="footer.videos.content.tutsplus">Tuts+ Introduction to Brackets</a>
-                    </li>
-                </ul>
-
-            </div>
-            <div class="large-4 columns">
-                <h2 data-i18n="footer.links.header">Quick Links</h2>
+            <div class="large-3 columns">
+                <h5 data-i18n="footer.links.header">Quick Links</h5>
                 <ul>
                     <li>
                         <a href="https://github.com/adobe/brackets" data-i18n="footer.links.content.source">Source Code</a>
@@ -278,280 +187,54 @@ filter: none;
                     </li>
                 </ul>
             </div>
+            <div class="large-3 columns">
+                <h5 id="try-it" data-i18n="footer.videos.header">Videos</h5>
+                <ul>
+                    <li>
+                        <a href="http://youtu.be/rvo3Mv1Z4qU" data-i18n="footer.videos.content.intro" data-yt-id="rvo3Mv1Z4qU">Introducing Brackets</a>
+                    </li>
+                    <li>
+                        <a href="http://youtu.be/Nhvj1NYC3Uc" data-i18n="footer.videos.content.livedev" data-yt-id="Nhvj1NYC3Uc">Brackets Live Development for HTML</a>
+                    </li>
+                    <li>
+                        <a href="http://youtu.be/T6d5C3rLeFY" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">JavaScript Debugger for Brackets</a>
+                    </li>
+                    <li>
+                        <a href="http://tutsplus.com/courses/introduction-to-brackets?utm_source=Bracketsio&utm_medium=website&utm_campaign=BracketsWebsite" data-i18n="footer.videos.content.tutsplus">Tuts+ Introduction to Brackets</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="large-3 columns">
+                <h5 id="contribute" data-i18n="footer.get-involved.header">Get Involved</h5>
+                <ul>
+                    <li>
+                        <a href="https://github.com/adobe/brackets/wiki/Suggest-a-Feature" data-i18n="footer.get-involved.content.suggest">Suggest a Feature</a>
+                    </li>
+                    <li>
+                        <a href="https://groups.google.com/forum/#!forum/brackets-dev" data-i18n="footer.get-involved.content.devlist">Developer List on Google Groups</a>
+                    </li>
+                    <li>
+                        <a href="http://webchat.freenode.net?channels=brackets&uio=d4" data-i18n="footer.get-involved.content.irc">Chat on IRC at Freenode/#Brackets</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/adobe/brackets/issues" data-i18n="footer.get-involved.content.issues">Current Issues on GitHub</a>
+                    </li>
+                    <li>
+                        <a href="http://bit.ly/BracketsBacklog" data-i18n="footer.get-involved.content.trello">Feature Backlog on Trello</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="about" class="row">
-            <div class="large-6 large-centered columns">
-                <p>Brackets was founded by Adobe as a community guided, open source project to push web development editors to the next level.
-                    <br>The project is released under an
-                    <a href="https://github.com/adobe/brackets/blob/master/LICENSE">MIT License</a>.</p>
+            <div class="large-12 columns">
+                <p>Brackets was founded by Adobe as a community guided, open source project to push web development editors to the next level. The project is released under an <a href="https://github.com/adobe/brackets/blob/master/LICENSE">MIT License</a>.</p>
             </div>
         </div>
     </div>
 
-
-    <section id="system-requirements" class="reveal-modal fixed-width" data-reveal>
-        <div class="description">
-            <h3 data-i18n="index.page.system-requirements.header">System Requirements</h3>
-            <p data-i18n="index.page.system-requirements.mac.header">Mac OS X</p>
-            <ul>
-                <li data-i18n="index.page.system-requirements.mac.list.0">Multicore Intel processor</li>
-                <li data-i18n="index.page.system-requirements.mac.list.1">Mac OS X v10.6, v10.7, v10.8 or v10.9</li>
-                <li data-i18n="index.page.system-requirements.mac.list.2">256MB of RAM (2GB of RAM for Live Development)</li>
-                <li data-i18n="index.page.system-requirements.mac.list.3">200MB of available hard-disk space for installation</li>
-                <li data-i18n="index.page.system-requirements.mac.list.4">1280x800 display with 16-bit video card</li>
-            </ul>
-            <p data-i18n="index.page.system-requirements.win.header">Windows</p>
-            <ul>
-                <li data-i18n="index.page.system-requirements.win.list.0">Intel® Pentium® 4 or AMD Athlon® 64 processor</li>
-                <li data-i18n="index.page.system-requirements.win.list.1">Windows Vista, 7 or 8</li>
-                <li data-i18n="index.page.system-requirements.win.list.2">256MB of RAM (2GB of RAM for Live Development)</li>
-                <li data-i18n="index.page.system-requirements.win.list.3">200MB of available hard-disk space for installation</li>
-                <li data-i18n="index.page.system-requirements.win.list.4">1280x800 display with 16-bit video card</li>
-            </ul>
-        </div>
-        <a class="close-reveal-modal">&#215;</a>
-    </section>
-    <section id="installation-instructions" class="reveal-modal fixed-width" data-reveal>
-        <div class="description">
-            <h3 data-i18n="index.page.installation.header">Installation Instructions</h3>
-            <ol>
-                <li data-i18n="index.page.installation.list.0">Save the installer file to a location on your hard drive.</li>
-                <li data-i18n="index.page.installation.list.1">Locate the installer and double-click to start the install process.</li>
-            </ol>
-        </div>
-
-        <div class="description">
-            <h3 data-i18n="index.page.updates.header">Frequent Updates</h3>
-            <p data-i18n="[html]index.page.updates.content">New features in Brackets are released often (about every 2&frac12; weeks). When new features are available you will see a gift icon inside the application. For the latest release information, follow Brackets on
-                <a href="https://www.twitter.com/brackets">Twitter</a> or
-                <a href="https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036">Google+</a>.</p>
-        </div>
-        <a class="close-reveal-modal">&#215;</a>
-    </section>
-
     <script src="js/vendor/custom.modernizr.js"></script>
-
-    <!-- Source Sans Pro - Regular, Italic, Semibold -->
-    <script src="//use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
-
     <script src="js/vendor/jquery.js"></script>
-    <script src="js/i18next.min.js"></script>
-    <script src="js/foundation.min.js"></script>
     <script src="js/nav.js"></script>
-    <script src="js/youtube-modal.js"></script>
-    <script>
-        $(document).foundation();
-    </script>
-
-    <script>
-        var ext = "";
-        var OS = "UNKNOWN";
-        if (/Windows|Win32|WOW64|Win64/.test(navigator.userAgent)) {
-            OS = "WIN";
-            ext = ".msi";
-        } else if (/Mac/.test(navigator.userAgent)) {
-            OS = "OSX";
-            ext = ".dmg";
-        } else if (/Linux|X11/.test(navigator.userAgent)) {
-            OS = "LINUX32";
-            ext = ".32-bit.deb";
-            if (/x86_64/.test(navigator.appVersion + navigator.userAgent)) {
-                OS = "LINUX64";
-                ext = ".64-bit.deb";
-            }
-        }
-        if (/iPad|iPod|iPhone|Android/.test(navigator.userAgent)) {
-            OS = "OTHER";
-            $("#download").hide();
-        }
-    </script>
-
-    <script src="js/load.i18next.js"></script>
-
-    <script>
-        // Detect unsupported Operating Systems
-        function updateAlertContent(unsupported) {
-            var translatedText = i18n.t("index.page.hero.os-alert." + unsupported.i18nKey, { os: unsupported.os, defaultValue: unsupported.default, url: unsupported.url });
-            $("#os-alert")
-                .html(translatedText)
-                .show();
-        }
-
-        var unsupported = {
-            i18nKey: "general",
-            url: "https://github.com/adobe/brackets/wiki/Troubleshooting#requirements"
-        },
-            osMatch;
-        if (/NT ?5\.\d/.test(navigator.userAgent)) { // Windows XP
-            unsupported.os = "Windows XP";
-            unsupported.i18nKey = "win-xp";
-            unsupported.url = "http://blog.brackets.io/2014/04/18/windows-xp-support/";
-            unsupported.default = "Unfortunately, we don't support Windows XP any longer. <a href='" + unsupported.url + "'>Read our blog post</a> for further information.";
-        } else if (osMatch = navigator.userAgent.match(/Mac OS X 10[._](\d+)([._](\d+))?\D/i)) { // Mac OS X 10.*
-            osMatch = parseFloat(osMatch[1] + "." + (osMatch[3] || 0));
-            if (osMatch < 6.8 && osMatch !== 6.0) { // Firefox reports only the OS X major version (10.6), so we have to check for 6.0
-                // Mac OS X pre 10.6.8 is not supported
-                unsupported.os = "Mac OS X 10." + osMatch;
-            }
-        } else if (/Debian[ -_]7/i.test(navigator.userAgent)) { // Debian 7
-            unsupported.os = "Debian 7";
-            unsupported.i18nKey = "debian-7";
-            unsupported.url = "https://github.com/adobe/brackets/issues/4816";
-            unsupported.default = "Unfortunately, we currently don't support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
-        } else if (osMatch = navigator.userAgent.match(/Ubuntu[ -_\/]?(\d+)[._](\d+)\D/i)) { // Ubuntu
-            if (parseInt(osMatch[1], 10) < 12) { // pre Ubuntu 12.04
-                unsupported.os = "Ubuntu " + osMatch[1] + "." + osMatch[2];
-            }
-        }
-
-        if (unsupported.os) {
-            if (!unsupported.default) {
-                unsupported.default = "Unfortunately, we don't support " + unsupported.os + " any longer. <a href='" + unsupported.url + "'>Take a look at the Requirements.</a>";
-            }
-            $("#hero-cta-button").hide();
-            updateAlertContent(unsupported);
-            if (!i18nLoaded.state() !== "resolved") {
-                i18nLoaded.done(function () {
-                    updateAlertContent(unsupported);
-                });
-            }
-        }
-
-        var shortLocale = (requestedLang && requestedLang.split("-")[0]) || "en",
-            versionInfoBaseUrl = "//s3.amazonaws.com/files.brackets.io/updates/stable/",
-            versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
-
-        if (shortLocale !== "en") {
-            $.ajax({
-                url: versionInfoUrl,
-                type: "HEAD"
-            }).fail(function () {
-                shortLocale = "en";
-                versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
-            });
-        }
-
-        $.ajax({
-            dataType: "json",
-            url: versionInfoUrl,
-            cache: false
-        }).done( function (data) {
-            i18nLoaded.done(function () {
-                var build = data[0];
-                var buildName = build.versionString;
-
-                if (buildName) {
-                    var buildNum = buildName.match(/([\d.]+)/);
-                    if (buildNum) {
-                        buildNum = buildNum[1];
-                    }
-
-                    // update button
-                    if (OS != "OTHER" && buildNum) {
-                        var tag = buildName.toLowerCase().split(" ").join("-"),
-                            url = "https://github.com/adobe/brackets/releases/" + tag;
-                        if (ext) {
-                            url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
-                        }
-
-                        ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
-                        ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-
-                        var version_label = buildName;
-                        if (OS != "UNKNOWN") version_label += " (" + OS + ")";
-                        $("#download-version").html(version_label);
-
-                        logAndGo("hero-cta-button", url, ['_trackEvent', 'Downloads', buildNum, OS]);
-                    }
-
-                    // other-download track
-                    logAndGo("other-downloads", $("#other-downloads").attr("href"), ['_trackEvent', 'Other-Downloads', buildNum, OS]);
-                }
-
-                // update features (limit 5)
-                var feature_content = "<h2>" + i18n.t("index.page.content.new-features.new-features-in", { defaultValue: "New in " + build.versionString, sprintNumber: build.versionString }) + "</h2>";
-                build.newFeatures.slice(0, Math.min(build.newFeatures.length, 5)).forEach(function (feature) {
-                    feature_content += "<h3>" + $("<div/>").text(feature.name).html() + "</h3>";
-                    feature_content += "<p>" + $("<div/>").text(feature.description).html() + "</p>";
-                });
-                feature_content += "<p><a href='" + build.releaseNotesURL + "'>" + i18n.t("index.page.content.new-features.release-notes.more", { defaultValue: "More in the release notes." }) + "</a></p>";
-                $("#features").html(feature_content);
-            });
-        });
-
-        function logAndGo(elementID, _url, tagObj) {
-            var elem = document.getElementById(elementID);
-            elem.href = _url;
-            elem.onclick = function (e) {
-                e.preventDefault();
-                var downloadStarted = false;
-                setTimeout(function () { if (!downloadStarted) window.location.href = _url; }, 1200); // fallback
-                _gaq.push(tagObj, function () {
-                    downloadStarted = true;
-                    setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
-                });
-            }
-        }
-    </script>
-
-    <script>
-        function recentBlogposts() {
-            var dateRegex = /(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)/,
-                $blogposts = $("#blogposts");
-
-            $.ajax({
-                url: "http://blog.brackets.io/feed/json",
-                dataType: "jsonp"
-            })
-                .always(function () {
-                    $("#blogposts-spinner").remove();
-                    $blogposts.hide();
-                    $blogposts.fadeIn(1000);
-                })
-                .done(function (data) {
-                    var options = {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric"
-                    };
-
-                    data.forEach(function (item) {
-                        var dateComponents = item.date.match(dateRegex),
-                            postingDate = new Date(dateComponents[1],
-                                dateComponents[2] - 1, // zero based month
-                                dateComponents[3],
-                                dateComponents[4],
-                                dateComponents[5],
-                                dateComponents[6]);
-
-                        $blogposts.append('<h3><a href="' + item.permalink + '">' +
-                            item.title +
-                            '</a></h3><p>' +
-                            postingDate.toLocaleDateString(requestedLang, options) +
-                            '</p>');
-                    });
-                })
-                .fail(function () {
-                    $blogposts.append("<p>Refresh page to load posts</p>");
-                });
-        }
-
-        $(recentBlogposts());
-    </script>
-
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-32881640-1']);
-        _gaq.push(['_setDomainName', 'brackets.io']);
-        _gaq.push(['_gat._anonymizeIp']);
-        _gaq.push(['_trackPageview']);
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
 
 </body>
 
