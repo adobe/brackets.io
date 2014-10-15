@@ -110,6 +110,8 @@
             <div class="large-12 columns">
                 <h1 data-i18n="[html]contribute.page.hero.header">Brackets is fun to hack on and easy to contribute to.</h1>
                 <p data-i18n="[html]contribute.page.hero.content">Made with <span class="hearts">&hearts;</span> and JavaScript, the Brackets project is a community sandbox where everyone is invited to experiment with new ideas for web tooling.</p>
+                <!-- Populate contributors via Github -->
+                <div id="contributors"></div>
             </div>
         </div>
     </div>
@@ -259,6 +261,23 @@
     <script src="js/load.i18next.js"></script>
 
     <script>
+        // get contributors
+        
+        $.getJSON("https://api.github.com/repos/adobe/brackets/contributors?per_page=100").done(function (data) {
+            var displayContent = "", i, member;
+
+            for (i = 0; i < data.length; i++) {
+                member = data[i];
+                displayContent += '<a href="' + member.html_url + '">';
+                displayContent += '<img src="' + member.avatar_url.split("?")[0] + '?s=64" title="' + member.login + '">';
+                displayContent += '</a>';
+            }
+
+            if (displayContent) {
+                $("#contributors").html(displayContent);
+            }
+        });
+        
         function localizedCommentsCount(count) {
             return i18n.t("contribute.page.content.comments.comments", {
                 count: count,
