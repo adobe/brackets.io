@@ -257,14 +257,12 @@
         // get contributors
         
         $.getJSON("https://api.github.com/repos/adobe/brackets/contributors?per_page=100").done(function (data) {
-            var displayContent = "", i, member;
-
-            for (i = 0; i < data.length; i++) {
-                member = data[i];
+            var displayContent = "";
+            data.forEach(function(member) {
                 displayContent += '<a href="' + member.html_url + '">';
                 displayContent += '<img src="' + member.avatar_url.split("?")[0] + '?s=64" title="' + member.login + '">';
                 displayContent += '</a>';
-            }
+            });
 
             if (displayContent) {
                 $("#contributors").html(displayContent);
