@@ -32,15 +32,16 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/foundation.min.css" />
-
-    <link rel="stylesheet" href="css/reveal.css">
-
+    
     <!-- social media images -->
     <link rel="image_src" href="/img/hero.png" />
     <meta property="og:image" content="http://www.brackets.io/img/hero.png"/>
 
     <!-- Only Edit brackets.io.css -->
     <link rel="stylesheet" href="css/brackets.io.css" />
+    
+    <!-- This needs to be at the top, not at the bottom like the other JS. Source Sans Pro - Light, Regular, Italic, Semibold -->
+    <script src="//use.edgefonts.net/source-sans-pro:n3,n4,n6,i3,i4;source-code-pro:n4.js"></script>
 
     <!-- These stop FOUT -->
     <style type="text/css">
@@ -56,101 +57,79 @@
     <link rel="alternate" href="?" hreflang="x-default" />
     <link rel="alternate" href="?lang=en" hreflang="en" />
     <link rel="alternate" href="?lang=de" hreflang="de" />
-
-    <!--[if gte IE 9]>
-      <style type="text/css">
-        .gradient {
-           filter: none;
-        }
-      </style>
-    <![endif]-->
 </head>
-<body>
-    <div id="header-wrapper">
-        <div id="header" class="row">
-            <div class="large-12 columns clearfix">
-                <h1 class="brackets-logo">
-                    <a href="index.html">
-                        <i></i>Brackets</a>
-                </h1>
-                <div class="mobile-nav">
-                    <a id="hamburger" href="#">Menu</a>
+<body id="contribute">
+<div id="header-wrapper">
+    <div id="header" class="row">
+        <div class="large-12 columns clearfix">
+            <h1 class="brackets-logo">
+                <a href="index.html">
+                    <i></i>Brackets</a>
+            </h1>
+            <div class="mobile-nav">
+                <a id="hamburger" href="#">Menu</a>
+            </div>
+            <div class="nav clearfix">
+                <div class="nav-links">
+                    <a href="contribute.html" class="contribute" data-i18n="nav.contribute">Contribute</a>
+                    <a href="docs/current/modules/brackets.html" data-i18n="nav.apidocs">API Docs</a>
+                    <a href="http://blog.brackets.io" data-i18n="nav.blog">Blog</a>
+                    <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="nav.support">Support</a>
                 </div>
-                <div class="nav clearfix">
-                    <div class="nav-links">
-                        <a href="contribute.html" class="contribute" data-i18n="nav.contribute">Contribute</a>
-                        <a href="docs/current/modules/brackets.html" data-i18n="nav.apidocs">API Docs</a>
-                        <a href="http://blog.brackets.io" data-i18n="nav.blog">Blog</a>
-                        <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="nav.support">Support</a>
-                    </div>
-                    <div class="social-links">
-                        <a class="social-links-item github-icon" href="https://www.github.com/adobe/brackets" title="GitHub">GitHub</a>
-                        <a class="social-links-item mail-icon" href="https://groups.google.com/forum/#!forum/brackets-dev" title="Google Groups">Google Groups</a>
-                        <a class="social-links-item irc-icon" href="http://webchat.freenode.net/?channels=brackets" title="IRC">IRC</a>
-                        <a class="social-links-item twitter-icon" href="https://twitter.com/brackets" title="Twitter">Twitter</a>
-                        <a class="social-links-item google-plus-icon" href="https://plus.google.com/b/115365194873502050036/" title="Google Plus">Google Plus</a>
-                        <a class="social-links-item facebook-icon" href="https://www.facebook.com/codebrackets" title="Facebook">Facebook</a>
-                        <a class="social-links-item youtube-icon" href="https://www.youtube.com/codebrackets" title="YouTube">YouTube</a>
-                    </div>
+                <div class="social-links">
+                    <a class="social-links-item github-icon" href="https://www.github.com/adobe/brackets" title="GitHub">GitHub</a>
+                    <a class="social-links-item twitter-icon" href="https://twitter.com/brackets" title="Twitter">Twitter</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!--
-    <div id="banner-wrapper">
-        <div id="banner" class="row">
-            <div class="large-12 columns">
-                <span class="banner-text"></span> <a id="banner-button" href="http://www.meetup.com/Brackets-Editor/events/169625592/" class="rounded radius button"></a>
-            </div>
-        </div>        
-    </div>
-        -->
-
-    <div id="hero-wrapper" class="gradient">
-        <div id="hero" class="row no-bg-img">
-            <div class="large-12 columns">
-                <h1 data-i18n="[html]contribute.page.hero.header">Made with &hearts; and JavaScript</h1>
-                <p data-i18n="contribute.page.hero.content">Brackets is an open source code editor that is fun to hack on and easy to contribute to. The Brackets project is a community sandbox where everyone is invited to experiment with new ideas for web tooling.</p>
-            </div>
+<div id="hero-wrapper">
+    <div id="hero" class="row">
+        <div class="large-12 columns">
+            <h1 data-i18n="[html]contribute.page.hero.header">Brackets is fun to hack on and easy to <span class="nobr">contribute to.</span></h1>
+            <p data-i18n="[html]contribute.page.hero.content">Made with <span class="hearts">&hearts;</span> and JavaScript, the Brackets project is a community sandbox where everyone is invited to experiment with new ideas for <span class="nobr">web tooling.</span></p>
+            <!-- Populate contributors via Github -->
+            <div id="contributors"></div>
         </div>
     </div>
+</div>
 
-    <div id="sub-hero-wrapper">
-        <div id="sub-hero" class="row">
-            <div class="large-3 columns">
-                <h2 data-i18n="contribute.page.sub-hero.get-source.header">Get The Source Code</h2>
-                <p><span data-i18n="contribute.page.sub-hero.get-source.content">Brackets is one of the most popular projects on GitHub. Fork the project and join the community.</span>
-                    <br>
-                    <a href="https://github.com/adobe/brackets" data-i18n="contribute.page.sub-hero.get-source.more">Explore the repo.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="contribute.page.sub-hero.setup-env.header">Setup A Dev Environment</h2>
-                <p><span data-i18n="contribute.page.sub-hero.setup-env.content">Read our detailed instructions for setting up a development environment and get hacking right away.</span>
-                    <br>
-                    <a href="https://github.com/adobe/brackets/wiki/How-to-Hack-on-Brackets" data-i18n="contribute.page.sub-hero.setup-env.more">Get set up.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="contribute.page.sub-hero.extension.header">Build An Extension</h2>
-                <p><span data-i18n="contribute.page.sub-hero.extension.content">Building a Brackets extension is the easiest way to experiment with new ideas and share them with the community.</span>
-                    <br>
-                    <a href="https://github.com/adobe/brackets/wiki/How-to-Write-Extensions" data-i18n="contribute.page.sub-hero.extension.more">Start experimenting.</a>
-                </p>
-            </div>
-            <div class="large-3 columns">
-                <h2 data-i18n="contribute.page.sub-hero.translate.header">Help Translate Brackets</h2>
-                <p><span data-i18n="[html]contribute.page.sub-hero.translate.content">Brackets is available in <span id="langCount">25+</span> languages that are contributed and maintained by the community.</span>
-                    <br>
-                    <a href="https://github.com/adobe/brackets/blob/master/src/nls/README.md" data-i18n="contribute.page.sub-hero.translate.more">Contribute a translation.</a>
-                </p>
-            </div>
+<div id="sub-hero-wrapper">
+    <div id="sub-hero" class="row">
+        <div class="medium-6 large-4 columns">
+            <h2 data-i18n="contribute.page.sub-hero.setup-env.header">How to Hack on Brackets?</h2>
+            <p><span data-i18n="contribute.page.sub-hero.setup-env.content">Read our detailed instructions for setting up a development environment and get hacking right away.</span>
+            </p>
+            <p>
+                <a class="button radius secondary" href="https://github.com/adobe/brackets/wiki/How-to-Hack-on-Brackets" data-i18n="contribute.page.sub-hero.setup-env.more">Learn How to Hack on Brackets</a>
+            </p>
+        </div>
+        <div class="medium-6 large-4 columns">
+            <h2 data-i18n="contribute.page.sub-hero.extension.header">How to Write Extensions?</h2>
+            <p>
+                <span data-i18n="contribute.page.sub-hero.extension.content">Building a Brackets extension is the easiest way to experiment with new ideas and share them with the community.</span>
+            </p>
+            <p>
+                <a class="button radius secondary" href="https://github.com/adobe/brackets/wiki/How-to-Write-Extensions" data-i18n="contribute.page.sub-hero.extension.more">Learn How to Write Extensions</a>
+            </p>
+        </div>
+        <div class="small-12 large-4 columns">
+            <h2 data-i18n="contribute.page.sub-hero.translate.header">Help Translate Brackets</h2>
+            <p>
+                <span data-i18n="[html]contribute.page.sub-hero.translate.content">Brackets is available in <span id="langCount">31</span> languages that are contributed and maintained by the community.</span>
+            </p>
+            <p>
+                <a class="button radius secondary" href="https://github.com/adobe/brackets/blob/master/src/nls/README.md" data-i18n="contribute.page.sub-hero.translate.more">Contribute a Translation</a>
+            </p>
         </div>
     </div>
+</div>
 
+<div id="content-wrapper">
     <div id="content" class="row">
-        <div class="large-4 columns">
+        <div class="medium-6 large-6 columns">
             <h2><a href="https://github.com/adobe/brackets/labels/starter%20bug" data-i18n="contribute.page.content.starter-issues.header">Starter Issues</a></h2>
             <p data-i18n="[html]contribute.page.content.starter-issues.description">Just getting started? Starter issues are bite-sized bugs that shouldn't take more than an hour or two to complete. They are a great way to learn the codebase <em>and</em> make a difference.</p>
             <div id="starter_issues">
@@ -160,9 +139,9 @@
                 <!-- JS generated content -->
 
             </div>
-            <p><a href="https://github.com/adobe/brackets/issues?labels=starter+bug&page=1&state=open" data-i18n="contribute.page.content.starter-issues.more">View starter issues&hellip;</a></p>
+            <p><a class="button radius secondary" href="https://github.com/adobe/brackets/issues?labels=starter+bug&page=1&state=open" data-i18n="contribute.page.content.starter-issues.more">View All Starter Issues&hellip;</a></p>
         </div>
-        <div class="large-4 columns">
+        <div class="medium-6 large-6 columns">
             <h2 data-i18n="contribute.page.content.starter-features.header">Starter Features</h2>
             <p data-i18n="contribute.page.content.starter-features.description">Ready for something bigger? Starter features are small ideas that won't require a big time commitment. You should be able to complete one in a couple weeknights or over a weekend.</p>
             <div id="starter_features">
@@ -172,281 +151,193 @@
                 <!-- JS generated content -->
 
             </div>
-            <p><a href="http://bit.ly/BracketsBacklog" data-i18n="contribute.page.content.starter-features.more">View the feature backlog&hellip;</a></p>
+            <p><a class="button radius secondary" href="http://bit.ly/BracketsBacklog" data-i18n="contribute.page.content.starter-features.more">View All Starter Features&hellip;</a></p>
         </div>
-        <div class="large-4 columns">
-            <h2 data-i18n="contribute.page.content.committers.header">Committers</h2>
+    </div>
+</div>
 
-            <ul class="committer-list">
+<div id="footer-wrapper">
+    <div id="footer" class="row">
+        <div class="medium-6 large-3 columns">
+            <h5 data-i18n="footer.links.header">Quick Links</h5>
+            <ul>
                 <li>
-                    <img src="https://avatars.githubusercontent.com/u/1457701?s=27" alt="avatar"/>
-                    Miguel Castillo (<a href="https://github.com/MiguelCastillo">manchagnu</a>)
+                    <a href="https://github.com/adobe/brackets" data-i18n="footer.links.content.source">Source Code on Github</a>
                 </li>
                 <li>
-                    <img src="https://avatars.githubusercontent.com/u/1067319?s=27" alt="avatar"/>
-                    Martin Zagora (<a href="https://github.com/zaggino">zaggino</a>)
+                    <a href="docs/current/modules/brackets.html" data-i18n="footer.links.content.apidocs">API Documentation</a>
                 </li>
                 <li>
-                    <img src="https://avatars.githubusercontent.com/u/3368515?s=27" alt="avatar"/>
-                    Arzhan Kinzhalin (<a href="https://github.com/busykai">busykai</a>)
+                    <a href="https://ingorichter.github.io/BracketsExtensionTweetBot/" data-i18n="footer.links.content.extension">Weekly Extension Updates</a>
                 </li>
                 <li>
-                    <img src="https://avatars.githubusercontent.com/u/86214?s=27" alt="avatar"/>
-                    Ingo Richter (<a href="https://github.com/ingorichter">ingorichter</a>)
+                    <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="footer.links.content.troubleshooting">Troubleshooting Help</a>
                 </li>
                 <li>
-                    <img src="https://avatars.githubusercontent.com/u/887904?s=27" alt="avatar"/>
-                    Jochen Hagenstroem (<a href="https://github.com/couzteau">couzteau</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/3752015?s=27" alt="avatar"/>
-                    Bryan Chin (<a href="https://github.com/bchintx">bchintx</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1514099?s=27" alt="avatar"/>
-                    Jeff Booher (<a href="https://github.com/JeffryBooher">JeffryBooher</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1774931?s=27" alt="avatar"/>
-                    Lance Campbell (<a href="https://github.com/lkcampbell">lkcampbell</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1564859?s=27" alt="avatar"/>
-                    Dennis Kehrig (<a href="https://github.com/DennisKehrig">DennisKehrig</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1075154?s=27" alt="avatar"/>
-                    Ian Wehrman (<a href="https://github.com/iwehrman">iwehrman</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/905006?s=27" alt="avatar"/>
-                    Chema Balsas (<a href="https://github.com/jbalsas">jbalsas</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1334574?s=27" alt="avatar"/>
-                    Jonathan Diehl (<a href="https://github.com/jdiehl">jdiehl</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/367710?s=27" alt="avatar"/>
-                    Jonathan Rowny (<a href="https://github.com/jrowny">jrowny</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1299997?s=27" alt="avatar"/>
-                    Tomás Malbrán (<a href="https://github.com/TomMalbran">TomMalbran</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1197545?s=27" alt="avatar"/>
-                    Adam Lehman (<a href="https://github.com/adrocknaphobia">adrocknaphobia</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/55970?s=27" alt="avatar"/>
-                    Kevin Dangoor (<a href="https://github.com/dangoor">dangoor</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/125516?s=27" alt="avatar"/>
-                    Garth Braithwaite (<a href="https://github.com/GarthDB">GarthDB</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1060119?s=27" alt="avatar"/>
-                    Glenn Ruehle (<a href="https://github.com/gruehle">gruehle</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1148713?s=27" alt="avatar"/>
-                    Jason San Jose (<a href="https://github.com/jasonsanjose">jasonsanjose</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/908679?s=27" alt="avatar"/>
-                    Joel Brandt (<a href="https://github.com/joelrbrandt">joelrbrandt</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/697759?s=27" alt="avatar"/>
-                    Narciso Jaramillo (<a href="https://github.com/njx">njx</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1197510?s=27" alt="avatar"/>
-                    Peter Flynn (<a href="https://github.com/peterflynn">peterflynn</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1584287?s=27" alt="avatar"/>
-                    Peter Thiess (<a href="https://github.com/pthiess">pthiess</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1542488?s=27" alt="avatar"/>
-                    Raymond Lim (<a href="https://github.com/RaymondLim">RaymondLim</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1197144?s=27" alt="avatar"/>
-                    Randy Edmunds (<a href="https://github.com/redmunds">redmunds</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/45450?s=27" alt="avatar"/>
-                    Ryan Stewart (<a href="https://github.com/ryanstewart">ryanstewart</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/2781554?s=27" alt="avatar"/>
-                    Darrell Loverin (<a href="https://github.com/dloverin">dloverin</a>)
-                </li>
-                <li>
-                    <img src="https://avatars.githubusercontent.com/u/1495261?s=27" alt="avatar"/>
-                    Larz (<a href="https://github.com/larz0">larz0</a>)
+                    <a href="https://github.com/adobe/brackets/wiki" data-i18n="footer.links.content.wiki">Wiki</a>
                 </li>
             </ul>
+        </div>
+        <div class="medium-6  large-3 columns">
+            <h5 id="try-it" data-i18n="footer.videos.header">Videos</h5>
+            <ul>
+                <li>
+                    <a href="http://youtu.be/rvo3Mv1Z4qU" data-i18n="footer.videos.content.intro" data-yt-id="rvo3Mv1Z4qU">Introducing Brackets</a>
+                </li>
+                <li>
+                    <a href="http://youtu.be/Nhvj1NYC3Uc" data-i18n="footer.videos.content.livedev" data-yt-id="Nhvj1NYC3Uc">Live Development for HTML</a>
+                </li>
+                <li>
+                    <a href="http://youtu.be/T6d5C3rLeFY" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">JavaScript Debugger for Brackets</a>
+                </li>
+                <li>
+                    <a href="http://tutsplus.com/courses/introduction-to-brackets?utm_source=Bracketsio&utm_medium=website&utm_campaign=BracketsWebsite" data-i18n="footer.videos.content.tutsplus">Tuts+ Introduction to Brackets</a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/user/CodeBrackets" data-i18n="footer.videos.content.youtube">Brackets Videos on Youtube</a>
+                </li>
+            </ul>
+        </div>
+        <div class="medium-6 large-3 columns">
+            <h5 id="contribute" data-i18n="footer.get-involved.header">Get Involved</h5>
+            <ul>
+                <li>
+                    <a href="https://github.com/adobe/brackets/wiki/Suggest-a-Feature" data-i18n="footer.get-involved.content.suggest">Suggest a Feature</a>
+                </li>
+                <li>
+                    <a href="http://bit.ly/BracketsBacklog" data-i18n="footer.get-involved.content.trello">View Backlog on Trello</a>
+                </li>
+                <li>
+                    <a href="https://groups.google.com/forum/#!forum/brackets-dev" data-i18n="footer.get-involved.content.devlist">Discuss on Google Groups</a>
+                </li>
+                <li>
+                    <a href="http://webchat.freenode.net?channels=brackets&uio=d4" data-i18n="footer.get-involved.content.irc">Chat on IRC at Freenode/#Brackets</a>
+                </li>
+                <li>
+                    <a href="https://github.com/adobe/brackets/issues" data-i18n="footer.get-involved.content.issues">Checkout Current Issues on GitHub</a>
+                </li>
 
+            </ul>
+        </div>
+        <div class="medium-6 large-3 columns">
+            <h5>Keep in Touch</h5>
+            <ul>
+                <li>
+                    <a href="https://twitter.com/brackets">Twitter</a>
+                </li>
+                <li>
+                    <a href="https://www.facebook.com/codebrackets">Facebook</a>
+                </li>
+                <li>
+                    <a href="https://plus.google.com/b/115365194873502050036/" >Google+</a>
+                </li>
+            </ul>
         </div>
     </div>
-
-    <div id="footer-wrapper" class="gradient">
-        <div id="footer" class="row">
-            <div class="large-4 columns">
-                <h2 id="contribute" data-i18n="footer.get-involved.header">Get Involved</h2>
-                <ul>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/wiki/Suggest-a-Feature" data-i18n="footer.get-involved.content.suggest">Suggest a Feature</a>
-                    </li>
-                    <li>
-                        <a href="https://groups.google.com/forum/#!forum/brackets-dev" data-i18n="footer.get-involved.content.devlist">Developer List on Google Groups</a>
-                    </li>
-                    <li>
-                        <a href="http://webchat.freenode.net?channels=brackets&uio=d4" data-i18n="footer.get-involved.content.irc">Chat on IRC at Freenode/#Brackets</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/issues" data-i18n="footer.get-involved.content.issues">Current Issues on GitHub</a>
-                    </li>
-                    <li>
-                        <a href="http://bit.ly/BracketsBacklog" data-i18n="footer.get-involved.content.trello">Feature Backlog on Trello</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="large-4 columns">
-                <h2 id="try-it" data-i18n="footer.videos.header">Videos</h2>
-                <ul>
-                    <li>
-                        <a href="http://youtu.be/rvo3Mv1Z4qU" data-i18n="footer.videos.content.intro" data-yt-id="rvo3Mv1Z4qU">Introducing Brackets</a>
-                    </li>
-                    <li>
-                        <a href="http://youtu.be/Nhvj1NYC3Uc" data-i18n="footer.videos.content.livedev" data-yt-id="Nhvj1NYC3Uc">Brackets Live Development for HTML</a>
-                    </li>
-                    <li>
-                        <a href="http://youtu.be/T6d5C3rLeFY" data-i18n="footer.videos.content.theseus" data-yt-id="T6d5C3rLeFY">JavaScript Debugger for Brackets</a>
-                    </li>
-                    <li>
-                        <a href="http://tutsplus.com/courses/introduction-to-brackets?utm_source=Bracketsio&utm_medium=website&utm_campaign=BracketsWebsite" data-i18n="footer.videos.content.tutsplus">Tuts+ Introduction to Brackets</a>
-                    </li>
-                </ul>
-
-            </div>
-            <div class="large-4 columns">
-                <h2 data-i18n="footer.links.header">Quick Links</h2>
-                <ul>
-                    <li>
-                        <a href="https://github.com/adobe/brackets" data-i18n="footer.links.content.source">Source Code</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="footer.links.content.troubleshooting">Troubleshooting Help</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/adobe/brackets/wiki" data-i18n="footer.links.content.wiki">Wiki</a>
-                    </li>
-                    <li>
-                        <a href="docs/current/modules/brackets.html" data-i18n="footer.links.content.apidocs">API Documentation</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div id="about" class="row">
-            <div class="large-6 large-centered columns">
-                <p>Brackets was founded by Adobe as a community guided, open source project to push web development editors to the next level.
-                    <br>The project is released under an
-                    <a href="https://github.com/adobe/brackets/blob/master/LICENSE">MIT License</a>.</p>
-            </div>
+    <div id="about" class="row">
+        <div class="large-12 columns">
+            <p>Brackets was founded by Adobe as a community guided, open source <span class="nobr">project to push web development editors to the next level.</span><br>Brackets is released under the <a href="https://github.com/adobe/brackets/blob/master/LICENSE">MIT License</a>.</p>
         </div>
     </div>
+</div>
 
-    <script src="js/vendor/custom.modernizr.js"></script>
 
-    <!-- Source Sans Pro - Regular, Italic, Semibold -->
-    <script src="//use.edgefonts.net/source-sans-pro:n4,n6,i4;source-code-pro:n4.js"></script>
+<script src="js/vendor/custom.modernizr.js"></script>
+<script src="js/vendor/jquery.js"></script>
+<script src="js/i18next.min.js"></script>
+<script src="js/foundation.min.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/youtube-modal.js"></script>
+<script>
+    $(document).foundation();
+</script>
 
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/i18next.min.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/youtube-modal.js"></script>
-    <script>
-        $(document).foundation();
-    </script>
+<script src="js/load.i18next.js"></script>
 
-    <script src="js/load.i18next.js"></script>
+<script>
+    // get contributors
 
-    <script>
-        function localizedCommentsCount(count) {
-            return i18n.t("contribute.page.content.comments.comments", {
-                count: count,
-                defaultValue: count + " " + (count === 1 ? "comment" : "comments")
-            });
+    $.getJSON("https://api.github.com/repos/adobe/brackets/contributors?per_page=100").done(function (data) {
+        var displayContent = "";
+        data.forEach(function(member) {
+            displayContent += '<a href="' + member.html_url + '">';
+            displayContent += '<img src="' + member.avatar_url.split("?")[0] + '?s=48" title="' + member.login + '">';
+            displayContent += '</a>';
+        });
+
+        if (displayContent) {
+            $("#contributors").html(displayContent);
         }
+    });
 
-        // don't load starter issues or features on smartphones
-        if (document.documentElement.clientWidth > 480) {
-            // get starter issues from github
-            $.getJSON("https://api.github.com/repos/adobe/brackets/issues?labels=starter+bug&state=open&per_page=6").done(function (data) {
-                i18nLoaded.done(function () {
-                    // update issue list
-                    var feature_content = "";
-                    data.forEach(function (entry) {
+    function localizedCommentsCount(count) {
+        return i18n.t("contribute.page.content.comments.comments", {
+            count: count,
+            defaultValue: count + " " + (count === 1 ? "comment" : "comments")
+        });
+    }
+
+    // don't load starter issues or features on smartphones
+    if (document.documentElement.clientWidth > 480) {
+        // get starter issues from github
+        $.getJSON("https://api.github.com/repos/adobe/brackets/issues?labels=starter+bug&state=open&per_page=7").done(function (data) {
+            i18nLoaded.done(function () {
+                // update issue list
+                var feature_content = "";
+                data.forEach(function (entry) {
+                    feature_content += '<article class="card">';
+                    feature_content += '<header><h3><a href="' + entry.html_url + '">' + $("<div/>").text(entry.title).html() + '</a></h3></header>';
+                    feature_content += '<footer><div class="comment-count">' + localizedCommentsCount(entry.comments) + '</div></footer>';
+                    feature_content += '</article>';
+                });
+                $("#starter_issues").html(feature_content);
+            });
+        });
+
+        // get starter features from trello
+        $.getJSON("https://api.trello.com/1/boards/4f90a6d98f77505d7940ce88/cards?key=1953abc13ad18fd16a66a2a1d938a07a&filter=open&fields=badges,name,url,labels").done(function (data) {
+            i18nLoaded.done(function () {
+                // update starter feature list
+                var limit = 7;
+                var feature_content = "";
+                for (i = 0; i < data.length && limit > 0; i++) {
+                    var feature = data[i];
+                    if (feature.labels.some(function (label) { return label.color === "green"; })) { // labelled Starter Feature
                         feature_content += '<article class="card">';
-                        feature_content += '<header><h3><a href="' + entry.html_url + '">' + $("<div/>").text(entry.title).html() + '</a></h3></header>';
-                        feature_content += '<footer><div class="comment-count">' + localizedCommentsCount(entry.comments) + '</div></footer>';
+                        feature_content += '<header><h3><a href="' + feature.url + '">' +  $("<div/>").text(feature.name).html() + '</a></h3></header>';
+                        feature_content += '<footer><div class="comment-count">' + localizedCommentsCount(feature.badges.comments) + '</div></footer>';
                         feature_content += '</article>';
-                    });
-                    $("#starter_issues").html(feature_content);
-                });
-            });
-
-            // get starter features from trello
-            $.getJSON("https://api.trello.com/1/boards/4f90a6d98f77505d7940ce88/cards?key=1953abc13ad18fd16a66a2a1d938a07a&filter=open&fields=badges,name,url,labels").done(function (data) {
-                i18nLoaded.done(function () {
-                    // update starter feature list
-                    var limit = 7;
-                    var feature_content = "";
-                    for (i = 0; i < data.length && limit > 0; i++) {
-                        var feature = data[i];
-                        if (feature.labels.some(function (label) { return label.color === "green"; })) { // labelled Starter Feature
-                            feature_content += '<article class="card">';
-                            feature_content += '<header><h3><a href="' + feature.url + '">' +  $("<div/>").text(feature.name).html() + '</a></h3></header>';
-                            feature_content += '<footer><div class="comment-count">' + localizedCommentsCount(feature.badges.comments) + '</div></footer>';
-                            feature_content += '</article>';
-                            limit--;
-                        }
+                        limit--;
                     }
-                    $("#starter_features").html(feature_content);
-                });
+                }
+                $("#starter_features").html(feature_content);
             });
-        }
+        });
+    }
 
-        // retrieve the actual count of available languages
-        $.getJSON("https://api.github.com/repos/adobe/brackets/contents/src/nls")
-            .done(function (data) {
-                i18nLoaded.done(function () {
-                    $("#langCount").text(data.filter(function (entry) {
-                        return entry.type === "dir";
-                    }).length);
-                });
+    // retrieve the actual count of available languages
+    $.getJSON("https://api.github.com/repos/adobe/brackets/contents/src/nls")
+        .done(function (data) {
+            i18nLoaded.done(function () {
+                $("#langCount").text(data.filter(function (entry) {
+                    return entry.type === "dir";
+                }).length);
             });
-    </script>
+        });
+</script>
 
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-32881640-1']);
-        _gaq.push(['_setDomainName', 'brackets.io']);
-        _gaq.push(['_gat._anonymizeIp']);
-        _gaq.push(['_trackPageview']);
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32881640-1']);
+    _gaq.push(['_setDomainName', 'brackets.io']);
+    _gaq.push(['_gat._anonymizeIp']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
 
 </body>
 </html>
