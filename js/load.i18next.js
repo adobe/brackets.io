@@ -17,9 +17,8 @@ i18n.init(options)
     .done(function () {
         // the heart variable is used to insert the blue heart in index.page.content.why.love-and-js.header
         $(document).i18n({
-            heart: "<a href='contribute.html'>&hearts;</a>",
-            twitter: "<a href='http://www.twitter.com/brackets'>Twitter</a>",
-            googlePlus: "<a href='https://plus.google.com/u/0/b/115365194873502050036/115365194873502050036'>Google+</a>"
+            twitter: "<a href='https://twitter.com/brackets'>Twitter</a>",
+            googlePlus: "<a href='https://plus.google.com/115365194873502050036/posts'>Google+</a>"
         });
 
         var title = i18n.t($("head title").data("i18n"), { defaultValue: "" });
