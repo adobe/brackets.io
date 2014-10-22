@@ -493,7 +493,11 @@
                     day: "numeric"
                 };
 
-                data.forEach(function (item) {
+                data.forEach(function (item, index) {
+                    if (index >= 8) { // only display 8 blog posts
+                        return;
+                    }
+
                     var dateComponents = item.date.match(dateRegex),
                         postingDate = new Date(dateComponents[1],
                             dateComponents[2] - 1, // zero based month
