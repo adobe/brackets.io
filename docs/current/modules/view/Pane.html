@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -414,6 +413,7 @@ provided with Brackets <code>src/extensions/samples/BracketsConfigCentral</code>
     adjustScrollPos: function(state:Object=, heightDelta:number)=
     notifyContainerChange: function()=
     notifyVisibilityChange: function(boolean)=
+    focus:function()=
 }
 </code></pre><p>When views are created they can be added to the pane by calling <code>pane.addView()</code>.<br>Views can be created and parented by attaching directly  to <code>pane.$el</code> </p>
 <pre><code>this._codeMirror = new CodeMirror(pane.$el, ...)
@@ -1910,18 +1910,63 @@ Does not change which document is currently open in the editor. Completes synchr
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.focus = function () {
-        &#x2F;&#x2F; Blur the currently focused element which will move focus to the BODY tag
-        &#x2F;&#x2F;  If the element we want to focus below cannot receive the input focus such as an ImageView
-        &#x2F;&#x2F;  This will remove focus from the current view which is important if the current view is 
-        &#x2F;&#x2F;  a codemirror view. 
-        document.activeElement.blur();
+        var current = window.document.activeElement,
+            self = this;
+
+        &#x2F;&#x2F; Helper to focus the current view if it can
+        function tryFocusingCurrentView() {
+            if (self._currentView) {
+                if (self._currentView.focus) {
+                    &#x2F;&#x2F;  Views can implement a focus
+                    &#x2F;&#x2F;  method for focusing a complex
+                    &#x2F;&#x2F;  DOM like codemirror
+                    self._currentView.focus();
+                } else {
+                    &#x2F;&#x2F;  Otherwise, no focus method
+                    &#x2F;&#x2F;  just try and give the DOM
+                    &#x2F;&#x2F;  element focus
+                    self._currentView.$el.focus();
+                }
+            } else {
+                &#x2F;&#x2F; no view so just focus the pane
+                self.$el.focus();
+            }
+        }
         
-        if (this._lastFocusedElement &amp;&amp; $(this._lastFocusedElement).is(&quot;:visible&quot;)) {
-            $(this._lastFocusedElement).focus();
-        } else if (this._currentView) {
-            this._currentView.$el.focus();
+        &#x2F;&#x2F; short-circuit for performance
+        if (this._lastFocusedElement === current) {
+            return;
+        }
+            
+        &#x2F;&#x2F; If the focus was in a &quot;textarea&quot; and the currentView is anything other than 
+        &#x2F;&#x2F;  a codeMirror view then we must blur the textarea to force focus to the body tag.
+        &#x2F;&#x2F;
+        &#x2F;&#x2F; If we don&#39;t then the focus will stay in the text-area which directs keyboard input
+        &#x2F;&#x2F;  to the codemirror document when it shouldn&#39;t
+        &#x2F;&#x2F;
+        &#x2F;&#x2F; Steps: 
+        &#x2F;&#x2F;  1. Open a js file in the left pane and an image in the right pane and
+        &#x2F;&#x2F;  2. Focus the js file using the working-set
+        &#x2F;&#x2F;  3. Focus the image view using the working-set.
+        &#x2F;&#x2F;
+        &#x2F;&#x2F; ==&gt; Focus is still in the text area. Any keyboard input will modify the document
+        
+        if (current.tagName.toLowerCase() === &quot;textarea&quot; &amp;&amp;
+                (!this._currentView || !this._currentView._codeMirror)) {
+            current.blur();
+        }
+
+        var $lfe = $(this._lastFocusedElement);
+
+        if ($lfe.length &amp;&amp; !$lfe.is(&quot;.view-pane&quot;) &amp;&amp; $lfe.is(&quot;:visible&quot;)) {
+            &#x2F;&#x2F; if we had a last focused element 
+            &#x2F;&#x2F;  and it wasn&#39;t a pane element 
+            &#x2F;&#x2F;  and it&#39;s still visible, focus it
+            $lfe.focus();
         } else {
-            this.$el.focus();
+            &#x2F;&#x2F; otherwise, just try to give focus 
+            &#x2F;&#x2F;  to the currently active view
+            tryFocusingCurrentView();
         }
     };</code></pre></div><div class="member">
 

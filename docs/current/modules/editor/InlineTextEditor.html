@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -773,7 +772,7 @@ show (or hide) the dirty indicator.</p>
         &#x2F;&#x2F; Update display of inline editors when the hostEditor signals a redraw
         CodeMirror.on(this.info, &quot;redraw&quot;, function () {
             &#x2F;&#x2F; At the point where we get the redraw, CodeMirror might not yet have actually
-            &#x2F;&#x2F; re-added the widget to the DOM. This is filed as https:&#x2F;&#x2F;github.com&#x2F;marijnh&#x2F;CodeMirror&#x2F;issues&#x2F;1226.
+            &#x2F;&#x2F; re-added the widget to the DOM. This is filed as https:&#x2F;&#x2F;github.com&#x2F;codemirror&#x2F;CodeMirror&#x2F;issues&#x2F;1226.
             &#x2F;&#x2F; For now, we can work around it by doing the refresh on a setTimeout().
             window.setTimeout(function () {
                 if (self.editor) {
@@ -845,7 +844,7 @@ show (or hide) the dirty indicator.</p>
         }
 
         &#x2F;&#x2F; We need to call this explicitly whenever the host editor is reshown
-        this.sizeInlineWidgetToContents(true);
+        this.sizeInlineWidgetToContents();
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -936,7 +935,7 @@ the content blank.</p>
         &#x2F;&#x2F; Always update the widget height when an inline editor completes a
         &#x2F;&#x2F; display update
         $(this.editor).on(&quot;update.InlineTextEditor&quot;, function (event, editor) {
-            self.sizeInlineWidgetToContents(true);
+            self.sizeInlineWidgetToContents();
         });
 
         &#x2F;&#x2F; Size editor to content whenever text changes (via edits here or any
@@ -944,7 +943,7 @@ the content blank.</p>
         &#x2F;&#x2F; changes, regardless of origin)
         $(this.editor).on(&quot;change.InlineTextEditor&quot;, function (event, editor) {
             if (self.hostEditor.isFullyVisible()) {
-                self.sizeInlineWidgetToContents(true);
+                self.sizeInlineWidgetToContents();
                 self._updateLineRange(editor);
             }
         });
@@ -973,16 +972,11 @@ base implementation of this method does nothing.</p>
 </div>
     
 <dl>
-    <dt>
-        force
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd>the editor to resize</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.sizeInlineWidgetToContents = function (force) {
+<pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.sizeInlineWidgetToContents = function () {
         &#x2F;&#x2F; brackets_codemirror_overrides.css adds height:auto to CodeMirror
         &#x2F;&#x2F; Inline editors themselves do not need to be sized, but layouts like
         &#x2F;&#x2F; the one used in CSSInlineEditor do need some manual layout.

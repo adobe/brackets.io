@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -389,7 +388,9 @@
         <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
@@ -447,6 +448,44 @@
             inlineEditor.editor.setCursorPos(newRuleInfo.pos.line, newRuleInfo.pos.ch);
         });
     }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _fileComparator 
+        <a class="anchor" href="#-_fileComparator" id="-_fileComparator"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        a,
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>b</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">        function _fileComparator(a, b) {
+            var aIsCSS = LanguageManager.getLanguageForPath(a.fullPath).getId() === &quot;css&quot;,
+                bIsCSS = LanguageManager.getLanguageForPath(b.fullPath).getId() === &quot;css&quot;;
+            if (aIsCSS &amp;&amp; !bIsCSS) {
+                return 1;
+            } else if (!aIsCSS &amp;&amp; bIsCSS) {
+                return -1;
+            } else {
+                return FileUtils.comparePaths(a.fullPath, b.fullPath);
+            }
+        }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -660,51 +699,31 @@ surrounding that position, or &quot;&quot; if none is found.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function _prepFileList(fileInfos) {
-            var i, j, firstDupeIndex,
-                displayPaths = [],
-                dupeList = [];
+<pre class="code language-javascript"><code class="language-javascript">        function _prepFileList(files) {
+            &#x2F;&#x2F; First, sort list (the same ordering we use for the results list)
+            files.sort(_fileComparator);
             
-            &#x2F;&#x2F; Add subdir field to each entry
-            fileInfos.forEach(function (fileInfo) {
-                fileInfo.subDirStr = &quot;&quot;;
+            &#x2F;&#x2F; Find any files that share the same name (with different path)
+            var fileNames = {};
+            files.forEach(function (file) {
+                if (!fileNames[file.name]) {
+                    fileNames[file.name] = [];
+                }
+                fileNames[file.name].push(file);
+            });
+            
+            &#x2F;&#x2F; For any duplicate filenames, set subDirStr to a path snippet the helps
+            &#x2F;&#x2F; the user distinguish each file in the list.
+            _.forEach(fileNames, function (files) {
+                if (files.length &gt; 1) {
+                    var displayPaths = ViewUtils.getDirNamesForDuplicateFiles(files);
+                    files.forEach(function (file, i) {
+                        file.subDirStr = displayPaths[i];
+                    });
+                }
             });
 
-            &#x2F;&#x2F; Add directory path to files with the same name so they can be
-            &#x2F;&#x2F; distinguished in list. Start with list sorted by name.
-            fileInfos.sort(_sortFileInfos);
-
-            &#x2F;&#x2F; For identical names, add a subdir
-            for (i = 1; i &lt; fileInfos.length; i++) {
-                if (_sortFileInfos(fileInfos[i - 1], fileInfos[i]) === 0) {
-                    &#x2F;&#x2F; Duplicates found
-                    firstDupeIndex = i - 1;
-                    dupeList.push(fileInfos[i - 1]);
-                    dupeList.push(fileInfos[i]);
-
-                    &#x2F;&#x2F; Lookahead for more dupes
-                    while (++i &lt; fileInfos.length &amp;&amp;
-                            _sortFileInfos(dupeList[0], fileInfos[i]) === 0) {
-                        dupeList.push(fileInfos[i]);
-                    }
-
-                    &#x2F;&#x2F; Get minimum subdir to make each unique
-                    displayPaths = ViewUtils.getDirNamesForDuplicateFiles(dupeList);
-
-                    &#x2F;&#x2F; Add a subdir to each dupe entry
-                    for (j = 0; j &lt; displayPaths.length; j++) {
-                        fileInfos[firstDupeIndex + j].subDirStr = displayPaths[j];
-                    }
-
-                    &#x2F;&#x2F; Release memory
-                    dupeList = [];
-                }
-            }
-            
-            &#x2F;&#x2F; Sort by name again, so paths are sorted
-            fileInfos.sort(_sortFileInfos);
-
-            return fileInfos;
+            return files;
         }
         
         function _onHostEditorScroll() {
@@ -715,7 +734,8 @@ surrounding that position, or &quot;&quot; if none is found.</p>
             .done(function (rules) {
                 var inlineEditorDeferred = new $.Deferred();
                 cssInlineEditor = new MultiRangeInlineEditor.MultiRangeInlineEditor(CSSUtils.consolidateRules(rules),
-                                                                                    _getNoRulesMsg, CSSUtils.getRangeSelectors);
+                                                                                    _getNoRulesMsg, CSSUtils.getRangeSelectors,
+                                                                                    _fileComparator);
                 cssInlineEditor.load(hostEditor);
                 cssInlineEditor.$htmlContent
                     .on(&quot;focusin&quot;, _updateCommands)
@@ -794,31 +814,6 @@ surrounding that position, or &quot;&quot; if none is found.</p>
     
 </span>
     <h4>
-        _sortFileInfos 
-        <a class="anchor" href="#-_sortFileInfos" id="-_sortFileInfos"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function _sortFileInfos(a, b) {
-            var nameComparison = a.name.localeCompare(b.name);
-            if (nameComparison !== 0) {
-                return nameComparison;
-            }
-            return a.subDirStr.localeCompare(b.subDirStr);
-        }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
         _stylesheetListRenderer 
         <a class="anchor" href="#-_stylesheetListRenderer" id="-_stylesheetListRenderer"><span class="icon-link"></span></a>
     </h4>
@@ -834,7 +829,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _stylesheetListRenderer(item) {
         var html = &quot;&lt;span class=&#39;stylesheet-name&#39;&gt;&quot; + _.escape(item.name);
-        if (item.subDirStr.length) {
+        if (item.subDirStr) {
             html += &quot;&lt;span class=&#39;stylesheet-dir&#39;&gt; — &quot; + _.escape(item.subDirStr) + &quot;&lt;&#x2F;span&gt;&quot;;
         }
         html += &quot;&lt;&#x2F;span&gt;&quot;;

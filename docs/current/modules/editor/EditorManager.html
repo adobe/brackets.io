@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -638,6 +637,9 @@ The editor is appended to the given container as a visible child.</p>
     </dt>
     <dd>Pane in which the editor will be hosted</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">!Editor</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -647,6 +649,7 @@ The editor is appended to the given container as a visible child.</p>
         editor.setVisible(false);
         pane.addView(editor);
         $(exports).triggerHandler(&quot;_fullEditorCreatedForDocument&quot;, [document, editor, pane.id]);
+        return editor;
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -1203,8 +1206,6 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             editor = document._masterEditor;
         
         if (!editor) {
-            createdNewEditor = true;
-
             &#x2F;&#x2F; Performance (see #4757) Chrome wastes time messing with selection
             &#x2F;&#x2F; that will just be changed at end, so clear it for now
             if (window.getSelection &amp;&amp; window.getSelection().empty) {  &#x2F;&#x2F; Chrome
@@ -1212,23 +1213,24 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             }
             
             &#x2F;&#x2F; Editor doesn&#39;t exist: populate a new Editor with the text
-            _createFullEditorForDocument(document, pane);
-        } else if (editor.$el.parent() !== pane.$el) {
+            editor = _createFullEditorForDocument(document, pane);
+            createdNewEditor = true;
+        } else if (editor.$el.parent()[0] !== pane.$content[0]) {
             &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the 
             &#x2F;&#x2F;  pane (which will switch the view&#39;s container as well)
             pane.addView(editor);
         }
 
         &#x2F;&#x2F; show the view
-        pane.showView(document._masterEditor);
+        pane.showView(editor);
 
         if (MainViewManager.getActivePaneId() === pane.id) {
             &#x2F;&#x2F; give it focus
-            document._masterEditor.focus();
+            editor.focus();
         }
 
         if (createdNewEditor) {
-            _restoreEditorViewState(document._masterEditor);
+            _restoreEditorViewState(editor);
         }
     }</code></pre></div><div class="member private">
 

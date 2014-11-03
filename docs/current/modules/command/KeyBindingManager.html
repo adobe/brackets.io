@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -385,10 +384,18 @@
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
         <li><a href="..&#x2F;../modules/text!base-config/keyboard.json.html">keyboard.json</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/UrlParams.html">UrlParams</a></li>
     </ul>
 
 </section>
@@ -419,7 +426,35 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _commandMap = {};</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    var _commandMap  = {},
+        _allCommands = [];
+    
+    var _specialCommands = [Commands.EDIT_UNDO, Commands.EDIT_REDO, Commands.EDIT_SELECT_ALL,
+                            Commands.EDIT_CUT, Commands.EDIT_COPY, Commands.EDIT_PASTE],
+        _reservedShortcuts = [&quot;Ctrl-Z&quot;, &quot;Ctrl-Y&quot;, &quot;Ctrl-A&quot;, &quot;Ctrl-X&quot;, &quot;Ctrl-C&quot;, &quot;Ctrl-V&quot;],
+        _macReservedShortcuts = [&quot;Cmd-,&quot;, &quot;Cmd-H&quot;, &quot;Cmd-Alt-H&quot;, &quot;Cmd-M&quot;, &quot;Cmd-Shift-Z&quot;, &quot;Cmd-Q&quot;],
+        _keyNames = [&quot;Up&quot;, &quot;Down&quot;, &quot;Left&quot;, &quot;Right&quot;, &quot;Backspace&quot;, &quot;Enter&quot;, &quot;Space&quot;, &quot;Tab&quot;];</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _customKeyMap 
+        <a class="anchor" href="#-_customKeyMap" id="-_customKeyMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>UserKeyBinding</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _customKeyMap      = {},
+        _customKeyMapCache = {};</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -479,7 +514,29 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _keyMap = {};</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _keyMap            = {},    &#x2F;&#x2F; For the actual key bindings including user specified ones
+        &#x2F;&#x2F; For the default factory key bindings, cloned from _keyMap after all extensions are loaded.
+        _defaultKeyMap     = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _showErrors 
+        <a class="anchor" href="#-_showErrors" id="-_showErrors"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _showErrors = true;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -545,6 +602,12 @@
             targetPlatform = brackets.platform;
         }
         
+        
+        &#x2F;&#x2F; Skip if the key binding is not for this platform.
+        if (explicitPlatform === &quot;mac&quot; &amp;&amp; brackets.platform !== &quot;mac&quot;) {
+            return null;
+        }
+
         &#x2F;&#x2F; if the request does not specify an explicit platform, and we&#39;re
         &#x2F;&#x2F; currently on a mac, then replace Ctrl with Cmd.
         key = (keyBinding.key) || keyBinding;
@@ -554,6 +617,7 @@
                 keyBinding.displayKey = keyBinding.displayKey.replace(&quot;Ctrl&quot;, &quot;Cmd&quot;);
             }
         }
+        
         normalized = normalizeKeyDescriptorString(key);
         
         &#x2F;&#x2F; skip if the key binding is invalid 
@@ -679,6 +743,132 @@
     
 </span>
     <h4>
+        _applyUserKeyBindings 
+        <a class="anchor" href="#-_applyUserKeyBindings" id="-_applyUserKeyBindings"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _applyUserKeyBindings() {
+        var remappedCommands   = [],
+            remappedKeys       = [],
+            restrictedCommands = [],
+            restrictedKeys     = [],
+            invalidKeys        = [],
+            invalidCommands    = [],
+            multipleKeys       = [],
+            duplicateBindings  = [],
+            errorMessage       = &quot;&quot;;
+        
+        _.forEach(_customKeyMap, function (commandID, key) {
+            var normalizedKey    = normalizeKeyDescriptorString(key),
+                existingBindings = _commandMap[commandID] || [];
+
+            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update key binding of a special 
+            &#x2F;&#x2F; command like cut, copy, paste, undo, redo and select all.
+            if (_isSpecialCommand(commandID)) {
+                restrictedCommands.push(commandID);
+                return;
+            }
+
+            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update a shortcut used in 
+            &#x2F;&#x2F; a special command or any Mac system command.
+            if (_isReservedShortcuts(normalizedKey)) {
+                restrictedKeys.push(key);
+                return;
+            }
+
+            if (!normalizedKey) {
+                invalidKeys.push(key);
+            } else if (_isKeyAssigned(normalizedKey)) {
+                if (remappedKeys.indexOf(normalizedKey) !== -1) {
+                    &#x2F;&#x2F; JSON parser already removed all the duplicates that have the exact
+                    &#x2F;&#x2F; same case or order in their keys. So we&#39;re only detecting duplicate 
+                    &#x2F;&#x2F; bindings that have different orders or different cases used in the key.
+                    duplicateBindings.push(key);
+                    return;
+                }
+                &#x2F;&#x2F; The same key binding already exists, so skip this.
+                if (_keyMap[normalizedKey].commandID === commandID) {
+                    &#x2F;&#x2F; Still need to add it to the remappedCommands so that
+                    &#x2F;&#x2F; we can detect any duplicate later on.
+                    remappedCommands.push(commandID);
+                    return;
+                }
+                removeBinding(normalizedKey);
+            }
+
+            if (remappedKeys.indexOf(normalizedKey) === -1) {
+                remappedKeys.push(normalizedKey);
+            }
+
+            &#x2F;&#x2F; Remove another key binding if the new key binding is for a command
+            &#x2F;&#x2F; that has a different key binding. e.g. &quot;Ctrl-W&quot;: &quot;edit.selectLine&quot;
+            &#x2F;&#x2F; requires us to remove &quot;Ctrl-W&quot; from &quot;file.close&quot; command, but we
+            &#x2F;&#x2F; also need to remove &quot;Ctrl-L&quot; from &quot;edit.selectLine&quot;.
+            if (existingBindings.length) {
+                existingBindings.forEach(function (binding) {
+                    removeBinding(binding.key);
+                });
+            }
+
+            if (commandID) {
+                if (_allCommands.indexOf(commandID) !== -1) {
+                    if (remappedCommands.indexOf(commandID) === -1) {
+                        var keybinding = { key: normalizedKey };
+
+                        keybinding.displayKey = _getDisplayKey(normalizedKey);
+                        addBinding(commandID, keybinding.displayKey ? keybinding : normalizedKey, brackets.platform);
+                        remappedCommands.push(commandID);
+                    } else {
+                        multipleKeys.push(commandID);
+                    }
+                } else {
+                    invalidCommands.push(commandID);
+                }
+            }
+        });
+
+        if (restrictedCommands.length) {
+            errorMessage = StringUtils.format(Strings.ERROR_RESTRICTED_COMMANDS, _getBulletList(restrictedCommands));
+        }
+
+        if (restrictedKeys.length) {
+            errorMessage += StringUtils.format(Strings.ERROR_RESTRICTED_SHORTCUTS, _getBulletList(restrictedKeys));
+        }
+
+        if (multipleKeys.length) {
+            errorMessage += StringUtils.format(Strings.ERROR_MULTIPLE_SHORTCUTS, _getBulletList(multipleKeys));
+        }
+
+        if (duplicateBindings.length) {
+            errorMessage += StringUtils.format(Strings.ERROR_DUPLICATE_SHORTCUTS, _getBulletList(duplicateBindings));
+        }
+
+        if (invalidKeys.length) {
+            errorMessage += StringUtils.format(Strings.ERROR_INVALID_SHORTCUTS, _getBulletList(invalidKeys));
+        }
+
+        if (invalidCommands.length) {
+            errorMessage += StringUtils.format(Strings.ERROR_NONEXISTENT_COMMANDS, _getBulletList(invalidCommands));
+        }
+
+        if (_showErrors &amp;&amp; errorMessage) {
+            _showErrorsAndOpenKeyMap(&quot;&quot;, errorMessage);
+        }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _buildKeyDescriptor 
         <a class="anchor" href="#-_buildKeyDescriptor" id="-_buildKeyDescriptor"><span class="icon-link"></span></a>
     </h4>
@@ -744,6 +934,104 @@
         keyDescriptor.push(key);
         
         return keyDescriptor.join(&quot;-&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getBulletList 
+        <a class="anchor" href="#-_getBulletList" id="-_getBulletList"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        list
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>An array of strings to be converted into a message string with a bullet list.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>the html text version of the list</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getBulletList(list) {
+        var message = &quot;&lt;ul class=&#39;dialog-list&#39;&gt;&quot;;
+        list.forEach(function (info) {
+            message += &quot;&lt;li&gt;&quot; + info + &quot;&lt;&#x2F;li&gt;&quot;;
+        });
+        message += &quot;&lt;&#x2F;ul&gt;&quot;;
+        return message;
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _getDisplayKey 
+        <a class="anchor" href="#-_getDisplayKey" id="-_getDisplayKey"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        normalizedKey
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>An empty string if normalizedKey does not have any arrow key. Otherwise, the name of the arrow key is replaced with the corresponding unicode symbol in the return string.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getDisplayKey(normalizedKey) {
+        var displayKey = &quot;&quot;;
+        if (&#x2F;(Up|Down|Left|Right)$&#x2F;i.test(normalizedKey)) {
+            normalizedKey = normalizedKey.replace(&#x2F;Up$&#x2F;i, &quot;\u2191&quot;);
+            normalizedKey = normalizedKey.replace(&#x2F;Down$&#x2F;i, &quot;\u2193&quot;);
+            normalizedKey = normalizedKey.replace(&#x2F;Left$&#x2F;i, &quot;\u2190&quot;);
+            normalizedKey = normalizedKey.replace(&#x2F;Right$&#x2F;i, &quot;\u2192&quot;);
+            displayKey = normalizedKey;
+        }
+        return displayKey;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getUserKeyMapFilePath 
+        <a class="anchor" href="#-_getUserKeyMapFilePath" id="-_getUserKeyMapFilePath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>full file path to the user key map file.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getUserKeyMapFilePath() {
+        if (window.isBracketsTestWindow) {
+            return brackets.app.getApplicationSupportDirectory() + &quot;&#x2F;_test_&#x2F;&quot; + KEYMAP_FILENAME;
+        }
+        return _userKeyMapFilePath;
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -870,22 +1158,35 @@ deciding to handle it ourselves.</p>
         
         exports.useWindowsCompatibleBindings = (brackets.platform !== &quot;mac&quot;) &amp;&amp;
             (brackets.platform !== &quot;win&quot;);
-    });
+    });</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _initCommandAndKeyMaps 
+        <a class="anchor" href="#-_initCommandAndKeyMaps" id="-_initCommandAndKeyMaps"><span class="icon-link"></span></a>
+    </h4>
+
     
-    $(CommandManager).on(&quot;commandRegistered&quot;, _handleCommandRegistered);
-
-    &#x2F;&#x2F; unit test only
-    exports._reset = _reset;
-
-    &#x2F;&#x2F; Define public API
-    exports.getKeymap = getKeymap;
-    exports.setEnabled = setEnabled;
-    exports.addBinding = addBinding;
-    exports.removeBinding = removeBinding;
-    exports.formatKeyDescriptor = formatKeyDescriptor;
-    exports.getKeyBindings = getKeyBindings;
-    exports.addGlobalKeydownHook = addGlobalKeydownHook;
-    exports.removeGlobalKeydownHook = removeGlobalKeydownHook;</code></pre></div><div class="member private">
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>file path to the user key map file.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _initCommandAndKeyMaps() {
+        _allCommands = CommandManager.getAll();
+        &#x2F;&#x2F; Keep a copy of the default key bindings before loading user key bindings.
+        _defaultKeyMap = _.cloneDeep(_keyMap);
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -914,6 +1215,112 @@ deciding to handle it ourselves.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isKeyAssigned(key) {
         return (_keyMap[key] !== undefined);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _isReservedShortcuts 
+        <a class="anchor" href="#-_isReservedShortcuts" id="-_isReservedShortcuts"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        normalizedKey
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>A key combination string used for a keyboard shortcut</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if normalizedKey is a restricted shortcut, false otherwise.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isReservedShortcuts(normalizedKey) {
+        if (!normalizedKey) {
+            return false;
+        }
+        
+        if (_reservedShortcuts.indexOf(normalizedKey) &gt; -1 ||
+                _reservedShortcuts.indexOf(normalizedKey.replace(&quot;Cmd&quot;, &quot;Ctrl&quot;)) &gt; -1) {
+            return true;
+        }
+        
+        if (brackets.platform === &quot;mac&quot; &amp;&amp; _macReservedShortcuts.indexOf(normalizedKey) &gt; -1) {
+            return true;
+        }
+        
+        return false;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _isSpecialCommand 
+        <a class="anchor" href="#-_isSpecialCommand" id="-_isSpecialCommand"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        commandID
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>A string referring to a specific command</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if normalizedKey is a special command, false otherwise.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isSpecialCommand(commandID) {
+        if (brackets.platform === &quot;mac&quot; &amp;&amp; commandID === &quot;file.quit&quot;) {
+            return true;
+        }
+        
+        return (_specialCommands.indexOf(commandID) &gt; -1);
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _loadUserKeyMap 
+        <a class="anchor" href="#-_loadUserKeyMap" id="-_loadUserKeyMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _loadUserKeyMap() {
+        _readUserKeyMap()
+            .then(function (keyMap) {
+                _customKeyMapCache = _.cloneDeep(_customKeyMap);
+                _customKeyMap = keyMap;
+                _undoPriorUserKeyBindings();
+                _applyUserKeyBindings();
+            }, function (err) {
+                _showErrorsAndOpenKeyMap(err);
+            });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -989,6 +1396,109 @@ deciding to handle it ourselves.</p>
         default:
             return key;
         }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _openUserKeyMap 
+        <a class="anchor" href="#-_openUserKeyMap" id="-_openUserKeyMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _openUserKeyMap() {
+        var userKeyMapPath = _getUserKeyMapFilePath(),
+            file = FileSystem.getFileForPath(userKeyMapPath);
+        file.exists(function (err, doesExist) {
+            if (doesExist) {
+                CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
+            } else {
+                var defaultContent = &quot;{\n    \&quot;documentation\&quot;: \&quot;https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;wiki&#x2F;User-Key-Bindings\&quot;,&quot; +
+                                     &quot;\n    \&quot;overrides\&quot;: {&quot; +
+                                     &quot;\n        \n    }\n}\n&quot;;
+                
+                FileUtils.writeText(file, defaultContent, true)
+                    .done(function () {
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
+                    });
+            }
+        });
+    }
+    
+    $(CommandManager).on(&quot;commandRegistered&quot;, _handleCommandRegistered);
+    CommandManager.register(Strings.CMD_OPEN_KEYMAP, Commands.FILE_OPEN_KEYMAP, _openUserKeyMap);
+
+    &#x2F;&#x2F; Asynchronously loading DocumentManager to avoid the circular dependency
+    require([&quot;document&#x2F;DocumentManager&quot;], function (DocumentManager) {
+        $(DocumentManager).on(&quot;documentSaved&quot;, function checkKeyMapUpdates(e, doc) {
+            if (doc &amp;&amp; doc.file.fullPath === _userKeyMapFilePath) {
+                _loadUserKeyMap();
+            }
+        });
+    });</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _readUserKeyMap 
+        <a class="anchor" href="#-_readUserKeyMap" id="-_readUserKeyMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>a jQuery promise that will be resolved with the JSON object if the user key map file has "overrides" property or an empty JSON. If the key map file cannot be read or cannot be parsed by the JSON parser, then the promise is rejected with an error.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _readUserKeyMap() {
+        var file   = FileSystem.getFileForPath(_getUserKeyMapFilePath()),
+            result = new $.Deferred();
+       
+        file.exists(function (err, doesExist) {
+            if (doesExist) {
+                FileUtils.readAsText(file)
+                    .done(function (text) {
+                        var keyMap = {};
+                        try {
+                            if (text) {
+                                var json = JSON.parse(text);
+                                &#x2F;&#x2F; If no overrides, return an empty key map.
+                                result.resolve((json &amp;&amp; json.overrides) || keyMap);
+                            } else {
+                                &#x2F;&#x2F; The file is empty, so return an empty key map.
+                                result.resolve(keyMap);
+                            }
+                        } catch (err) {
+                            &#x2F;&#x2F; Cannot parse the text read from the key map file.
+                            result.reject(err);
+                        }
+                    })
+                    .fail(function (err) {
+                        &#x2F;&#x2F; Key map file cannot be loaded.
+                        result.reject(err);
+                    });
+            } else {
+                &#x2F;&#x2F; Just resolve if no user key map file
+                result.resolve();
+            }
+        });
+        return result.promise();
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -1010,8 +1520,119 @@ deciding to handle it ourselves.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _reset() {
         _keyMap = {};
+        _defaultKeyMap = {};
+        _customKeyMap = {};
+        _customKeyMapCache = {};
         _commandMap = {};
         _globalKeydownHooks = [];
+        _userKeyMapFilePath = brackets.app.getApplicationSupportDirectory() + &quot;&#x2F;&quot; + KEYMAP_FILENAME;
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _setUserKeyMapFilePath 
+        <a class="anchor" href="#-_setUserKeyMapFilePath" id="-_setUserKeyMapFilePath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>file path to the user key map file.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _setUserKeyMapFilePath(fullPath) {
+        _userKeyMapFilePath = fullPath;
+    }
+    
+    AppInit.extensionsLoaded(function () {
+        var params  = new UrlParams();
+        params.parse();
+        if (params.get(&quot;reloadWithoutUserExts&quot;) === &quot;true&quot;) {
+            _showErrors = false;
+        }
+        
+        _initCommandAndKeyMaps();
+        _loadUserKeyMap();
+    });
+
+    &#x2F;&#x2F; unit test only
+    exports._reset = _reset;
+    exports._setUserKeyMapFilePath = _setUserKeyMapFilePath;
+    exports._getDisplayKey = _getDisplayKey;
+    exports._loadUserKeyMap = _loadUserKeyMap;
+    exports._initCommandAndKeyMaps = _initCommandAndKeyMaps;
+
+    &#x2F;&#x2F; Define public API
+    exports.getKeymap = getKeymap;
+    exports.setEnabled = setEnabled;
+    exports.addBinding = addBinding;
+    exports.removeBinding = removeBinding;
+    exports.formatKeyDescriptor = formatKeyDescriptor;
+    exports.getKeyBindings = getKeyBindings;
+    exports.addGlobalKeydownHook = addGlobalKeydownHook;
+    exports.removeGlobalKeydownHook = removeGlobalKeydownHook;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _showErrorsAndOpenKeyMap 
+        <a class="anchor" href="#-_showErrorsAndOpenKeyMap" id="-_showErrorsAndOpenKeyMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        err
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Error type returned from JSON parser or open file operation</dd>
+    <dt>
+        message
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Error message to be displayed in the dialog</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showErrorsAndOpenKeyMap(err, message) {
+        &#x2F;&#x2F; Asynchronously loading Dialogs module to avoid the circular dependency
+        require([&quot;widgets&#x2F;Dialogs&quot;], function (Dialogs) {
+            var errorMessage = Strings.ERROR_KEYMAP_CORRUPT;
+            
+            if (err === FileSystemError.UNSUPPORTED_ENCODING) {
+                errorMessage = Strings.ERROR_LOADING_KEYMAP;
+            } else if (message) {
+                errorMessage = message;
+            }
+            
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.ERROR_KEYMAP_TITLE,
+                errorMessage
+            )
+                .done(function () {
+                    if (err !== FileSystemError.UNSUPPORTED_ENCODING) {
+                        CommandManager.execute(Commands.FILE_OPEN_KEYMAP);
+                    }
+                });
+        });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1082,11 +1703,64 @@ deciding to handle it ourselves.</p>
             key = &quot;Tab&quot;;
         } else if (key === &quot; &quot;) {
             key = &quot;Space&quot;;
+        } else if (key === &quot;\b&quot;) {
+            key = &quot;Backspace&quot;;
         } else {
             key = _mapKeycodeToKey(event.keyCode, key);
         }
 
         return _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _undoPriorUserKeyBindings 
+        <a class="anchor" href="#-_undoPriorUserKeyBindings" id="-_undoPriorUserKeyBindings"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _undoPriorUserKeyBindings() {
+        _.forEach(_customKeyMapCache, function (commandID, key) {
+            var normalizedKey  = normalizeKeyDescriptorString(key),
+                defaults       = _.find(_.toArray(_defaultKeyMap), { &quot;commandID&quot;: commandID }),
+                defaultCommand = _defaultKeyMap[normalizedKey];
+
+            &#x2F;&#x2F; We didn&#39;t modified this before, so skip it.
+            if (_isSpecialCommand(commandID) ||
+                    _isReservedShortcuts(normalizedKey)) {
+                return;
+            }
+
+            if (_isKeyAssigned(normalizedKey) &amp;&amp;
+                    _customKeyMap[key] !== commandID &amp;&amp; _customKeyMap[normalizedKey] !== commandID) {
+                &#x2F;&#x2F; Unassign the key from any command. e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache
+                &#x2F;&#x2F; will require us to remove Cmd-W shortcut from file.open command.
+                removeBinding(normalizedKey);
+                
+                &#x2F;&#x2F; Reassign the default key binding. e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache
+                &#x2F;&#x2F; will require us to reassign Cmd-O shortcut to file.open command.
+                if (defaults) {
+                    addBinding(commandID, defaults, brackets.platform);
+                }
+
+                &#x2F;&#x2F; Reassign the default key binding of the previously modified command. 
+                &#x2F;&#x2F; e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache will require us to reassign Cmd-W
+                &#x2F;&#x2F; shortcut to file.close command.
+                if (defaultCommand &amp;&amp; defaultCommand.key) {
+                    addBinding(defaultCommand.commandID, defaultCommand.key, brackets.platform);
+                }
+            }
+        });
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1129,7 +1803,7 @@ deciding to handle it ourselves.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addBinding(command, keyBindings, platform) {
-        var commandID           = &quot;&quot;,
+        var commandID = &quot;&quot;,
             results;
         
         if (!command) {
@@ -1314,10 +1988,17 @@ indicate that it wants to block the other hooks from running.)</p>
     </h4>
 
     
-    <div class="description"><p>Returns a copy of the keymap</p>
+    <div class="description"><p>Returns a copy of the current key map. If the optional &#39;defaults&#39; parameter is true,
+then a copy of the default key map is returned.</p>
 </div>
     
 <dl>
+    <dt>
+        defaults
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true if the caller wants a copy of the default key map. Otherwise, the current active key map is returned.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">!Object.&lt;string,{commandID: string,key: string,displayKey: string}&gt;</span>
 </dt>
@@ -1325,8 +2006,8 @@ indicate that it wants to block the other hooks from running.)</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getKeymap() {
-        return $.extend({}, _keyMap);
+<pre class="code language-javascript"><code class="language-javascript">    function getKeymap(defaults) {
+        return $.extend({}, defaults ? _defaultKeyMap : _keyMap);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1381,11 +2062,19 @@ indicate that it wants to block the other hooks from running.)</p>
                     hasCtrl = true;
                 }
             } else if (_compareModifierString(&quot;cmd&quot;, ele)) {
-                hasCtrl = true;
+                if (brackets.platform === &quot;mac&quot;) {
+                    hasCtrl = true;
+                } else {
+                    error = true;
+                }
             } else if (_compareModifierString(&quot;alt&quot;, ele)) {
                 hasAlt = true;
             } else if (_compareModifierString(&quot;opt&quot;, ele)) {
-                hasAlt = true;
+                if (brackets.platform === &quot;mac&quot;) {
+                    hasAlt = true;
+                } else {
+                    error = true;
+                }
             } else if (_compareModifierString(&quot;shift&quot;, ele)) {
                 hasShift = true;
             } else if (key.length &gt; 0) {
@@ -1409,6 +2098,21 @@ indicate that it wants to block the other hooks from running.)</p>
         &#x2F;&#x2F; unicode characters (unescaped). Keyboard shortcut display strings may use
         &#x2F;&#x2F; unicode escape sequences (e.g. \u20AC euro sign)
         if ((key.indexOf(&quot;+&quot;)) &gt;= 0 &amp;&amp; (key.length &gt; 1)) {
+            return null;
+        }
+        
+        &#x2F;&#x2F; Ensure that the first letter of the key name is in upper case.
+        &#x2F;&#x2F; i.e. &#39;a&#39; =&gt; &#39;A&#39; and &#39;up&#39; =&gt; &#39;Up&#39;
+        if (&#x2F;^[a-z]&#x2F;.test(key)) {
+            key = key.toLowerCase().replace(&#x2F;(^[a-z])&#x2F;, function (match, p1) {
+                return p1.toUpperCase();
+            });
+        }
+        
+        &#x2F;&#x2F; No restriction on single character key yet, but other key names are restricted to either 
+        &#x2F;&#x2F; Function keys or those listed in _keyNames array.
+        if (key.length &gt; 1 &amp;&amp; !&#x2F;F\d+&#x2F;.test(key) &amp;&amp;
+                _keyNames.indexOf(key) === -1) {
             return null;
         }
         
