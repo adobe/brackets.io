@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -1341,13 +1340,7 @@ the first matching result, starting from the original cursor position.</p>
         state.searchStartPos = editor.getCursorPos(false, &quot;start&quot;);
         
         &#x2F;&#x2F; Prepopulate the search field
-        var initialQuery;
-        if (findBar) {
-            &#x2F;&#x2F; Use the previous query. This can happen if the user switches from Find to Replace.
-            initialQuery = findBar.getQueryInfo().query;
-        } else {
-            initialQuery = FindUtils.getInitialQueryFromSelection(editor);
-        }
+        var initialQuery = FindUtils.getInitialQuery(findBar, editor);
         
         &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new findBar will
         &#x2F;&#x2F; take care of closing any other find bar instances.)
@@ -1359,7 +1352,8 @@ the first matching result, starting from the original cursor position.</p>
         findBar = new FindBar({
             multifile: false,
             replace: replace,
-            initialQuery: initialQuery,
+            initialQuery: initialQuery.query,
+            initialReplaceText: initialQuery.replaceText,
             queryPlaceholder: Strings.FIND_QUERY_PLACEHOLDER
         });
         findBar.open();

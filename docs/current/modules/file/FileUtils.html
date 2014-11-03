@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -384,7 +383,6 @@
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
         <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
@@ -423,7 +421,47 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var LINE_ENDINGS_CRLF = &quot;CRLF&quot;,
-        LINE_ENDINGS_LF   = &quot;LF&quot;;</code></pre></div><div class="member private">
+        LINE_ENDINGS_LF   = &quot;LF&quot;;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        MAX_FILE_SIZE     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-MAX_FILE_SIZE" id="-MAX_FILE_SIZE"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Number Maximium file size (in bytes) This must be a hard-coded value since this value tells how low-level APIs should behave which cannot have a load order dependency on preferences manager</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        MAX_FILE_SIZE_MB     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-MAX_FILE_SIZE_MB" id="-MAX_FILE_SIZE_MB"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Number Maximium file size (in megabytes) (for display strings) This must be a hard-coded value since this value tells how low-level APIs should behave which cannot have a load order dependency on preferences manager</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var MAX_FILE_SIZE_MB = 16;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -456,40 +494,7 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public deprecated">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        canonicalizeFolderPath 
-        <a class="anchor" href="#-canonicalizeFolderPath" id="-canonicalizeFolderPath"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Warning: Contrary to the name, this does NOT return a canonical path. The canonical format
-used by Directory.fullPath actually DOES include the trailing &quot;/&quot;</p>
-</div>
-    
-<dl>
-    <dt>
-        path
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function canonicalizeFolderPath(path) {
-        console.error(&quot;Warning: FileUtils.canonicalizeFolderPath() is deprecated. Use paths ending in &#39;&#x2F;&#39; if possible, like Directory.fullPath&quot;);
-        return stripTrailingSlash(path);
-    }</code></pre></div><div class="member public">
+<div class="member public">
 
 <span class="pull-right scope">
     
@@ -554,8 +559,9 @@ extension first and then the extensions to fix issue #4409</p>
     </h4>
 
     
-    <div class="description"><p>Compares two paths segment-by-segment, used for sorting. Sorts folders before files,
-and sorts files based on <code>compareFilenames()</code>.</p>
+    <div class="description"><p>Compares two paths segment-by-segment, used for sorting. When two files share a path prefix,
+the less deeply nested one is sorted earlier in the list. Sorts files within the same parent
+folder based on <code>compareFilenames()</code>.</p>
 </div>
     
 <dl>
@@ -595,12 +601,17 @@ and sorts files based on <code>compareFilenames()</code>.</p>
                 } else if (index &gt;= folders1 &amp;&amp; index &gt;= folders2) {
                     return compareFilenames(entryName1, entryName2);
                 }
-                return (index &gt;= folders1 &amp;&amp; index &lt; folders2) ? 1 : -1;
+                return (index &gt;= folders1 &amp;&amp; index &lt; folders2) ? -1 : 1;
             }
             index++;
         }
         return 0;
     }
+
+    &#x2F;&#x2F; Asynchronously loading Dialogs to avoid the circular dependency
+    require([&quot;widgets&#x2F;Dialogs&quot;], function (dialogsModule) {
+        Dialogs = dialogsModule;
+    });
 
     &#x2F;&#x2F; Define public API
     exports.LINE_ENDINGS_CRLF              = LINE_ENDINGS_CRLF;
@@ -617,7 +628,6 @@ and sorts files based on <code>compareFilenames()</code>.</p>
     exports.convertWindowsPathToUnixPath   = convertWindowsPathToUnixPath;
     exports.getNativeBracketsDirectoryPath = getNativeBracketsDirectoryPath;
     exports.getNativeModuleDirectoryPath   = getNativeModuleDirectoryPath;
-    exports.canonicalizeFolderPath         = canonicalizeFolderPath;
     exports.stripTrailingSlash             = stripTrailingSlash;
     exports.isCSSPreprocessorFile          = isCSSPreprocessorFile;
     exports.isStaticHtmlFileExt            = isStaticHtmlFileExt;
@@ -630,6 +640,7 @@ and sorts files based on <code>compareFilenames()</code>.</p>
     exports.getSmartFileExtension          = getSmartFileExtension;
     exports.compareFilenames               = compareFilenames;
     exports.comparePaths                   = comparePaths;
+    exports.MAX_FILE_SIZE                  = MAX_FILE_SIZE;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -814,6 +825,8 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
             result = Strings.CONTENTS_MODIFIED_ERR;
         } else if (name === FileSystemError.UNSUPPORTED_ENCODING) {
             result = Strings.UNSUPPORTED_ENCODING_ERR;
+        } else if (name === FileSystemError.EXCEEDS_MAX_FILE_SIZE) {
+            result = StringUtils.format(Strings.EXCEEDS_MAX_FILE_SIZE, MAX_FILE_SIZE_MB);
         } else {
             result = StringUtils.format(Strings.GENERIC_ERROR, name);
         }

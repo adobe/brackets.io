@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -1226,10 +1225,13 @@ or for incremental-search style document preview like Quick Open will eventually
 
     
     <div class="description"><p>Edits a document in the specified pane.
-This function is only used by Unit Tests (which construct Mock Documents), 
- The Deprecated API &quot;setCurrentDocument&quot; and by File &gt; New 
- because there is yet to be an established File object for the Document which is required 
- for the open API.<br>Do not use this API unless you have a document object without a file object</p>
+This function is only used by:</p>
+<ul>
+<li>Unit Tests (which construct Mock Document objects), </li>
+<li>by File &gt; New  because there is yet to be an established File object </li>
+<li>by Find In Files which needs to open documents synchronously in some cases
+Do not use this API it is for internal use only</li>
+</ul>
 </div>
     
 <dl>
@@ -1248,7 +1250,7 @@ This function is only used by Unit Tests (which construct Mock Documents),
     <dt>
         optionsIn
         <span class="label label-optional">optional</span>
-        <span class="label label-info">{noPaneActivate:boolean}</span>
+        <span class="label label-info">{noPaneActivate:boolean=}</span>
     </dt>
     <dd>- options</dd>
 </dl><dl>
@@ -1256,20 +1258,15 @@ This function is only used by Unit Tests (which construct Mock Documents),
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _edit(paneId, doc, optionsIn) {
-        var currentPaneId = _getPaneIdForPath(doc.file.fullPath),
-            options = optionsIn || {};
-
-            
+        var options = optionsIn || {},
+            currentPaneId  = _getPaneIdForPath(doc.file.fullPath);
+        
         if (currentPaneId) {
-            &#x2F;&#x2F; If the doc is open in another pane
-            &#x2F;&#x2F;  then switch to that pane and call open document
-            &#x2F;&#x2F;  which will really just show the view as it has always done
-            &#x2F;&#x2F;  we could just do pane.showView(doc._masterEditor) in that
-            &#x2F;&#x2F;  case but Editor Manager may do some state syncing 
+            &#x2F;&#x2F; If the doc is open in another pane then switch to that pane and call open document
+            &#x2F;&#x2F;  which will really just show the view as it has always done we could just 
+            &#x2F;&#x2F;  do pane.showView(doc._masterEditor) in that case but Editor Manager may do some 
+            &#x2F;&#x2F;  state syncing 
             paneId = currentPaneId;
-            if (!options.noPaneActivate) {
-                setActivePaneId(paneId);
-            }
         }
         
         var pane = _getPane(paneId);
@@ -1283,6 +1280,10 @@ This function is only used by Unit Tests (which construct Mock Documents),
         &#x2F;&#x2F; open document will show the editor if there is one already
         EditorManager.openDocument(doc, pane);
         _makeFileMostRecent(paneId, doc.file);
+
+        if (!options.noPaneActivate) {
+            setActivePaneId(paneId);
+        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1817,7 +1818,7 @@ This also sets css properties that aid in the layout when _updateLayout is calle
         Resizer.makeResizable(firstPane.$el,
                               _orientation === HORIZONTAL ? Resizer.DIRECTION_VERTICAL : Resizer.DIRECTION_HORIZONTAL,
                               _orientation === HORIZONTAL ? Resizer.POSITION_BOTTOM : Resizer.POSITION_RIGHT,
-                              MIN_PANE_SIZE, false, false, false, true);
+                              MIN_PANE_SIZE, false, false, false, true, true);
         
         firstPane.$el.on(&quot;panelResizeUpdate&quot;, function () {
             _updateLayout();
@@ -2103,7 +2104,7 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
     <dt>
         optionsIn
         <span class="label label-optional">optional</span>
-        <span class="label label-info">{noPaneActivate:boolean}</span>
+        <span class="label label-info">{noPaneActivate:boolean=}</span>
     </dt>
     <dd>- options</dd>
 </dl><dl>
@@ -2116,6 +2117,12 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
 <pre class="code language-javascript"><code class="language-javascript">    function _open(paneId, file, optionsIn) {
         var result = new $.Deferred(),
             options = optionsIn || {};
+        
+        function doPostOpenActivation() {
+            if (!options.noPaneActivate) {
+                setActivePaneId(paneId);
+            }
+        }
         
         if (!file || !_getPane(paneId)) {
             return result.reject(&quot;bad argument&quot;).promise();
@@ -2146,9 +2153,6 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
             &#x2F;&#x2F;  we could just do pane.showView(doc._masterEditor) in that
             &#x2F;&#x2F;  case but Editor Manager may do some state syncing             
             paneId = currentPaneId;
-            if (!options.noPaneActivate) {
-                setActivePaneId(paneId);
-            }
         }
         
         &#x2F;&#x2F; See if there is already a view for the file
@@ -2170,6 +2174,7 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
                             if (!ProjectManager.isWithinProject(file.fullPath)) {
                                 addToWorkingSet(paneId, file);
                             }
+                            doPostOpenActivation();
                             result.resolve(file);
                         })
                         .fail(function (fileError) {
@@ -2182,14 +2187,17 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
         } else {
             DocumentManager.getDocumentForPath(file.fullPath)
                 .done(function (doc) {
-                    _edit(paneId, doc, options);
+                    _edit(paneId, doc, $.extend({}, options, {
+                        noPaneActivate: true
+                    }));
+                    doPostOpenActivation();
                     result.resolve(doc.file);
                 })
                 .fail(function (fileError) {
                     result.reject(fileError);
                 });
         }
-        
+
         return result;
     }</code></pre></div><div class="member private">
 
@@ -3417,9 +3425,8 @@ The state is removed from the cache after calling this function.  </p>
                                                             oldPaneId]);
             
             _makePaneMostRecent(_activePaneId);
+            focusActivePane();
         }
-        
-        focusActivePane();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

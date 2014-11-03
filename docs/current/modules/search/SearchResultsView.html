@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -797,7 +796,7 @@
                             if (searchItem.collapsed !== collapsed) {
                                 searchItem.collapsed = collapsed;
                                 $(this).nextUntil(&quot;.file-section&quot;).toggle();
-                                $(this).find(&quot;.disclosure-triangle&quot;).toggleClass(&quot;expanded&quot;).toggleClass(&quot;collapsed&quot;);
+                                $(this).find(&quot;.disclosure-triangle&quot;).toggleClass(&quot;expanded&quot;);
                             }
                         });
 
@@ -1041,7 +1040,7 @@
             self             = this;
         
         this._showSummary();
-        this._searchList   = [];
+        this._searchList = [];
         
         &#x2F;&#x2F; Iterates throuh the files to display the results sorted by filenamess. The loop ends as soon as
         &#x2F;&#x2F; we filled the results for one page
@@ -1083,16 +1082,17 @@
                     multiLine = match.start.line !== match.end.line;
                     
                     searchItems.push({
-                        fileIndex:  self._searchList.length,
-                        itemIndex:  searchItems.length,
-                        matchIndex: i,
-                        line:       match.start.line + 1,
-                        pre:        match.line.substr(0, match.start.ch),
-                        highlight:  match.line.substring(match.start.ch, multiLine ? undefined : match.end.ch),
-                        post:       multiLine ? &quot;\u2026&quot; : match.line.substr(match.end.ch),
-                        start:      match.start,
-                        end:        match.end,
-                        isChecked:  match.isChecked
+                        fileIndex:   self._searchList.length,
+                        itemIndex:   searchItems.length,
+                        matchIndex:  i,
+                        line:        match.start.line + 1,
+                        pre:         match.line.substr(0, match.start.ch),
+                        highlight:   match.line.substring(match.start.ch, multiLine ? undefined : match.end.ch),
+                        post:        multiLine ? &quot;\u2026&quot; : match.line.substr(match.end.ch),
+                        start:       match.start,
+                        end:         match.end,
+                        isChecked:   match.isChecked,
+                        isCollapsed: item.collapsed
                     });
                     if (!match.isChecked) {
                         allInFileChecked = false;
@@ -1112,11 +1112,12 @@
                     );
 
                 self._searchList.push({
-                    fileIndex: self._searchList.length,
-                    filename:  displayFileName,
-                    fullPath:  fullPath,
-                    isChecked: allInFileChecked,
-                    items:     searchItems
+                    fileIndex:   self._searchList.length,
+                    filename:    displayFileName,
+                    fullPath:    fullPath,
+                    isChecked:   allInFileChecked,
+                    items:       searchItems,
+                    isCollapsed: item.collapsed
                 });
             }
         });
@@ -1129,16 +1130,7 @@
                 replace:       this._model.isReplace,
                 searchList:    this._searchList,
                 Strings:       Strings
-            }))
-            &#x2F;&#x2F; Restore the collapsed files
-            .find(&quot;.file-section&quot;).each(function () {
-                var fullPath = self._searchList[$(this).data(&quot;file-index&quot;)].fullPath;
-
-                if (self._model.results[fullPath].collapsed) {
-                    self._model.results[fullPath].collapsed = false;
-                    $(this).trigger(&quot;click&quot;);
-                }
-            });
+            }));
         
         if (this._$selectedRow) {
             this._$selectedRow.removeClass(&quot;selected&quot;);
@@ -1181,7 +1173,7 @@
         &#x2F;&#x2F; This text contains some formatting, so all the strings are assumed to be already escaped
         summary = StringUtils.format(
             Strings.FIND_TITLE_SUMMARY,
-            this._model.foundMaximum ? Strings.FIND_IN_FILES_MORE_THAN : &quot;&quot;,
+            this._model.exceedsMaximum ? Strings.FIND_IN_FILES_MORE_THAN : &quot;&quot;,
             String(count.matches),
             (count.matches &gt; 1) ? Strings.FIND_IN_FILES_MATCHES : Strings.FIND_IN_FILES_MATCH,
             filesStr

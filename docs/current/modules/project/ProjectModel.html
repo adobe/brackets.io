@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -1700,9 +1699,18 @@ of paths that are at the same depth in the tree. All of the paths are full paths
             ];
         } else {
             &#x2F;&#x2F; Special case: a directory passed in without added and removed values
-            &#x2F;&#x2F; appears to be new.
+            &#x2F;&#x2F; needs to be updated.
             if (!added &amp;&amp; !removed) {
-                this._viewModel.ensureDirectoryExists(this.makeProjectRelativeIfPossible(entry.fullPath));
+                entry.getContents(function (err, contents) {
+                    if (err) {
+                        console.error(&quot;Unexpected error refreshing file tree for directory&quot;, entry.fullPath, err);
+                        return;
+                    }
+                    self._viewModel.setDirectoryContents(self.makeProjectRelativeIfPossible(entry.fullPath), contents);
+                });
+                
+                &#x2F;&#x2F; Exit early because we can&#39;t update the viewModel until we get the directory contents.
+                return;
             }
         }
 
@@ -1943,7 +1951,7 @@ Does not support paths containing &quot;..&quot;</p>
     </h4>
 
     
-    <div class="description"><p>Refreshes the contents of the tree.</p>
+    <div class="description"><p>Clears caches and refreshes the contents of the tree.</p>
 </div>
     
 <dl>
@@ -1961,7 +1969,7 @@ Does not support paths containing &quot;..&quot;</p>
             selections  = this._selections,
             viewModel   = this._viewModel,
             deferred    = new $.Deferred();
-
+        
         this.setProjectRoot(projectRoot).then(function () {
             self.reopenNodes(openNodes).then(function () {
                 if (selections.selected) {
@@ -2598,24 +2606,21 @@ will be opened and a promise is returned to show when the entire operation is co
 <pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.showInTree = function (path) {
         var d = new $.Deferred();
         path = _getPathFromFSObject(path);
-
-        var projectRelative = this.makeProjectRelativeIfPossible(path);
-
-        &#x2F;&#x2F; Not in project?
-        if (projectRelative[0] === &quot;&#x2F;&quot;) {
-            d.resolve();
-        } else {
-            var parentDirectory = FileUtils.getDirectoryPath(path),
-                self = this;
-            this.setDirectoryOpen(parentDirectory, true).then(function () {
-                if (_pathIsFile(path)) {
-                    self.setSelected(path);
-                }
-                d.resolve();
-            }, function (err) {
-                d.reject(err);
-            });
+        
+        if (!this.isWithinProject(path)) {
+            return d.resolve().promise();
         }
+
+        var parentDirectory = FileUtils.getDirectoryPath(path),
+            self = this;
+        this.setDirectoryOpen(parentDirectory, true).then(function () {
+            if (_pathIsFile(path)) {
+                self.setSelected(path);
+            }
+            d.resolve();
+        }, function (err) {
+            d.reject(err);
+        });
         return d.promise();
     };</code></pre></div><div class="member">
 
@@ -2717,7 +2722,13 @@ not provided, the current context is used.</p>
         if (this._selections.rename &amp;&amp; this._selections.rename.path === path) {
             return;
         }
-
+        
+        var projectRelativePath = this.makeProjectRelativeIfPossible(path);
+        
+        if (!this._viewModel.isFilePathVisible(projectRelativePath)) {
+            this.showInTree(path);
+        }
+        
         if (path !== this._selections.context) {
             this.setContext(path);
         } else {
@@ -2725,7 +2736,7 @@ not provided, the current context is used.</p>
         }
 
         this._viewModel.moveMarker(&quot;rename&quot;, null,
-                                   this.makeProjectRelativeIfPossible(path));
+                                   projectRelativePath);
         var d = new $.Deferred();
         this._selections.rename = {
             deferred: d,
