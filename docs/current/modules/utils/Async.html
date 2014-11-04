@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -850,6 +849,64 @@ Processing yields by idleTime between time-slices.</p>
     Public API
 </span>
     <h4>
+        firstSequentially 
+        <a class="anchor" href="#-firstSequentially" id="-firstSequentially"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Executes a series of tasks in serial (task N does not begin until task N-1 has completed).
+Returns a &quot;master&quot; Promise that is resolved when the first task has resolved. If all tasks
+fail, the master Promise is rejected.</p>
+</div>
+    
+<dl>
+    <dt>
+        items
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;*&gt;</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        beginProcessItem
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">function(*, number):Promise</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function firstSequentially(items, beginProcessItem) {
+
+        var masterDeferred = new $.Deferred();
+
+        function doItem(i) {
+            if (i &gt;= items.length) {
+                masterDeferred.reject();
+                return;
+            }
+
+            beginProcessItem(items[i], i)
+                .fail(function () {
+                    doItem(i + 1);
+                })
+                .done(function () {
+                    masterDeferred.resolve(items[i]);
+                });
+        }
+
+        doItem(0);
+        return masterDeferred.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         promisify 
         <a class="anchor" href="#-promisify" id="-promisify"><span class="icon-link"></span></a>
     </h4>
@@ -1185,16 +1242,17 @@ has finished.</p>
     };
     
     &#x2F;&#x2F; Define public API
-    exports.doInParallel   = doInParallel;
-    exports.doSequentially = doSequentially;
+    exports.doInParallel        = doInParallel;
+    exports.doSequentially      = doSequentially;
     exports.doSequentiallyInBackground   = doSequentiallyInBackground;
     exports.doInParallel_aggregateErrors = doInParallel_aggregateErrors;
-    exports.withTimeout    = withTimeout;
-    exports.waitForAll     = waitForAll;
-    exports.ERROR_TIMEOUT  = ERROR_TIMEOUT;
-    exports.chain          = chain;
-    exports.promisify      = promisify;
-    exports.PromiseQueue   = PromiseQueue;
+    exports.firstSequentially   = firstSequentially;
+    exports.withTimeout         = withTimeout;
+    exports.waitForAll          = waitForAll;
+    exports.ERROR_TIMEOUT       = ERROR_TIMEOUT;
+    exports.chain               = chain;
+    exports.promisify           = promisify;
+    exports.PromiseQueue        = PromiseQueue;
 });</code></pre></div><div class="member">
 
 <span class="pull-right scope">

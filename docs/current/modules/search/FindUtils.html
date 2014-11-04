@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -386,6 +385,7 @@
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
@@ -609,6 +609,43 @@ will do the replacement there, otherwise does it directly on disk.</p>
     Public API
 </span>
     <h4>
+        getInitialQuery 
+        <a class="anchor" href="#-getInitialQuery" id="-getInitialQuery"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets you the right query and replace text to prepopulate the Find Bar.</p>
+</div>
+    
+<dl>
+    <dt>
+        currentFindBar
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">FindBar</span>
+    </dt>
+    <dd>The currently open Find Bar, if any</dd>
+    <dt>
+        The
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>active editor, if any</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">query: string,replaceText: string</span>
+</dt>
+    <dd>Query and Replace text to prepopulate the Find Bar with</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getInitialQuery(currentFindBar, editor) {
+        var query = &quot;&quot;,
+            replaceText = &quot;&quot;;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         getInitialQueryFromSelection 
         <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
     </h4>
@@ -631,14 +668,35 @@ will do the replacement there, otherwise does it directly on disk.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getInitialQueryFromSelection(editor) {
-        var selectionText = editor.getSelectedText();
-        if (selectionText) {
-            return selectionText
-                .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
-                .split(&quot;\n&quot;)[0];
+<pre class="code language-javascript"><code class="language-javascript">        function getInitialQueryFromSelection(editor) {
+            var selectionText = editor.getSelectedText();
+            if (selectionText) {
+                return selectionText
+                    .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
+                    .split(&quot;\n&quot;)[0];
+            }
+            return &quot;&quot;;
         }
-        return &quot;&quot;;
+
+        if (currentFindBar &amp;&amp; !currentFindBar.isClosed()) {
+            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
+            &#x2F;&#x2F; current query instead of using the passed-in selected text.
+            query = currentFindBar.getQueryInfo().query;
+            replaceText = currentFindBar.getReplaceText();
+        } else {
+            var openedFindBar = FindBar._bars &amp;&amp; _.find(FindBar._bars, function (bar) {
+                    return !bar.isClosed();
+                });
+
+            if (openedFindBar) {
+                query = openedFindBar.getQueryInfo().query;
+                replaceText = openedFindBar.getReplaceText();
+            } else if (editor) {
+                query = getInitialQueryFromSelection(editor);
+            }
+        }
+
+        return {query: query, replaceText: replaceText};
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -819,7 +877,7 @@ extracted from the original text and so might be missing some context that the r
     }
 
     exports.parseDollars                    = parseDollars;
-    exports.getInitialQueryFromSelection    = getInitialQueryFromSelection;
+    exports.getInitialQuery                 = getInitialQuery;
     exports.hasCheckedMatches               = hasCheckedMatches;
     exports.performReplacements             = performReplacements;
     exports.labelForScope                   = labelForScope;
@@ -896,6 +954,16 @@ the time performReplacements() is called and the time the replacement actually h
                         var newDoc = DocumentManager.getOpenDocumentForPath(firstPath);
                         &#x2F;&#x2F; newDoc might be null if the replacement failed.
                         if (newDoc) {
+                            &#x2F;&#x2F; @todo change the `_edit` call to this:
+                            &#x2F;&#x2F;     
+                            &#x2F;&#x2F;&#x2F;    CommandManager.execute(Commands.FILE_OPEN, {fullPath: firstPath});
+                            &#x2F;&#x2F;
+                            &#x2F;&#x2F; The problem with doing that is that the promise returned by this
+                            &#x2F;&#x2F; function has already been resolved by `Async.doInParallel()` and
+                            &#x2F;&#x2F; `CommandManager.execute` is an asynchronous operation.
+                            &#x2F;&#x2F; An asynchronous open can&#39;t be waited on (since the promise has been  
+                            &#x2F;&#x2F;  resolved already) so use the synchronous version so that the next `done`
+                            &#x2F;&#x2F;  handler is blocked until the open completes
                             MainViewManager._edit(MainViewManager.ACTIVE_PANE, newDoc);
                         }
                     }

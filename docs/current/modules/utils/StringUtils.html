@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -526,6 +525,16 @@
         return str.replace(&#x2F;\{(\d+)\}&#x2F;g, function (match, num) {
             return typeof args[num] !== &quot;undefined&quot; ? args[num] : match;
         });
+    }
+
+    function regexEscape(str) {
+        return str.replace(&#x2F;([.?*+\^$\[\]\\(){}|\-])&#x2F;g, &quot;\\$1&quot;);
+    }
+
+    &#x2F;&#x2F; Periods (aka &quot;dots&quot;) are allowed in HTML identifiers, but jQuery interprets
+    &#x2F;&#x2F; them as the start of a class selector, so they need to be escaped
+    function jQueryIdEscape(str) {
+        return str.replace(&#x2F;\.&#x2F;g, &quot;\\.&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -556,39 +565,6 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getLines(text) {
         return text.split(&quot;\n&quot;);
-    }</code></pre></div><div class="member public deprecated">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        htmlEscape 
-        <a class="anchor" href="#-htmlEscape" id="-htmlEscape"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function htmlEscape(str) {
-        console.warn(&quot;StringUtils.htmlEscape is deprecated. Use _.escape instead.&quot;);
-        return _.escape(str);
-    }
-
-    function regexEscape(str) {
-        return str.replace(&#x2F;([.?*+\^$\[\]\\(){}|\-])&#x2F;g, &quot;\\$1&quot;);
-    }
-
-    &#x2F;&#x2F; Periods (aka &quot;dots&quot;) are allowed in HTML identifiers, but jQuery interprets
-    &#x2F;&#x2F; them as the start of a class selector, so they need to be escaped
-    function jQueryIdEscape(str) {
-        return str.replace(&#x2F;\.&#x2F;g, &quot;\\.&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -757,7 +733,6 @@ If param bytes is negative it returns the number without any changes.</p>
 
     &#x2F;&#x2F; Define public API
     exports.format              = format;
-    exports.htmlEscape          = htmlEscape;
     exports.regexEscape         = regexEscape;
     exports.jQueryIdEscape      = jQueryIdEscape;
     exports.getLines            = getLines;

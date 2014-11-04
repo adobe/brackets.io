@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -442,13 +441,21 @@
     }
 
     &#x2F;&#x2F; compute the screen offset of an element
-    function _screenOffset(element, key) {
-        var bounds = element.getBoundingClientRect();
-        if (key === &quot;offsetLeft&quot;) {
-            return bounds.left + window.pageXOffset;
+    function _screenOffset(element) {
+        var elemBounds = element.getBoundingClientRect(),
+            body = window.document.body,
+            offsetTop,
+            offsetLeft;
+
+        if (window.getComputedStyle(body).position === &quot;static&quot;) {
+            offsetLeft = elemBounds.left + window.pageXOffset;
+            offsetTop = elemBounds.top + window.pageYOffset;
         } else {
-            return bounds.top + window.pageYOffset;
+            var bodyBounds = body.getBoundingClientRect();
+            offsetLeft = elemBounds.left - bodyBounds.left;
+            offsetTop = elemBounds.top - bodyBounds.top;
         }
+        return { left: offsetLeft, top: offsetTop };
     }
 
     &#x2F;&#x2F; set an event on a element
@@ -485,8 +492,9 @@
             }
 
             &#x2F;&#x2F; compute the position on screen
-            var x = _screenOffset(this.element, &quot;offsetLeft&quot;);
-            var y = _screenOffset(this.element, &quot;offsetTop&quot;) + this.element.offsetHeight;
+            var offset = _screenOffset(this.element),
+                x = offset.left,
+                y = offset.top + this.element.offsetHeight;
 
             &#x2F;&#x2F; create the container
             this.body = document.createElement(&quot;div&quot;);
@@ -610,9 +618,11 @@
             
             highlight.className = HIGHLIGHT_CLASSNAME;
             
+            var offset = _screenOffset(element);
+
             var stylesToSet = {
-                &quot;left&quot;: _screenOffset(element, &quot;offsetLeft&quot;) + &quot;px&quot;,
-                &quot;top&quot;: _screenOffset(element, &quot;offsetTop&quot;) + &quot;px&quot;,
+                &quot;left&quot;: offset.left + &quot;px&quot;,
+                &quot;top&quot;: offset.top + &quot;px&quot;,
                 &quot;width&quot;: elementBounds.width + &quot;px&quot;,
                 &quot;height&quot;: elementBounds.height + &quot;px&quot;,
                 &quot;z-index&quot;: 2000000,

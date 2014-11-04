@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -1411,6 +1410,7 @@ watched root and ignores errors.</p>
     exports.showSaveDialog = _wrap(FileSystem.prototype.showSaveDialog);
     exports.watch = _wrap(FileSystem.prototype.watch);
     exports.unwatch = _wrap(FileSystem.prototype.unwatch);
+    exports.clearAllCaches = _wrap(FileSystem.prototype.clearAllCaches);
     
     &#x2F;&#x2F; Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
@@ -1610,6 +1610,30 @@ watchedRoot.</p>
                 impl.unwatchPath(entry.fullPath, requestCb);
             }, callback);
         }
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        clearAllCaches 
+        <a class="anchor" href="#FileSystem-clearAllCaches" id="FileSystem-clearAllCaches"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Clears all cached content. Because of the performance implications of this, this should only be used if
+there is a suspicion that the file system has not been updated through the normal file watchers
+mechanism.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.clearAllCaches = function () {
+        this._handleExternalChange(null);
     };</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

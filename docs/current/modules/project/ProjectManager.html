@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -398,10 +397,10 @@ a project being opened (e.g. from the Refresh command)</li>
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
         <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
         <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/project/FileSyncManager.html">FileSyncManager</a></li>
@@ -587,46 +586,6 @@ a project being opened (e.g. from the Refresh command)</li>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _refreshDelay = 1000;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _refreshFileTreePromise 
-        <a class="anchor" href="#-_refreshFileTreePromise" id="-_refreshFileTreePromise"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?$.Promise</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _refreshFileTreePromise = null;</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _refreshPending 
-        <a class="anchor" href="#-_refreshPending" id="-_refreshPending"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>boolean</dd>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _refreshPending = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -910,6 +869,70 @@ a project being opened (e.g. from the Refresh command)</li>
     
 </span>
     <h4>
+        _getFallbackProjectPath 
+        <a class="anchor" href="#-_getFallbackProjectPath" id="-_getFallbackProjectPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>After failing to load a project, this function determines which project path to fallback to.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>Promise that resolves to a project path {string}</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getFallbackProjectPath() {
+        var fallbackPaths = [],
+            recentProjects = PreferencesManager.getViewState(&quot;recentProjects&quot;) || [],
+            deferred = new $.Deferred();
+
+        &#x2F;&#x2F; Build ordered fallback path array
+        if (recentProjects.length &gt; 1) {
+            &#x2F;&#x2F; *Most* recent project is the one that just failed to load, so use second most recent
+            fallbackPaths.push(recentProjects[1]);
+        }
+
+        &#x2F;&#x2F; Next is Getting Started project
+        fallbackPaths.push(_getWelcomeProjectPath());
+
+        &#x2F;&#x2F; Helper func for Async.firstSequentially()
+        function processItem(path) {
+            var deferred = new $.Deferred(),
+                fileEntry = FileSystem.getDirectoryForPath(path);
+
+            fileEntry.exists(function (err, exists) {
+                if (!err &amp;&amp; exists) {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
+            });
+            
+            return deferred.promise();
+        }
+
+        &#x2F;&#x2F; Find first path that exists
+        Async.firstSequentially(fallbackPaths, processItem)
+            .done(function (fallbackPath) {
+                deferred.resolve(fallbackPath);
+            })
+            .fail(function () {
+                &#x2F;&#x2F; Last resort is Brackets source folder which is guaranteed to exist
+                deferred.resolve(FileUtils.getNativeBracketsDirectoryPath());
+            });
+        
+        return deferred.promise();
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _getProjectViewStateContext 
         <a class="anchor" href="#-_getProjectViewStateContext" id="-_getProjectViewStateContext"><span class="icon-link"></span></a>
     </h4>
@@ -1120,11 +1143,13 @@ instead to check for unsaved changes and (optionally) let the user choose the fo
                                 &#x2F;&#x2F; project directory.
                                 &#x2F;&#x2F; TODO (issue #267): When Brackets supports having no project directory
                                 &#x2F;&#x2F; defined this code will need to change
-                                _loadProject(_getWelcomeProjectPath()).always(function () {
-                                    &#x2F;&#x2F; Make sure not to reject the original deferred until the fallback
-                                    &#x2F;&#x2F; project is loaded, so we don&#39;t violate expectations that there is always
-                                    &#x2F;&#x2F; a current project before continuing after _loadProject().
-                                    result.reject();
+                                _getFallbackProjectPath().done(function (path) {
+                                    _loadProject(path).always(function () {
+                                        &#x2F;&#x2F; Make sure not to reject the original deferred until the fallback
+                                        &#x2F;&#x2F; project is loaded, so we don&#39;t violate expectations that there is always
+                                        &#x2F;&#x2F; a current project before continuing after _loadProject().
+                                        result.reject();
+                                    });
                                 });
                             });
                     }
@@ -1658,7 +1683,8 @@ for the icons within the tree.</p>
     
     <div class="description"><p>Returns an Array of all files for this project, optionally including
 files in the working set that are <em>not</em> under the project root. Files are
-filtered out by ProjectModel.shouldShow().</p>
+filtered first by ProjectModel.shouldShow(), then by the custom filter
+argument (if one was provided). The list is unsorted.</p>
 </div>
     
 <dl>
@@ -1881,37 +1907,6 @@ have the current document visible in the tree &amp; working set.</p>
             selectedEntry = MainViewManager.getCurrentlyViewedFile();
         }
         return selectedEntry;
-    }</code></pre></div><div class="member public deprecated">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        isBinaryFile 
-        <a class="anchor" href="#-isBinaryFile" id="-isBinaryFile"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        fileName
-        <span class="label label-info">string</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function isBinaryFile(fileName) {
-        DeprecationWarning.deprecationWarning(&quot;ProjectManager.isBinaryFile() called for &quot; + fileName + &quot;. Use LanguageManager.getLanguageForPath(fileName).isBinary() instead.&quot;);
-        return LanguageManager.getLanguageForPath(fileName).isBinary();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -2086,42 +2081,21 @@ this method handles both closing the current project and opening a new project.<
 
     
     <div class="description"><p>Refresh the project&#39;s file tree, maintaining the current selection.</p>
+<p>Note that the original implementation of this returned a promise to be resolved when the refresh is complete.
+That use is deprecated and <code>refreshFileTree</code> is now a &quot;fire and forget&quot; kind of function.</p>
 </div>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">$.Promise</span>
-</dt>
-    <dd>A promise object that will be resolved when the project tree is reloaded, or rejected if the project path fails to reload. If the previous selected entry is not found, the promise is still resolved.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function refreshFileTree() {
-        if (!_refreshFileTreePromise) {
-            var internalRefreshPromise  = model.refresh(),
-                deferred                = new $.Deferred();
-
-            _refreshFileTreePromise = deferred.promise();
-
-            _refreshFileTreePromise.always(function () {
-                _refreshFileTreePromise = null;
-
-                if (_refreshPending) {
-                    _refreshPending = false;
-                    refreshFileTree();
-                }
-            });
-
-            &#x2F;&#x2F; Wait at least one second before resolving the promise
-            window.setTimeout(function () {
-                internalRefreshPromise.then(deferred.resolve, deferred.reject);
-            }, _refreshDelay);
-        } else {
-            _refreshPending = true;
-        }
-
-        return _refreshFileTreePromise;
-    }</code></pre></div><div class="member public">
+<pre class="code language-javascript"><code class="language-javascript">    var refreshFileTree = function refreshFileTree() {
+        FileSystem.clearAllCaches();
+        return new $.Deferred().resolve().promise();
+    };
+    
+    refreshFileTree = _.debounce(refreshFileTree, _refreshDelay);</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -2162,7 +2136,6 @@ be rerendered.</p>
     exports.isWithinProject               = isWithinProject;
     exports.makeProjectRelativeIfPossible = makeProjectRelativeIfPossible;
     exports.shouldShow                    = ProjectModel.shouldShow;
-    exports.isBinaryFile                  = isBinaryFile;
     exports.openProject                   = openProject;
     exports.getSelectedItem               = getSelectedItem;
     exports.getContext                    = getContext;
