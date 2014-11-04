@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -444,6 +443,26 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    SearchModel.MAX_TOTAL_RESULTS = 100000;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        exceedsMaximum 
+        <a class="anchor" href="#SearchModel-exceedsMaximum" id="SearchModel-exceedsMaximum"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Whether or not we exceeded the maximum number of results in the search we did.</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchModel.prototype.exceedsMaximum = false;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -662,6 +681,7 @@
         this.scope = null;
         this.numMatches = 0;
         this.foundMaximum = false;
+        this.exceedsMaximum = false;
         this.fireChanged();
     };</code></pre></div><div class="member">
 
@@ -897,6 +917,13 @@ been mutated since it was set.</p>
         this.numMatches += resultInfo.matches.length;
         if (this.numMatches &gt;= SearchModel.MAX_TOTAL_RESULTS) {
             this.foundMaximum = true;
+            
+            &#x2F;&#x2F; Remove final result if there have been over MAX_TOTAL_RESULTS found
+            if (this.numMatches &gt; SearchModel.MAX_TOTAL_RESULTS) {
+                this.results[fullpath].matches.pop();
+                this.numMatches--;
+                this.exceedsMaximum = true;
+            }
         }
     };</code></pre></div>
         </section>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -396,7 +395,25 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private">
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        FILE_WATCHER_BATCH_TIMEOUT     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-FILE_WATCHER_BATCH_TIMEOUT" id="-FILE_WATCHER_BATCH_TIMEOUT"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var FILE_WATCHER_BATCH_TIMEOUT = 200;   &#x2F;&#x2F; 200ms - granularity of file watcher changes</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -938,40 +955,34 @@ If both calls fail, the error from the read call is passed back.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function readFile(path, options, callback) {
         var encoding = options.encoding || &quot;utf8&quot;;
-        
-        &#x2F;&#x2F; Execute the read and stat calls in parallel. Callback early if the
-        &#x2F;&#x2F; read call completes first with an error; otherwise wait for both
-        &#x2F;&#x2F; to finish.
-        var done = false, data, stat, err;
 
+        &#x2F;&#x2F; callback to be executed when the call to stat completes
+        &#x2F;&#x2F;  or immediately if a stat object was passed as an argument
+        function doReadFile(stat) {
+            if (stat.size &gt; (FileUtils.MAX_FILE_SIZE)) {
+                callback(FileSystemError.EXCEEDS_MAX_FILE_SIZE);
+            } else {
+                appshell.fs.readFile(path, encoding, function (_err, _data) {
+                    if (_err) {
+                        callback(_mapError(_err));
+                    } else {
+                        callback(null, _data, stat);
+                    }
+                });
+            }
+        }
+        
         if (options.stat) {
-            done = true;
-            stat = options.stat;
+            doReadFile(options.stat);
         } else {
             exports.stat(path, function (_err, _stat) {
-                if (done) {
-                    callback(_err, _err ? null : data, _stat);
+                if (_err) {
+                    callback(_err);
                 } else {
-                    done = true;
-                    stat = _stat;
-                    err = _err;
+                    doReadFile(_stat);
                 }
             });
         }
-        
-        appshell.fs.readFile(path, encoding, function (_err, _data) {
-            if (_err) {
-                callback(_mapError(_err));
-                return;
-            }
-            
-            if (done) {
-                callback(err, err ? null : _data, stat);
-            } else {
-                done = true;
-                data = _data;
-            }
-        });
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1288,6 +1299,7 @@ FileSystemError string when the operation is complete.</p>
         _nodeDomain.exec(&quot;unwatchAll&quot;)
             .then(callback, callback);
     }
+
     
     &#x2F;&#x2F; Export public API
     exports.showOpenDialog  = showOpenDialog;

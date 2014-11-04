@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -600,10 +599,12 @@
                                 errorArray.forEach(function (errorObj) {
                                     ids.push(errorObj.item);
                                     if (errorObj.error &amp;&amp; errorObj.error.forEach) {
-                                        console.error(&quot;Errors for &quot;, errorObj.item);
+                                        console.error(&quot;Errors for&quot;, errorObj.item);
                                         errorObj.error.forEach(function (error) {
                                             console.error(Package.formatError(error));
                                         });
+                                    } else {
+                                        console.error(&quot;Error for&quot;, errorObj.item, errorObj);
                                     }
                                 });
                                 Dialogs.showModalDialog(
@@ -689,8 +690,10 @@
         &#x2F;&#x2F; Open the dialog
         dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
         
-        &#x2F;&#x2F; When dialog closes, dismiss models and commit changes
+        &#x2F;&#x2F; On dialog close: clean up listeners &amp; models, and commit changes
         dialog.done(function () {
+            $(document).off(&quot;.extensionManager&quot;);
+            
             models.forEach(function (model) {
                 model.dispose();
             });
@@ -716,8 +719,9 @@
                 setActiveTab($(this));
             });
 
-        &#x2F;&#x2F; navigate through tabs via Ctrl-(Shift)-Tab
-        $dlg.on(&quot;keyup&quot;, function (event) {
+        &#x2F;&#x2F; Navigate through tabs via Ctrl-(Shift)-Tab
+        &#x2F;&#x2F; (focus may be on document.body if text in extension listing clicked - see #9511)
+        $(document).on(&quot;keyup.extensionManager&quot;, function (event) {
             if (event.keyCode === KeyEvent.DOM_VK_TAB &amp;&amp; event.ctrlKey) {
                 var $tabs = $(&quot;.nav-tabs a&quot;, $dlg),
                     tabIndex = _activeTabIndex;

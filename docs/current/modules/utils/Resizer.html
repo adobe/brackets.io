@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -606,11 +605,17 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         <span class="label label-info">boolean</span>
     </dt>
     <dd>Maintain the size of the element as a percentage of its parent the default is to maintain the size of the element in pixels</dd>
+    <dt>
+        _attachToParent
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Attaches the resizer element to parent of the element rather than to element itself. Attach the resizer to the parent *ONLY* if element has the same offset as parent otherwise the resizer will be incorrectly positioned. FOR INTERNAL USE ONLY</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByWorkspaceManager, usePercentages) {
+<pre class="code language-javascript"><code class="language-javascript">    function makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByWorkspaceManager, usePercentages, _attachToParent) {
         var $resizer            = $(&#39;&lt;div class=&quot;&#39; + direction + &#39;-resizer&quot;&gt;&lt;&#x2F;div&gt;&#39;),
             $element            = $(element),
             $parent             = $element.parent(),
@@ -669,8 +674,11 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
 
         collapsible = collapsible || false;
         
-        $element.prepend($resizer);
-        
+        if (_attachToParent) {
+            $parent.prepend($resizer);
+        } else {
+            $element.prepend($resizer);
+        }
         &#x2F;&#x2F; Important so min&#x2F;max sizes behave predictably
         $element.css(&quot;box-sizing&quot;, &quot;border-box&quot;);
         
@@ -731,8 +739,11 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             elementPrefs.visible = true;
             
             if (collapsible) {
-                $element.prepend($resizer);
-                
+                if (_attachToParent) {
+                    $parent.prepend($resizer);
+                } else {
+                    $element.prepend($resizer);
+                }
                 if (position === POSITION_TOP) {
                     $resizer.css(resizerCSSPosition, &quot;&quot;);
                 } else if (position === POSITION_RIGHT) {

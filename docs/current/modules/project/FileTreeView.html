@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -562,7 +561,7 @@ the tree resides and the top of the selected node (as reported by the node itsel
 <ul>
 <li>selectionViewInfo: Immutable.Map with width, scrollTop, scrollLeft and offsetTop for the tree container</li>
 <li>visible: should this be visible now</li>
-<li>widthAdjustment: if this box should not fill the entire width, pass in a positive number here which is subtracted from the width in selectionViewInfo</li>
+<li>selectedClassName: class name applied to the element that is selected</li>
 </ul>
 </div>
     
@@ -624,7 +623,34 @@ and invoking the correct action based on that input.</p>
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var renameBehavior = {</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var renameBehavior = {</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        selectionExtension 
+        <a class="anchor" href="#-selectionExtension" id="-selectionExtension"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>On Windows and Linux, the selection bar in the tree does not extend over the scroll bar.
+The selectionExtension sits on top of the scroll bar to make the selection bar appear to span the
+whole width of the sidebar.</p>
+<p>Props:</p>
+<ul>
+<li>selectionViewInfo: Immutable.Map with width, scrollTop, scrollLeft and offsetTop for the tree container</li>
+<li>visible: should this be visible now</li>
+<li>selectedClassName: class name applied to the element that is selected</li>
+<li>className: class to be applied to the extension element</li>
+</ul>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var selectionExtension = React.createClass({</code></pre></div>
 </section>
 
 <section id="functions">
@@ -777,7 +803,7 @@ and invoking the correct action based on that input.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _measureText(text) {
-        var measuringElement = $(&quot;&lt;div &#x2F;&gt;&quot;, { css : { &quot;position&quot; : &quot;absolute&quot;, &quot;top&quot; : &quot;-200px&quot;, &quot;left&quot; : (&quot;-1000px&quot;), &quot;visibility&quot; : &quot;hidden&quot; } }).appendTo(&quot;body&quot;);
+        var measuringElement = $(&quot;&lt;span &#x2F;&gt;&quot;, { css : { &quot;position&quot; : &quot;absolute&quot;, &quot;top&quot; : &quot;-200px&quot;, &quot;left&quot; : &quot;-1000px&quot;, &quot;visibility&quot; : &quot;hidden&quot;, &quot;white-space&quot;: &quot;pre&quot; } }).appendTo(&quot;body&quot;);
         measuringElement.text(&quot;pW&quot; + text);
         var width = measuringElement.width();
         measuringElement.remove();

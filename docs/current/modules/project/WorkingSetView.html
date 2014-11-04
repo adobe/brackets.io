@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -384,6 +383,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
         <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
@@ -406,6 +406,26 @@ The UI allows the user to see what files are open/dirty and allows them to close
 </label>    </h3>
 
 <div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $workingFilesContainer 
+        <a class="anchor" href="#-$workingFilesContainer" id="-$workingFilesContainer"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><h1 id="working-set-list-container">working-set-list-container</h1>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQuery</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $workingFilesContainer;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -456,6 +476,27 @@ The UI allows the user to see what files are open/dirty and allows them to close
         BOTSCROLL  = &quot;bottomscroll&quot;,
         BELOWVIEW  = &quot;belowview&quot;,
         ABOVEVIEW  = &quot;aboveview&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _DRAG_MOVE_DETECTION_START 
+        <a class="anchor" href="#-_DRAG_MOVE_DETECTION_START" id="-_DRAG_MOVE_DETECTION_START"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Drag an item has to move 3px before dragging starts</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+        <dt>constant</dt>
+        <dd></dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _DRAG_MOVE_DETECTION_START = 3;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -622,6 +663,11 @@ The UI allows the user to see what files are open/dirty and allows them to close
         &#x2F;&#x2F; working set item might never have been opened; if so, then it&#39;s definitely not dirty
         var docIfOpen = DocumentManager.getOpenDocumentForPath(file.fullPath);
         return (docIfOpen &amp;&amp; docIfOpen.isDirty);
+    }
+    
+    
+    function _hasSelectionFocus() {
+        return FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW;
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -689,19 +735,43 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 dragged = false,
                 startPageY = e.pageY,
                 lastPageY = startPageY,
-                itemHeight = $el.height(),
+                lastHit = { where: NOMANSLAND },
                 tryClosing = $(e.target).hasClass(&quot;can-close&quot;),
-                offset = $el.offset(),
-                $copy = $el.clone(),
-                $ghost = $(&quot;&lt;div class=&#39;open-files-container wsv-drag-ghost&#39; style=&#39;overflow: hidden; display: inline-block;&#39;&gt;&quot;).append($(&quot;&lt;ul&gt;&quot;).append($copy).css(&quot;padding&quot;, &quot;0&quot;)),
-                sourceView = _viewFromEl($el),
                 currentFile = MainViewManager.getCurrentlyViewedFile(),
                 activePaneId = MainViewManager.getActivePaneId(),
                 activeView = _views[activePaneId],
-                draggingCurrentFile = ($el.hasClass(&quot;selected&quot;) &amp;&amp; sourceView.paneId === activePaneId),
-                startingIndex = MainViewManager.findInWorkingSet(sourceView.paneId, sourceFile.fullPath),
+                sourceView = _viewFromEl($el),
                 currentView = sourceView,
-                lastHit = { where: NOMANSLAND };
+                startingIndex = $el.index(),
+                itemHeight,
+                offset,
+                $copy,
+                $ghost,
+                draggingCurrentFile;
+            
+            function initDragging() {
+                itemHeight = $el.height();
+                offset = $el.offset();
+                $copy = $el.clone();
+                $ghost = $(&quot;&lt;div class=&#39;open-files-container wsv-drag-ghost&#39; style=&#39;overflow: hidden; display: inline-block;&#39;&gt;&quot;).append($(&quot;&lt;ul&gt;&quot;).append($copy).css(&quot;padding&quot;, &quot;0&quot;));
+                draggingCurrentFile = ($el.hasClass(&quot;selected&quot;) &amp;&amp; sourceView.paneId === activePaneId);
+                
+                &#x2F;&#x2F; setup our ghost element as position absolute
+                &#x2F;&#x2F;  so we can put it wherever we want to while dragging
+                if (draggingCurrentFile &amp;&amp; _hasSelectionFocus()) {
+                    $ghost.addClass(&quot;dragging-current-file&quot;);
+                }
+
+                $ghost.css({
+                    top: offset.top,
+                    left: offset.left,
+                    width: $el.width() + 8
+                });
+
+                &#x2F;&#x2F; this will give the element the appearence that it&#39;s ghosted if the user
+                &#x2F;&#x2F;  drags the element out of the view and goes off into no mans land
+                $ghost.appendTo($(&quot;body&quot;));
+            }
             
             &#x2F;&#x2F; Switches the view context to match the hit context
             function updateContext(hit) {
@@ -720,7 +790,6 @@ The UI allows the user to see what files are open/dirty and allows them to close
                     hasScroller = false,
                     onTopScroller = false,
                     onBottomScroller = false,
-                    $workingFilesContainer =  $(&quot;#working-set-list-container&quot;),
                     $container,
                     $hit,
                     $item,
@@ -990,7 +1059,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 &#x2F;&#x2F; The drag function
                 function drag(e) {
                     if (!dragged) {
-                        
+                        initDragging();
                         &#x2F;&#x2F; sort redraw and scroll shadows
                         &#x2F;&#x2F;  cause problems during drag so disable them
                         _suppressSortRedrawForAllViews(true);
@@ -1002,12 +1071,12 @@ The UI allows the user to see what files are open/dirty and allows them to close
                         _deactivateAllViews(true);
                         
                         &#x2F;&#x2F; add a &quot;dragging&quot; class to the outer container
-                        $(&quot;#working-set-list-container&quot;).addClass(&quot;dragging&quot;);
+                        $workingFilesContainer.addClass(&quot;dragging&quot;);
                         
                         &#x2F;&#x2F; add a class to the element we&#39;re dragging if 
-                        &#x2F;&#x2F;  its the currently selected file so that we 
-                        &#x2F;&#x2F;  can show it as selected while dragging it
-                        if (!draggingCurrentFile) {
+                        &#x2F;&#x2F;  it&#39;s the currently selected file so that we 
+                        &#x2F;&#x2F;  can show it as selected while dragging
+                        if (!draggingCurrentFile &amp;&amp; FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW) {
                             $(activeView._findListItemFromFile(currentFile)).addClass(&quot;drag-show-as-selected&quot;);
                         }
                         
@@ -1080,13 +1149,15 @@ The UI allows the user to see what files are open/dirty and allows them to close
                     }
                 }
 
-                &#x2F;&#x2F; move the drag affordance
-                $ghost.css(&quot;top&quot;, $ghost.offset().top + (e.pageY - lastPageY));
-
+                &#x2F;&#x2F; Reposition the drag affordance if we&#39;ve started dragging
+                if ($ghost) {
+                    $ghost.css(&quot;top&quot;, $ghost.offset().top + (e.pageY - lastPageY));
+                }
+                
                 &#x2F;&#x2F; if we have&#39;t started dragging yet then we wait until
                 &#x2F;&#x2F;  the mouse has moved 3 pixels before we start dragging
                 &#x2F;&#x2F;  to avoid the item moving when clicked or double clicked
-                if (dragged || Math.abs(e.pageY - startPageY) &gt; 3) {
+                if (dragged || Math.abs(e.pageY - startPageY) &gt; _DRAG_MOVE_DETECTION_START) {
                     drag(e);
                 }
 
@@ -1107,19 +1178,21 @@ The UI allows the user to see what files are open/dirty and allows them to close
             
             &#x2F;&#x2F; Close down the drag operation
             function preDropCleanup() {
-                $(&quot;#working-set-list-container&quot;).removeClass(&quot;dragging&quot;);
-                $(&quot;#working-set-list-container .drag-show-as-selected&quot;).removeClass(&quot;drag-show-as-selected&quot;);
-                endScroll($el);
-                &#x2F;&#x2F; re-activate the views (adds the &quot;active&quot; class to the view that was previously active)
-                _deactivateAllViews(false);
-                &#x2F;&#x2F; turn scroll wheel back on
                 window.onmousewheel = window.document.onmousewheel = null;
                 $(window).off(&quot;.wsvdragging&quot;);
-                $ghost.remove();
-                $el.css(&quot;opacity&quot;, &quot;&quot;);
+                if (dragged) {
+                    $workingFilesContainer.removeClass(&quot;dragging&quot;);
+                    $workingFilesContainer.find(&quot;.drag-show-as-selected&quot;).removeClass(&quot;drag-show-as-selected&quot;);
+                    endScroll($el);
+                    &#x2F;&#x2F; re-activate the views (adds the &quot;active&quot; class to the view that was previously active)
+                    _deactivateAllViews(false);
+                    &#x2F;&#x2F; turn scroll wheel back on
+                    $ghost.remove();
+                    $el.css(&quot;opacity&quot;, &quot;&quot;);
                 
-                if (dragged &amp;&amp; $el.next().length === 0) {
-                    scrollCurrentViewToBottom();
+                    if ($el.next().length === 0) {
+                        scrollCurrentViewToBottom();
+                    }
                 }
             }
         
@@ -1130,7 +1203,6 @@ The UI allows the user to see what files are open/dirty and allows them to close
                     _suppressSortRedrawForAllViews(false);
                     _suppressScrollShadowsOnAllViews(false);
                 }
-                
                 
                 &#x2F;&#x2F; we don&#39;t need to refresh if the item
                 &#x2F;&#x2F;  was dragged but not enough to not change 
@@ -1227,21 +1299,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
                 return;
             }
             
-            &#x2F;&#x2F; setup our ghost element as position absolute
-            &#x2F;&#x2F;  so we can put it wherever we want to while dragging
-            if (draggingCurrentFile) {
-                $ghost.addClass(&quot;dragging-current-file&quot;);
-            }
 
-            $ghost.css({
-                top: offset.top,
-                left: offset.left,
-                width: $el.width() + 8
-            });
-            
-            &#x2F;&#x2F; this will give the element the appearence that it&#39;s ghosted if the user
-            &#x2F;&#x2F;  drags the element out of the view and goes off into no mans land
-            $ghost.appendTo($(&quot;body&quot;));
             
             e.stopPropagation();
         });
@@ -1344,7 +1402,6 @@ rebuilding the list while dragging.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateListItemSelection(listItem, selectedFile) {
         var shouldBeSelected = (selectedFile &amp;&amp; $(listItem).data(_FILE_KEY).fullPath === selectedFile.fullPath);
-        
         ViewUtils.toggleClass($(listItem), &quot;selected&quot;, shouldBeSelected);
     }</code></pre></div><div class="member private">
 
@@ -1416,6 +1473,11 @@ rebuilding the list while dragging.</p>
         &#x2F;&#x2F;    all items that have already been created
         refresh(true);
     }
+    
+    AppInit.htmlReady(function () {
+        $workingFilesContainer =  $(&quot;#working-set-list-container&quot;);
+    });
+    
     
     &#x2F;&#x2F; Public API
     exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
@@ -1866,7 +1928,7 @@ and adds a parent directory name to them</p>
             this._scrollSelectedFileIntoView();
         }
 
-        if (FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW &amp;&amp; this.$el.hasClass(&quot;active&quot;)) {
+        if (_hasSelectionFocus() &amp;&amp; this.$el.hasClass(&quot;active&quot;)) {
             this.$openFilesList.trigger(&quot;selectionChanged&quot;, reveal);
         } else {
             this.$openFilesList.trigger(&quot;selectionHide&quot;);
@@ -2328,7 +2390,7 @@ and adds a parent directory name to them</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._scrollSelectedFileIntoView = function () {
-        if (FileViewController.getFileSelectionFocus() !== FileViewController.WORKING_SET_VIEW) {
+        if (!_hasSelectionFocus()) {
             return;
         }
 
@@ -2486,8 +2548,7 @@ and adds a parent directory name to them</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    WorkingSetView.prototype._updateViewState = function () {
         var paneId = MainViewManager.getActivePaneId();
-        if ((FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW) &amp;&amp;
-                (paneId === this.paneId)) {
+        if (_hasSelectionFocus() &amp;&amp; paneId === this.paneId) {
             this.$el.addClass(&quot;active&quot;);
             this.$openFilesContainer.addClass(&quot;active&quot;);
         } else {

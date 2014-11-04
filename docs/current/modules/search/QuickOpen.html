@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -595,15 +594,6 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addQuickOpenPlugin(pluginDef) {
-        &#x2F;&#x2F; Backwards compatibility (for now) for old fileTypes field, if newer languageIds not specified
-        if (pluginDef.fileTypes &amp;&amp; !pluginDef.languageIds) {
-            console.warn(&quot;Using fileTypes for QuickOpen plugins is deprecated. Use languageIds instead.&quot;);
-            pluginDef.languageIds = pluginDef.fileTypes.map(function (extension) {
-                return LanguageManager.getLanguageForPath(&quot;file.&quot; + extension).getId();
-            });
-            delete pluginDef.fileTypes;
-        }
-        
         plugins.push(new QuickOpenPlugin(
             pluginDef.name,
             pluginDef.languageIds,
@@ -705,7 +695,7 @@ with the given query text too. Updates text field contents if Quick Open already
     exports.addQuickOpenPlugin      = addQuickOpenPlugin;
     exports.highlightMatch          = highlightMatch;
     
-    &#x2F;&#x2F; accessing these from this module will ultimately be deprecated
+    &#x2F;&#x2F; Convenience exports for functions that most QuickOpen plugins would need.
     exports.stringMatch             = StringMatch.stringMatch;
     exports.SearchResult            = StringMatch.SearchResult;
     exports.basicMatchSort          = StringMatch.basicMatchSort;
@@ -880,7 +870,7 @@ matched; else formats the label with no highlighting.</p>
             displayName += &#39;&lt;span title=&quot;sp:&#39; + sd.special + &#39;, m:&#39; + sd.match +
                 &#39;, ls:&#39; + sd.lastSegment + &#39;, b:&#39; + sd.beginning +
                 &#39;, ld:&#39; + sd.lengthDeduction + &#39;, c:&#39; + sd.consecutive + &#39;, nsos: &#39; +
-                sd.notStartingOnSpecial + &#39;&quot;&gt;(&#39; + item.matchGoodness + &#39;) &lt;&#x2F;span&gt;&#39;;
+                sd.notStartingOnSpecial + &#39;, upper: &#39; + sd.upper + &#39;&quot;&gt;(&#39; + item.matchGoodness + &#39;) &lt;&#x2F;span&gt;&#39;;
         }
         
         &#x2F;&#x2F; Put the path pieces together, highlighting the matched parts

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -685,6 +684,24 @@ inline editor makes no-op edits or does a read-only operation.</p>
             $(exports).triggerHandler(&quot;dirtyFlagChange&quot;, doc);
             if (doc.isDirty) {
                 MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
+                
+                &#x2F;&#x2F; We just dirtied a doc and added it to the active working set
+                &#x2F;&#x2F;  this may have come from an internal dirtying so if it was
+                &#x2F;&#x2F;  added to a working set that had no active document then
+                &#x2F;&#x2F;  open the document 
+                &#x2F;&#x2F;
+                &#x2F;&#x2F; See: https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;9569 
+                &#x2F;&#x2F;
+                &#x2F;&#x2F; NOTE: Adding a file to the active working set may not actually add
+                &#x2F;&#x2F;       it to the active working set (e.g. the document was already 
+                &#x2F;&#x2F;       opened to the inactive working set.)
+                &#x2F;&#x2F;
+                &#x2F;&#x2F;       Check that it was actually added to the active working set
+                
+                if (!MainViewManager.getCurrentlyViewedFile() &amp;&amp;
+                        MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, doc.file.fullPath) !== -1) {
+                    CommandManager.execute(Commands.FILE_OPEN, {fullPath: doc.file.fullPath});
+                }
             }
         })
         .on(&quot;_documentSaved&quot;, function (event, doc) {

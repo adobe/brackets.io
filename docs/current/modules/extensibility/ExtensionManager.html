@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (159)</h2>
+            <h2 class="number-of-modules">Modules (158)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -301,7 +301,6 @@
               <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
               <li><a href="../../modules/utils/Async.html">Async</a></li>
               <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
-              <li><a href="../../modules/utils/CollectionUtils.html">CollectionUtils</a></li>
               <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
               <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
               <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
@@ -392,12 +391,15 @@ with new data from the registry.</li>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
         <li><a href="..&#x2F;../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
         <li><a href="..&#x2F;../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/extensibility/node/node_modules/semver/semver.browser.html">semver.browser</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -431,7 +433,25 @@ with new data from the registry.</li>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var ENABLED      = &quot;enabled&quot;,
-        START_FAILED = &quot;startFailed&quot;;</code></pre></div><div class="member public">
+        START_FAILED = &quot;startFailed&quot;;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        FOLDER_AUTOINSTALL 
+        <a class="anchor" href="#-FOLDER_AUTOINSTALL" id="-FOLDER_AUTOINSTALL"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Extension auto-install folder. Also used for preferences key.</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var FOLDER_AUTOINSTALL = &quot;auto-install-extensions&quot;;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -472,7 +492,9 @@ with new data from the registry.</li>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _idsToRemove = [],
-        _idsToUpdate = [];</code></pre></div><div class="member private public">
+        _idsToUpdate = [];
+
+    PreferencesManager.stateManager.definePreference(FOLDER_AUTOINSTALL, &quot;object&quot;, undefined);</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
@@ -523,6 +545,230 @@ with new data from the registry.</li>
 </label>    </h3>
 
 <div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _autoInstallExtensions 
+        <a class="anchor" href="#-_autoInstallExtensions" id="-_autoInstallExtensions"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>Promise that resolves when finished</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _autoInstallExtensions() {
+        var dirPath        = FileUtils.getDirectoryPath(FileUtils.getNativeBracketsDirectoryPath()) + FOLDER_AUTOINSTALL + &quot;&#x2F;&quot;,
+            autoExtensions = PreferencesManager.getViewState(FOLDER_AUTOINSTALL) || {},
+            deferred       = new $.Deferred();
+
+        _getAutoInstallFiles(dirPath, autoExtensions).done(function (result) {
+            var installPromise = Async.doSequentially(result.installZips, function (zip) {
+                autoExtensions[zip.info.metadata.name] = zip.info.metadata.version;
+                return Package.installFromPath(zip.file.fullPath);
+            });
+
+            var updatePromise = installPromise.always(function () {
+                return Async.doSequentially(result.updateZips, function (zip) {
+                    autoExtensions[zip.info.metadata.name] = zip.info.metadata.version;
+                    return Package.installUpdate(zip.file.fullPath);
+                });
+            });
+
+            &#x2F;&#x2F; Always resolve the outer promise
+            updatePromise.always(function () {
+                if (result.installZips.length &gt; 0 || result.updateZips.length &gt; 0) {
+                    &#x2F;&#x2F; Keep track of auto-installed extensions so we only install an extension once
+                    PreferencesManager.setViewState(FOLDER_AUTOINSTALL, autoExtensions);
+                }
+
+                deferred.resolve();
+            });
+        });
+
+        return deferred.promise();
+    }
+
+    AppInit.appReady(function () {
+        Package._getNodeConnectionDeferred().done(function () {
+            _autoInstallExtensions();
+        });
+    });
+
+    &#x2F;&#x2F; Listen to extension load and loadFailed events
+    $(ExtensionLoader)
+        .on(&quot;load&quot;, _handleExtensionLoad)
+        .on(&quot;loadFailed&quot;, _handleExtensionLoad);
+
+    &#x2F;&#x2F; Public exports
+    exports.downloadRegistry        = downloadRegistry;
+    exports.getCompatibilityInfo    = getCompatibilityInfo;
+    exports.getExtensionURL         = getExtensionURL;
+    exports.remove                  = remove;
+    exports.update                  = update;
+    exports.extensions              = extensions;
+    exports.cleanupUpdates          = cleanupUpdates;
+    exports.markForRemoval          = markForRemoval;
+    exports.isMarkedForRemoval      = isMarkedForRemoval;
+    exports.unmarkAllForRemoval     = unmarkAllForRemoval;
+    exports.hasExtensionsToRemove   = hasExtensionsToRemove;
+    exports.updateFromDownload      = updateFromDownload;
+    exports.removeUpdate            = removeUpdate;
+    exports.isMarkedForUpdate       = isMarkedForUpdate;
+    exports.hasExtensionsToUpdate   = hasExtensionsToUpdate;
+    exports.removeMarkedExtensions  = removeMarkedExtensions;
+    exports.updateExtensions        = updateExtensions;
+    exports.getAvailableUpdates     = getAvailableUpdates;
+    exports.cleanAvailableUpdates   = cleanAvailableUpdates;
+    exports.ENABLED       = ENABLED;
+    exports.START_FAILED  = START_FAILED;
+
+    exports.LOCATION_DEFAULT  = LOCATION_DEFAULT;
+    exports.LOCATION_DEV      = LOCATION_DEV;
+    exports.LOCATION_USER     = LOCATION_USER;
+    exports.LOCATION_UNKNOWN  = LOCATION_UNKNOWN;
+
+    &#x2F;&#x2F; For unit testing only
+    exports._getAutoInstallFiles    = _getAutoInstallFiles;
+    exports._reset                  = _reset;
+    exports._setExtensions          = _setExtensions;
+});</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>
+        _getAutoInstallFiles 
+        <a class="anchor" href="#-_getAutoInstallFiles" id="-_getAutoInstallFiles"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        dirPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Directory with extensions</dd>
+    <dt>
+        autoExtensions
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>Object that maps names of previously auto-installed extensions {string} to installed version {string}.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>Promise that resolves with arrays for extensions to update and install</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getAutoInstallFiles(dirPath, autoExtensions) {
+        var zipFiles    = [],
+            installZips = [],
+            updateZips  = [],
+            deferred    = new $.Deferred();
+
+        FileSystem.getDirectoryForPath(dirPath).getContents(function (err, contents) {
+            if (!err) {
+                zipFiles = contents.filter(function (dirItem) {
+                    return (dirItem.isFile &amp;&amp; FileUtils.getFileExtension(dirItem.fullPath) === &quot;zip&quot;);
+                });
+            }
+
+            &#x2F;&#x2F; Parse zip files and separate new installs vs. updates
+            Async.doInParallel_aggregateErrors(zipFiles, function (file) {
+                var zipFilePromise = new $.Deferred();
+
+                &#x2F;&#x2F; Call validate() so that we open the local zip file and parse the
+                &#x2F;&#x2F; package.json. We need the name to detect if this zip will be a
+                &#x2F;&#x2F; new install or an update.
+                Package.validate(file.fullPath, { requirePackageJSON: true }).done(function (info) {
+                    if (info.errors.length) {
+                        zipFilePromise.reject(Package.formatError(info.errors));
+                        return;
+                    }
+
+                    var extensionInfo, installedVersion, zipArray, existingItem,
+                        extensionName   = info.metadata.name,
+                        autoExtVersion  = autoExtensions[extensionName];
+
+                    &#x2F;&#x2F; Verify extension has not already been auto-installed&#x2F;updated
+                    if (autoExtVersion &amp;&amp; semver.lte(info.metadata.version, autoExtVersion)) {
+                        &#x2F;&#x2F; Have already auto installed&#x2F;updated version &gt;= version of this extension
+                        zipFilePromise.reject();
+                        return;
+                    }
+
+                    &#x2F;&#x2F; Verify extension has not already been installed&#x2F;updated by some other means
+                    extensionInfo = extensions[extensionName];
+                    installedVersion = extensionInfo &amp;&amp; extensionInfo.installInfo &amp;&amp; extensionInfo.installInfo.metadata.version;
+                    if (installedVersion &amp;&amp; semver.lte(info.metadata.version, installedVersion)) {
+                        &#x2F;&#x2F; Have already manually installed&#x2F;updated version &gt;= version of this extension
+                        zipFilePromise.reject();
+                        return;
+                    }
+
+                    &#x2F;&#x2F; Update appropriate zip array. There could be multiple zip files for an
+                    &#x2F;&#x2F; extension, so make sure only the latest is stored
+                    zipArray = (installedVersion) ? updateZips : installZips;
+                    zipArray.some(function (zip) {
+                        if (zip.info.metadata.name === extensionName) {
+                            existingItem = zip;
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (existingItem) {
+                        if (semver.lt(existingItem.info.metadata.version, info.metadata.version)) {
+                            existingItem.file = file;
+                            existingItem.info = info;
+                        }
+                    } else {
+                        zipArray.push({ file: file, info: info });
+                    }
+
+                    zipFilePromise.resolve();
+                }).fail(function (err) {
+                    zipFilePromise.reject(Package.formatError(err));
+                });
+
+                return zipFilePromise.promise();
+            }).fail(function (errorArray) {
+                &#x2F;&#x2F; Async.doInParallel() fails if some are successful, so write errors
+                &#x2F;&#x2F; to console and always resolve
+                errorArray.forEach(function (errorObj) {
+                    if (errorObj.error) {
+                        if (errorObj.error.forEach) {
+                            console.error(&quot;Errors for&quot;, errorObj.item);
+                            errorObj.error.forEach(function (error) {
+                                console.error(Package.formatError(error));
+                            });
+                        } else {
+                            console.error(&quot;Error for&quot;, errorObj.item, errorObj);
+                        }
+                    }
+                });
+            }).always(function () {
+                deferred.resolve({
+                    installZips: installZips,
+                    updateZips:  updateZips
+                });
+            });
+        });
+
+        return deferred.promise();
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -691,45 +937,7 @@ This function is designed to work without the necessity to download extension re
 
             return arr;
         }, []);
-    }
-
-    &#x2F;&#x2F; Listen to extension load and loadFailed events
-    $(ExtensionLoader)
-        .on(&quot;load&quot;, _handleExtensionLoad)
-        .on(&quot;loadFailed&quot;, _handleExtensionLoad);
-
-    &#x2F;&#x2F; Public exports
-    exports.downloadRegistry        = downloadRegistry;
-    exports.getCompatibilityInfo    = getCompatibilityInfo;
-    exports.getExtensionURL         = getExtensionURL;
-    exports.remove                  = remove;
-    exports.update                  = update;
-    exports.extensions              = extensions;
-    exports.cleanupUpdates          = cleanupUpdates;
-    exports.markForRemoval          = markForRemoval;
-    exports.isMarkedForRemoval      = isMarkedForRemoval;
-    exports.unmarkAllForRemoval     = unmarkAllForRemoval;
-    exports.hasExtensionsToRemove   = hasExtensionsToRemove;
-    exports.updateFromDownload      = updateFromDownload;
-    exports.removeUpdate            = removeUpdate;
-    exports.isMarkedForUpdate       = isMarkedForUpdate;
-    exports.hasExtensionsToUpdate   = hasExtensionsToUpdate;
-    exports.removeMarkedExtensions  = removeMarkedExtensions;
-    exports.updateExtensions        = updateExtensions;
-    exports.getAvailableUpdates     = getAvailableUpdates;
-    exports.cleanAvailableUpdates   = cleanAvailableUpdates;
-    exports.ENABLED       = ENABLED;
-    exports.START_FAILED  = START_FAILED;
-
-    exports.LOCATION_DEFAULT  = LOCATION_DEFAULT;
-    exports.LOCATION_DEV      = LOCATION_DEV;
-    exports.LOCATION_USER     = LOCATION_USER;
-    exports.LOCATION_UNKNOWN  = LOCATION_UNKNOWN;
-
-    &#x2F;&#x2F; For unit testing only
-    exports._reset          = _reset;
-    exports._setExtensions  = _setExtensions;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
