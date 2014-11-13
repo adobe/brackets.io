@@ -442,9 +442,10 @@
         }
     }
 
-    var shortLocale = (requestedLang && requestedLang.split("-")[0]) || "en",
+    var shortLocale = (requestedLang && requestedLang.split("/")[0].split("-")[0]) || "en",
         versionInfoBaseUrl = "//s3.amazonaws.com/files.brackets.io/updates/stable/",
-        versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
+        versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json",
+        lookupPromise = new $.Deferred();
 
     if (shortLocale !== "en") {
         $.ajax({
@@ -453,15 +454,21 @@
         }).fail(function () {
             shortLocale = "en";
             versionInfoUrl = versionInfoBaseUrl + shortLocale + ".json";
+        }).always(function () {
+            lookupPromise.resolve();
         });
+    } else {
+        lookupPromise.resolve();
     }
 
-    $.ajax({
-        dataType: "json",
-        url: versionInfoUrl,
-        cache: false
-    }).done( function (data) {
-        i18nLoaded.done(function () {
+    lookupPromise.done(function () {
+        var ajaxRequest = $.ajax({
+            dataType: "json",
+            url: versionInfoUrl,
+            cache: false
+        });
+        $.when(ajaxRequest, i18nLoaded).done(function (data) {
+            data = data[0]; // get actual data
             var build = data[0];
             var buildName = build.versionString;
 
