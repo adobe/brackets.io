@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EventDispatcher - Brackets API</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/font-awesome.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.css">
+    <![endif]-->
+    <script type="text/javascript" src="../../assets/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
+    <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
+    
+    <script>
+      window.moduleLevel = "../..";
+    </script>
+  </head>
+  
+  <body>
+    <div class="row-fluid">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="../../index.html">Brackets API</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="#dependencies">Dependencies</a></li>
+                <li><a href="#variables">Variables</a></li>
+                <li><a href="#functions">Functions</a></li>
+                <li><a href="#classes">Classes</a></li>
+              </ul>
+            </div>
+            <input class="typeahead" placeholder="Search..." type="text" >
+          </div>
+        </div>
+      </div>    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="left-section">
+            <h2 class="number-of-modules">Modules (173)</h2>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
+              </li>
+            </ul>
+            <ul id="package_" class="nav nav-list">
+              <li><a href="../../modules/brackets.html">brackets</a></li>
+              <li><a href="../../modules/dependencies.html">dependencies</a></li>
+              <li><a href="../../modules/main.html">main</a></li>
+              <li><a href="../../modules/strings.html">strings</a></li>
+              <li><a href="../../modules/xorigin.html">xorigin</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
+              </li>
+            </ul>
+            <ul id="package_command" class="nav nav-list">
+              <li><a href="../../modules/command/CommandManager.html">CommandManager</a></li>
+              <li><a href="../../modules/command/Commands.html">Commands</a></li>
+              <li><a href="../../modules/command/DefaultMenus.html">DefaultMenus</a></li>
+              <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
+              <li><a href="../../modules/command/Menus.html">Menus</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
+              </li>
+            </ul>
+            <ul id="package_document" class="nav nav-list">
+              <li><a href="../../modules/document/ChangedDocumentTracker.html">ChangedDocumentTracker</a></li>
+              <li><a href="../../modules/document/Document.html">Document</a></li>
+              <li><a href="../../modules/document/DocumentCommandHandlers.html">DocumentCommandHandlers</a></li>
+              <li><a href="../../modules/document/DocumentManager.html">DocumentManager</a></li>
+              <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+              <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
+              </li>
+            </ul>
+            <ul id="package_editor" class="nav nav-list">
+              <li><a href="../../modules/editor/CodeHintList.html">CodeHintList</a></li>
+              <li><a href="../../modules/editor/CodeHintManager.html">CodeHintManager</a></li>
+              <li><a href="../../modules/editor/CSSInlineEditor.html">CSSInlineEditor</a></li>
+              <li><a href="../../modules/editor/Editor.html">Editor</a></li>
+              <li><a href="../../modules/editor/EditorCommandHandlers.html">EditorCommandHandlers</a></li>
+              <li><a href="../../modules/editor/EditorManager.html">EditorManager</a></li>
+              <li><a href="../../modules/editor/EditorOptionHandlers.html">EditorOptionHandlers</a></li>
+              <li><a href="../../modules/editor/EditorStatusBar.html">EditorStatusBar</a></li>
+              <li><a href="../../modules/editor/ImageViewer.html">ImageViewer</a></li>
+              <li><a href="../../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
+              <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
+              <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
+              </li>
+            </ul>
+            <ul id="package_extensibility" class="nav nav-list">
+              <li><a href="../../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerDialog.html">ExtensionManagerDialog</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
+              <li><a href="../../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+              <li><a href="../../modules/extensibility/Package.html">Package</a></li>
+              <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
+              </li>
+            </ul>
+            <ul id="package_file" class="nav nav-list">
+              <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
+              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
+              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem" class="nav nav-list">
+              <li><a href="../../modules/filesystem/Directory.html">Directory</a></li>
+              <li><a href="../../modules/filesystem/File.html">File</a></li>
+              <li><a href="../../modules/filesystem/FileIndex.html">FileIndex</a></li>
+              <li><a href="../../modules/filesystem/FileSystem.html">FileSystem</a></li>
+              <li><a href="../../modules/filesystem/FileSystemEntry.html">FileSystemEntry</a></li>
+              <li><a href="../../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+              <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
+              <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
+              </li>
+            </ul>
+            <ul id="package_help" class="nav nav-list">
+              <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
+              </li>
+            </ul>
+            <ul id="package_language" class="nav nav-list">
+              <li><a href="../../modules/language/CodeInspection.html">CodeInspection</a></li>
+              <li><a href="../../modules/language/CSSUtils.html">CSSUtils</a></li>
+              <li><a href="../../modules/language/HTMLDOMDiff.html">HTMLDOMDiff</a></li>
+              <li><a href="../../modules/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
+              <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
+              <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
+              <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
+              <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Agents/ConsoleAgent.html">ConsoleAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/CSSAgent.html">CSSAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMAgent.html">DOMAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMHelpers.html">DOMHelpers</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMNode.html">DOMNode</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/EditAgent.html">EditAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/GotoAgent.html">GotoAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/NetworkAgent.html">NetworkAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteAgent.html">RemoteAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
+              <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;documents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_documents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument.html">LiveCSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;language</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_language" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/node/LauncherDomain.html">LauncherDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol&#x2F;remote</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol_remote" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.html">DocumentObserver</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.html">LiveDevProtocolRemote</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/node/NodeSocketTransportDomain.html">NodeSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport.html">NodeSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;remote</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_remote" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.html">NodeSocketTransportRemote</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Servers/BaseServer.html">BaseServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
+              </li>
+            </ul>
+            <ul id="package_preferences" class="nav nav-list">
+              <li><a href="../../modules/preferences/PreferencesBase.html">PreferencesBase</a></li>
+              <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
+              <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
+              <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
+              </li>
+            </ul>
+            <ul id="package_project" class="nav nav-list">
+              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
+              <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
+              <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
+              <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
+              <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
+              <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
+              <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
+              </li>
+            </ul>
+            <ul id="package_search" class="nav nav-list">
+              <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindBar.html">FindBar</a></li>
+              <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
+              <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
+              <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+              <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
+              <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
+              </li>
+            </ul>
+            <ul id="package_utils" class="nav nav-list">
+              <li><a href="../../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
+              <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
+              <li><a href="../../modules/utils/Async.html">Async</a></li>
+              <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
+              <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
+              <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+              <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
+              <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
+              <li><a href="../../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
+              <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
+              <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
+              <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
+              <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
+              <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
+              <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
+              <li><a href="../../modules/utils/PerfUtils.html">PerfUtils</a></li>
+              <li><a href="../../modules/utils/Resizer.html">Resizer</a></li>
+              <li><a href="../../modules/utils/ShellAPI.html">ShellAPI</a></li>
+              <li><a href="../../modules/utils/StringMatch.html">StringMatch</a></li>
+              <li><a href="../../modules/utils/StringUtils.html">StringUtils</a></li>
+              <li><a href="../../modules/utils/TokenUtils.html">TokenUtils</a></li>
+              <li><a href="../../modules/utils/UpdateNotification.html">UpdateNotification</a></li>
+              <li><a href="../../modules/utils/UrlParams.html">UrlParams</a></li>
+              <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
+              <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
+              </li>
+            </ul>
+            <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
+              <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
+              <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
+              </li>
+            </ul>
+            <ul id="package_widgets" class="nav nav-list">
+              <li><a href="../../modules/widgets/bootstrap-alerts.html">bootstrap-alerts</a></li>
+              <li><a href="../../modules/widgets/bootstrap-button.html">bootstrap-button</a></li>
+              <li><a href="../../modules/widgets/bootstrap-dropdown.html">bootstrap-dropdown</a></li>
+              <li><a href="../../modules/widgets/bootstrap-modal.html">bootstrap-modal</a></li>
+              <li><a href="../../modules/widgets/bootstrap-popover.html">bootstrap-popover</a></li>
+              <li><a href="../../modules/widgets/bootstrap-scrollspy.html">bootstrap-scrollspy</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tab.html">bootstrap-tab</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tooltip.html">bootstrap-tooltip</a></li>
+              <li><a href="../../modules/widgets/bootstrap-twipsy-mod.html">bootstrap-twipsy-mod</a></li>
+              <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+              <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
+              <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
+              <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
+              <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="module span9">
+<h1>EventDispatcher</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>Implements a jQuery-like event dispatch pattern for non-DOM objects:</p>
+<ul>
+<li>Listeners are attached via on()/one() &amp; detached via off()</li>
+<li>Listeners can use namespaces for easy removal</li>
+<li>Listeners can attach to multiple events at once via a space-separated list</li>
+<li>Events are fired via trigger()</li>
+<li>The same listener can be attached twice, and will be called twice; but off() will detach all
+duplicate copies at once (&#39;duplicate&#39; means &#39;===&#39; equality - see <a href="http://jsfiddle.net/bf4p29g5/1/">http://jsfiddle.net/bf4p29g5/1/</a>)</li>
+</ul>
+<p>But it has some important differences from jQuery&#39;s non-DOM event mechanism:</p>
+<ul>
+<li>More robust to listeners that throw exceptions (other listeners will still be called, and
+trigger() will still return control to its caller).</li>
+<li>Events can be marked deprecated, causing on() to issue warnings</li>
+<li>Easier to debug, since the dispatch code is much simpler</li>
+<li>Faster, for the same reason</li>
+<li>Uses less memory, since $(nonDOMObj).on() leaks memory in jQuery</li>
+<li>API is simplified:<ul>
+<li>Event handlers do not have &#39;this&#39; set to the event dispatcher object</li>
+<li>Event object passed to handlers only has &#39;type&#39; and &#39;target&#39; fields</li>
+<li>trigger() uses a simpler argument-list signature (like Promise APIs), rather than requiring
+an Array arg and ignoring additional args</li>
+<li>trigger() does not support namespaces</li>
+<li>For simplicity, on() does not accept a map of multiple events -&gt; multiple handlers, nor a
+missing arg standing in for a bare &#39;return false&#39; handler.</li>
+</ul>
+</li>
+</ul>
+<p>For now, Brackets uses a jQuery patch to ensure $(obj).on() and obj.on() (etc.) are identical
+for any obj that has the EventDispatcher pattern. In the future, this may be deprecated.</p>
+<p>To add EventDispatcher methods to any object, call EventDispatcher.makeEventDispatcher(obj).</p>
+</div>
+    
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+    </ul>
+
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        makeEventDispatcher 
+        <a class="anchor" href="#-makeEventDispatcher" id="-makeEventDispatcher"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds the EventDispatcher APIs to the given object: on(), one(), off(), and trigger(). May also be
+called on a prototype object - each instance will still behave independently.</p>
+</div>
+    
+<dl>
+    <dt>
+        obj
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>Object to add event-dispatch methods to</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function makeEventDispatcher(obj) {
+        $.extend(obj, {
+            on: on,
+            off: off,
+            one: one,
+            trigger: trigger,
+            _EventDispatcher: true
+        });
+        &#x2F;&#x2F; Later, on() may add _eventHandlers: Object.&lt;string, Array.&lt;{event:string, namespace:?string,
+        &#x2F;&#x2F;   handler:!function(!{type:string, target:!Object}, ...)}&gt;&gt; - map from eventName to an array
+        &#x2F;&#x2F;   of handler records
+        &#x2F;&#x2F; Later, markDeprecated() may add _deprecatedEvents: Object.&lt;string, string|boolean&gt; - map from
+        &#x2F;&#x2F;   eventName to deprecation warning info
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        markDeprecated 
+        <a class="anchor" href="#-markDeprecated" id="-markDeprecated"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Mark a given event name as deprecated, such that on() will emit warnings when called with it.
+May be called before makeEventDispatcher(). May be called on a prototype where makeEventDispatcher()
+is called separately per instance (i.e. in the constructor). Should be called before clients have
+a chance to start calling on().</p>
+</div>
+    
+<dl>
+    <dt>
+        obj
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>Event dispatcher object</dd>
+    <dt>
+        eventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Name of deprecated event</dd>
+    <dt>
+        insteadStr
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Suggested thing to use instead</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function markDeprecated(obj, eventName, insteadStr) {
+        &#x2F;&#x2F; Mark event as deprecated - on() will emit warnings when called with this event
+        if (!obj._deprecatedEvents) {
+            obj._deprecatedEvents = {};
+        }
+        obj._deprecatedEvents[eventName] = insteadStr || true;
+    }
+    
+    
+    exports.makeEventDispatcher = makeEventDispatcher;
+    exports.triggerWithArray    = triggerWithArray;
+    exports.on_duringInit       = on_duringInit;
+    exports.markDeprecated      = markDeprecated;
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        off 
+        <a class="anchor" href="#-off" id="-off"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Removes one or more handler functions based on the space-separated &#39;events&#39; list. Each item in
+&#39;events&#39; can be: bare event name, bare .namespace, or event.namespace pair. This yields a set of
+matching handlers. If &#39;fn&#39; is ommitted, all these handlers are removed. If &#39;fn&#39; is provided,
+only handlers exactly equal to &#39;fn&#39; are removed (there may still be &gt;1, if duplicates were added).</p>
+</div>
+    
+<dl>
+    <dt>
+        events
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        fn
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">function(!{type:string, target:!Object}, ...)</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var off = function (events, fn) {
+        if (!this._eventHandlers) {
+            return this;
+        }
+        
+        var eventsList = events.split(&#x2F;\s+&#x2F;).map(splitNs),
+            i;
+        
+        var removeAllMatches = function (eventRec, eventName) {
+            var handlerList = this._eventHandlers[eventName],
+                k;
+            if (!handlerList) {
+                return;
+            }
+            
+            &#x2F;&#x2F; Walk backwards so it&#39;s easy to remove items
+            for (k = handlerList.length - 1; k &gt;= 0; k--) {
+                &#x2F;&#x2F; Look at ns &amp; fn only - doRemove() has already taken care of eventName
+                if (!eventRec.ns || eventRec.ns === handlerList[k].ns) {
+                    var handler = handlerList[k].handler;
+                    if (!fn || fn === handler || fn._eventOnceWrapper === handler) {
+                        handlerList.splice(k, 1);
+                    }
+                }
+            }
+            if (!handlerList.length) {
+                delete this._eventHandlers[eventName];
+            }
+        }.bind(this);
+        
+        var doRemove = function (eventRec) {
+            if (eventRec.eventName) {
+                &#x2F;&#x2F; If arg calls out an event name, look at that handler list only
+                removeAllMatches(eventRec, eventRec.eventName);
+            } else {
+                &#x2F;&#x2F; If arg only gives a namespace, look at handler lists for all events
+                _.forEach(this._eventHandlers, function (handlerList, eventName) {
+                    removeAllMatches(eventRec, eventName);
+                });
+            }
+        }.bind(this);
+        
+        &#x2F;&#x2F; Detach listener for each event clause
+        &#x2F;&#x2F; Each clause may be: bare eventname, bare .namespace, full eventname.namespace
+        for (i = 0; i &lt; eventsList.length; i++) {
+            doRemove(eventsList[i]);
+        }
+        
+        return this;  &#x2F;&#x2F; for chaining
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        on 
+        <a class="anchor" href="#-on" id="-on"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Adds the given handler function to &#39;events&#39;: a space-separated list of one or more event names, each
+with an optional &quot;.namespace&quot; (used by off() - see below). If the handler is already listening to this
+event, a duplicate copy is added.</p>
+</div>
+    
+<dl>
+    <dt>
+        events
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        fn
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">function(!{type:string, target:!Object}, ...)</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var on = function (events, fn) {
+        var eventsList = events.split(&#x2F;\s+&#x2F;).map(splitNs),
+            i;
+        
+        &#x2F;&#x2F; Check for deprecation warnings
+        if (this._deprecatedEvents) {
+            for (i = 0; i &lt; eventsList.length; i++) {
+                var deprecation = this._deprecatedEvents[eventsList[i].eventName];
+                if (deprecation) {
+                    var message = &quot;Registering for deprecated event &#39;&quot; + eventsList[i].eventName + &quot;&#39;.&quot;;
+                    if (typeof deprecation === &quot;string&quot;) {
+                        message += &quot; Instead, use &quot; + deprecation + &quot;.&quot;;
+                    }
+                    console.warn(message, new Error().stack);
+                }
+            }
+        }
+        
+        &#x2F;&#x2F; Attach listener for each event clause
+        for (i = 0; i &lt; eventsList.length; i++) {
+            var eventName = eventsList[i].eventName;
+            if (!this._eventHandlers) {
+                this._eventHandlers = {};
+            }
+            if (!this._eventHandlers[eventName]) {
+                this._eventHandlers[eventName] = [];
+            }
+            eventsList[i].handler = fn;
+            this._eventHandlers[eventName].push(eventsList[i]);
+        }
+        
+        return this;  &#x2F;&#x2F; for chaining
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        on_duringInit 
+        <a class="anchor" href="#-on_duringInit" id="-on_duringInit"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Utility for attaching an event handler to an object that has not YET had makeEventDispatcher() called
+on it, but will in the future. Once &#39;futureDispatcher&#39; becomes a real event dispatcher, any handlers
+attached here will be retained.</p>
+<p>Useful with core modules that have circular dependencies (one module initially gets an empty copy of the
+other, with no on() API present yet). Unlike other strategies like waiting for htmlReady(), this helper
+guarantees you won&#39;t miss any future events, regardless of how soon the other module finishes init and
+starts calling trigger().</p>
+</div>
+    
+<dl>
+    <dt>
+        futureDispatcher
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        events
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        fn
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">function(!{type:string, target:!Object}, ...)</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function on_duringInit(futureDispatcher, events, fn) {
+        on.call(futureDispatcher, events, fn);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        one 
+        <a class="anchor" href="#-one" id="-one"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Attaches a handler so it&#39;s only called once (per event in the &#39;events&#39; list).</p>
+</div>
+    
+<dl>
+    <dt>
+        events
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        fn
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">function(!{type:string, target:!Object}, ...)</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var one = function (events, fn) {
+        &#x2F;&#x2F; Wrap fn in a self-detaching handler; saved on the original fn so off() can detect it later
+        if (!fn._eventOnceWrapper) {
+            fn._eventOnceWrapper = function (event) {
+                &#x2F;&#x2F; Note: this wrapper is reused for all attachments of the same fn, so it shouldn&#39;t reference
+                &#x2F;&#x2F; anything from the outer closure other than &#39;fn&#39;
+                event.target.off(event.type, fn._eventOnceWrapper);
+                fn.apply(this, arguments);
+            };
+        }
+        return this.on(events, fn._eventOnceWrapper);
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        splitNs 
+        <a class="anchor" href="#-splitNs" id="-splitNs"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Split &quot;event.namespace&quot; string into its two parts; both parts are optional.</p>
+</div>
+    
+<dl>
+    <dt>
+        eventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Event name and/or trailing ".namespace"</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!{event:string,ns:string}</span>
+</dt>
+    <dd>Uses "" for missing parts.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function splitNs(eventStr) {
+        var dot = eventStr.indexOf(&quot;.&quot;);
+        if (dot === -1) {
+            return { eventName: eventStr };
+        } else {
+            return { eventName: eventStr.substring(0, dot), ns: eventStr.substring(dot) };
+        }
+    }
+    
+    
+    &#x2F;&#x2F; These functions are added as mixins to any object by makeEventDispatcher()</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        trigger 
+        <a class="anchor" href="#-trigger" id="-trigger"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Invokes all handlers for the given event (in the order they were added).</p>
+</div>
+    
+<dl>
+    <dt>
+        eventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        ...
+        <span class="label label-info">*</span>
+    </dt>
+    <dd>Any additional args are passed to the event handler after the event object</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var trigger = function (eventName) {
+        var event = { type: eventName, target: this },
+            handlerList = this._eventHandlers &amp;&amp; this._eventHandlers[eventName],
+            i;
+        
+        if (!handlerList) {
+            return;
+        }
+        
+        &#x2F;&#x2F; Use a clone of the list in case handlers call on()&#x2F;off() while we&#39;re still in the loop
+        handlerList = handlerList.slice();
+
+        &#x2F;&#x2F; Pass &#39;event&#39; object followed by any additional args trigger() was given
+        var applyArgs = Array.prototype.slice.call(arguments, 1);
+        applyArgs.unshift(event);
+
+        for (i = 0; i &lt; handlerList.length; i++) {
+            try {
+                &#x2F;&#x2F; Call one handler
+                handlerList[i].handler.apply(null, applyArgs);
+            } catch (err) {
+                console.error(&quot;Exception in &#39;&quot; + eventName + &quot;&#39; listener on&quot;, this, String(err), err.stack);
+                console.assert();  &#x2F;&#x2F; causes dev tools to pause, just like an uncaught exception
+            }
+        }
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        triggerWithArray 
+        <a class="anchor" href="#-triggerWithArray" id="-triggerWithArray"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Utility for calling on() with an array of arguments to pass to event handlers (rather than a varargs
+list). makeEventDispatcher() must have previously been called on &#39;dispatcher&#39;.</p>
+</div>
+    
+<dl>
+    <dt>
+        dispatcher
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        eventName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        argsArray
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;*&gt;</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function triggerWithArray(dispatcher, eventName, argsArray) {
+        var triggerArgs = [eventName].concat(argsArray);
+        dispatcher.trigger.apply(dispatcher, triggerArgs);
+    }</code></pre></div>
+</section>
+
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="../../assets/js/prism.js"></script>
+  </body>
+</html>
