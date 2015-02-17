@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1145,6 +1146,7 @@ is not a range after expansion.</p>
                 }
             }
         
+            console.assert(state.matchIndex !== -1);
             if (state.matchIndex !== -1) {
                 &#x2F;&#x2F; Convert to 1-based by adding one before showing the index.
                 findBar.showFindCount(StringUtils.format(Strings.FIND_MATCH_INDEX,
@@ -1174,6 +1176,7 @@ is not a range after expansion.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function clearCurrentMatchHighlight(cm, state) {
         if (state.markedCurrent) {
             state.markedCurrent.clear();
+            ScrollTrackMarkers.markCurrent(-1);
         }
     }</code></pre></div><div class="member">
 
@@ -1317,13 +1320,28 @@ to false.</p>
             
             var nextMatch = _getNextMatch(editor, searchBackwards, pos);
             if (nextMatch) {
-                _updateFindBarWithMatchInfo(getSearchState(editor._codeMirror),
-                                            {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
+                &#x2F;&#x2F; Update match index indicators - only possible if we have resultSet saved (missing if FIND_MAX_FILE_SIZE threshold hit)
+                if (state.resultSet.length) {
+                    _updateFindBarWithMatchInfo(state,
+                                                {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
+                    &#x2F;&#x2F; Update current-tickmark indicator - only if highlighting enabled (disabled if FIND_HIGHLIGHT_MAX threshold hit)
+                    if (state.marked.length) {
+                        ScrollTrackMarkers.markCurrent(state.matchIndex);  &#x2F;&#x2F; _updateFindBarWithMatchInfo() has updated this index
+                    }
+                }
+                
                 _selectAndScrollTo(editor, [nextMatch], true, preferNoScroll);
-                state.markedCurrent = cm.markText(nextMatch.start, nextMatch.end,
-                     { className: &quot;searching-current-match&quot;, startStyle: &quot;searching-first&quot;, endStyle: &quot;searching-last&quot; });
+                
+                &#x2F;&#x2F; Only mark text with &quot;current match&quot; highlight if search bar still open
+                if (findBar &amp;&amp; !findBar.isClosed()) {
+                    &#x2F;&#x2F; If highlighting disabled, apply both match AND current-match styles for correct appearance
+                    var curentMatchClassName = state.marked.length ? &quot;searching-current-match&quot; : &quot;CodeMirror-searching searching-current-match&quot;;
+                    state.markedCurrent = cm.markText(nextMatch.start, nextMatch.end,
+                         { className: curentMatchClassName, startStyle: &quot;searching-first&quot;, endStyle: &quot;searching-last&quot; });
+                }
             } else {
                 cm.setCursor(editor.getCursorPos());  &#x2F;&#x2F; collapses selection, keeping cursor in place to avoid scrolling
+                &#x2F;&#x2F; (nothing more to do: previous highlights already cleared above)
             }
         });
     }</code></pre></div><div class="member">

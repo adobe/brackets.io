@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -642,7 +643,8 @@
                                  Commands.EDIT_CUT, Commands.EDIT_COPY, Commands.EDIT_PASTE],
         _reservedShortcuts    = [&quot;Ctrl-Z&quot;, &quot;Ctrl-Y&quot;, &quot;Ctrl-A&quot;, &quot;Ctrl-X&quot;, &quot;Ctrl-C&quot;, &quot;Ctrl-V&quot;],
         _macReservedShortcuts = [&quot;Cmd-,&quot;, &quot;Cmd-H&quot;, &quot;Cmd-Alt-H&quot;, &quot;Cmd-M&quot;, &quot;Cmd-Shift-Z&quot;, &quot;Cmd-Q&quot;],
-        _keyNames             = [&quot;Up&quot;, &quot;Down&quot;, &quot;Left&quot;, &quot;Right&quot;, &quot;Backspace&quot;, &quot;Enter&quot;, &quot;Space&quot;, &quot;Tab&quot;];</code></pre></div><div class="member private">
+        _keyNames             = [&quot;Up&quot;, &quot;Down&quot;, &quot;Left&quot;, &quot;Right&quot;, &quot;Backspace&quot;, &quot;Enter&quot;, &quot;Space&quot;, &quot;Tab&quot;,
+                                 &quot;PageUp&quot;, &quot;PageDown&quot;, &quot;Home&quot;, &quot;End&quot;, &quot;Insert&quot;, &quot;Delete&quot;];</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1339,7 +1341,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _getDisplayKey(key) {
         var displayKey = &quot;&quot;,
             match = key ? key.match(&#x2F;(Up|Down|Left|Right|\-)$&#x2F;i) : null;
-        if (match) {
+        if (match &amp;&amp; !&#x2F;Page(Up|Down)&#x2F;.test(key)) {
             displayKey = key.substr(0, match.index) + _displayKeyMap[match[0].toLowerCase()];
         }
         return displayKey;
@@ -2035,6 +2037,10 @@ deciding to handle it ourselves.</p>
             key = &quot;Space&quot;;
         } else if (key === &quot;\b&quot;) {
             key = &quot;Backspace&quot;;
+        } else if (key === &quot;Help&quot;) {
+            key = &quot;Insert&quot;;
+        } else if (event.keyCode === KeyEvent.DOM_VK_DELETE) {
+            key = &quot;Delete&quot;;
         } else {
             key = _mapKeycodeToKey(event.keyCode, key);
         }
@@ -2076,19 +2082,19 @@ deciding to handle it ourselves.</p>
                 &#x2F;&#x2F; Unassign the key from any command. e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache
                 &#x2F;&#x2F; will require us to remove Cmd-W shortcut from file.open command.
                 removeBinding(normalizedKey);
-                
-                &#x2F;&#x2F; Reassign the default key binding. e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache
-                &#x2F;&#x2F; will require us to reassign Cmd-O shortcut to file.open command.
-                if (defaults) {
-                    addBinding(commandID, defaults, brackets.platform);
-                }
+            }
 
-                &#x2F;&#x2F; Reassign the default key binding of the previously modified command. 
-                &#x2F;&#x2F; e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache will require us to reassign Cmd-W
-                &#x2F;&#x2F; shortcut to file.close command.
-                if (defaultCommand &amp;&amp; defaultCommand.key) {
-                    addBinding(defaultCommand.commandID, defaultCommand.key, brackets.platform);
-                }
+            &#x2F;&#x2F; Reassign the default key binding. e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache
+            &#x2F;&#x2F; will require us to reassign Cmd-O shortcut to file.open command.
+            if (defaults) {
+                addBinding(commandID, defaults, brackets.platform);
+            }
+
+            &#x2F;&#x2F; Reassign the default key binding of the previously modified command. 
+            &#x2F;&#x2F; e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache will require us to reassign Cmd-W
+            &#x2F;&#x2F; shortcut to file.close command.
+            if (defaultCommand &amp;&amp; defaultCommand.key) {
+                addBinding(defaultCommand.commandID, defaultCommand.key, brackets.platform);
             }
         });
     }</code></pre></div><div class="member private">
@@ -2159,7 +2165,7 @@ deciding to handle it ourselves.</p>
         <span class="label label-nullable">nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>The target OS of the keyBindings either "mac", "win" or "linux". If undefined, all platforms not explicitly defined will use the key binding.</dd>
+    <dd>The target OS of the keyBindings either "mac", "win" or "linux". If undefined, all platforms not explicitly defined will use the key binding. NOTE: If platform is not specified, Ctrl will be replaced by Cmd for "mac" platform</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">{key: string,displayKey:String},Array.&lt;{key: string,displayKey:String}&gt;</span>
 </dt>
@@ -2466,11 +2472,16 @@ then a copy of the default key map is returned.</p>
             return null;
         }
         
-        &#x2F;&#x2F; Ensure that the first letter of the key name is in upper case.
-        &#x2F;&#x2F; i.e. &#39;a&#39; =&gt; &#39;A&#39; and &#39;up&#39; =&gt; &#39;Up&#39;
-        if (&#x2F;^[a-z]&#x2F;.test(key)) {
-            key = key.toLowerCase().replace(&#x2F;(^[a-z])&#x2F;, function (match, p1) {
-                return p1.toUpperCase();
+        &#x2F;&#x2F; Ensure that the first letter of the key name is in upper case and the rest are
+        &#x2F;&#x2F; in lower case. i.e. &#39;a&#39; =&gt; &#39;A&#39; and &#39;up&#39; =&gt; &#39;Up&#39;
+        if (&#x2F;^[a-z]&#x2F;i.test(key)) {
+            key = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
+        }
+        
+        &#x2F;&#x2F; Also make sure that the second word of PageUp&#x2F;PageDown has the first letter in upper case.
+        if (&#x2F;^Page&#x2F;.test(key)) {
+            key = key.replace(&#x2F;(up|down)$&#x2F;, function (match, p1) {
+                return p1.charAt(0).toUpperCase() + p1.substr(1);
             });
         }
         

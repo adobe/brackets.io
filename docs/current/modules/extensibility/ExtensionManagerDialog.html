@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -765,6 +766,17 @@
             return searchDisabled;
         }
         
+        function clearSearch() {
+            $search.val(&quot;&quot;);
+            views.forEach(function (view, index) {
+                view.filter(&quot;&quot;);
+            });
+
+            if (!updateSearchDisabled()) {
+                $search.focus();
+            }
+        }
+
         &#x2F;&#x2F; Open the dialog
         dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(dialogTemplate, context));
         
@@ -785,10 +797,14 @@
         $searchClear = $(&quot;.search-clear&quot;, $dlg);
 
         function setActiveTab($tab) {
-            models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
+            if (models[_activeTabIndex]) {
+                models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
+            }
             $tab.tab(&quot;show&quot;);
-            $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
-            $searchClear.click();
+            if (models[_activeTabIndex]) {
+                $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
+                clearSearch();
+            }
         }
 
         &#x2F;&#x2F; Dialog tabs
@@ -874,16 +890,7 @@
                 views.forEach(function (view) {
                     view.filter(query);
                 });
-            }).on(&quot;click&quot;, &quot;.search-clear&quot;, function (e) {
-                $search.val(&quot;&quot;);
-                views.forEach(function (view, index) {
-                    view.filter(&quot;&quot;);
-                });
-                
-                if (!updateSearchDisabled()) {
-                    $search.focus();
-                }
-            });
+            }).on(&quot;click&quot;, &quot;.search-clear&quot;, clearSearch);
             
             &#x2F;&#x2F; Disable the search field when there are no items in the model
             models.forEach(function (model, index) {
@@ -894,8 +901,12 @@
                 });
             });
             
-            &#x2F;&#x2F; Open dialog to Installed tab if extension updates are available
-            if ($(&quot;#toolbar-extension-manager&quot;).hasClass(&#39;updatesAvailable&#39;)) {
+            var $activeTab = $dlg.find(&quot;.nav-tabs li.active a&quot;);
+            if ($activeTab.length) { &#x2F;&#x2F; If there&#39;s already a tab selected, show it
+                $activeTab.parent().removeClass(&quot;active&quot;); &#x2F;&#x2F; workaround for bootstrap-tab
+                $activeTab.tab(&quot;show&quot;);
+            } else if ($(&quot;#toolbar-extension-manager&quot;).hasClass(&#39;updatesAvailable&#39;)) {
+                &#x2F;&#x2F; Open dialog to Installed tab if extension updates are available
                 $dlg.find(&quot;.nav-tabs a.installed&quot;).tab(&quot;show&quot;);
             } else { &#x2F;&#x2F; Otherwise show the first tab
                 $dlg.find(&quot;.nav-tabs a:first&quot;).tab(&quot;show&quot;);

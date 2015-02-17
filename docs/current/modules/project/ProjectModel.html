@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1987,18 +1988,21 @@ Does not support paths containing &quot;..&quot;</p>
         
         delete this._selections.rename;
         delete this._selections.context;
-        if (this._selections.selected === oldPath) {
-            this._selections.selected = newPath;
-        }
         
         viewModel.moveMarker(&quot;rename&quot;, oldProjectPath, null);
         viewModel.moveMarker(&quot;context&quot;, oldProjectPath, null);
         viewModel.moveMarker(&quot;creating&quot;, oldProjectPath, null);
+        
+        function finalizeRename() {
+            viewModel.renameItem(oldProjectPath, newName);
+            if (self._selections.selected &amp;&amp; self._selections.selected.indexOf(oldPath) === 0) {
+                self._selections.selected = newPath + self._selections.selected.slice(oldPath.length);
+            }
+        }
 
         if (renameInfo.type === FILE_CREATING) {
             this.createAtPath(newPath).done(function (entry) {
-                viewModel.renameItem(oldProjectPath, newName);
-                
+                finalizeRename();
                 renameInfo.deferred.resolve(entry);
             }).fail(function (error) {
                 self._viewModel.deleteAtPath(self.makeProjectRelativeIfPossible(renameInfo.path));
@@ -2006,7 +2010,7 @@ Does not support paths containing &quot;..&quot;</p>
             });
         } else {
             this._renameItem(oldPath, newPath).then(function () {
-                viewModel.renameItem(oldProjectPath, newName);
+                finalizeRename();
                 renameInfo.deferred.resolve({
                     newPath: newPath
                 });

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1166,9 +1167,9 @@
                         itemIndex:   searchItems.length,
                         matchIndex:  i,
                         line:        match.start.line + 1,
-                        pre:         match.line.substr(0, match.start.ch),
-                        highlight:   match.line.substring(match.start.ch, multiLine ? undefined : match.end.ch),
-                        post:        multiLine ? &quot;\u2026&quot; : match.line.substr(match.end.ch),
+                        pre:         match.line.substr(0, match.start.ch - match.highlightOffset),
+                        highlight:   match.line.substring(match.start.ch - match.highlightOffset, multiLine ? undefined : match.end.ch - match.highlightOffset),
+                        post:        multiLine ? &quot;\u2026&quot; : match.line.substr(match.end.ch - match.highlightOffset),
                         start:       match.start,
                         end:         match.end,
                         isChecked:   match.isChecked,
