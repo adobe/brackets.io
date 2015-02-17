@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -653,11 +654,17 @@ has never been displayed before.</p>
         <span class="label label-info">boolean</span>
     </dt>
     <dd>If true, displays the message once for each unique call location. If false (the default), only displays the message once no matter where it's called from. Note that setting this to true can cause a slight performance hit (because it has to generate a stack trace), so don't set this for functions that you expect to be called from performance- sensitive code (e.g. tight loops).</dd>
+    <dt>
+        callerStackPos
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Only used if oncePerCaller=true. Overrides the `Error().stack` depth where the client-code caller can be found. Only needed if extra shim layers are involved.</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function deprecationWarning(message, oncePerCaller) {
+<pre class="code language-javascript"><code class="language-javascript">    function deprecationWarning(message, oncePerCaller, callerStackPos) {
         &#x2F;&#x2F; If oncePerCaller isn&#39;t set, then only show the message once no matter who calls it. 
         if (!message || (!oncePerCaller &amp;&amp; displayedWarnings[message])) {
             return;
@@ -670,7 +677,7 @@ has never been displayed before.</p>
         &#x2F;&#x2F; * 2 is the caller of this function (the one throwing the deprecation warning)
         &#x2F;&#x2F; * 3 is the actual caller of the deprecated function.
         var stack = new Error().stack,
-            callerLocation = stack.split(&quot;\n&quot;)[3];
+            callerLocation = stack.split(&quot;\n&quot;)[callerStackPos || 3];
         if (oncePerCaller &amp;&amp; displayedWarnings[message] &amp;&amp; displayedWarnings[message][callerLocation]) {
             return;
         }

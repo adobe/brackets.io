@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -475,8 +476,11 @@ by calling one of the following: removeView, removeViews, or _reset</p>
 <li><p>viewListChange - Whenever there is a file change to a file in the working set.  These 2 events: <code>DocumentManger.pathRemove</code> 
 and <code>DocumentManger.fileNameChange</code> will cause a <code>viewListChange</code> event so the WorkingSetView can update.</p>
 </li>
-<li><p>currentViewChange - triggered whenever the current view changes.</p>
+<li><p>currentViewChange - Whenever the current view changes.</p>
 <pre><code>     (e, newView:View, oldView:View)
+</code></pre></li>
+<li><p>viewDestroy - Whenever a view has been destroyed</p>
+<pre><code>     (e, view:View)
 </code></pre></li>
 </ul>
 <p>View Interface:  </p>
@@ -1142,6 +1146,7 @@ is first hidden and the interstitial page is displayed</p>
             this._hideCurrentView();
         }
         delete this._views[view.getFile().fullPath];
+        this.trigger(&quot;viewDestroy&quot;, view);
         view.destroy();
     };</code></pre></div><div class="member private">
 
@@ -1571,7 +1576,8 @@ is first hidden and the interstitial page is displayed</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._reset = function () {
-        var views = [],
+        var self = this,
+            views = [],
             view = this._currentView;
 
         _.forEach(this._views, function (_view) {
@@ -1594,6 +1600,7 @@ is first hidden and the interstitial page is displayed</p>
 
         &#x2F;&#x2F; Now destroy the views
         views.forEach(function (_view) {
+            self.trigger(&quot;viewDestroy&quot;, _view);
             _view.destroy();
         });
     };</code></pre></div><div class="member private">
@@ -1867,6 +1874,7 @@ Does not change which document is currently open in the editor. Completes synchr
             var file = view.getFile(),
                 path = file &amp;&amp; file.fullPath;
             delete this._views[path];
+            this.trigger(&quot;viewDestroy&quot;, view);
             view.destroy();
         }
     };</code></pre></div><div class="member">
@@ -2356,6 +2364,7 @@ Does not change which document is currently open in the editor. Completes synchr
         
         &#x2F;&#x2F; Destroy temporary views
         _.forEach(viewsToDestroy, function (view) {
+            self.trigger(&quot;viewDestroy&quot;, view);
             view.destroy();
         });
 

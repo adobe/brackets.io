@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -460,6 +461,7 @@
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
     </ul>
 
 </section>
@@ -471,7 +473,107 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getToken 
+        <a class="anchor" href="#-_getToken" id="-_getToken"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Like cm.getTokenAt, but with caching</p>
+</div>
+    
+<dl>
+    <dt>
+        cm
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">CodeMirror</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        pos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{ch:number, line:number}</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        precise
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>If given, results in more current results. Suppresses caching.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd>Token for position</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getToken(cm, pos, precise) {
+        if (precise) {
+            _clearCache(); &#x2F;&#x2F; reset cache
+            return cm.getTokenAt(pos, precise);
+        }
+        var cachedTokens    = _manageCache(cm, pos.line),
+            tokenIndex      = _.sortedIndex(cachedTokens, {end: pos.ch}, &quot;end&quot;), &#x2F;&#x2F; binary search is faster for long arrays
+            token           = cachedTokens[tokenIndex];
+        return token || cm.getTokenAt(pos, precise); &#x2F;&#x2F; fall back to CMs getTokenAt, for example in an empty line
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _manageCache 
+        <a class="anchor" href="#-_manageCache" id="-_manageCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Caches the tokens for the given editor/line if needed</p>
+</div>
+    
+<dl>
+    <dt>
+        cm
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">CodeMirror</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        line
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;Object&gt;</span>
+</dt>
+    <dd>(Cached) array of tokens</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _manageCache(cm, line) {
+        if (!cache || !cache.tokens || cache.line !== line || cache.cm !== cm) {
+            &#x2F;&#x2F; Cache is no longer matching -&gt; Update
+            var tokens = cm.getLineTokens(line, false);
+            &#x2F;&#x2F; Add empty beginning-of-line token for backwards compatibility
+            tokens.unshift(cm.getTokenAt({line: line, ch: 0}, false));
+            cache = {
+                cm: cm,
+                line: line,
+                timeStamp: Date.now(),
+                tokens: tokens,
+            };
+            cm.off(&quot;changes&quot;, _clearCache);
+            cm.on(&quot;changes&quot;, _clearCache);
+        }
+        return cache.tokens;
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -489,7 +591,7 @@ move functions.</p>
     
 <dl>
     <dt>
-        editor
+        cm
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">CodeMirror</span>
     </dt>
@@ -507,11 +609,11 @@ move functions.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getInitialContext(editor, pos) {
+<pre class="code language-javascript"><code class="language-javascript">    function getInitialContext(cm, pos) {
         return {
-            &quot;editor&quot;: editor,
+            &quot;editor&quot;: cm,
             &quot;pos&quot;: pos,
-            &quot;token&quot;: editor.getTokenAt(pos, true)
+            &quot;token&quot;: cm.getTokenAt(pos, true)
         };
     }</code></pre></div><div class="member public">
 
@@ -679,7 +781,7 @@ move functions.</p>
         } else {
             ctx.pos.ch = ctx.token.end + 1;
         }
-        ctx.token = ctx.editor.getTokenAt(ctx.pos, precise);
+        ctx.token = _getToken(ctx.editor, ctx.pos, precise);
         return true;
     }</code></pre></div><div class="member public">
 
@@ -731,7 +833,7 @@ move functions.</p>
         } else {
             ctx.pos.ch = ctx.token.start;
         }
-        ctx.token = ctx.editor.getTokenAt(ctx.pos, precise);
+        ctx.token = _getToken(ctx.editor, ctx.pos, precise);
         return true;
     }</code></pre></div><div class="member public">
 

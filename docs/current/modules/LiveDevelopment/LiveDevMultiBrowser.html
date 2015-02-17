@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -486,6 +487,8 @@ The status codes are:</p>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
         <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
         <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
@@ -952,7 +955,7 @@ do not have &quot;update while editing&quot; support</p>
             }
             
             var filteredFiltered = allFiles.filter(function (item) {
-                var parent = FileUtils.getDirectoryPath(item.fullPath);
+                var parent = FileUtils.getParentPath(item.fullPath);
                 
                 return (containingFolder.indexOf(parent) === 0);
             });
@@ -980,7 +983,7 @@ do not have &quot;update while editing&quot; support</p>
                 &#x2F;&#x2F; We found no good match
                 if (i === -1) {
                     &#x2F;&#x2F; traverse the directory tree up one level
-                    containingFolder = FileUtils.getDirectoryPath(containingFolder);
+                    containingFolder = FileUtils.getParentPath(containingFolder);
                     &#x2F;&#x2F; Are we still inside the project?
                     if (containingFolder.indexOf(projectRoot) === -1) {
                         stillInProjectTree = false;
@@ -1572,16 +1575,21 @@ creates a live document for the stylesheet and adds it to _relatedDocuments.</p>
     </h4>
 
     
-    <div class="description"><p>Close all active connections</p>
+    <div class="description"><p>Closes all active connections.
+Returns a resolved promise for API compatibility.</p>
 </div>
     
 <dl>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A resolved promise</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function close() {
-        return _close(true);
+        _close(true);
+        return new $.Deferred().resolve().promise();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1812,14 +1820,14 @@ creates a live document for the stylesheet and adds it to _relatedDocuments.</p>
                 otherDocumentsInWorkingFiles;
 
             if (doc &amp;&amp; !doc._masterEditor) {
-                otherDocumentsInWorkingFiles = DocumentManager.getWorkingSet().length;
-                DocumentManager.addToWorkingSet(doc.file);
+                otherDocumentsInWorkingFiles = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
+                MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
 
                 if (!otherDocumentsInWorkingFiles) {
-                    DocumentManager.setCurrentDocument(doc);
+                    CommandManager.execute(Commands.CMD_OPEN, { fullPath: doc.file.fullPath });
                 }
             }
-
+            
             &#x2F;&#x2F; wait for server (StaticServer, Base URL or file:)
             prepareServerPromise
                 .done(function () {

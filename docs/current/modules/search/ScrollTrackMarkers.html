@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -481,6 +482,32 @@ It is assumed that markers are always clear()ed when switching editors.</p>
     
 </span>
     <h4>
+        $markedTickmark 
+        <a class="anchor" href="#-$markedTickmark" id="-$markedTickmark"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Tickmark markCurrent() last called on, or null if never called / called with -1.</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?jQueryObject</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var $markedTickmark;
+    
+    
+    function _getScrollbar(editor) {
+        &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
+        return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         editor 
         <a class="anchor" href="#-editor" id="-editor"><span class="icon-link"></span></a>
     </h4>
@@ -514,13 +541,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
     <dd>!Array.&lt;{line: number, ch: number}&gt;</dd>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var marks = [];
-    
-    
-    function _getScrollbar(editor) {
-        &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
-        return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
-    }</code></pre></div><div class="member">
+<pre class="code language-javascript"><code class="language-javascript">    var marks = [];</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -676,21 +697,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
         
         marks = marks.concat(posArray);
         _renderMarks(posArray);
-    }
-
-    &#x2F;&#x2F; Private helper for unit tests
-    function _getTickmarks() {
-        return marks;
-    }
-
-
-    &#x2F;&#x2F; For unit tests
-    exports._getTickmarks   = _getTickmarks;
-
-    exports.clear           = clear;
-    exports.setVisible      = setVisible;
-    exports.addTickmarks    = addTickmarks;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -715,8 +722,57 @@ tickmark track is not visible also.</p>
         if (editor) {
             $(&quot;.tickmark-track&quot;, editor.getRootElement()).empty();
             marks = [];
+            $markedTickmark = null;
         }
     }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        markCurrent 
+        <a class="anchor" href="#-markCurrent" id="-markCurrent"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        index
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Either -1, or an index into the array passed to addTickmarks()</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function markCurrent(index) {
+        &#x2F;&#x2F; Remove previous highlight first
+        if ($markedTickmark) {
+            $markedTickmark.removeClass(&quot;tickmark-current&quot;);
+            $markedTickmark = null;
+        }
+        if (index !== -1) {
+            $markedTickmark = $(&quot;.tickmark-track &gt; .tickmark&quot;, editor.getRootElement()).eq(index).addClass(&quot;tickmark-current&quot;);
+        }
+    }
+
+    &#x2F;&#x2F; Private helper for unit tests
+    function _getTickmarks() {
+        return marks;
+    }
+
+
+    &#x2F;&#x2F; For unit tests
+    exports._getTickmarks   = _getTickmarks;
+
+    exports.clear           = clear;
+    exports.setVisible      = setVisible;
+    exports.addTickmarks    = addTickmarks;
+    exports.markCurrent     = markCurrent;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

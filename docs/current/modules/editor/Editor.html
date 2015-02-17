@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -575,6 +576,7 @@ Documents, not Editors.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var CLOSE_BRACKETS      = &quot;closeBrackets&quot;,
         CLOSE_TAGS          = &quot;closeTags&quot;,
+        DRAG_DROP           = &quot;dragDropText&quot;,
         HIGHLIGHT_MATCHES   = &quot;highlightMatches&quot;,
         SCROLL_PAST_END     = &quot;scrollPastEnd&quot;,
         SHOW_CURSOR_SELECT  = &quot;showCursorWhenSelecting&quot;,
@@ -584,8 +586,9 @@ Documents, not Editors.</p>
         SPACE_UNITS         = &quot;spaceUnits&quot;,
         STYLE_ACTIVE_LINE   = &quot;styleActiveLine&quot;,
         TAB_SIZE            = &quot;tabSize&quot;,
-        WORD_WRAP           = &quot;wordWrap&quot;,
-        USE_TAB_CHAR        = &quot;useTabChar&quot;;
+        UPPERCASE_COLORS    = &quot;uppercaseColors&quot;,
+        USE_TAB_CHAR        = &quot;useTabChar&quot;,
+        WORD_WRAP           = &quot;wordWrap&quot;;
     
     var cmOptions         = {};</code></pre></div><div class="member">
 
@@ -617,6 +620,7 @@ Documents, not Editors.</p>
     &#x2F;&#x2F; Mappings from Brackets preferences to CodeMirror options
     cmOptions[CLOSE_BRACKETS]     = &quot;autoCloseBrackets&quot;;
     cmOptions[CLOSE_TAGS]         = &quot;autoCloseTags&quot;;
+    cmOptions[DRAG_DROP]          = &quot;dragDrop&quot;;
     cmOptions[HIGHLIGHT_MATCHES]  = &quot;highlightSelectionMatches&quot;;
     cmOptions[SCROLL_PAST_END]    = &quot;scrollPastEnd&quot;;
     cmOptions[SHOW_CURSOR_SELECT] = &quot;showCursorWhenSelecting&quot;;
@@ -630,6 +634,7 @@ Documents, not Editors.</p>
     
     PreferencesManager.definePreference(CLOSE_BRACKETS,     &quot;boolean&quot;, false);
     PreferencesManager.definePreference(CLOSE_TAGS,         &quot;Object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] });
+    PreferencesManager.definePreference(DRAG_DROP,          &quot;boolean&quot;, true);
     PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  &quot;boolean&quot;, false);
     PreferencesManager.definePreference(SCROLL_PAST_END,    &quot;boolean&quot;, false);
     PreferencesManager.definePreference(SHOW_CURSOR_SELECT, &quot;boolean&quot;, false);
@@ -643,6 +648,7 @@ Documents, not Editors.</p>
     PreferencesManager.definePreference(TAB_SIZE,           &quot;number&quot;, DEFAULT_TAB_SIZE, {
         validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE)
     });
+    PreferencesManager.definePreference(UPPERCASE_COLORS,   &quot;boolean&quot;, false);
     PreferencesManager.definePreference(USE_TAB_CHAR,       &quot;boolean&quot;, false);
     PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true);
     
@@ -991,7 +997,7 @@ Document modifiable.</p>
             autoCloseTags               : currentOptions[CLOSE_TAGS],
             coverGutterNextToScrollbar  : true,
             cursorScrollMargin          : 3,
-            dragDrop                    : false,
+            dragDrop                    : currentOptions[DRAG_DROP],
             electricChars               : false,   &#x2F;&#x2F; we use our own impl of this to avoid CodeMirror bugs; see _checkElectricChars()
             extraKeys                   : codeMirrorKeyMap,
             highlightSelectionMatches   : currentOptions[HIGHLIGHT_MATCHES],
@@ -2056,6 +2062,14 @@ jQuery events on the Editor instance.</p>
         });
         this._codeMirror.on(&quot;overwriteToggle&quot;, function (instance, newstate) {
             self.trigger(&quot;overwriteToggle&quot;, self, newstate);
+        });
+
+        &#x2F;&#x2F; Disable CodeMirror&#39;s drop handling if a file&#x2F;folder is dropped
+        this._codeMirror.on(&quot;drop&quot;, function (cm, event) {
+            var files = event.dataTransfer.files;
+            if (files &amp;&amp; files.length) {
+                event.preventDefault();
+            }
         });
     };</code></pre></div><div class="member private">
 

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -471,6 +472,7 @@ The status codes are:</p>
  2: Loading agents
  3: Active
  4: Out of sync
+ 5: Sync error
 </code></pre><p>The reason codes are:</p>
 <ul>
 <li>null (Unknown reason)</li>
@@ -1173,16 +1175,6 @@ _adds extension, url and root to the document</p>
             refPath,
             i;
 
-        &#x2F;&#x2F; TODO: FileUtils.getParentFolder()
-        function getParentFolder(path) {
-            return path.substring(0, path.lastIndexOf(&#39;&#x2F;&#39;, path.length - 2) + 1);
-        }
-
-        function getFilenameWithoutExtension(filename) {
-            var index = filename.lastIndexOf(&quot;.&quot;);
-            return index === -1 ? filename : filename.slice(0, index);
-        }
-
         &#x2F;&#x2F; Is the currently opened document already a file we can use for Live Development?
         if (doc) {
             refPath = doc.file.fullPath;
@@ -1209,14 +1201,14 @@ _adds extension, url and root to the document</p>
             }
             
             var filteredFiltered = allFiles.filter(function (item) {
-                var parent = getParentFolder(item.fullPath);
+                var parent = FileUtils.getParentPath(item.fullPath);
                 
                 return (containingFolder.indexOf(parent) === 0);
             });
             
             var filterIndexFile = function (fileInfo) {
                 if (fileInfo.fullPath.indexOf(containingFolder) === 0) {
-                    if (getFilenameWithoutExtension(fileInfo.name) === &quot;index&quot;) {
+                    if (FileUtils.getFilenameWithoutExtension(fileInfo.name) === &quot;index&quot;) {
                         if (hasOwnServerForLiveDevelopment) {
                             if ((FileUtils.isServerHtmlFileExt(fileInfo.name)) ||
                                     (FileUtils.isStaticHtmlFileExt(fileInfo.name))) {
@@ -1237,7 +1229,7 @@ _adds extension, url and root to the document</p>
                 &#x2F;&#x2F; We found no good match
                 if (i === -1) {
                     &#x2F;&#x2F; traverse the directory tree up one level
-                    containingFolder = getParentFolder(containingFolder);
+                    containingFolder = FileUtils.getParentPath(containingFolder);
                     &#x2F;&#x2F; Are we still inside the project?
                     if (containingFolder.indexOf(projectRoot) === -1) {
                         stillInProjectTree = false;
@@ -1923,7 +1915,7 @@ _adds extension, url and root to the document</p>
 
         &#x2F;&#x2F; Domains for some agents must be enabled first before loading
         var enablePromise = Inspector.Page.enable().then(function () {
-            Inspector.DOM.enable().then(_enableAgents);
+            return Inspector.DOM.enable().then(_enableAgents, _enableAgents);
         });
         
         enablePromise.done(function () {

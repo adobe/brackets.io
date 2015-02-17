@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1139,6 +1140,9 @@ or for incremental-search style document preview like Quick Open will eventually
                                                newPane.id);
                 }
             });
+            newPane.on(&quot;viewDestroy.mainView&quot;, function (e, view) {
+                _removeFileFromMRU(newPane.id, view.getFile());
+            });
         }
         
         return newPane;
@@ -1363,6 +1367,39 @@ Do not use this API it is for internal use only</li>
         if (!options.noPaneActivate) {
             setActivePaneId(paneId);
         }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _findFileInMRUList 
+        <a class="anchor" href="#-_findFileInMRUList" id="-_findFileInMRUList"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Locates the first  MRU entry of a file</p>
+</div>
+    
+<dl>
+    <dt>
+        File
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>- the file</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{file:File,paneId:string}</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _findFileInMRUList(file) {
+        return _.findIndex(_mruList, function (record) {
+            return (record.file.fullPath === file.fullPath);
+        });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1802,6 +1839,9 @@ This also sets css properties that aid in the layout when _updateLayout is calle
                     var fileList = pane.getViewList();
 
                     fileList.forEach(function (file) {
+                        if (_findFileInMRUList(file) !== -1) {
+                            console.log(file.fullPath + &quot; duplicated in mru list&quot;);
+                        }
                         _mruList.push(_makeMRUListEntry(file, pane.id));
                     });
                     exports.trigger(&quot;workingSetAddList&quot;, fileList, pane.id);
@@ -1862,15 +1902,21 @@ This also sets css properties that aid in the layout when _updateLayout is calle
             pane.makeViewMostRecent(file);
         
             index = _.findIndex(_mruList, function (record) {
-                return (record.file === file &amp;&amp; record.paneId === paneId);
+                return (record.file === file &amp;&amp; record.paneId === pane.id);
             });
 
             entry = _makeMRUListEntry(file, pane.id);
 
             if (index !== -1) {
                 _mruList.splice(index, 1);
-                _mruList.unshift(entry);
             }
+
+            if (_findFileInMRUList(file) !== -1) {
+                console.log(file.fullPath + &quot; duplicated in mru list&quot;);
+            }
+            
+            &#x2F;&#x2F; add it to the front of the list
+            _mruList.unshift(entry);
         }
     }</code></pre></div><div class="member private">
 
@@ -2277,6 +2323,10 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
                 });
         }
 
+        result.done(function () {
+            _makeFileMostRecent(paneId, file);
+        });
+        
         return result;
     }</code></pre></div><div class="member private">
 
@@ -2747,6 +2797,9 @@ from the MRU list</p>
         uniqueFileList = pane.addListToViewList(fileList);
         
         uniqueFileList.forEach(function (file) {
+            if (_findFileInMRUList(file) !== -1) {
+                console.log(file.fullPath + &quot; duplicated in mru list&quot;);
+            }
             _mruList.push(_makeMRUListEntry(file, pane.id));
         });
         
@@ -2841,11 +2894,13 @@ Views of files in the working set are persisted and are not destroyed until the 
         } else if (result === pane.ITEM_NOT_FOUND) {
             index = pane.addToViewList(file, index);
 
-            &#x2F;&#x2F; Add to or update the position in MRU
-            if (pane.getCurrentlyViewedFile() === file) {
-                _mruList.unshift(entry);
-            } else {
-                _mruList.push(entry);
+            if (_findFileInMRUList(file) === -1) {
+                &#x2F;&#x2F; Add to or update the position in MRU
+                if (pane.getCurrentlyViewedFile() === file) {
+                    _mruList.unshift(entry);
+                } else {
+                    _mruList.push(entry);
+                }
             }
 
             exports.trigger(&quot;workingSetAdd&quot;, file, index, pane.id);

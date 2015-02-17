@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PopUpManager - Brackets API</title>
+    <title>XMLUtils - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -446,14 +446,13 @@
           </div>
         </div>
         <div class="module span9">
-<h1>PopUpManager</h1>
+<h1>XMLUtils</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>Utilities for managing pop-ups.</p>
-</div>
+    <div></div>
     
 </section>
 
@@ -461,10 +460,7 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-        <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
-        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
     </ul>
 
 </section>
@@ -483,186 +479,280 @@
     
 </span>
     <h4>
-        _beforeMenuPopup 
-        <a class="anchor" href="#-_beforeMenuPopup" id="-_beforeMenuPopup"><span class="icon-link"></span></a>
+        _createTagInfo 
+        <a class="anchor" href="#-_createTagInfo" id="-_createTagInfo"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>A menu is being popped up, so remove any menu that is currently popped up</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _beforeMenuPopup() {
-        removeCurrentPopUp();
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        addPopUp 
-        <a class="anchor" href="#-addPopUp" id="-addPopUp"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Add Esc key handling for a popup DOM element.</p>
+    <div class="description"><p>Returns an object that represents all its params.</p>
 </div>
     
 <dl>
     <dt>
-        $popUp
+        token
         <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQuery</span>
+        <span class="label label-info">Token</span>
     </dt>
-    <dd>jQuery object for the DOM element pop-up</dd>
+    <dd>CodeMirror token at the current pos</dd>
     <dt>
-        removeHandler
-        <span class="label label-info">function</span>
+        tokenType
+        <span class="label label-info">number</span>
     </dt>
-    <dd>Pop-up specific remove (e.g. display:none or DOM removal)</dd>
+    <dd>Type of current token</dd>
     <dt>
-        autoRemove
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Boolean</span>
+        offset
+        <span class="label label-info">number</span>
     </dt>
-    <dd>- Specify true to indicate the PopUpManager should remove the popup from the _popUps array when the popup is closed. Specify false when the popup is always persistant in the _popUps array.</dd>
+    <dd>Offset in current token</dd>
+    <dt>
+        exclusionList
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>List of attributes of a tag or attribute options used by an attribute</dd>
+    <dt>
+        tagName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Name of the current tag</dd>
+    <dt>
+        attrName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Name of the curent attribute</dd>
+    <dt>
+        shouldReplace
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true if we don't want to append ="" to an attribute</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function addPopUp($popUp, removeHandler, autoRemove) {
-        autoRemove = autoRemove || false;
-
-        _popUps.push($popUp[0]);
-        $popUp.data(&quot;PopUpManager-autoRemove&quot;, autoRemove);
-        $popUp.data(&quot;PopUpManager-removeHandler&quot;, removeHandler);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        listenToContextMenu 
-        <a class="anchor" href="#-listenToContextMenu" id="-listenToContextMenu"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Context menus are also created in AppInit.htmlReady(), so they may not
-yet have been created when we get our AppInit.htmlReady() callback, so
-we provide this method to tell us when to start listening for their events</p>
-</div>
-    
-<dl>
-    <dt>
-        contextMenu
-        <span class="label label-info">ContextMenu</span>
-    </dt>
+    <dt>Returns: <span class="label label-info">!{token: Token,tokenType: int,offset: int,exclusionList: Array.&lt;string&gt;,tagName: string,attrName: string,shouldReplace: boolean}</span>
+</dt>
     <dd></dd>
-</dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function listenToContextMenu(contextMenu) {
-        contextMenu.on(&quot;beforeContextMenuOpen&quot;, _beforeMenuPopup);
-    }
-
-    AppInit.htmlReady(function () {
-        &#x2F;&#x2F; Register for events
-        window.document.body.addEventListener(&quot;keydown&quot;, _keydownCaptureListener, true);
-        exports.on(&quot;beforeMenuPopup&quot;, _beforeMenuPopup);
-        
-        &#x2F;&#x2F; Close all popups when a command is executed
-        CommandManager.on(&quot;beforeExecuteCommand&quot;, function (event, commandId) {
-            removeCurrentPopUp();
-        });
-    });
-    
-    
-    EventDispatcher.makeEventDispatcher(exports);
-    
-    exports.addPopUp            = addPopUp;
-    exports.removePopUp         = removePopUp;
-    exports.listenToContextMenu = listenToContextMenu;
-});</code></pre></div><div class="member">
+<pre class="code language-javascript"><code class="language-javascript">    function _createTagInfo(token, tokenType, offset, exclusionList, tagName, attrName, shouldReplace) {
+        return {
+            token: token || null,
+            tokenType: tokenType || null,
+            offset: offset || 0,
+            exclusionList: exclusionList || [],
+            tagName: tagName || &quot;&quot;,
+            attrName: attrName || &quot;&quot;,
+            shouldReplace: shouldReplace || false
+        };
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
-    
+    Private
     
 </span>
     <h4>
-        removeCurrentPopUp 
-        <a class="anchor" href="#-removeCurrentPopUp" id="-removeCurrentPopUp"><span class="icon-link"></span></a>
+        _getTagAttributeValue 
+        <a class="anchor" href="#-_getTagAttributeValue" id="-_getTagAttributeValue"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
-if the pop-up is currently visible and was not originally attached.</p>
+    <div class="description"><p>Return the tag name, attribute name and a list of options used by the attribute</p>
 </div>
     
 <dl>
     <dt>
-        keyEvent
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">KeyboardEvent</span>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
     </dt>
-    <dd>(optional)</dd>
+    <dd>An instance of active editor</dd>
+    <dt>
+        pos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{line: number, ch: number}</span>
+    </dt>
+    <dd>Position of cursor in the editor</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">!{tagName: string,attrName: string,exclusionList: Array.&lt;string&gt;}</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function removeCurrentPopUp(keyEvent) {
-        &#x2F;&#x2F; allow the popUp to prevent closing
-        var $popUp,
-            i,
-            event = new $.Event(&quot;popUpClose&quot;);
+<pre class="code language-javascript"><code class="language-javascript">    function _getTagAttributeValue(editor, pos) {
+        var ctx, tagName, attrName, exclusionList = [], offset, textBefore, textAfter;
         
-        for (i = _popUps.length - 1; i &gt;= 0; i--) {
-            $popUp = $(_popUps[i]);
+        ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        offset = TokenUtils.offsetInToken(ctx);
+        
+        &#x2F;&#x2F; To support multiple options on the same attribute, we have
+        &#x2F;&#x2F; to break the value, these values will not be available then.
+        if (ctx.token.type === &quot;string&quot; &amp;&amp; &#x2F;\s+&#x2F;.test(ctx.token.string)) {
+            textBefore = ctx.token.string.substr(1, offset);
+            textAfter = ctx.token.string.substr(offset);
             
-            if ($popUp.find(&quot;:visible&quot;).length &gt; 0) {
-                $popUp.trigger(event);
-                
-                if (!event.isDefaultPrevented()) {
-                    &#x2F;&#x2F; Stop the DOM event from propagating
-                    if (keyEvent) {
-                        keyEvent.stopImmediatePropagation();
-                    }
-                    
-                    removePopUp($popUp);
+            &#x2F;&#x2F; Remove quote from end of the string.
+            if (&#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1))) {
+                textAfter = textAfter.substr(0, textAfter.length - 1);
+            }
+            
+            &#x2F;&#x2F; Split the text before and after the offset, skipping the current query.
+            exclusionList = exclusionList.concat(textBefore.split(&#x2F;\s+&#x2F;).slice(0, -1));
+            exclusionList = exclusionList.concat(textAfter.split(&#x2F;\s+&#x2F;));
 
-                    &#x2F;&#x2F; TODO: right now Menus and Context Menus do not take focus away from
-                    &#x2F;&#x2F; the editor. We need to have a focus manager to correctly manage focus
-                    &#x2F;&#x2F; between editors and other UI elements.
-                    &#x2F;&#x2F; For now we don&#39;t set focus here and assume individual popups
-                    &#x2F;&#x2F; adjust focus if necessary
-                    &#x2F;&#x2F; See story in Trello card #404
-                    &#x2F;&#x2F;EditorManager.focusEditor();
+            &#x2F;&#x2F; Filter through the list removing empty strings.
+            exclusionList = exclusionList.filter(function (value) {
+                if (value.length &gt; 0) {
+                    return true;
                 }
-                
+            });
+        }
+        
+        &#x2F;&#x2F; Look-back and find tag and attributes.
+        while (TokenUtils.movePrevToken(ctx)) {
+            if (ctx.token.type === &quot;tag bracket&quot;) {
+                &#x2F;&#x2F; Disallow hints in closing tags.
+                if (ctx.token.string === &quot;&lt;&#x2F;&quot;) {
+                    return null;
+                }
+                &#x2F;&#x2F; Stop when closing bracket of another tag or opening bracket of its own in encountered.
+                if (ctx.token.string.indexOf(&quot;&gt;&quot;) &gt;= 0 || ctx.token.string === &quot;&lt;&quot;) {
+                    break;
+                }
+            }
+            
+            &#x2F;&#x2F; Get the first previous attribute.
+            if (ctx.token.type === &quot;attribute&quot; &amp;&amp; !attrName) {
+                attrName = ctx.token.string;
+            }
+            
+            &#x2F;&#x2F; Stop if we get a bracket after tag.
+            if (ctx.token.type === &quot;tag&quot;) {
+                tagName = ctx.token.string;
+                if (TokenUtils.movePrevToken(ctx)) {
+                    if (ctx.token.type === &quot;tag bracket&quot; &amp;&amp; ctx.token.string === &quot;&lt;&quot;) {
+                        break;
+                    }
+                    return null;
+                }
+            }
+        }
+        
+        return {
+            tagName: tagName,
+            attrName: attrName,
+            exclusionList: exclusionList
+        };
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getTagAttributes 
+        <a class="anchor" href="#-_getTagAttributes" id="-_getTagAttributes"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Return the tagName and a list of attributes used by the tag.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>An instance of active editor</dd>
+    <dt>
+        constPos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{line: number, ch: number}</span>
+    </dt>
+    <dd>The position of cursor in the active editor</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!{tagName: string,exclusionList: Array.&lt;string&gt;,shouldReplace: boolean}</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getTagAttributes(editor, constPos) {
+        var pos, ctx, ctxPrev, ctxNext, ctxTemp, tagName, exclusionList = [], shouldReplace;
+        
+        pos = $.extend({}, constPos);
+        ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        
+        &#x2F;&#x2F; Stop if the cursor is before = or an attribute value.
+        ctxTemp = $.extend(true, {}, ctx);
+        if (ctxTemp.token.type === null &amp;&amp; regexWhitespace.test(ctxTemp.token.string)) {
+            if (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctxTemp)) {
+                if ((ctxTemp.token.type === null &amp;&amp; ctxTemp.token.string === &quot;=&quot;) ||
+                        ctxTemp.token.type === &quot;string&quot;) {
+                    return null;
+                }
+                TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxTemp);
+            }
+        }
+        
+        &#x2F;&#x2F; Incase an attribute is followed by an equal sign, shouldReplace will be used
+        &#x2F;&#x2F; to prevent from appending =&quot;&quot; again.
+        if (ctxTemp.token.type === &quot;attribute&quot;) {
+            if (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctxTemp)) {
+                if (ctxTemp.token.type === null &amp;&amp; ctxTemp.token.string === &quot;=&quot;) {
+                    shouldReplace = true;
+                }
+            }
+        }
+        
+        &#x2F;&#x2F; Look-Back and get the attributes and tag name.
+        pos = $.extend({}, constPos);
+        ctxPrev = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        while (TokenUtils.movePrevToken(ctxPrev)) {
+            if (ctxPrev.token.type &amp;&amp; ctxPrev.token.type.indexOf(&quot;tag bracket&quot;) &gt;= 0) {
+                &#x2F;&#x2F; Disallow hints in closed tag and inside tag content
+                if (ctxPrev.token.string === &quot;&lt;&#x2F;&quot; || ctxPrev.token.string.indexOf(&quot;&gt;&quot;) !== -1) {
+                    return null;
+                }
+            }
+            
+            &#x2F;&#x2F; Get attributes.
+            if (ctxPrev.token.type === &quot;attribute&quot;) {
+                exclusionList.push(ctxPrev.token.string);
+            }
+            
+            &#x2F;&#x2F; Get tag.
+            if (ctxPrev.token.type === &quot;tag&quot;) {
+                tagName = ctxPrev.token.string;
+                if (TokenUtils.movePrevToken(ctxPrev)) {
+                    if (ctxPrev.token.type === &quot;tag bracket&quot; &amp;&amp; ctxPrev.token.string === &quot;&lt;&quot;) {
+                        break;
+                    }
+                    return null;
+                }
+            }
+        }
+        
+        &#x2F;&#x2F; Look-Ahead and find rest of the attributes.
+        pos = $.extend({}, constPos);
+        ctxNext = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        while (TokenUtils.moveNextToken(ctxNext)) {
+            if (ctxNext.token.type === &quot;string&quot; &amp;&amp; ctxNext.token.string === &quot;\&quot;&quot;) {
+                return null;
+            }
+            
+            &#x2F;&#x2F; Stop on closing bracket of its own tag or opening bracket of next tag.
+            if (ctxNext.token.type === &quot;tag bracket&quot; &amp;&amp;
+                    (ctxNext.token.string.indexOf(&quot;&gt;&quot;) &gt;= 0 || ctxNext.token.string === &quot;&lt;&quot;)) {
                 break;
             }
+            if (ctxNext.token.type === &quot;attribute&quot; &amp;&amp; exclusionList.indexOf(ctxNext.token.string) === -1) {
+                exclusionList.push(ctxNext.token.string);
+            }
         }
-    }
-    
-    function _keydownCaptureListener(keyEvent) {
-         &#x2F;&#x2F; Escape key or Alt key (Windows-only)
-        if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &amp;&amp;
-                !(keyEvent.keyCode === KeyEvent.DOM_VK_ALT &amp;&amp; brackets.platform === &quot;win&quot;)) {
-            return;
-        }
-
-        &#x2F;&#x2F; Don&#39;t dismiss the popup if both Ctrl and Alt keys are pressed.
-        if (keyEvent.keyCode === KeyEvent.DOM_VK_ALT &amp;&amp; keyEvent.ctrlKey) {
-            return;
-        }
-        
-        removeCurrentPopUp(keyEvent);
+        return {
+            tagName: tagName,
+            exclusionList: exclusionList,
+            shouldReplace: shouldReplace
+        };
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -670,47 +760,124 @@ if the pop-up is currently visible and was not originally attached.</p>
     Public API
 </span>
     <h4>
-        removePopUp 
-        <a class="anchor" href="#-removePopUp" id="-removePopUp"><span class="icon-link"></span></a>
+        getTagInfo 
+        <a class="anchor" href="#-getTagInfo" id="-getTagInfo"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
-if the pop-up is currently visible and was not originally attached.</p>
+    <div class="description"><p>Return the tag info at a given position in the active editor</p>
 </div>
     
 <dl>
     <dt>
-        $popUp
+        editor
         <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQuery</span>
+        <span class="label label-info">Editor</span>
     </dt>
-    <dd></dd>
+    <dd>Instance of active editor</dd>
+    <dt>
+        pos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{line: number, ch: number}</span>
+    </dt>
+    <dd>Position of cursor in the editor</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">!{token: Object,tokenType: number,offset: number,exclusionList: Array.&lt;string&gt;,tagName: string,attrName: string,shouldReplace: boolean}</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function removePopUp($popUp) {
-        &#x2F;&#x2F; check visible first to help protect against recursive calls
-        &#x2F;&#x2F; via removeHandler
-        if ($popUp.find(&quot;:visible&quot;).length &gt; 0) {
-            var removeHandler = $popUp.data(&quot;PopUpManager-removeHandler&quot;);
-            if (removeHandler) {
-                removeHandler();
+<pre class="code language-javascript"><code class="language-javascript">    function getTagInfo(editor, pos) {
+        var ctx, offset, tagAttrs, tagAttrValue;
+        
+        ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        offset = TokenUtils.offsetInToken(ctx);
+        
+        if (ctx.token &amp;&amp; ctx.token.type === &quot;tag bracket&quot; &amp;&amp; ctx.token.string === &quot;&lt;&quot;) {
+            &#x2F;&#x2F; Returns tagInfo when an angle bracket is created.
+            return _createTagInfo(ctx.token, TOKEN_TAG);
+        } else if (ctx.token &amp;&amp; ctx.token.type === &quot;tag&quot;) {
+            &#x2F;&#x2F; Return tagInfo when a tag is created.
+            if (TokenUtils.movePrevToken(ctx)) {
+                if (ctx.token.type === &quot;tag bracket&quot; &amp;&amp; ctx.token.string === &quot;&lt;&quot;) {
+                    TokenUtils.moveNextToken(ctx);
+                    return _createTagInfo(ctx.token, TOKEN_TAG, offset);
+                }
+            }
+        } else if (ctx.token &amp;&amp; (ctx.token.type === &quot;attribute&quot; ||
+                                 (ctx.token.type === null &amp;&amp; regexWhitespace.test(ctx.token.string)))) {
+            &#x2F;&#x2F; Return tagInfo when an attribute is created.
+            tagAttrs = _getTagAttributes(editor, pos);
+            if (tagAttrs &amp;&amp; tagAttrs.tagName) {
+                return _createTagInfo(ctx.token, TOKEN_ATTR, offset, tagAttrs.exclusionList, tagAttrs.tagName, null, tagAttrs.shouldReplace);
+            }
+        } else if (ctx.token &amp;&amp; ((ctx.token.type === null &amp;&amp; ctx.token.string === &quot;=&quot;) ||
+                                 (ctx.token.type === &quot;string&quot; &amp;&amp; &#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.charAt(0))))) {
+            &#x2F;&#x2F; Return tag info when an attribute value is created.
+            &#x2F;&#x2F; Allow no hints if the cursor is outside the value.
+            if (ctx.token.type === &quot;string&quot; &amp;&amp;
+                    &#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1)) &amp;&amp;
+                    ctx.token.string.length !== 1 &amp;&amp;
+                    ctx.token.end === pos.ch) {
+                return _createTagInfo();
+            }
+            
+            tagAttrValue = _getTagAttributeValue(editor, pos);
+            if (tagAttrValue &amp;&amp; tagAttrValue.tagName &amp;&amp; tagAttrValue.attrName) {
+                return _createTagInfo(ctx.token, TOKEN_VALUE, offset, tagAttrValue.exclusionList, tagAttrValue.tagName, tagAttrValue.attrName);
             }
         }
+        return _createTagInfo();
+    }</code></pre></div><div class="member public">
 
-        &#x2F;&#x2F; check index after removeHandler is done processing to protect
-        &#x2F;&#x2F; against recursive calls
-        var index = _popUps.indexOf($popUp[0]);
-        if (index &gt;= 0) {
-            var autoRemove = $popUp.data(&quot;PopUpManager-autoRemove&quot;);
-            if (autoRemove) {
-                $popUp.remove();
-                _popUps.splice(index, 1);
-            }
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getValueQuery 
+        <a class="anchor" href="#-getValueQuery" id="-getValueQuery"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Return the query text of a value.</p>
+</div>
+    
+<dl>
+    <dt>
+        
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{token: Object, tokenType: number, offset: number, exclusionList: Array.&lt;string&gt;, tagName: string, attrName: string, shouldReplace: boolean}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>The query to use to matching hints.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getValueQuery(tagInfo) {
+        var query;
+        if (tagInfo.token.string === &quot;=&quot;) {
+            return &quot;&quot;;
         }
-    }</code></pre></div>
+        &#x2F;&#x2F; Remove quotation marks in query.
+        query = tagInfo.token.string.substr(1, tagInfo.offset - 1);
+        
+        &#x2F;&#x2F; Get the last option to use as a query to support multiple options.
+        return query.split(&#x2F;\s+&#x2F;).slice(-1)[0];
+    }
+    
+    &#x2F;&#x2F; Expose public API.
+    exports.getTagInfo      = getTagInfo;
+    exports.getValueQuery   = getValueQuery;
+    exports.regexWhitespace = regexWhitespace;
+    exports.TOKEN_TAG       = TOKEN_TAG;
+    exports.TOKEN_ATTR      = TOKEN_ATTR;
+    exports.TOKEN_VALUE     = TOKEN_VALUE;
+});</code></pre></div>
 </section>
 
         </div>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -588,6 +589,60 @@ Do nothing when in a connecting state (CONNECTING, LOADING_AGENTS).</p>
     
 </span>
     <h4>
+        _setImplementation 
+        <a class="anchor" href="#-_setImplementation" id="-_setImplementation"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets the MultiBrowserLiveDev implementation if multibrowser is truthy,
+keeps default LiveDevelopment implementation based on CDT otherwise.
+It also resets the listeners and UI elements.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _setImplementation(multibrowser) {
+        if (multibrowser) {
+            &#x2F;&#x2F; set implemenation
+            LiveDevImpl = MultiBrowserLiveDev;
+            &#x2F;&#x2F; update styles for UI status 
+            _status = [
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;warning&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_CONNECTED, style: &quot;success&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC, style: &quot;out-of-sync&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, style: &quot;sync-error&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; }
+            ];
+        } else {
+            LiveDevImpl = LiveDevelopment;
+            _status = [
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;warning&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS2, style: &quot;info&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_CONNECTED, style: &quot;success&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC, style: &quot;out-of-sync&quot; },
+                { tooltip: Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, style: &quot;sync-error&quot; }
+            ];
+        }
+        &#x2F;&#x2F; setup status changes listeners for new implementation
+        _setupGoLiveButton();
+        _setupGoLiveMenu();
+        &#x2F;&#x2F; toggle the menu
+        _toggleLivePreviewMultiBrowser(multibrowser);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _setLabel 
         <a class="anchor" href="#-_setLabel" id="-_setLabel"><span class="icon-link"></span></a>
     </h4>
@@ -726,39 +781,6 @@ omit tooltip to leave tooltip unchanged.</p>
             LiveDevImpl.hideHighlight();
         }
         PreferencesManager.setViewState(&quot;livedev.highlight&quot;, config.highlight);
-    }
-    
-    &#x2F;&#x2F; sets the MultiBrowserLiveDev implementation if multibrowser = true,
-    &#x2F;&#x2F; keeps default LiveDevelopment implementation based on CDT in other case.
-    &#x2F;&#x2F; since UI status are slightly different btw implementations, it also set 
-    &#x2F;&#x2F; the corresponding style values.
-    function _setImplementation(multibrowser) {
-        if (multibrowser) {
-            &#x2F;&#x2F; set implemenation
-            LiveDevImpl = MultiBrowserLiveDev;
-            &#x2F;&#x2F; update styles for UI status 
-            _status = [
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;warning&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_CONNECTED, style: &quot;success&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC, style: &quot;out-of-sync&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, style: &quot;sync-error&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; }
-            ];
-        } else {
-            LiveDevImpl = LiveDevelopment;
-            _status = [
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;warning&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_NOT_CONNECTED, style: &quot;&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, style: &quot;info&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_PROGRESS2, style: &quot;info&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_CONNECTED, style: &quot;success&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC, style: &quot;out-of-sync&quot; },
-                { tooltip: Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, style: &quot;sync-error&quot; }
-            ];
-        }
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -806,6 +828,69 @@ omit tooltip to leave tooltip unchanged.</p>
 
         &#x2F;&#x2F; Show the twipsy with the explanation
         _$btnGoLive.twipsy(options).twipsy(&quot;show&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _toggleLivePreviewMultiBrowser 
+        <a class="anchor" href="#-_toggleLivePreviewMultiBrowser" id="-_toggleLivePreviewMultiBrowser"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Toggles or sets the &quot;livedev.multibrowser&quot; preference</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _toggleLivePreviewMultiBrowser(value) {
+        var val = _togglePref(PREF_MULTIBROWSER, value);
+        
+        CommandManager.get(Commands.TOGGLE_LIVE_PREVIEW_MB_MODE).setChecked(val);
+        &#x2F;&#x2F; Issue #10217: multi-browser does not support user server, so disable
+        &#x2F;&#x2F; the setting if it is enabled.
+        CommandManager.get(Commands.FILE_PROJECT_SETTINGS).setEnabled(!val);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _togglePref 
+        <a class="anchor" href="#-_togglePref" id="-_togglePref"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Toggles or sets the preference *</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _togglePref(key, value) {
+        var val,
+            oldPref = !!prefs.get(key);
+
+        if (value === undefined) {
+            val = !oldPref;
+        } else {
+            val = !!value;
+        }
+
+        &#x2F;&#x2F; update menu
+        if (val !== oldPref) {
+            prefs.set(key, val);
+        }
+
+        return val;
     }</code></pre></div>
 </section>
 

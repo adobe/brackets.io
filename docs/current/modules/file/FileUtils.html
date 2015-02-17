@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (173)</h2>
+            <h2 class="number-of-modules">Modules (174)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -186,6 +186,7 @@
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -820,6 +821,7 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
     exports.isStaticHtmlFileExt            = isStaticHtmlFileExt;
     exports.isServerHtmlFileExt            = isServerHtmlFileExt;
     exports.getDirectoryPath               = getDirectoryPath;
+    exports.getParentPath                  = getParentPath;
     exports.getBaseName                    = getBaseName;
     exports.getRelativeFilename            = getRelativeFilename;
     exports.getFilenameWithoutExtension    = getFilenameWithoutExtension;
@@ -876,7 +878,7 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
     </h4>
 
     
-    <div class="description"><p>Get the parent directory of a file. If a directory is passed in the directory is returned.</p>
+    <div class="description"><p>Get the parent directory of a file. If a directory is passed, the SAME directory is returned.</p>
 </div>
     
 <dl>
@@ -995,7 +997,7 @@ full remaining text is considered the extension.</p>
     </h4>
 
     
-    <div class="description"><p>Get the file name without the extension.</p>
+    <div class="description"><p>Get the file name without the extension. Returns &quot;&quot; if name starts with &quot;.&quot;</p>
 </div>
     
 <dl>
@@ -1003,7 +1005,7 @@ full remaining text is considered the extension.</p>
         filename
         <span class="label label-info">string</span>
     </dt>
-    <dd>File name of a file or directory</dd>
+    <dd>File name of a file or directory, without preceding path</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">string</span>
 </dt>
@@ -1080,6 +1082,41 @@ Returns a native absolute path to the module folder.</p>
             path = path.substr(0, path.lastIndexOf(&quot;&#x2F;&quot;));
         }
         return path;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getParentPath 
+        <a class="anchor" href="#-getParentPath" id="-getParentPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the parent folder of the given file/folder path. Differs from getDirectoryPath() when &#39;fullPath&#39;
+is a directory itself: returns its parent instead of the original path. (Note: if you already have a
+FileSystemEntry, it&#39;s faster to use entry.parentPath instead).</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>Path of containing folder (including trailing "/"); or "" if path was the root</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getParentPath(fullPath) {
+        if (fullPath === &quot;&#x2F;&quot;) {
+            return &quot;&quot;;
+        }
+        return fullPath.substring(0, fullPath.lastIndexOf(&quot;&#x2F;&quot;, fullPath.length - 2) + 1);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
