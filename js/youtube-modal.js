@@ -32,15 +32,8 @@ $("[data-yt-id]").on("click", function (e) {
             windowWidth = $window.width(),
             elemWidth = Math.min(1.25 * windowHeight, 0.95 * windowWidth);
 
-        /*
-        #video-modal {
-            max-width: 95vw;
-            margin-left: -62.5vh;
-        }
-        */
         $modal
-            .css("width", elemWidth)
-            .css("margin-left", -0.5 * elemWidth)
+            .css({"width": elemWidth, "marginLeft": -0.5 * elemWidth})
             .find(".flex-video").toggleClass("widescreen", !!(windowWidth > windowHeight));
     }
     function setTitle(title) {
@@ -48,7 +41,7 @@ $("[data-yt-id]").on("click", function (e) {
     }
 
     setTitle(modalTitle);
-    if (i18nLoaded.state() == "pending") {
+    if (i18nLoaded.state() === "pending") {
         i18nLoaded.done(function () {
             setTitle(i18n.t(translationId));
         });
