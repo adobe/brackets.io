@@ -422,7 +422,7 @@
         unsupported.os = "Debian 7";
         unsupported.i18nKey = "debian-7";
         unsupported.url = "https://github.com/adobe/brackets/issues/4816";
-        unsupported.defaultText = "Unfortunately, we currently don't support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
+        unsupported.defaultText = "Unfortunately, we don't currently support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
     } else if (osMatch = navigator.userAgent.match(/Ubuntu[ -_\/]?(\d+)[._](\d+)\D/i)) { // Ubuntu
         if (parseInt(osMatch[1], 10) < 12) { // pre Ubuntu 12.04
             unsupported.os = "Ubuntu " + osMatch[1] + "." + osMatch[2];
@@ -512,21 +512,21 @@
     });
 
     function logAndGo(elementID, _url, tagObj) {
-        var elem = document.getElementById(elementID);
-        elem.href = _url;
-        elem.onclick = function (e) {
-            if (e.which === 2) { // middle button => current tab will stay open => will be logged in any case
-                _gaq.push(tagObj);
-            } else {
-                e.preventDefault();
-                var downloadStarted = false;
-                setTimeout(function () { if (!downloadStarted) window.location.href = _url; }, 1200); // fallback
-                _gaq.push(tagObj, function () {
-                    downloadStarted = true;
-                    setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
-                });
-            }
-        }
+        $("#" + elementID)
+            .attr("href", _url)
+            .on("click", function (e) {
+                if (e.which === 2) { // middle button => current tab will stay open => will be logged in any case
+                    _gaq.push(tagObj);
+                } else {
+                    e.preventDefault();
+                    var downloadStarted = false;
+                    setTimeout(function () { if (!downloadStarted) window.location.href = _url; }, 1200); // fallback
+                    _gaq.push(tagObj, function () {
+                        downloadStarted = true;
+                        setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
+                    });
+                }
+            });
     }
 </script>
 
