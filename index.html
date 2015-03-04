@@ -371,13 +371,13 @@
     var ext = "",
         OS = "UNKNOWN";
 
-    if (/Windows|Win32|WOW64|Win64/.test(navigator.userAgent)) {
+    if (/Windows|Win32|WOW64|Win64/i.test(navigator.userAgent)) {
         OS = "WIN";
         ext = ".msi";
-    } else if (/Mac/.test(navigator.userAgent)) {
+    } else if (/Mac/i.test(navigator.userAgent)) {
         OS = "OSX";
         ext = ".dmg";
-    } else if (/Linux|X11/.test(navigator.userAgent)) {
+    } else if (/Linux|X11/i.test(navigator.userAgent)) {
         OS = "LINUX32";
         ext = ".32-bit.deb";
         if (/x86_64/.test(navigator.appVersion + navigator.userAgent)) {
@@ -385,7 +385,7 @@
             ext = ".64-bit.deb";
         }
     }
-    if (/iPad|iPod|iPhone|Android/.test(navigator.userAgent)) {
+    if (/iPad|iPod|iPhone|Android/i.test(navigator.userAgent)) {
         OS = "OTHER";
         $("#download, #secondary-download").hide();
     }
@@ -411,27 +411,32 @@
         unsupported.os = "Windows XP";
         unsupported.i18nKey = "win-xp";
         unsupported.url = "http://blog.brackets.io/2014/04/18/windows-xp-support/";
-        unsupported.defaultText = "Unfortunately, we don't support Windows XP any longer. <a href='" + unsupported.url + "'>Read our blog post</a> for further information.";
+        unsupported.defaultText = "Unfortunately, we do not support Windows XP any longer. <a href='" + unsupported.url + "'>Read our blog post</a> for further information.";
+
     } else if (osMatch = navigator.userAgent.match(/Mac OS X 10[._](\d+)(?:[._](\d+))?\D/i)) { // Mac OS X 10.*
         osMatch = parseFloat(osMatch[1] + "." + (osMatch[2] || 0));
-        if (osMatch < 6.8 && osMatch !== 6.0) { // Firefox only reports the OS X major version (10.6), so we have to check it's not 6.0
+        // Firefox only reports the OS X major version (10.6), so we have to check it's not 6.0
+        if (osMatch < 6.8 && osMatch !== 6.0) {
             // Mac OS X pre 10.6.8 is not supported
             unsupported.os = "Mac OS X 10." + osMatch;
         }
+
     } else if (/Debian[ -_]7/i.test(navigator.userAgent)) { // Debian 7
         unsupported.os = "Debian 7";
         unsupported.i18nKey = "debian-7";
         unsupported.url = "https://github.com/adobe/brackets/issues/4816";
-        unsupported.defaultText = "Unfortunately, we don't currently support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
+        unsupported.defaultText = "Unfortunately, we currently do not support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
+
     } else if (osMatch = navigator.userAgent.match(/Ubuntu[ -_\/]?(\d+)[._](\d+)\D/i)) { // Ubuntu
-        if (parseInt(osMatch[1], 10) < 12) { // pre Ubuntu 12.04
+        if (parseInt(osMatch[1], 10) < 12) {
+            // pre Ubuntu 12.04
             unsupported.os = "Ubuntu " + osMatch[1] + "." + osMatch[2];
         }
     }
 
     if (unsupported.os) {
         if (!unsupported.defaultText) {
-            unsupported.defaultText = "Unfortunately, we don't support " + unsupported.os + " any longer. <a href='" + unsupported.url + "'>Take a look at the Requirements.</a>";
+            unsupported.defaultText = "Unfortunately, we do not support " + unsupported.os + " any longer. <a href='" + unsupported.url + "'>Take a look at the Requirements.</a>";
         }
 
         $("#hero-cta-button, #download-plain-brackets").hide();
