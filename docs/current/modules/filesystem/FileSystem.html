@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -1485,6 +1487,7 @@ watched root and ignores errors.</p>
     exports.close = _wrap(FileSystem.prototype.close);
     exports.shouldShow = _wrap(FileSystem.prototype.shouldShow);
     exports.getFileForPath = _wrap(FileSystem.prototype.getFileForPath);
+    exports.addEntryForPathIfRequired = _wrap(FileSystem.prototype.addEntryForPathIfRequired);
     exports.getDirectoryForPath = _wrap(FileSystem.prototype.getDirectoryForPath);
     exports.resolve = _wrap(FileSystem.prototype.resolve);
     exports.showOpenDialog = _wrap(FileSystem.prototype.showOpenDialog);
@@ -1690,6 +1693,44 @@ watchedRoot.</p>
             this._enqueueWatchRequest(function (requestCb) {
                 impl.unwatchPath(entry.fullPath, requestCb);
             }, callback);
+        }
+    };</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        addEntryForPathIfRequired 
+        <a class="anchor" href="#FileSystem-addEntryForPathIfRequired" id="FileSystem-addEntryForPathIfRequired"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>This method adds an entry for a file in the file Index. Files on disk are added
+to the file index either on load or on open. This method is primarily needed to add
+in memory files to the index</p>
+</div>
+    
+<dl>
+    <dt>
+        The
+        <span class="label label-info">File</span>
+    </dt>
+    <dd>fileEntry which needs to be added</dd>
+    <dt>
+        The
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>full path to the file</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.addEntryForPathIfRequired = function (fileEntry, path) {
+        var entry = this._index.getEntry(path);
+
+        if (!entry) {
+            this._index.addEntry(fileEntry);
         }
     };</code></pre></div><div class="member public">
 

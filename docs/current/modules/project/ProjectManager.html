@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -625,6 +627,7 @@ a project being opened (e.g. from the Refresh command)</li>
         _showErrorDialog,
         _saveTreeState,
         renameItemInline,
+        _renderTreeSync,
         _renderTree;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1134,6 +1137,38 @@ instead to check for unsaved changes and (optionally) let the user choose the fo
         &#x2F;&#x2F; Some legacy code calls this API with a non-canonical path
         rootPath = ProjectModel._ensureTrailingSlash(rootPath);
 
+        var projectPrefFullPath = (rootPath + SETTINGS_FILENAME),
+            file   = FileSystem.getFileForPath(projectPrefFullPath);
+            
+        &#x2F;&#x2F;Verify that the project preferences file (.brackets.json) is NOT corrupted.
+        &#x2F;&#x2F;If corrupted, display the error message and open the file in editor for the user to edit.
+        FileUtils.readAsText(file)
+            .done(function (text) {
+                try {
+                    if (text) {
+                        JSON.parse(text);
+                    }
+                } catch (err) {
+                    &#x2F;&#x2F; Cannot parse the text read from the project preferences file.
+                    var info = MainViewManager.findInAllWorkingSets(projectPrefFullPath);
+                    var paneId;
+                    if (info.length) {
+                        paneId = info[0].paneId;
+                    }
+                    FileViewController.openFileAndAddToWorkingSet(projectPrefFullPath, paneId)
+                        .done(function () {
+                            Dialogs.showModalDialog(
+                                DefaultDialogs.DIALOG_ID_ERROR,
+                                Strings.ERROR_PREFS_CORRUPT_TITLE,
+                                Strings.ERROR_PROJ_PREFS_CORRUPT
+                            ).done(function () {
+                                &#x2F;&#x2F; give the focus back to the editor with the pref file
+                                MainViewManager.focusActivePane();
+                            });
+                        });
+                }
+            });
+
         if (isUpdating) {
             &#x2F;&#x2F; We&#39;re just refreshing. Don&#39;t need to unwatch the project root, so we can start loading immediately.
             startLoad.resolve();
@@ -1425,7 +1460,8 @@ instead to check for unsaved changes and (optionally) let the user choose the fo
                 Menus.closeAll();
                 actionCreator.setContext(null);
             }
-            _renderTree();
+            &#x2F;&#x2F; we need to render the tree without a delay to not cause selection extension issues (#10573)
+            _renderTreeSync();
         });
         
         _renderTree();

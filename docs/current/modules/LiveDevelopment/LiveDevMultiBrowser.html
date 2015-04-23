@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -497,6 +499,7 @@ The status codes are:</p>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument.html">LiveCSSDocument</a></li>
+        <li><a href="..&#x2F;../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
@@ -517,6 +520,24 @@ The status codes are:</p>
 </label>    </h3>
 
 <div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _launcher 
+        <a class="anchor" href="#-_launcher" id="-_launcher"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _launcher;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -636,7 +657,7 @@ The status codes are:</p>
             return LiveCSSDocument;
         }
 
-        if (_isHtmlFileExt(doc.file.fullPath)) {
+        if (LiveDevelopmentUtils.isHtmlFileExt(doc.file.fullPath)) {
             return LiveHTMLDocument;
         }
 
@@ -932,7 +953,7 @@ do not have &quot;update while editing&quot; support</p>
         &#x2F;&#x2F; Is the currently opened document already a file we can use for Live Development?
         if (doc) {
             refPath = doc.file.fullPath;
-            if (FileUtils.isStaticHtmlFileExt(refPath) || FileUtils.isServerHtmlFileExt(refPath)) {
+            if (LiveDevelopmentUtils.isStaticHtmlFileExt(refPath) || LiveDevelopmentUtils.isServerHtmlFileExt(refPath)) {
                 return new $.Deferred().resolve(doc);
             }
         }
@@ -964,11 +985,11 @@ do not have &quot;update while editing&quot; support</p>
                 if (fileInfo.fullPath.indexOf(containingFolder) === 0) {
                     if (FileUtils.getFilenameWithoutExtension(fileInfo.name) === &quot;index&quot;) {
                         if (hasOwnServerForLiveDevelopment) {
-                            if ((FileUtils.isServerHtmlFileExt(fileInfo.name)) ||
-                                    (FileUtils.isStaticHtmlFileExt(fileInfo.name))) {
+                            if ((LiveDevelopmentUtils.isServerHtmlFileExt(fileInfo.name)) ||
+                                    (LiveDevelopmentUtils.isStaticHtmlFileExt(fileInfo.name))) {
                                 return true;
                             }
-                        } else if (FileUtils.isStaticHtmlFileExt(fileInfo.name)) {
+                        } else if (LiveDevelopmentUtils.isStaticHtmlFileExt(fileInfo.name)) {
                             return true;
                         }
                     } else {
@@ -1046,36 +1067,6 @@ if the related file has been deleted on disk).</p>
     
 </span>
     <h4>
-        _isHtmlFileExt 
-        <a class="anchor" href="#-_isHtmlFileExt" id="-_isHtmlFileExt"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        ext
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The extension to check.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
-    <dd>true if this is an HTML extension</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _isHtmlFileExt(ext) {
-        return (FileUtils.isStaticHtmlFileExt(ext) ||
-                (ProjectManager.getBaseUrl() &amp;&amp; FileUtils.isServerHtmlFileExt(ext)));
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
         _launch 
         <a class="anchor" href="#-_launch" id="-_launch"><span class="icon-link"></span></a>
     </h4>
@@ -1098,7 +1089,7 @@ if the related file has been deleted on disk).</p>
         &#x2F;&#x2F; open default browser
         &#x2F;&#x2F; TODO: fail?
         &#x2F;&#x2F; 
-        Launcher.launch(url);
+        _launcher.launch(url);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1346,7 +1337,7 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
 
         &#x2F;&#x2F; Optionally prompt for a base URL if no server was found but the
         &#x2F;&#x2F; file is a known server file extension
-        showBaseUrlPrompt = !_server &amp;&amp; FileUtils.isServerHtmlFileExt(doc.file.fullPath);
+        showBaseUrlPrompt = !_server &amp;&amp; LiveDevelopmentUtils.isServerHtmlFileExt(doc.file.fullPath);
 
         if (showBaseUrlPrompt) {
             &#x2F;&#x2F; Prompt for a base URL
@@ -1702,6 +1693,7 @@ Returns a resolved promise for API compatibility.</p>
     exports.getServerBaseUrl    = getServerBaseUrl;
     exports.getCurrentProjectServerConfig = getCurrentProjectServerConfig;
     exports.setTransport        = setTransport;
+    exports.setLauncher         = setLauncher;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1758,6 +1750,9 @@ Returns a resolved promise for API compatibility.</p>
         &#x2F;&#x2F; Default transport for live connection messages - can be changed
         setTransport(NodeSocketTransport);
         
+        &#x2F;&#x2F; Default launcher for preview browser - can be changed
+        setLauncher(DefaultLauncher);
+
         &#x2F;&#x2F; Initialize exports.status
         _setStatus(STATUS_INACTIVE);
     }
@@ -1911,6 +1906,42 @@ Returns a resolved promise for API compatibility.</p>
         if (_protocol) {
             _protocol.reload();
         }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setLauncher 
+        <a class="anchor" href="#-setLauncher" id="-setLauncher"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets the current browser launcher mechanism to be used by live development
+(e.g., default browser, iframe-based browser, etc.)
+The launcher must provide the following method:</p>
+<ul>
+<li>launch(url): Launch the given URL in the appropriate browser.</li>
+</ul>
+</div>
+    
+<dl>
+    <dt>
+        launcher
+        <span class="label label-info">{launch: function(string)}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setLauncher(launcher) {
+        if (!(launcher &amp;&amp; launcher.launch)) {
+            console.log(&quot;Invalid launcher object: &quot;, launcher, new Error(&quot;LiveDevMultiBrowser.setLauncher()&quot;));
+            return;
+        }
+        _launcher = launcher;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

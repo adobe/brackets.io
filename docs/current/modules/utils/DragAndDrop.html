@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -483,6 +485,91 @@
 </label>    </h3>
 
 <div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        attachHandlers 
+        <a class="anchor" href="#-attachHandlers" id="-attachHandlers"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Attaches global drag &amp; drop handlers to this window. This enables dropping files/folders to open them, and also
+protects the Brackets app from being replaced by the browser trying to load the dropped file in its place.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function attachHandlers() {
+        
+        function handleDragOver(event) {
+            event = event.originalEvent || event;
+            
+            var files = event.dataTransfer.files;
+            if (files &amp;&amp; files.length) {
+                event.stopPropagation();
+                event.preventDefault();
+                
+                var dropEffect = &quot;none&quot;;
+                
+                &#x2F;&#x2F; Don&#39;t allow drag-and-drop of files&#x2F;folders when a modal dialog is showing.
+                if ($(&quot;.modal.instance&quot;).length === 0 &amp;&amp; isValidDrop(event.dataTransfer.items)) {
+                    dropEffect = &quot;copy&quot;;
+                }
+                event.dataTransfer.dropEffect = dropEffect;
+            }
+        }
+        
+        function handleDrop(event) {
+            event = event.originalEvent || event;
+            
+            var files = event.dataTransfer.files;
+            if (files &amp;&amp; files.length) {
+                event.stopPropagation();
+                event.preventDefault();
+                
+                brackets.app.getDroppedFiles(function (err, paths) {
+                    if (!err) {
+                        openDroppedFiles(paths);
+                    }
+                });
+            }
+        }
+        
+        &#x2F;&#x2F; For most of the window, only respond if nothing more specific in the UI has already grabbed the event (e.g.
+        &#x2F;&#x2F; the Extension Manager drop-to-install zone, or an extension with a drop-to-upload zone in its panel)
+        $(window.document.body)
+            .on(&quot;dragover&quot;, handleDragOver)
+            .on(&quot;drop&quot;, handleDrop);
+        
+        &#x2F;&#x2F; Over CodeMirror specifically, always pre-empt CodeMirror&#39;s drag event handling if files are being dragged - CM stops
+        &#x2F;&#x2F; propagation on any drag event it sees, even when it&#39;s not a text drag&#x2F;drop. But allow CM to handle all non-file drag
+        &#x2F;&#x2F; events. See bug #10617.
+        window.document.body.addEventListener(&quot;dragover&quot;, function (event) {
+            if ($(event.target).closest(&quot;.CodeMirror&quot;).length) {
+                handleDragOver(event);
+            }
+        }, true);
+        window.document.body.addEventListener(&quot;drop&quot;, function (event) {
+            if ($(event.target).closest(&quot;.CodeMirror&quot;).length) {
+                handleDrop(event);
+            }
+        }, true);
+    }
+    
+    
+    CommandManager.register(Strings.CMD_OPEN_DROPPED_FILES, Commands.FILE_OPEN_DROPPED_FILES, openDroppedFiles);
+
+    &#x2F;&#x2F; Export public API
+    exports.attachHandlers      = attachHandlers;
+    exports.isValidDrop         = isValidDrop;
+    exports.openDroppedFiles    = openDroppedFiles;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -632,14 +719,7 @@
                     );
                 }
             });
-    }
-    
-    CommandManager.register(Strings.CMD_OPEN_DROPPED_FILES, Commands.FILE_OPEN_DROPPED_FILES, openDroppedFiles);
-
-    &#x2F;&#x2F; Export public API
-    exports.isValidDrop         = isValidDrop;
-    exports.openDroppedFiles    = openDroppedFiles;
-});</code></pre></div>
+    }</code></pre></div>
 </section>
 
         </div>
