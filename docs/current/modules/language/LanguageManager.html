@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -855,7 +857,7 @@ We may rely on the tokens provided by some of these modes.</p>
     &#x2F;&#x2F; far were strings, so we spare us the trouble of allowing more complex mode values.
     CodeMirror.defineMIME(&quot;text&#x2F;x-brackets-html&quot;, {
         &quot;name&quot;: &quot;htmlmixed&quot;,
-        &quot;scriptTypes&quot;: [{&quot;matches&quot;: &#x2F;\&#x2F;x-handlebars|\&#x2F;x-mustache|^text\&#x2F;html$&#x2F;i,
+        &quot;scriptTypes&quot;: [{&quot;matches&quot;: &#x2F;\&#x2F;x-handlebars|\&#x2F;x-mustache|\&#x2F;ng-template$|^text\&#x2F;html$&#x2F;i,
                        &quot;mode&quot;: null}]
     });
 
@@ -923,6 +925,7 @@ We may rely on the tokens provided by some of these modes.</p>
     exports.getLanguageForPath          = getLanguageForPath;
     exports.getLanguages                = getLanguages;
     exports.setLanguageOverrideForPath  = setLanguageOverrideForPath;
+    exports.getCompoundFileExtension    = getCompoundFileExtension;
 });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1125,6 +1128,59 @@ Otherwise the deferred is rejected with the error message.</p>
         }
         
         return result.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getCompoundFileExtension 
+        <a class="anchor" href="#-getCompoundFileExtension" id="-getCompoundFileExtension"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the file extension (excluding &quot;.&quot;) given a path OR a bare filename.
+Returns &quot;&quot; for names with no extension.
+If the only <code>.</code> in the file is the first character,
+returns &quot;&quot; as this is not considered an extension.
+This method considers known extensions which include <code>.</code> in them.</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>full path to a file or directory</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>Returns the extension of a filename or empty string if the argument is a directory or a filename with no extension</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getCompoundFileExtension(fullPath) {
+        var baseName = FileUtils.getBaseName(fullPath),
+            parts = baseName.split(&quot;.&quot;);
+
+        &#x2F;&#x2F; get rid of file name
+        parts.shift();
+        if (baseName[0] === &quot;.&quot;) {
+            &#x2F;&#x2F; if starts with a `.`, then still consider it as file name
+            parts.shift();
+        }
+
+        var extension = [parts.pop()], &#x2F;&#x2F; last part is always an extension
+            i = parts.length;
+        while (i--) {
+            if (getLanguageForExtension(parts[i])) {
+                extension.unshift(parts[i]);
+            } else {
+                break;
+            }
+        }
+        return extension.join(&quot;.&quot;);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

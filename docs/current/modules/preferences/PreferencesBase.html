@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -487,6 +489,7 @@ those nested preferences will take precedence over the main preferences in the S
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/globmatch.html">globmatch</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
@@ -762,15 +765,18 @@ the <code>newData</code> object reference without cloning it.</p>
             <dl>
                 <dt>path <span class="label label-info pull-left">string</span></dt>
                 <dd>Path to the preferences file</dd>
-                <dt>createIfNew <span class="label label-info pull-left">boolean</span></dt>
+                <dt>createIfMissing <span class="label label-info pull-left">boolean</span></dt>
                 <dd>True if the file should be created if it doesn't exist. If this is not true, an exception will be thrown if the file does not exist.</dd>
+                <dt>recreateIfInvalid <span class="label label-info pull-left">boolean</span></dt>
+                <dd>True if the file needs to be recreated if it is invalid. Invalid- Either unreadable or unparseable. The invalid copy will be sent to trash in case the user wants to refer to it.</dd>
             </dl>
           
 
             <button class="btn btn-small show-code">Show code</button>
-            <pre class="code language-javascript"><code class="language-javascript">    function FileStorage(path, createIfNew) {
+            <pre class="code language-javascript"><code class="language-javascript">    function FileStorage(path, createIfMissing, recreateIfInvalid) {
         this.path = path;
-        this.createIfNew = createIfNew;
+        this.createIfMissing = createIfMissing;
+        this.recreateIfInvalid = recreateIfInvalid;
         this._lineEndings = FileUtils.getPlatformLineEndings();
     }
     
@@ -844,17 +850,28 @@ readable or parseable.</p>
 <pre class="code language-javascript"><code class="language-javascript">        load: function () {
             var result = new $.Deferred();
             var path = this.path;
-            var createIfNew = this.createIfNew;
+            var createIfMissing = this.createIfMissing;
+            var recreateIfInvalid = this.recreateIfInvalid;
             var self = this;
             
             if (path) {
                 var prefFile = FileSystem.getFileForPath(path);
                 prefFile.read({}, function (err, text) {
                     if (err) {
-                        if (createIfNew) {
+                        if (createIfMissing) {
+                            &#x2F;&#x2F; Unreadable file is also unwritable -- delete so get recreated
+                            if (recreateIfInvalid &amp;&amp; (err === FileSystemError.NOT_READABLE || err === FileSystemError.UNSUPPORTED_ENCODING)) {
+                                appshell.fs.moveToTrash(path, function (err) {
+                                    if (err) {
+                                        console.log(&quot;Cannot move unreadable preferences file &quot; + path + &quot; to trash!!&quot;);
+                                    } else {
+                                        console.log(&quot;Brackets has recreated the unreadable preferences file &quot; + path + &quot;. You may refer to the deleted file in trash in case you need it!!&quot;);
+                                    }
+                                }.bind(this));
+                            }
                             result.resolve({});
                         } else {
-                            result.reject(new Error(&quot;Unable to load prefs at &quot; + path + &quot; &quot; + err));
+                            result.reject(new Error(&quot;Unable to load preferences at &quot; + path + &quot; &quot; + err));
                         }
                         return;
                     }
@@ -868,7 +885,19 @@ readable or parseable.</p>
                         try {
                             result.resolve(JSON.parse(text));
                         } catch (e) {
-                            result.reject(new ParsingError(&quot;Invalid JSON settings at &quot; + path + &quot;(&quot; + e.toString() + &quot;)&quot;));
+                            if (recreateIfInvalid) {
+                                &#x2F;&#x2F; JSON parsing error -- recreate the preferences file
+                                appshell.fs.moveToTrash(path, function (err) {
+                                    if (err) {
+                                        console.log(&quot;Cannot move unparseable preferences file &quot; + path + &quot; to trash!!&quot;);
+                                    } else {
+                                        console.log(&quot;Brackets has recreated the Invalid JSON preferences file &quot; + path + &quot;. You may refer to the deleted file in trash in case you need it!!&quot;);
+                                    }
+                                }.bind(this));
+                                result.resolve({});
+                            } else {
+                                result.reject(new ParsingError(&quot;Invalid JSON settings at &quot; + path + &quot;(&quot; + e.toString() + &quot;)&quot;));
+                            }
                         }
                     }
                 });

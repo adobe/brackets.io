@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (174)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -233,6 +233,7 @@
             </ul>
             <ul id="package_LiveDevelopment" class="nav nav-list">
               <li><a href="../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
               <li><a href="../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
               <li><a href="../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../modules/LiveDevelopment/main.html">main</a></li>
@@ -365,6 +366,7 @@
               <li><a href="../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../modules/search/SearchResultsView.html">SearchResultsView</a></li>
@@ -517,7 +519,6 @@ a global object, window.brackets.</p>
         <li><a href="../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
         <li><a href="../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
         <li><a href="../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
-        <li><a href="../modules/thirdparty/smart-auto-complete-local/jquery.smart_autocomplete.html">jquery.smart_autocomplete</a></li>
         <li><a href="../modules/language/JSUtils.html">JSUtils</a></li>
         <li><a href="../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
         <li><a href="../modules/language/LanguageManager.html">LanguageManager</a></li>
@@ -597,7 +598,7 @@ a global object, window.brackets.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _beforeHTMLReady() {
-        &#x2F;&#x2F; Add the platform (mac or win) to the body tag so we can have platform-specific CSS rules
+        &#x2F;&#x2F; Add the platform (mac, win or linux) to the body tag so we can have platform-specific CSS rules
         $(&quot;body&quot;).addClass(&quot;platform-&quot; + brackets.platform);
         
         &#x2F;&#x2F; Browser-hosted version may also have different CSS (e.g. since &#39;#titlebar&#39; is shown)
@@ -628,36 +629,10 @@ a global object, window.brackets.</p>
         
         &#x2F;&#x2F; Update title
         $(&quot;title&quot;).text(brackets.config.app_title);
-            
-        &#x2F;&#x2F; Prevent unhandled drag and drop of files into the browser from replacing 
-        &#x2F;&#x2F; the entire Brackets app. This doesn&#39;t prevent children from choosing to
-        &#x2F;&#x2F; handle drops.
-        $(window.document.body)
-            .on(&quot;dragover&quot;, function (event) {
-                var dropEffect = &quot;none&quot;;
-                if (event.originalEvent.dataTransfer.files) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    &#x2F;&#x2F; Don&#39;t allow drag-and-drop of files&#x2F;folders when a modal dialog is showing.
-                    if ($(&quot;.modal.instance&quot;).length === 0 &amp;&amp;
-                            DragAndDrop.isValidDrop(event.originalEvent.dataTransfer.items)) {
-                        dropEffect = &quot;copy&quot;;
-                    }
-                    event.originalEvent.dataTransfer.dropEffect = dropEffect;
-                }
-            })
-            .on(&quot;drop&quot;, function (event) {
-                var files = event.originalEvent.dataTransfer.files;
-                if (files &amp;&amp; files.length) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    brackets.app.getDroppedFiles(function (err, paths) {
-                        if (!err) {
-                            DragAndDrop.openDroppedFiles(paths);
-                        }
-                    });
-                }
-            });
+        
+        &#x2F;&#x2F; Respond to dragging &amp; dropping files&#x2F;folders onto the window by opening them. If we don&#39;t respond
+        &#x2F;&#x2F; to these events, the file would load in place of the Brackets UI
+        DragAndDrop.attachHandlers();
         
         &#x2F;&#x2F; TODO: (issue 269) to support IE, need to listen to document instead (and even then it may not work when focus is in an input field?)
         $(window).focus(function () {
@@ -709,7 +684,31 @@ a global object, window.brackets.</p>
                 node = node.parentElement;
             }
         }, true);
-        
+
+        &#x2F;&#x2F; on Windows, cancel every other scroll event (#10214)
+        &#x2F;&#x2F; TODO: remove this hack when we upgrade CEF to a build with this bug fixed:
+        &#x2F;&#x2F; https:&#x2F;&#x2F;bitbucket.org&#x2F;chromiumembedded&#x2F;cef&#x2F;issue&#x2F;1481
+        var winCancelWheelEvent = true;
+        function windowsScrollFix(e) {
+            winCancelWheelEvent = !winCancelWheelEvent;
+            if (winCancelWheelEvent) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }
+
+        function enableOrDisableWinScrollFix() {
+            window.document.body.removeEventListener(&quot;wheel&quot;, windowsScrollFix, true);
+            if (PreferencesManager.get(&quot;_windowsScrollFix&quot;)) {
+                window.document.body.addEventListener(&quot;wheel&quot;, windowsScrollFix, true);
+            }
+        }
+
+        if (brackets.platform === &quot;win&quot; &amp;&amp; !brackets.inBrowser) {
+            PreferencesManager.definePreference(&quot;_windowsScrollFix&quot;, &quot;boolean&quot;, true).on(&quot;change&quot;, enableOrDisableWinScrollFix);
+            enableOrDisableWinScrollFix();
+        }
+
         &#x2F;&#x2F; Prevent extensions from using window.open() to insecurely load untrusted web content
         var real_windowOpen = window.open;
         window.open = function (url) {
@@ -956,7 +955,7 @@ a global object, window.brackets.</p>
                 });
             });
         });
-        
+
         &#x2F;&#x2F; Check for updates
         if (!params.get(&quot;skipUpdateCheck&quot;) &amp;&amp; !brackets.inBrowser) {
             AppInit.appReady(function () {
