@@ -1,7 +1,7 @@
 # How to add translations for a *new* locale
 
 1. Create a subfolder of the `locales` folder whose name is the language or locale you want to
-   create a translation for. Just use its two-letter code (e.g. `en`, `de`).
+   create a translation for. Just use its two-letter or five-letter code (e.g. `en`, `de`, `pt-BR`).
 2. Edit `load.i18next.js`'s first line and set `var production = false`.
 3. Copy `locales/_en/translation.json` into your subfolder and start translating! The first step is
    easy, just change the `lang` key to the language you are translating (which is equal to the

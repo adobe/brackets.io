@@ -7,7 +7,6 @@ var requestedLang,
         debug: !production, // development only
         detectLngQS: "lang", // use ?lang=... instead of ?setLng=...
         cookieName: "lang", // use cookie "lang" instead of "i18next"
-        load: "unspecific", // only use the unspecific locale ("de" instead of "de-DE")
         useLocalStorage: !!production, // production only
         localStorageExpirationTime: 3 * 24 * 60 * 60 * 1000 // cache 3 days
     },
