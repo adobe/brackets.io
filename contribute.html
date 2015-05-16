@@ -275,10 +275,16 @@
     });
 
     function localizedCommentsCount(count) {
-        return i18n.t("contribute.page.content.comments.comments", {
-            count: count,
-            defaultValue: count + " " + (count === 1 ? "comment" : "comments")
-        });
+        var fallback = count + " " + (count === 1 ? "comment" : "comments"),
+            translation = i18n.t("contribute.page.content.comments.comments", {
+                count: count,
+                defaultValue: fallback
+            });
+
+        if (translation.substr(0, 16) === "plural_not_found") {
+            return fallback;
+        }
+        return translation;
     }
 
     // don't load starter issues or features on smartphones
