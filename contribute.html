@@ -169,7 +169,7 @@
                     <a href="docs/current/modules/brackets.html" data-i18n="footer.links.content.apidocs">API Documentation</a>
                 </li>
                 <li>
-                    <a href="https://ingorichter.github.io/BracketsExtensionTweetBot/" data-i18n="footer.links.content.extension">Weekly Extension Updates</a>
+                    <a href="https://ingorichter.github.io/BracketsExtensionTweetBot/" data-i18n="footer.links.content.extension-updates">Weekly Extension Updates</a>
                 </li>
                 <li>
                     <a href="https://github.com/adobe/brackets/wiki/Troubleshooting" data-i18n="footer.links.content.troubleshooting">Troubleshooting Help</a>
@@ -224,7 +224,7 @@
             </ul>
         </div>
         <div class="medium-6 large-3 columns">
-            <h5>Keep in Touch</h5>
+            <h5 data-i18n="footer.in-touch.header">Keep in Touch</h5>
             <ul>
                 <li>
                     <a href="https://twitter.com/brackets">Twitter</a>
@@ -233,7 +233,7 @@
                     <a href="https://www.facebook.com/codebrackets">Facebook</a>
                 </li>
                 <li>
-                    <a href="https://plus.google.com/b/115365194873502050036/" >Google+</a>
+                    <a href="https://plus.google.com/b/115365194873502050036/">Google+</a>
                 </li>
             </ul>
         </div>
@@ -275,10 +275,16 @@
     });
 
     function localizedCommentsCount(count) {
-        return i18n.t("contribute.page.content.comments.comments", {
-            count: count,
-            defaultValue: count + " " + (count === 1 ? "comment" : "comments")
-        });
+        var fallback = count + " " + (count === 1 ? "comment" : "comments"),
+            translation = i18n.t("contribute.page.content.comments.comments", {
+                count: count,
+                defaultValue: fallback
+            });
+
+        if (translation.substr(0, 16) === "plural_not_found") {
+            return fallback;
+        }
+        return translation;
     }
 
     // don't load starter issues or features on smartphones
