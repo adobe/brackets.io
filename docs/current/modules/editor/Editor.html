@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -497,7 +507,7 @@ Documents, not Editors.</p>
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
@@ -505,6 +515,7 @@ Documents, not Editors.</p>
         <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="..&#x2F;../modules/widgets/PopUpManager.html">PopUpManager</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/document/TextRange.html">TextRange</a></li>
         <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
@@ -634,25 +645,85 @@ Documents, not Editors.</p>
     cmOptions[USE_TAB_CHAR]       = &quot;indentWithTabs&quot;;
     cmOptions[WORD_WRAP]          = &quot;lineWrapping&quot;;
     
-    PreferencesManager.definePreference(CLOSE_BRACKETS,     &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(CLOSE_TAGS,         &quot;Object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] });
-    PreferencesManager.definePreference(DRAG_DROP,          &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(SCROLL_PAST_END,    &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(SHOW_CURSOR_SELECT, &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(SHOW_LINE_NUMBERS,  &quot;boolean&quot;, true);
-    PreferencesManager.definePreference(SMART_INDENT,       &quot;boolean&quot;, true);
-    PreferencesManager.definePreference(SOFT_TABS,          &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(CLOSE_BRACKETS,     &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_CLOSE_BRACKETS
+    });
+    PreferencesManager.definePreference(CLOSE_TAGS,         &quot;object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] }, {
+        description: Strings.DESCRIPTION_CLOSE_TAGS,
+        keys: {
+            dontCloseTags: {
+                type: &quot;array&quot;,
+                description: Strings.DESCRIPTION_CLOSE_TAGS_DONT_CLOSE_TAGS
+            },
+            whenOpening: {
+                type: &quot;boolean&quot;,
+                description: Strings.DESCRIPTION_CLOSE_TAGS_WHEN_OPENING,
+                initial: true
+            },
+            whenClosing: {
+                type: &quot;boolean&quot;,
+                description: Strings.DESCRIPTION_CLOSE_TAGS_WHEN_CLOSING,
+                initial: true
+            },
+            indentTags: {
+                type: &quot;array&quot;,
+                description: Strings.DESCRIPTION_CLOSE_TAGS_INDENT_TAGS
+            }
+        }
+    });
+    PreferencesManager.definePreference(DRAG_DROP,          &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_DRAG_DROP_TEXT
+    });
+    PreferencesManager.definePreference(HIGHLIGHT_MATCHES,  &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES,
+        keys: {
+            showToken: {
+                type: &quot;boolean&quot;,
+                description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES_SHOW_TOKEN,
+                initial: false
+            },
+            wordsOnly: {
+                type: &quot;boolean&quot;,
+                description: Strings.DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY,
+                initial: false
+            }
+        }
+    });
+    PreferencesManager.definePreference(SCROLL_PAST_END,    &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_SCROLL_PAST_END
+    });
+    PreferencesManager.definePreference(SHOW_CURSOR_SELECT, &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_SHOW_CURSOR_WHEN_SELECTING
+    });
+    PreferencesManager.definePreference(SHOW_LINE_NUMBERS,  &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_SHOW_LINE_NUMBERS
+    });
+    PreferencesManager.definePreference(SMART_INDENT,       &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_SMART_INDENT
+    });
+    PreferencesManager.definePreference(SOFT_TABS,          &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_SOFT_TABS
+    });
     PreferencesManager.definePreference(SPACE_UNITS,        &quot;number&quot;, DEFAULT_SPACE_UNITS, {
-        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_SPACE_UNITS, MAX_SPACE_UNITS)
+        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_SPACE_UNITS, MAX_SPACE_UNITS),
+        description: Strings.DESCRIPTION_SPACE_UNITS
     });
-    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  &quot;boolean&quot;, false);
+    PreferencesManager.definePreference(STYLE_ACTIVE_LINE,  &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_STYLE_ACTIVE_LINE
+    });
     PreferencesManager.definePreference(TAB_SIZE,           &quot;number&quot;, DEFAULT_TAB_SIZE, {
-        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE)
+        validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE),
+        description: Strings.DESCRIPTION_TAB_SIZE
     });
-    PreferencesManager.definePreference(UPPERCASE_COLORS,   &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(USE_TAB_CHAR,       &quot;boolean&quot;, false);
-    PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true);
+    PreferencesManager.definePreference(UPPERCASE_COLORS,   &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_UPPERCASE_COLORS
+    });
+    PreferencesManager.definePreference(USE_TAB_CHAR,       &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_USE_TAB_CHAR
+    });
+    PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_WORD_WRAP
+    });
     
     var editorOptions = Object.keys(cmOptions);</code></pre></div><div class="member private">
 
@@ -905,13 +976,17 @@ Document modifiable.</p>
                 <dd>Container to add the editor to.</dd>
                 <dt>range <span class="label label-info pull-left">{startLine: number, endLine: number}</span></dt>
                 <dd>If specified, range of lines within the document to display in this editor. Inclusive.</dd>
+                <dt>options <span class="label label-info pull-left">Object</span></dt>
+                <dd>If specified, contains editor options that can be passed to CodeMirror</dd>
             </dl>
           
 
             <button class="btn btn-small show-code">Show code</button>
-            <pre class="code language-javascript"><code class="language-javascript">    function Editor(document, makeMasterEditor, container, range) {
+            <pre class="code language-javascript"><code class="language-javascript">    function Editor(document, makeMasterEditor, container, range, options) {
         var self = this;
-        
+
+        var isReadOnly = options &amp;&amp; options.isReadOnly;
+
         _instances.push(this);
         
         &#x2F;&#x2F; Attach to document: add ref &amp; handlers
@@ -1005,15 +1080,17 @@ Document modifiable.</p>
             highlightSelectionMatches   : currentOptions[HIGHLIGHT_MATCHES],
             indentUnit                  : currentOptions[USE_TAB_CHAR] ? currentOptions[TAB_SIZE] : currentOptions[SPACE_UNITS],
             indentWithTabs              : currentOptions[USE_TAB_CHAR],
+            inputStyle                  : &quot;textarea&quot;, &#x2F;&#x2F; the &quot;contenteditable&quot; mode used on mobiles could cause issues
             lineNumbers                 : currentOptions[SHOW_LINE_NUMBERS],
             lineWrapping                : currentOptions[WORD_WRAP],
             matchBrackets               : { maxScanLineLength: 50000, maxScanLines: 1000 },
             matchTags                   : { bothTags: true },
-            showCursorWhenSelecting     : currentOptions[SHOW_CURSOR_SELECT],
             scrollPastEnd               : !range &amp;&amp; currentOptions[SCROLL_PAST_END],
+            showCursorWhenSelecting     : currentOptions[SHOW_CURSOR_SELECT],
             smartIndent                 : currentOptions[SMART_INDENT],
             styleActiveLine             : currentOptions[STYLE_ACTIVE_LINE],
-            tabSize                     : currentOptions[TAB_SIZE]
+            tabSize                     : currentOptions[TAB_SIZE],
+            readOnly                    : isReadOnly
         });
         
         &#x2F;&#x2F; Can&#39;t get CodeMirror&#39;s focused state without searching for
@@ -2171,6 +2248,7 @@ Semi-private: only Document should call this.</p>
         
         &#x2F;&#x2F; This *will* fire a change event, but we clear the undo immediately afterward
         this._codeMirror.setValue(text);
+        this._codeMirror.refresh();
         
         &#x2F;&#x2F; Make sure we can&#39;t undo back to the empty state before setValue(), and mark
         &#x2F;&#x2F; the document clean.

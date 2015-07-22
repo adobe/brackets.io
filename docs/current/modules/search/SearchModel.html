@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -465,6 +475,7 @@
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
     </ul>
 
 </section>
@@ -790,7 +801,7 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    SearchModel.prototype.countFilesMatches = function () {
-        return {files: Object.keys(this.results).length, matches: this.numMatches};
+        return {files: (this.numFiles || Object.keys(this.results).length), matches: this.numMatches};
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -830,44 +841,6 @@ model is changed.</p>
     
 </span>
     <h4>
-        getSortedFiles 
-        <a class="anchor" href="#SearchModel-getSortedFiles" id="SearchModel-getSortedFiles"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Sorts the file keys to show the results from the selected file first and the rest sorted by path</p>
-</div>
-    
-<dl>
-    <dt>
-        firstFile
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>If specified, the path to the file that should be sorted to the top.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    SearchModel.prototype.getSortedFiles = function (firstFile) {
-        return Object.keys(this.results).sort(function (key1, key2) {
-            if (firstFile === key1) {
-                return -1;
-            } else if (firstFile === key2) {
-                return 1;
-            }
-            return FileUtils.comparePaths(key1, key2);
-        });
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
         hasResults 
         <a class="anchor" href="#SearchModel-hasResults" id="SearchModel-hasResults"><span class="icon-link"></span></a>
     </h4>
@@ -885,6 +858,84 @@ model is changed.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    SearchModel.prototype.hasResults = function () {
         return Object.keys(this.results).length &gt; 0;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        prioritizeOpenFile 
+        <a class="anchor" href="#SearchModel-prioritizeOpenFile" id="SearchModel-prioritizeOpenFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Prioritizes the open file and then the working set files to the starting of the list of files
+If node search is disabled, we sort the files too- Sorting is computation intensive, and our
+ProjectManager.getAllFiles with the sort flag is not working properly : TODO TOFIX</p>
+</div>
+    
+<dl>
+    <dt>
+        firstFile
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>If specified, the path to the file that should be sorted to the top.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchModel.prototype.prioritizeOpenFile = function (firstFile) {
+        var workingSetFiles = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES),
+            workingSetFileFound = {},
+            fileSetWithoutWorkingSet = [],
+            startingWorkingFileSet = [],
+            propertyName = &quot;&quot;,
+            i = 0;
+
+        if (FindUtils.isNodeSearchDisabled()) {
+            return Object.keys(this.results).sort(function (key1, key2) {
+                if (firstFile === key1) {
+                    return -1;
+                } else if (firstFile === key2) {
+                    return 1;
+                }
+                return FileUtils.comparePaths(key1, key2);
+            });
+        }
+
+        firstFile = firstFile || &quot;&quot;;
+
+        &#x2F;&#x2F; Create a working set path map which indicates if a file in working set is found in file list
+        for (i = 0; i &lt; workingSetFiles.length; i++) {
+            workingSetFileFound[workingSetFiles[i].fullPath] = false;
+        }
+
+        &#x2F;&#x2F; Remove all the working set files from the filtration list
+        fileSetWithoutWorkingSet = Object.keys(this.results).filter(function (key) {
+            if (workingSetFileFound[key] !== undefined) {
+                workingSetFileFound[key] = true;
+                return false;
+            }
+            return true;
+        });
+
+        &#x2F;&#x2F;push in the first file
+        if (workingSetFileFound[firstFile] === true) {
+            startingWorkingFileSet.push(firstFile);
+            workingSetFileFound[firstFile] = false;
+        }
+        &#x2F;&#x2F;push in the rest of working set files already present in file list
+        for (propertyName in workingSetFileFound) {
+            if (workingSetFileFound.hasOwnProperty(propertyName) &amp;&amp; workingSetFileFound[propertyName]) {
+                startingWorkingFileSet.push(propertyName);
+            }
+        }
+        return startingWorkingFileSet.concat(fileSetWithoutWorkingSet);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">

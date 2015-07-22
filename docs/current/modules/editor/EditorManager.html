@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -670,6 +680,12 @@ The editor is appended to the given container as a visible child.</p>
         <span class="label label-info">{startLine: number, endLine: number}</span>
     </dt>
     <dd>If specified, range of lines within the document to display in this editor. Inclusive.</dd>
+    <dt>
+        editorOptions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>If specified, contains editor options that can be passed to CodeMirror</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">Editor</span>
 </dt>
@@ -677,8 +693,8 @@ The editor is appended to the given container as a visible child.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _createEditorForDocument(doc, makeMasterEditor, container, range) {
-        var editor = new Editor(doc, makeMasterEditor, container, range);
+<pre class="code language-javascript"><code class="language-javascript">    function _createEditorForDocument(doc, makeMasterEditor, container, range, editorOptions) {
+        var editor = new Editor(doc, makeMasterEditor, container, range, editorOptions);
 
         editor.on(&quot;focus&quot;, function () {
             _notifyActiveEditorChanged(editor);
@@ -718,6 +734,12 @@ The editor is appended to the given container as a visible child.</p>
         <span class="label label-info">Pane</span>
     </dt>
     <dd>Pane in which the editor will be hosted</dd>
+    <dt>
+        editorOptions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>If specified, contains editor options that can be passed to CodeMirror</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">!Editor</span>
 </dt>
@@ -725,9 +747,9 @@ The editor is appended to the given container as a visible child.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document, pane) {
+<pre class="code language-javascript"><code class="language-javascript">    function _createFullEditorForDocument(document, pane, editorOptions) {
         &#x2F;&#x2F; Create editor; make it initially invisible
-        var editor = _createEditorForDocument(document, true, pane.$content);
+        var editor = _createEditorForDocument(document, true, pane.$content, undefined, editorOptions);
         editor.setVisible(false);
         pane.addView(editor);
         exports.trigger(&quot;_fullEditorCreatedForDocument&quot;, document, editor, pane.id);
@@ -1281,11 +1303,17 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         <span class="label label-info">Pane</span>
     </dt>
     <dd>- pane to show it in</dd>
+    <dt>
+        editorOptions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>- If specified, contains editor options that can be passed to CodeMirror</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showEditor(document, pane) {
+<pre class="code language-javascript"><code class="language-javascript">    function _showEditor(document, pane, editorOptions) {
         &#x2F;&#x2F; Ensure a main editor exists for this document to show in the UI
         var createdNewEditor = false,
             editor = document._masterEditor;
@@ -1298,7 +1326,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             }
             
             &#x2F;&#x2F; Editor doesn&#39;t exist: populate a new Editor with the text
-            editor = _createFullEditorForDocument(document, pane);
+            editor = _createFullEditorForDocument(document, pane, editorOptions);
             createdNewEditor = true;
         } else if (editor.$el.parent()[0] !== pane.$content[0]) {
             &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the 
@@ -1781,6 +1809,12 @@ is open).</p>
         <span class="label label-info">Pane</span>
     </dt>
     <dd>- the pane to open the document in</dd>
+    <dt>
+        editorOptions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>- If specified, contains editor options that can be passed to CodeMirror</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">boolean</span>
 </dt>
@@ -1788,11 +1822,11 @@ is open).</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function openDocument(doc, pane) {
+<pre class="code language-javascript"><code class="language-javascript">    function openDocument(doc, pane, editorOptions) {
         var perfTimerName = PerfUtils.markStart(&quot;EditorManager.openDocument():\t&quot; + (!doc || doc.file.fullPath));
 
         if (doc &amp;&amp; pane) {
-            _showEditor(doc, pane);
+            _showEditor(doc, pane, editorOptions);
         }
 
         PerfUtils.addMeasurement(perfTimerName);

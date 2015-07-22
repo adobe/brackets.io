@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -817,7 +827,9 @@ a project being opened (e.g. from the Refresh command)</li>
     CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
 
     &#x2F;&#x2F; Define the preference to decide how to sort the Project Tree files
-    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, &quot;boolean&quot;, brackets.platform !== &quot;mac&quot;)
+    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, &quot;boolean&quot;, brackets.platform !== &quot;mac&quot;, {
+        description: Strings.DESCRIPTION_SORT_DIRECTORIES_FIRST
+    })
         .on(&quot;change&quot;, function () {
             actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
         });
@@ -1795,7 +1807,7 @@ return content to prepend to the item.</p>
     <div class="description"><p>Returns an Array of all files for this project, optionally including
 files in the working set that are <em>not</em> under the project root. Files are
 filtered first by ProjectModel.shouldShow(), then by the custom filter
-argument (if one was provided). The list is unsorted.</p>
+argument (if one was provided).</p>
 </div>
     
 <dl>
@@ -1810,7 +1822,13 @@ argument (if one was provided). The list is unsorted.</p>
         <span class="label label-optional">optional</span>
         <span class="label label-info">boolean</span>
     </dt>
-    <dd>If true, include files in the working set that are not under the project root (*except* for untitled documents). </dd>
+    <dd>If true, include files in the working set that are not under the project root (*except* for untitled documents).</dd>
+    <dt>
+        sort
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>If true, The files will be sorted by their paths </dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span>
 </dt>
@@ -1818,7 +1836,7 @@ argument (if one was provided). The list is unsorted.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getAllFiles(filter, includeWorkingSet) {
+<pre class="code language-javascript"><code class="language-javascript">    function getAllFiles(filter, includeWorkingSet, sort) {
         var viewFiles, deferred;
 
         &#x2F;&#x2F; The filter and includeWorkingSet params are both optional.
@@ -1834,7 +1852,7 @@ argument (if one was provided). The list is unsorted.</p>
         }
 
         deferred = new $.Deferred();
-        model.getAllFiles(filter, viewFiles)
+        model.getAllFiles(filter, viewFiles, sort)
             .done(function (fileList) {
                 deferred.resolve(fileList);
             })

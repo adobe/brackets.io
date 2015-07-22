@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CSSDocument - Brackets API</title>
+    <title>FindInFilesDomain - Brackets API</title>
     <link rel="stylesheet" href="../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../assets/css/font-awesome.css">
@@ -458,27 +458,13 @@
           </div>
         </div>
         <div class="module span9">
-<h1>CSSDocument</h1>
+<h1>FindInFilesDomain</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>CSSDocument manages a single CSS source document</p>
-<p><strong>EDITING</strong></p>
-<p>Editing the document will cause the style sheet to be reloaded via the
-CSSAgent, which immediately updates the appearance of the rendered document.</p>
-<p><strong>HIGHLIGHTING</strong></p>
-<p>CSSDocument supports highlighting nodes from the HighlightAgent and
-highlighting all DOMNode corresponding to the rule at the cursor position
-in the editor.</p>
-<p><strong>EVENTS</strong></p>
-<p>CSSDocument dispatches these events:</p>
-<ul>
-<li>deleted -- When the file for the underlying Document has been deleted.
-The 2nd argument to the listener will be this CSSDocument.</li>
-</ul>
-</div>
+    <div></div>
     
 </section>
 
@@ -486,468 +472,1059 @@ The 2nd argument to the listener will be this CSSDocument.</li>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Agents/CSSAgent.html">CSSAgent</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/language/CSSUtils.html">CSSUtils</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
-        <li><a href="..&#x2F;..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;..&#x2F;../modules/fs.html">fs</a></li>
     </ul>
 
 </section>
 
+<section id="functions">
 
-<section id="classes">
-    
-    <h2>Classes</h2>
-
-    <div class="well">
-        <div class="member public">
-            
-            <span class="pull-right scope">Constructor</span>
-            
-            <h4>
-                CSSDocument
-                
-            </h4>
-            
-            <em></em>
-            
-            <dl>
-                <dt>doc <span class="label label-info pull-left">Document</span></dt>
-                <dd>The source document from Brackets</dd>
-                <dt>editor <span class="label label-info pull-left">Editor</span></dt>
-                <dd>The editor for this document</dd>
-            </dl>
-          
-
-            <button class="btn btn-small show-code">Show code</button>
-            <pre class="code language-javascript"><code class="language-javascript">    var CSSDocument = function CSSDocument(doc, editor) {
-        this.doc = doc;
-
-        this._highlight = [];
-        this.onHighlight = this.onHighlight.bind(this);
-        this.onCursorActivity = this.onCursorActivity.bind(this);
-
-        &#x2F;&#x2F; Add a ref to the doc since we&#39;re listening for change events
-        this.doc.addRef();
-        this.onChange = this.onChange.bind(this);
-        this.onDeleted = this.onDeleted.bind(this);
-
-        this.doc.on(&quot;change.CSSDocument&quot;, this.onChange);
-        this.doc.on(&quot;deleted.CSSDocument&quot;, this.onDeleted);
-        
-        this.onActiveEditorChange = this.onActiveEditorChange.bind(this);
-        EditorManager.on(&quot;activeEditorChange&quot;, this.onActiveEditorChange);
-        
-        if (editor) {
-            &#x2F;&#x2F; Attach now
-            this.attachToEditor(editor);
-        }
-    };
-    EventDispatcher.makeEventDispatcher(CSSDocument.prototype);</code></pre>
-        </div>
-        
-
-        <section class="methods">
-
-            <h3>Methods 
+    <h3>Functions 
 <label class="checkbox">
     <input class="toggle-public" type="checkbox"> Show Private Members
-</label>            </h3>
+</label>    </h3>
 
-<div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _getStyleSheetHeader 
-        <a class="anchor" href="#CSSDocument-_getStyleSheetHeader" id="CSSDocument-_getStyleSheetHeader"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype._getStyleSheetHeader = function () {
-        return CSSAgent.styleForURL(this.doc.url);
-    };</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _updateBrowser 
-        <a class="anchor" href="#CSSDocument-_updateBrowser" id="CSSDocument-_updateBrowser"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype._updateBrowser = function () {
-        var reloadPromise = CSSAgent.reloadCSSForDocument(this.doc);
-
-        if (Inspector.config.highlight) {
-            reloadPromise.done(HighlightAgent.redraw);
-        }
-    };
-
-    CSSDocument.prototype.attachToEditor = function (editor) {
-        this.editor = editor;
-        
-        if (this.editor) {
-            HighlightAgent.on(&quot;highlight&quot;, this.onHighlight);
-            this.editor.on(&quot;cursorActivity.CSSDocument&quot;, this.onCursorActivity);
-            this.updateHighlight();
-        }
-    };
-    
-    CSSDocument.prototype.detachFromEditor = function () {
-        if (this.editor) {
-            HighlightAgent.hide();
-            HighlightAgent.off(&quot;highlight&quot;, this.onHighlight);
-            this.editor.off(&quot;.CSSDocument&quot;);
-            this.onHighlight();
-            this.editor = null;
-        }
-    };
-
-    CSSDocument.prototype.updateHighlight = function () {
-        if (Inspector.config.highlight &amp;&amp; this.editor) {
-            var editor = this.editor,
-                selectors = [];
-            _.each(this.editor.getSelections(), function (sel) {
-                var selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
-                if (selector) {
-                    selectors.push(selector);
-                }
-            });
-            if (selectors.length) {
-                HighlightAgent.rule(selectors.join(&quot;,&quot;));
-            } else {
-                HighlightAgent.hide();
-            }
-        }
-    };</code></pre></div><div class="member">
+<div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
     <h4>
-        close 
-        <a class="anchor" href="#CSSDocument-close" id="CSSDocument-close"><span class="icon-link"></span></a>
+        addFilesToCache 
+        <a class="anchor" href="#-addFilesToCache" id="-addFilesToCache"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Close the document</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.close = function close() {
-        this.doc.off(&quot;.CSSDocument&quot;);
-        EditorManager.off(&quot;activeEditorChange&quot;, this.onActiveEditorChange);
-        this.doc.releaseRef();
-        this.detachFromEditor();
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        getResponseData 
-        <a class="anchor" href="#CSSDocument-getResponseData" id="CSSDocument-getResponseData"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Returns a JSON object with HTTP response overrides</p>
-</div>
-    
-<dl>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">{body: string}</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.getResponseData = function getResponseData(enabled) {
-        &#x2F;&#x2F; Serve up the in-memory text, including any unsaved changes
-        return {
-            body: this.doc.getText()
-        };
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        getSourceFromBrowser 
-        <a class="anchor" href="#CSSDocument-getSourceFromBrowser" id="CSSDocument-getSourceFromBrowser"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Get the browser version of the source</p>
-</div>
-    
-<dl>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">jQuery.promise</span>
-</dt>
-    <dd>Promise resolved with the text content of this CSS document</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.getSourceFromBrowser = function getSourceFromBrowser() {
-        function getOnlyValue(obj) {
-            var key;
-            for (key in obj) {
-                if (_.has(obj, key)) {
-                    return obj[key];
-                }
-            }
-            return null;
-        }
-
-        var deferred = new $.Deferred(),
-            styleSheetHeader = this._getStyleSheetHeader(),
-            styleSheet = getOnlyValue(styleSheetHeader);
-        
-        if (styleSheet) {
-            Inspector.CSS.getStyleSheetText(styleSheet.styleSheetId).then(function (res) {
-                deferred.resolve(res.text);
-            }, deferred.reject);
-        } else {
-            deferred.reject();
-        }
-        
-        return deferred.promise();
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        isLiveEditingEnabled 
-        <a class="anchor" href="#CSSDocument-isLiveEditingEnabled" id="CSSDocument-isLiveEditingEnabled"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Returns true if document edits appear live in the connected browser</p>
-</div>
-    
-<dl>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
-    <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.isLiveEditingEnabled = function () {
-        return true;
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        onActiveEditorChange 
-        <a class="anchor" href="#CSSDocument-onActiveEditorChange" id="CSSDocument-onActiveEditorChange"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Triggered when the active editor changes</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.onActiveEditorChange = function (event, newActive, oldActive) {
-        this.detachFromEditor();
-        
-        if (newActive &amp;&amp; newActive.document === this.doc) {
-            this.attachToEditor(newActive);
-        }
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        onChange 
-        <a class="anchor" href="#CSSDocument-onChange" id="CSSDocument-onChange"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Triggered whenever the Document is edited</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.onChange = function onChange(event, editor, change) {
-        this._updateBrowser();
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        onCursorActivity 
-        <a class="anchor" href="#CSSDocument-onCursorActivity" id="CSSDocument-onCursorActivity"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Triggered on cursor activity of the editor</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.onCursorActivity = function onCursorActivity(event, editor) {
-        this.updateHighlight();
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        onDeleted 
-        <a class="anchor" href="#CSSDocument-onDeleted" id="CSSDocument-onDeleted"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Triggered if the Document&#39;s file is deleted</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.onDeleted = function onDeleted(event, editor, change) {
-        &#x2F;&#x2F; clear the CSS
-        CSSAgent.clearCSSForDocument(this.doc);
-
-        &#x2F;&#x2F; shut down, since our Document is now dead
-        this.close();
-        this.trigger(&quot;deleted&quot;, this);
-    };</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        onHighlight 
-        <a class="anchor" href="#CSSDocument-onHighlight" id="CSSDocument-onHighlight"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Triggered by the HighlightAgent to highlight a node in the editor</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.onHighlight = function onHighlight(event, node) {
-        &#x2F;&#x2F; clear an existing highlight
-        var i;
-        for (i in this._highlight) {
-            this._highlight[i].clear();
-        }
-        this._highlight = [];
-        if (!node || !node.location) {
-            return;
-        }
-
-        &#x2F;&#x2F; WebInspector Command: CSS.getMatchedStylesForNode
-        Inspector.CSS.getMatchedStylesForNode(node.nodeId, function onGetMatchesStyles(res) {
-            &#x2F;&#x2F; res = {matchedCSSRules, pseudoElements, inherited}
-            var codeMirror = this.editor._codeMirror,
-                styleSheetIds = this._getStyleSheetHeader();
-
-            var i, rule, from, to;
-            for (i in res.matchedCSSRules) {
-                rule = res.matchedCSSRules[i];
-                if (rule.ruleId &amp;&amp; styleSheetIds[rule.ruleId.styleSheetId]) {
-                    from = codeMirror.posFromIndex(rule.selectorRange.start);
-                    to = codeMirror.posFromIndex(rule.style.range.end);
-                    this._highlight.push(codeMirror.markText(from, to, { className: &quot;highlight&quot; }));
-                }
-            }
-        }.bind(this));
-    };
-
-    &#x2F;&#x2F; Export the class
-    module.exports = CSSDocument;
-});</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        setInstrumentationEnabled 
-        <a class="anchor" href="#CSSDocument-setInstrumentationEnabled" id="CSSDocument-setInstrumentationEnabled"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Enable instrumented CSS</p>
+    <div class="description"><p>Adds the list of given files to the project cache. However the files will not be
+read at this time. We just delete the project cache entry which will trigger a fetch on search.</p>
 </div>
     
 <dl>
     <dt>
-        {boolean}
-        <span class="label label-info">enabled</span>
+        updateObject
+        <span class="label label-info">Object</span>
     </dt>
     <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    CSSDocument.prototype.setInstrumentationEnabled = function setInstrumentationEnabled(enabled) {
-        &#x2F;&#x2F; no-op
-        &#x2F;&#x2F; &quot;Instrumentation&quot; is always enabled for CSS, we make no modifications
-    };</code></pre></div>
-        </section>
+<pre class="code language-javascript"><code class="language-javascript">    function addFilesToCache(updateObject) {
+        var fileList = updateObject.fileList || [],
+            filesInSearchScope = updateObject.filesInSearchScope || [],
+            i = 0,
+            changedFilesAlreadyInList = [],
+            newFiles = [];
+        for (i = 0; i &lt; fileList.length; i++) {
+            &#x2F;&#x2F; We just add a null entry indicating the precense of the file in the project list.
+            &#x2F;&#x2F; The file will be later read when required.
+            projectCache[fileList[i]] = null;
+        }
 
-    </div>
+        &#x2F;&#x2F;Now update the search scope
+        function isInChangedFileList(path) {
+            return (filesInSearchScope.indexOf(path) !== -1) ? true : false;
+        }
+        changedFilesAlreadyInList = files ? files.filter(isInChangedFileList) : [];
+        function isNotAlreadyInList(path) {
+            return (changedFilesAlreadyInList.indexOf(path) === -1) ? true : false;
+        }
+        newFiles = changedFilesAlreadyInList.filter(isNotAlreadyInList);
+        files.push.apply(files, newFiles);
+    }</code></pre></div><div class="member">
 
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        clearProjectCache 
+        <a class="anchor" href="#-clearProjectCache" id="-clearProjectCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Clears the cached file contents of the project</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function clearProjectCache() {
+        projectCache = [];
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        countNumMatches 
+        <a class="anchor" href="#-countNumMatches" id="-countNumMatches"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Counts the number of matches matching the queryExpr in the given contents</p>
+</div>
+    
+<dl>
+    <dt>
+        contents
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>The contents to search on</dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd>number of matches</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function countNumMatches(contents, queryExpr) {
+        if (!contents) {
+            return 0;
+        }
+        var matches = contents.match(queryExpr);
+        return matches ? matches.length : 0;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        doSearch 
+        <a class="anchor" href="#-doSearch" id="-doSearch"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Do a search with the searchObject context and return the results</p>
+</div>
+    
+<dl>
+    <dt>
+        searchObject
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        nextPages
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>set to true if to indicate that next page of an existing page is being fetched</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd>search results</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSearch(searchObject, nextPages) {
+        
+        savedSearchObject = searchObject;
+        if (!files) {
+            console.log(&quot;no file object found&quot;);
+            return {};
+        }
+        results = {};
+        numMatches = 0;
+        numFiles = 0;
+        foundMaximum = false;
+        if (!nextPages) {
+            exceedsMaximum = false;
+            evaluatedMatches = 0;
+        }
+        var queryObject = parseQueryInfo(searchObject.queryInfo);
+        if (searchObject.files) {
+            files = searchObject.files;
+        }
+        if (searchObject.getAllResults) {
+            searchObject.maxResultsToReturn = MAX_TOTAL_RESULTS;
+        }
+        doSearchInFiles(files, queryObject.queryExpr, searchObject.startFileIndex, searchObject.maxResultsToReturn);
+        if (crawlComplete &amp;&amp; !nextPages) {
+            numMatches = getNumMatches(files, queryObject.queryExpr);
+        }
+        var send_object = {
+            &quot;results&quot;:  results,
+            &quot;foundMaximum&quot;:  foundMaximum,
+            &quot;exceedsMaximum&quot;:  exceedsMaximum
+        };
+
+        if (!nextPages) {
+            send_object.numMatches = numMatches;
+            send_object.numFiles = numFiles;
+        }
+
+        if (searchObject.getAllResults) {
+            send_object.allResultsAvailable = true;
+        }
+        return send_object;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        doSearchInFiles 
+        <a class="anchor" href="#-doSearchInFiles" id="-doSearchInFiles"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Search in the list of files given and populate the results</p>
+</div>
+    
+<dl>
+    <dt>
+        fileList
+        <span class="label label-info">array</span>
+    </dt>
+    <dd>array of file paths</dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        startFileIndex
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>the start index of the array from which the search has to be done</dd>
+    <dt>
+        maxResultsToReturn
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>the maximum number of results to return in this search</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSearchInFiles(fileList, queryExpr, startFileIndex, maxResultsToReturn) {
+        var i;
+        if (fileList.length === 0) {
+            console.log(&#39;no files found&#39;);
+            return;
+
+        } else {
+            startFileIndex = startFileIndex || 0;
+            for (i = startFileIndex; i &lt; fileList.length &amp;&amp; !foundMaximum; i++) {
+                doSearchInOneFile(fileList[i], getFileContentsForFile(fileList[i]), queryExpr, maxResultsToReturn);
+            }
+            lastSearchedIndex = i;
+        }
+    }
+    
+    &#x2F;&#x2F; Copied from StringUtils.js
+    function regexEscape(str) {
+        return str.replace(&#x2F;([.?*+\^$\[\]\\(){}|\-])&#x2F;g, &quot;\\$1&quot;);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        doSearchInOneFile 
+        <a class="anchor" href="#-doSearchInOneFile" id="-doSearchInOneFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Finds search results in the given file and adds them to &#39;results&#39;</p>
+</div>
+    
+<dl>
+    <dt>
+        filepath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        text
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>contents of the file</dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        maxResultsToReturn
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>the maximum of results that should be returned in the current search.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSearchInOneFile(filepath, text, queryExpr, maxResultsToReturn) {
+        var matches = getSearchMatches(text, queryExpr);
+        setResults(filepath, {matches: matches}, maxResultsToReturn);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        documentChanged 
+        <a class="anchor" href="#-documentChanged" id="-documentChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notification function on document changed, we update the cache with the contents</p>
+</div>
+    
+<dl>
+    <dt>
+        updateObject
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function documentChanged(updateObject) {
+        projectCache[updateObject.filePath] = updateObject.docContents;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        fileCrawler 
+        <a class="anchor" href="#-fileCrawler" id="-fileCrawler"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Crawls through the files in the project ans stores them in cache. Since that could take a while
+we do it in batches so that node wont be blocked.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function fileCrawler() {
+        if (!files || (files &amp;&amp; files.length === 0)) {
+            setTimeout(fileCrawler, 1000);
+            return;
+        }
+        var i = 0,
+            contents = &quot;&quot;;
+        for (i = 0; i &lt; 10 &amp;&amp; currentCrawlIndex &lt; files.length; i++) {
+            contents = getFileContentsForFile(files[currentCrawlIndex]);
+            if (contents) {
+                cacheSize += contents.length;
+            }
+            currentCrawlIndex++;
+        }
+        if (currentCrawlIndex &lt; files.length) {
+            crawlComplete = false;
+            setImmediate(fileCrawler);
+        } else {
+            crawlComplete = true;
+            if (!crawlEventSent) {
+                crawlEventSent = true;
+                _domainManager.emitEvent(&quot;FindInFiles&quot;, &quot;crawlComplete&quot;, [files.length, cacheSize]);
+            }
+            setTimeout(fileCrawler, 1000);
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getAllResults 
+        <a class="anchor" href="#-getAllResults" id="-getAllResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets all the results for the saved search query if present or empty search results</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd>The results object</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getAllResults() {
+        var send_object = {
+            &quot;results&quot;:  {},
+            &quot;numMatches&quot;: 0,
+            &quot;foundMaximum&quot;:  foundMaximum,
+            &quot;exceedsMaximum&quot;:  exceedsMaximum
+        };
+        if (!savedSearchObject) {
+            return send_object;
+        }
+        savedSearchObject.startFileIndex = 0;
+        savedSearchObject.getAllResults = true;
+        return doSearch(savedSearchObject);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getFileContentsForFile 
+        <a class="anchor" href="#-getFileContentsForFile" id="-getFileContentsForFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the contents of a file given the path</p>
+</div>
+    
+<dl>
+    <dt>
+        filePath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>full file path</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>contents or null if no contents</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFileContentsForFile(filePath) {
+        if (projectCache[filePath] || projectCache[filePath] === &quot;&quot;) {
+            return projectCache[filePath];
+        }
+        try {
+            projectCache[filePath] = fs.readFileSync(filePath, &#39;utf8&#39;);
+        } catch (ex) {
+            console.log(ex);
+            projectCache[filePath] = null;
+        }
+        return projectCache[filePath];
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getNextPage 
+        <a class="anchor" href="#-getNextPage" id="-getNextPage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets the next page of results of the ongoing search</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd>search results</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNextPage() {
+        var send_object = {
+            &quot;results&quot;:  {},
+            &quot;numMatches&quot;: 0,
+            &quot;foundMaximum&quot;:  foundMaximum,
+            &quot;exceedsMaximum&quot;:  exceedsMaximum
+        };
+        if (!savedSearchObject) {
+            return send_object;
+        }
+        savedSearchObject.startFileIndex = lastSearchedIndex;
+        return doSearch(savedSearchObject, true);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getNumMatches 
+        <a class="anchor" href="#-getNumMatches" id="-getNumMatches"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the total number of matches from all the files in fileList</p>
+</div>
+    
+<dl>
+    <dt>
+        fileList
+        <span class="label label-info">array</span>
+    </dt>
+    <dd>file path array</dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Number</span>
+</dt>
+    <dd>total number of matches</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNumMatches(fileList, queryExpr) {
+        var i,
+            matches = 0;
+        for (i = 0; i &lt; fileList.length; i++) {
+            var temp = countNumMatches(getFileContentsForFile(fileList[i]), queryExpr);
+            if (temp) {
+                numFiles++;
+                matches += temp;
+            }
+            if (matches &gt; MAX_TOTAL_RESULTS) {
+                exceedsMaximum = true;
+                break;
+            }
+        }
+        return matches;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getSearchMatches 
+        <a class="anchor" href="#-getSearchMatches" id="-getSearchMatches"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Searches through the contents and returns an array of matches</p>
+</div>
+    
+<dl>
+    <dt>
+        contents
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        queryExpr
+        <span class="label label-info">RegExp</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!Array.&lt;{start: {line:number,ch:number},end: {line:number,ch:number},line: string}&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getSearchMatches(contents, queryExpr) {
+        if (!contents) {
+            return;
+        }
+        &#x2F;&#x2F; Quick exit if not found or if we hit the limit
+        if (foundMaximum || contents.search(queryExpr) === -1) {
+            return [];
+        }
+
+        var match, lineNum, line, ch, totalMatchLength, matchedLines, numMatchedLines, lastLineLength, endCh,
+            padding, leftPadding, rightPadding, highlightOffset, highlightEndCh,
+            lines   = contents.split(&quot;\n&quot;),
+            matches = [];
+
+        while ((match = queryExpr.exec(contents)) !== null) {
+            lineNum          = offsetToLineNum(lines, match.index);
+            line             = lines[lineNum];
+            ch               = match.index - contents.lastIndexOf(&quot;\n&quot;, match.index) - 1;  &#x2F;&#x2F; 0-based index
+            matchedLines     = match[0].split(&quot;\n&quot;);
+            numMatchedLines  = matchedLines.length;
+            totalMatchLength = match[0].length;
+            lastLineLength   = matchedLines[matchedLines.length - 1].length;
+            endCh            = (numMatchedLines === 1 ? ch + totalMatchLength : lastLineLength);
+            highlightEndCh   = (numMatchedLines === 1 ? endCh : line.length);
+            highlightOffset  = 0;
+
+            if (highlightEndCh &lt;= MAX_DISPLAY_LENGTH) {
+                &#x2F;&#x2F; Don&#39;t store more than 200 chars per line
+                line = line.substr(0, Math.min(MAX_DISPLAY_LENGTH, line.length));
+            } else if (totalMatchLength &gt; MAX_DISPLAY_LENGTH) {
+                &#x2F;&#x2F; impossible to display the whole match
+                line = line.substr(ch, ch + MAX_DISPLAY_LENGTH);
+                highlightOffset = ch;
+            } else {
+                &#x2F;&#x2F; Try to have both beginning and end of match displayed
+                padding = MAX_DISPLAY_LENGTH - totalMatchLength;
+                rightPadding = Math.floor(Math.min(padding &#x2F; 2, line.length - highlightEndCh));
+                leftPadding = Math.ceil(padding - rightPadding);
+                highlightOffset = ch - leftPadding;
+                line = line.substring(highlightOffset, highlightEndCh + rightPadding);
+            }
+
+            matches.push({
+                start:       {line: lineNum, ch: ch},
+                end:         {line: lineNum + numMatchedLines - 1, ch: endCh},
+
+                highlightOffset: highlightOffset,
+
+                &#x2F;&#x2F; Note that the following offsets from the beginning of the file are *not* updated if the search
+                &#x2F;&#x2F; results change. These are currently only used for multi-file replacement, and we always
+                &#x2F;&#x2F; abort the replace (by shutting the results panel) if we detect any result changes, so we don&#39;t
+                &#x2F;&#x2F; need to keep them up to date. Eventually, we should either get rid of the need for these (by
+                &#x2F;&#x2F; doing everything in terms of line&#x2F;ch offsets, though that will require re-splitting files when
+                &#x2F;&#x2F; doing a replace) or properly update them.
+                startOffset: match.index,
+                endOffset:   match.index + totalMatchLength,
+
+                line:        line,
+                result:      match,
+                isChecked:   true
+            });
+
+            &#x2F;&#x2F; We have the max hits in just this 1 file. Stop searching this file.
+            &#x2F;&#x2F; This fixed issue #1829 where code hangs on too many hits.
+            &#x2F;&#x2F; Adds one over MAX_RESULTS_IN_A_FILE in order to know if the search has exceeded
+            &#x2F;&#x2F; or is equal to MAX_RESULTS_IN_A_FILE. Additional result removed in SearchModel
+            if (matches.length &gt; MAX_RESULTS_IN_A_FILE) {
+                queryExpr.lastIndex = 0;
+                break;
+            }
+
+            &#x2F;&#x2F; Pathological regexps like &#x2F;^&#x2F; return 0-length matches. Ensure we make progress anyway
+            if (totalMatchLength === 0) {
+                queryExpr.lastIndex++;
+            }
+        }
+
+        return matches;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        init 
+        <a class="anchor" href="#-init" id="-init"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Initialize the test domain with commands and events related to find in files.</p>
+</div>
+    
+<dl>
+    <dt>
+        domainManager
+        <span class="label label-info">DomainManager</span>
+    </dt>
+    <dd>The DomainManager for the find in files domain "FindInFiles"</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function init(domainManager) {
+        if (!domainManager.hasDomain(&quot;FindInFiles&quot;)) {
+            domainManager.registerDomain(&quot;FindInFiles&quot;, {major: 0, minor: 1});
+        }
+        _domainManager = domainManager;
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;doSearch&quot;,    &#x2F;&#x2F; command name
+            doSearch,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;Searches in project files and returns matches&quot;,
+            [{name: &quot;searchObject&quot;, &#x2F;&#x2F; parameters
+                type: &quot;object&quot;,
+                description: &quot;Object containing search data&quot;}],
+            [{name: &quot;searchResults&quot;, &#x2F;&#x2F; return values
+                type: &quot;object&quot;,
+                description: &quot;Object containing results of the search&quot;}]
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;nextPage&quot;,    &#x2F;&#x2F; command name
+            getNextPage,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;get the next page of reults&quot;,
+            [],
+            [{name: &quot;searchResults&quot;, &#x2F;&#x2F; return values
+                type: &quot;object&quot;,
+                description: &quot;Object containing results of the search&quot;}]
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;getAllResults&quot;,    &#x2F;&#x2F; command name
+            getAllResults,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;get the next page of reults&quot;,
+            [],
+            [{name: &quot;searchResults&quot;, &#x2F;&#x2F; return values
+                type: &quot;object&quot;,
+                description: &quot;Object containing all results of the search&quot;}]
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;collapseResults&quot;,    &#x2F;&#x2F; command name
+            setCollapseResults,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;get the next page of reults&quot;,
+            [{name: &quot;collapse&quot;, &#x2F;&#x2F; return values
+                type: &quot;boolean&quot;,
+                description: &quot;true to collapse&quot;}],
+            []
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;filesChanged&quot;,    &#x2F;&#x2F; command name
+            addFilesToCache,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;files in the project has been changed, update cache&quot;,
+            [{name: &quot;updateObject&quot;, &#x2F;&#x2F; parameters
+                type: &quot;object&quot;,
+                description: &quot;Object containing list of changed files&quot;}],
+            []
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;documentChanged&quot;,    &#x2F;&#x2F; command name
+            documentChanged,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;informs that the document changed and updates the cache&quot;,
+            [{name: &quot;updateObject&quot;, &#x2F;&#x2F; parameters
+                type: &quot;object&quot;,
+                description: &quot;update with the contents of the object&quot;}],
+            []
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;filesRemoved&quot;,    &#x2F;&#x2F; command name
+            removeFilesFromCache,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;Searches in project files and returns matches&quot;,
+            [{name: &quot;updateObject&quot;, &#x2F;&#x2F; parameters
+                type: &quot;object&quot;,
+                description: &quot;Object containing list of removed files&quot;}],
+            []
+        );
+        domainManager.registerCommand(
+            &quot;FindInFiles&quot;,       &#x2F;&#x2F; domain name
+            &quot;initCache&quot;,    &#x2F;&#x2F; command name
+            initCache,   &#x2F;&#x2F; command handler function
+            false,          &#x2F;&#x2F; this command is synchronous in Node
+            &quot;Caches the project for find in files in node&quot;,
+            [{name: &quot;fileList&quot;, &#x2F;&#x2F; parameters
+                type: &quot;Array&quot;,
+                description: &quot;List of all project files - Path only&quot;}],
+            []
+        );
+        domainManager.registerEvent(
+            &quot;FindInFiles&quot;,     &#x2F;&#x2F; domain name
+            &quot;crawlComplete&quot;,   &#x2F;&#x2F; event name
+            [
+                {
+                    name: &quot;numFiles&quot;,
+                    type: &quot;number&quot;,
+                    description: &quot;number of files cached&quot;
+                },
+                {
+                    name: &quot;cacheSize&quot;,
+                    type: &quot;number&quot;,
+                    description: &quot;The size of the file cache epressesd as string length of files&quot;
+                }
+            ]
+        );
+        setTimeout(fileCrawler, 5000);
+    }
+    
+    exports.init = init;
+    
+}());</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        initCache 
+        <a class="anchor" href="#-initCache" id="-initCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Init for project, resets the old project cache, and sets the crawler function to
+restart the file crawl</p>
+</div>
+    
+<dl>
+    <dt>
+        fileList
+        <span class="label label-info">array</span>
+    </dt>
+    <dd>an array of files</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function initCache(fileList) {
+        files = fileList;
+        currentCrawlIndex = 0;
+        cacheSize = 0;
+        clearProjectCache();
+        crawlEventSent = false;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        offsetToLineNum 
+        <a class="anchor" href="#-offsetToLineNum" id="-offsetToLineNum"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Copied from StringUtils.js
+Returns a line number corresponding to an offset in some text. The text can
+be specified as a single string or as an array of strings that correspond to
+the lines of the string.</p>
+<p>Specify the text in lines when repeatedly calling the function on the same
+text in a loop. Use getLines() to divide the text into lines, then repeatedly call
+this function to compute a line number from the offset.</p>
+</div>
+    
+<dl>
+    <dt>
+        textOrLines
+        <span class="label label-info">string,Array.&lt;string&gt;</span>
+    </dt>
+    <dd>- string or array of lines from which to compute the line number from the offset</dd>
+    <dt>
+        offset
+        <span class="label label-info">number</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd>line number</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function offsetToLineNum(textOrLines, offset) {
+        if (Array.isArray(textOrLines)) {
+            var lines = textOrLines,
+                total = 0,
+                line;
+            for (line = 0; line &lt; lines.length; line++) {
+                if (total &lt; offset) {
+                    &#x2F;&#x2F; add 1 per line since &#x2F;n were removed by splitting, but they needed to 
+                    &#x2F;&#x2F; contribute to the total offset count
+                    total += lines[line].length + 1;
+                } else if (total === offset) {
+                    return line;
+                } else {
+                    return line - 1;
+                }
+            }
+
+            &#x2F;&#x2F; if offset is NOT over the total then offset is in the last line
+            if (offset &lt;= total) {
+                return line - 1;
+            } else {
+                return undefined;
+            }
+        } else {
+            return textOrLines.substr(0, offset).split(&quot;\n&quot;).length - 1;
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        parseQueryInfo 
+        <a class="anchor" href="#-parseQueryInfo" id="-parseQueryInfo"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Parses the given query into a regexp, and returns whether it was valid or not.</p>
+</div>
+    
+<dl>
+    <dt>
+        queryInfo
+        <span class="label label-info">{query: string,caseSensitive: boolean,isRegexp: boolean}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{queryExpr: RegExp,valid: boolean,empty: boolean,error: string}</span>
+</dt>
+    <dd>queryExpr - the regexp representing the query valid - set to true if query is a nonempty string or a valid regexp. empty - set to true if query was empty. error - set to an error string if valid is false and query is nonempty.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function parseQueryInfo(queryInfo) {
+        var queryExpr;
+
+        &#x2F;&#x2F; TODO: only major difference between this one and the one in FindReplace is that
+        &#x2F;&#x2F; this always returns a regexp even for simple strings. Reconcile.
+        if (!queryInfo || !queryInfo.query) {
+            return {empty: true};
+        }
+
+        &#x2F;&#x2F; For now, treat all matches as multiline (i.e. ^&#x2F;$ match on every line, not the whole
+        &#x2F;&#x2F; document). This is consistent with how single-file find works. Eventually we should add
+        &#x2F;&#x2F; an option for this.
+        var flags = &quot;gm&quot;;
+        if (!queryInfo.isCaseSensitive) {
+            flags += &quot;i&quot;;
+        }
+
+        &#x2F;&#x2F; Is it a (non-blank) regex?
+        if (queryInfo.isRegexp) {
+            try {
+                queryExpr = new RegExp(queryInfo.query, flags);
+            } catch (e) {
+                return {valid: false, error: e.message};
+            }
+        } else {
+            &#x2F;&#x2F; Query is a plain string. Turn it into a regexp
+            queryExpr = new RegExp(regexEscape(queryInfo.query), flags);
+        }
+        return {valid: true, queryExpr: queryExpr};
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        removeFilesFromCache 
+        <a class="anchor" href="#-removeFilesFromCache" id="-removeFilesFromCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Remove the list of given files from the project cache</p>
+</div>
+    
+<dl>
+    <dt>
+        updateObject
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeFilesFromCache(updateObject) {
+        var fileList = updateObject.fileList || [],
+            filesInSearchScope = updateObject.filesInSearchScope || [],
+            i = 0;
+        for (i = 0; i &lt; fileList.length; i++) {
+            delete projectCache[fileList[i]];
+        }
+        function isNotInRemovedFilesList(path) {
+            return (filesInSearchScope.indexOf(path) === -1) ? true : false;
+        }
+        files = files ? files.filter(isNotInRemovedFilesList) : files;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setCollapseResults 
+        <a class="anchor" href="#-setCollapseResults" id="-setCollapseResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets if the results should be collapsed</p>
+</div>
+    
+<dl>
+    <dt>
+        collapse
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to collapse</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setCollapseResults(collapse) {
+        collapseResults = collapse;
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setResults 
+        <a class="anchor" href="#-setResults" id="-setResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets the list of matches for the given path, removing the previous match info, if any, and updating
+the total match count. Note that for the count to remain accurate, the previous match info must not have
+been mutated since it was set.</p>
+</div>
+    
+<dl>
+    <dt>
+        fullpath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Full path to the file containing the matches.</dd>
+    <dt>
+        resultInfo
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{matches: Object, collapsed: boolean=}</span>
+    </dt>
+    <dd>Info for the matches to set: matches - Array of matches, in the format returned by FindInFiles.getSearchMatches() collapsed - Optional: whether the results should be collapsed in the UI (default false).</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setResults(fullpath, resultInfo, maxResultsToReturn) {
+        if (results[fullpath]) {
+            numMatches -= results[fullpath].matches.length;
+            delete results[fullpath];
+        }
+
+        if (foundMaximum || !resultInfo || !resultInfo.matches || !resultInfo.matches.length) {
+            return;
+        }
+
+        &#x2F;&#x2F; Make sure that the optional `collapsed` property is explicitly set to either true or false,
+        &#x2F;&#x2F; to avoid logic issues later with comparing values.
+        resultInfo.collapsed = collapseResults;
+
+        results[fullpath] = resultInfo;
+        numMatches += resultInfo.matches.length;
+        evaluatedMatches += resultInfo.matches.length;
+        maxResultsToReturn = maxResultsToReturn || MAX_RESULTS_TO_RETURN;
+        if (numMatches &gt;= maxResultsToReturn || evaluatedMatches &gt; MAX_TOTAL_RESULTS) {
+            foundMaximum = true;
+        }
+    }</code></pre></div>
 </section>
+
         </div>
       </div>
     </div>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -464,7 +474,7 @@
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/language/HTMLUtils.html">HTMLUtils</a></li>
@@ -2041,7 +2051,7 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
             var prevToken = &quot;&quot;;
             while (token !== &quot;;&quot;) {
                 &#x2F;&#x2F; Skip tokens until the closing brace if we find an interpolated variable.
-                if (&#x2F;#\{$&#x2F;.test(token) || (token === &quot;{&quot; &amp;&amp; &#x2F;[#@]$&#x2F;.test(prevToken))) {
+                if (&#x2F;[#@]\{$&#x2F;.test(token) || (token === &quot;{&quot; &amp;&amp; &#x2F;[#@]$&#x2F;.test(prevToken))) {
                     _skipToClosingBracket(&quot;{&quot;);
                     if (token === &quot;}&quot;) {
                         _nextToken();   &#x2F;&#x2F; Skip the closing brace
@@ -2088,9 +2098,9 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
                     currentSelector += _skipToClosingBracket(&quot;{&quot;);
                     _nextToken();  &#x2F;&#x2F; skip the closing brace
                 } else if (token === &quot;}&quot; &amp;&amp;
-                        (!currentSelector || &#x2F;:\s*\S&#x2F;.test(currentSelector) || !&#x2F;#\{.+&#x2F;.test(currentSelector))) {
+                        (!currentSelector || &#x2F;:\s*\S&#x2F;.test(currentSelector) || !&#x2F;[#@]\{.+&#x2F;.test(currentSelector))) {
                     &#x2F;&#x2F; Either empty currentSelector or currentSelector is a CSS property
-                    &#x2F;&#x2F; but not a selector that is in the form of #{$class}
+                    &#x2F;&#x2F; but not a selector that is in the form of #{$class} or @{class}
                     return false;
                 }
                 &#x2F;&#x2F; Clear currentSelector if we&#39;re in a property, but make sure we don&#39;t treat

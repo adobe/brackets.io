@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -1072,13 +1082,14 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
     
     _updateCurrentProjectContext();
     
-    PreferencesImpl.manager.on(&quot;scopeOrderChange&quot;, _updateCurrentProjectContext);</code></pre></div><div class="member public">
+    PreferencesImpl.manager.on(&quot;scopeOrderChange&quot;, _updateCurrentProjectContext);</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
+            <span class="label label-deprecated label-inverse">deprecated</span>
         convertPreferences 
         <a class="anchor" href="#-convertPreferences" id="-convertPreferences"><span class="icon-link"></span></a>
     </h4>
@@ -1123,6 +1134,9 @@ The value tells the converter what to do. The following values are available:</p
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function convertPreferences(clientID, rules, isViewState, prefCheckCallback) {
+        DeprecationWarning.deprecationWarning(&quot;PreferencesManager.convertPreferences() has been deprecated. &quot; +
+                                              &quot;Please upgrade to the current Preferences system &quot; +
+                                              &quot;(https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;wiki&#x2F;Preferences-System#conversion-from-the-pre-36-preferences-system).&quot;);
         PreferencesImpl.smUserScopeLoading.done(function () {
             PreferencesImpl.userScopeLoading.done(function () {
                 if (!clientID || (typeof clientID === &quot;object&quot; &amp;&amp; (!clientID.id || !clientID.uri))) {
@@ -1230,13 +1244,14 @@ preferences files.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getExtensionPrefs(prefix) {
         return PreferencesImpl.manager.getPrefixedSystem(prefix);
-    }</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
+            <span class="label label-deprecated label-inverse">deprecated</span>
         getPreferenceStorage 
         <a class="anchor" href="#-getPreferenceStorage" id="-getPreferenceStorage"><span class="icon-link"></span></a>
     </h4>
@@ -1276,7 +1291,8 @@ preferences files.</p>
         &#x2F;&#x2F; having _doNotCreate set to true, then the caller is using the old preferences model.
         if (!_doNotCreate) {
             var clientString = typeof clientID === &quot;object&quot; ? clientID.uri : clientID;
-            DeprecationWarning.deprecationWarning(&quot;getPreferenceStorage is called with client ID &#39;&quot; + clientString + &quot;,&#39; use PreferencesManager.definePreference instead.&quot;);
+            DeprecationWarning.deprecationWarning(&quot;PreferencesManager.getPreferenceStorage() called with client id &#39;&quot; +
+                                                  clientString + &quot;&#39; has been deprecated. Use PreferencesManager.definePreference() instead.&quot;);
         }
         if (!clientID || (typeof clientID === &quot;object&quot; &amp;&amp; (!clientID.id || !clientID.uri))) {
             console.error(&quot;Invalid clientID&quot;);
@@ -1428,7 +1444,7 @@ old behavior a bit more closely.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setValueAndSave(id, value, options) {
-        DeprecationWarning.deprecationWarning(&quot;setValueAndSave called for &quot; + id + &quot;. Use set instead.&quot;);
+        DeprecationWarning.deprecationWarning(&quot;PreferencesManager.setValueAndSave() called for &quot; + id + &quot;. Use PreferencesManager.set() instead.&quot;, true);
         var changed = exports.set(id, value, options).stored;
         PreferencesImpl.manager.save();
         return changed;
@@ -1511,6 +1527,7 @@ old behavior a bit more closely.</p>
     exports.on                  = PreferencesImpl.manager.on.bind(PreferencesImpl.manager);
     exports.off                 = PreferencesImpl.manager.off.bind(PreferencesImpl.manager);
     exports.getPreference       = PreferencesImpl.manager.getPreference.bind(PreferencesImpl.manager);
+    exports.getAllPreferences   = PreferencesImpl.manager.getAllPreferences.bind(PreferencesImpl.manager);
     exports.getExtensionPrefs   = getExtensionPrefs;
     exports.setValueAndSave     = setValueAndSave;
     exports.getViewState        = getViewState;

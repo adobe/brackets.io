@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -619,17 +629,20 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _performChanges() {
         &#x2F;&#x2F; If an extension was removed or updated, prompt the user to quit Brackets.
-        var hasRemovedExtensions = ExtensionManager.hasExtensionsToRemove(),
-            hasUpdatedExtensions = ExtensionManager.hasExtensionsToUpdate();
-        if (!hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
+        var hasRemovedExtensions    = ExtensionManager.hasExtensionsToRemove(),
+            hasUpdatedExtensions    = ExtensionManager.hasExtensionsToUpdate(),
+            hasDisabledExtensions   = ExtensionManager.hasExtensionsToDisable();
+        if (!hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions &amp;&amp; !hasDisabledExtensions) {
             return;
         }
         
         var buttonLabel = Strings.CHANGE_AND_RELOAD;
-        if (hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
+        if (hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions &amp;&amp; !hasDisabledExtensions) {
             buttonLabel = Strings.REMOVE_AND_RELOAD;
-        } else if (hasUpdatedExtensions &amp;&amp; !hasRemovedExtensions) {
+        } else if (hasUpdatedExtensions &amp;&amp; !hasRemovedExtensions &amp;&amp; !hasDisabledExtensions) {
             buttonLabel = Strings.UPDATE_AND_RELOAD;
+        } else if (hasDisabledExtensions &amp;&amp; !hasRemovedExtensions &amp;&amp; !hasUpdatedExtensions) {
+            buttonLabel = Strings.DISABLE_AND_RELOAD;
         }
         
         var dlg = Dialogs.showModalDialog(
@@ -663,62 +676,101 @@
                     .text(Strings.PROCESSING_EXTENSIONS)
                     .append(&quot;&lt;span class=&#39;spinner inline spin&#39;&#x2F;&gt;&quot;);
                 
-                ExtensionManager.removeMarkedExtensions()
-                    .done(function () {
-                        ExtensionManager.updateExtensions()
-                            .done(function () {
-                                dlg.close();
-                                CommandManager.execute(Commands.APP_RELOAD);
-                            })
-                            .fail(function (errorArray) {
-                                dlg.close();
-                                
-                                &#x2F;&#x2F; This error case should be very uncommon.
-                                &#x2F;&#x2F; Just let the user know that we couldn&#39;t update
-                                &#x2F;&#x2F; this extension and log the errors to the console.
-                                var ids = [];
-                                errorArray.forEach(function (errorObj) {
-                                    ids.push(errorObj.item);
-                                    if (errorObj.error &amp;&amp; errorObj.error.forEach) {
-                                        console.error(&quot;Errors for&quot;, errorObj.item);
-                                        errorObj.error.forEach(function (error) {
-                                            console.error(Package.formatError(error));
-                                        });
-                                    } else {
-                                        console.error(&quot;Error for&quot;, errorObj.item, errorObj);
-                                    }
-                                });
-                                Dialogs.showModalDialog(
-                                    DefaultDialogs.DIALOG_ID_ERROR,
-                                    Strings.EXTENSION_MANAGER_UPDATE,
-                                    StringUtils.format(Strings.EXTENSION_MANAGER_UPDATE_ERROR, ids.join(&quot;, &quot;))
-                                ).done(function () {
-                                    &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                                    CommandManager.execute(Commands.APP_RELOAD);
-                                });
-                            });
-                    })
+                var removeExtensionsPromise,
+                    updateExtensionsPromise,
+                    disableExtensionsPromise,
+                    removeErrors,
+                    updateErrors,
+                    disableErrors;
+
+                removeExtensionsPromise = ExtensionManager.removeMarkedExtensions()
                     .fail(function (errorArray) {
+                        removeErrors = errorArray;
+                    });
+                updateExtensionsPromise = ExtensionManager.updateExtensions()
+                    .fail(function (errorArray) {
+                        updateErrors = errorArray;
+                    });
+                disableExtensionsPromise = ExtensionManager.disableMarkedExtensions()
+                    .fail(function (errorArray) {
+                        disableErrors = errorArray;
+                    });
+
+                Async.waitForAll([removeExtensionsPromise, updateExtensionsPromise, disableExtensionsPromise], true)
+                    .always(function () {
                         dlg.close();
-                        ExtensionManager.cleanupUpdates();
+                    })
+                    .done(function () {
+                        CommandManager.execute(Commands.APP_RELOAD);
+                    })
+                    .fail(function () {
+                        var ids = [],
+                            dialogs = [];
+
+                        function nextDialog() {
+                            var dialog = dialogs.shift();
+                            if (dialog) {
+                                Dialogs.showModalDialog(dialog.dialog, dialog.title, dialog.message)
+                                    .done(nextDialog);
+                            } else {
+                                &#x2F;&#x2F; Even in case of error condition, we still have to reload
+                                CommandManager.execute(Commands.APP_RELOAD);
+                            }
+                        }
+
+                        if (removeErrors) {
+                            removeErrors.forEach(function (errorObj) {
+                                ids.push(errorObj.item);
+                            });
+                            dialogs.push({
+                                dialog: DefaultDialogs.DIALOG_ID_ERROR,
+                                title: Strings.EXTENSION_MANAGER_REMOVE,
+                                message: StringUtils.format(Strings.EXTENSION_MANAGER_REMOVE_ERROR, ids.join(&quot;, &quot;))
+                            });
+                        }
+
+                        if (updateErrors) {
+                            &#x2F;&#x2F; This error case should be very uncommon.
+                            &#x2F;&#x2F; Just let the user know that we couldn&#39;t update
+                            &#x2F;&#x2F; this extension and log the errors to the console.
+                            ids.length = 0;
+                            updateErrors.forEach(function (errorObj) {
+                                ids.push(errorObj.item);
+                                if (errorObj.error &amp;&amp; errorObj.error.forEach) {
+                                    console.error(&quot;Errors for&quot;, errorObj.item);
+                                    errorObj.error.forEach(function (error) {
+                                        console.error(Package.formatError(error));
+                                    });
+                                } else {
+                                    console.error(&quot;Error for&quot;, errorObj.item, errorObj);
+                                }
+                            });
+                            dialogs.push({
+                                dialog: DefaultDialogs.DIALOG_ID_ERROR,
+                                title: Strings.EXTENSION_MANAGER_UPDATE,
+                                message: StringUtils.format(Strings.EXTENSION_MANAGER_UPDATE_ERROR, ids.join(&quot;, &quot;))
+                            });
+                        }
+
+                        if (disableErrors) {
+                            ids.length = 0;
+                            disableErrors.forEach(function (errorObj) {
+                                ids.push(errorObj.item);
+                            });
+                            dialogs.push({
+                                dialog: DefaultDialogs.DIALOG_ID_ERROR,
+                                title: Strings.EXTENSION_MANAGER_DISABLE,
+                                message: StringUtils.format(Strings.EXTENSION_MANAGER_DISABLE_ERROR, ids.join(&quot;, &quot;))
+                            });
+                        }
                         
-                        var ids = [];
-                        errorArray.forEach(function (errorObj) {
-                            ids.push(errorObj.item);
-                        });
-                        Dialogs.showModalDialog(
-                            DefaultDialogs.DIALOG_ID_ERROR,
-                            Strings.EXTENSION_MANAGER_REMOVE,
-                            StringUtils.format(Strings.EXTENSION_MANAGER_REMOVE_ERROR, ids.join(&quot;, &quot;))
-                        ).done(function () {
-                            &#x2F;&#x2F; We still have to reload even if some of the removals failed.
-                            CommandManager.execute(Commands.APP_RELOAD);
-                        });
+                        nextDialog();
                     });
             } else {
                 dlg.close();
                 ExtensionManager.cleanupUpdates();
                 ExtensionManager.unmarkAllForRemoval();
+                ExtensionManager.unmarkAllForDisabling();
             }
         });
     }</code></pre></div><div class="member private">

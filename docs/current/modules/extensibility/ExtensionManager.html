@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -515,6 +525,7 @@ with new data from the registry.</li>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var ENABLED      = &quot;enabled&quot;,
+        DISABLED     = &quot;disabled&quot;,
         START_FAILED = &quot;startFailed&quot;;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -573,8 +584,9 @@ with new data from the registry.</li>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _idsToRemove = [],
-        _idsToUpdate = [];
+<pre class="code language-javascript"><code class="language-javascript">    var _idsToRemove = {},
+        _idsToUpdate = {},
+        _idsToDisable = {};
 
     PreferencesManager.stateManager.definePreference(FOLDER_AUTOINSTALL, &quot;object&quot;, undefined);</code></pre></div><div class="member private public">
 
@@ -687,7 +699,8 @@ with new data from the registry.</li>
     &#x2F;&#x2F; Listen to extension load and loadFailed events
     ExtensionLoader
         .on(&quot;load&quot;, _handleExtensionLoad)
-        .on(&quot;loadFailed&quot;, _handleExtensionLoad);
+        .on(&quot;loadFailed&quot;, _handleExtensionLoad)
+        .on(&quot;disabled&quot;, _handleExtensionLoad);
     
     
     EventDispatcher.makeEventDispatcher(exports);
@@ -698,17 +711,24 @@ with new data from the registry.</li>
     exports.getExtensionURL         = getExtensionURL;
     exports.remove                  = remove;
     exports.update                  = update;
+    exports.disable                 = disable;
+    exports.enable                  = enable;
     exports.extensions              = extensions;
     exports.cleanupUpdates          = cleanupUpdates;
     exports.markForRemoval          = markForRemoval;
     exports.isMarkedForRemoval      = isMarkedForRemoval;
     exports.unmarkAllForRemoval     = unmarkAllForRemoval;
     exports.hasExtensionsToRemove   = hasExtensionsToRemove;
+    exports.markForDisabling        = markForDisabling;
+    exports.isMarkedForDisabling    = isMarkedForDisabling;
+    exports.unmarkAllForDisabling   = unmarkAllForDisabling;
+    exports.hasExtensionsToDisable  = hasExtensionsToDisable;
     exports.updateFromDownload      = updateFromDownload;
     exports.removeUpdate            = removeUpdate;
     exports.isMarkedForUpdate       = isMarkedForUpdate;
     exports.hasExtensionsToUpdate   = hasExtensionsToUpdate;
     exports.removeMarkedExtensions  = removeMarkedExtensions;
+    exports.disableMarkedExtensions = disableMarkedExtensions;
     exports.updateExtensions        = updateExtensions;
     exports.getAvailableUpdates     = getAvailableUpdates;
     exports.cleanAvailableUpdates   = cleanAvailableUpdates;
@@ -716,6 +736,7 @@ with new data from the registry.</li>
     exports.hasDownloadedRegistry   = false;
     
     exports.ENABLED       = ENABLED;
+    exports.DISABLED      = DISABLED;
     exports.START_FAILED  = START_FAILED;
 
     exports.LOCATION_DEFAULT  = LOCATION_DEFAULT;
@@ -727,7 +748,57 @@ with new data from the registry.</li>
     exports._getAutoInstallFiles    = _getAutoInstallFiles;
     exports._reset                  = _reset;
     exports._setExtensions          = _setExtensions;
-});</code></pre></div><div class="member private public">
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _enableOrDisable 
+        <a class="anchor" href="#-_enableOrDisable" id="-_enableOrDisable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension to disable or enable.</dd>
+    <dt>
+        enable
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>A boolean indicating whether to enable or disable.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that's resolved when the extension action is completed or rejected with an error that prevents the action from completion.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _enableOrDisable(id, enable) {
+        var result = new $.Deferred(),
+            extension = extensions[id];
+        if (extension &amp;&amp; extension.installInfo) {
+            Package[(enable ? &quot;enable&quot; : &quot;disable&quot;)](extension.installInfo.path)
+                .done(function () {
+                    extension.installInfo.status = enable ? ENABLED : DISABLED;
+                    extension.installInfo.metadata.disabled = !enable;
+                    result.resolve();
+                    exports.trigger(&quot;statusChange&quot;, id);
+                })
+                .fail(function (err) {
+                    result.reject(err);
+                });
+        } else {
+            result.reject(StringUtils.format(Strings.EXTENSION_NOT_INSTALLED, id));
+        }
+        return result.promise();
+    }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
@@ -886,8 +957,9 @@ with new data from the registry.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleExtensionLoad(e, path) {
-        function setData(id, metadata) {
+        function setData(metadata) {
             var locationType,
+                id = metadata.name,
                 userExtensionPath = ExtensionLoader.getUserExtensionPath();
             if (path.indexOf(userExtensionPath) === 0) {
                 locationType = LOCATION_USER;
@@ -911,7 +983,7 @@ with new data from the registry.</li>
                 metadata: metadata,
                 path: path,
                 locationType: locationType,
-                status: (e.type === &quot;loadFailed&quot; ? START_FAILED : ENABLED)
+                status: (e.type === &quot;loadFailed&quot; ? START_FAILED : (e.type === &quot;disabled&quot; ? DISABLED : ENABLED))
             };
 
             synchronizeEntry(id);
@@ -919,19 +991,25 @@ with new data from the registry.</li>
             exports.trigger(&quot;statusChange&quot;, id);
         }
 
-        ExtensionUtils.loadPackageJson(path)
+        function deduceMetadata() {
+            var match = path.match(&#x2F;\&#x2F;([^\&#x2F;]+)$&#x2F;),
+                name = (match &amp;&amp; match[1]) || path,
+                metadata = { name: name, title: name };
+            return metadata;
+        }
+
+        ExtensionUtils.loadMetadata(path)
             .done(function (metadata) {
-                setData(metadata.name, metadata);
+                setData(metadata);
             })
-            .fail(function () {
+            .fail(function (disabled) {
                 &#x2F;&#x2F; If there&#39;s no package.json, this is a legacy extension. It was successfully loaded,
                 &#x2F;&#x2F; but we don&#39;t have an official ID or metadata for it, so we just create an id and
                 &#x2F;&#x2F; &quot;title&quot; for it (which is the last segment of its pathname)
                 &#x2F;&#x2F; and record that it&#39;s enabled.
-                var match = path.match(&#x2F;\&#x2F;([^\&#x2F;]+)$&#x2F;),
-                    name = (match &amp;&amp; match[1]) || path,
-                    metadata = { name: name, title: name };
-                setData(name, metadata);
+                var metadata = deduceMetadata();
+                metadata.disabled = disabled;
+                setData(metadata);
             });
     }</code></pre></div><div class="member private public">
 
@@ -954,8 +1032,9 @@ with new data from the registry.</li>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _reset() {
         exports.extensions = extensions = {};
-        _idsToRemove = [];
-        _idsToUpdate = [];
+        _idsToRemove = {};
+        _idsToUpdate = {};
+        _idsToDisable = {};
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -1065,6 +1144,69 @@ were marked for update.</p>
     Public API
 </span>
     <h4>
+        disable 
+        <a class="anchor" href="#-disable" id="-disable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Disables the installed extension with the given id.</p>
+</div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension to disable.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that's resolved when the extenion is disabled or rejected with an error that prevented the disabling.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function disable(id) {
+        return _enableOrDisable(id, false);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        disableMarkedExtensions 
+        <a class="anchor" href="#-disableMarkedExtensions" id="-disableMarkedExtensions"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Disables extensions marked for disabling.</p>
+<p>If the return promise is rejected, the argument will contain an array of objects. Each
+element is an object identifying the extension failed with &quot;item&quot; property set to the
+extension id which has failed to be disabled and &quot;error&quot; property set to the error.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that's resolved when all extensions marked for disabling are disabled or rejected if one or more extensions can't be disabled.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function disableMarkedExtensions() {
+        return Async.doInParallel_aggregateErrors(
+            Object.keys(_idsToDisable),
+            function (id) {
+                return disable(id);
+            }
+        );
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         downloadRegistry 
         <a class="anchor" href="#-downloadRegistry" id="-downloadRegistry"><span class="icon-link"></span></a>
     </h4>
@@ -1115,6 +1257,36 @@ extension info.</p>
             });
 
         return pendingDownloadRegistry.promise();
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        enable 
+        <a class="anchor" href="#-enable" id="-enable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Enables the installed extension with the given id.</p>
+</div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension to enable.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that's resolved when the extenion is enabled or rejected with an error that prevented the enabling.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function enable(id) {
+        return _enableOrDisable(id, true);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1319,6 +1491,31 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
     Public API
 </span>
     <h4>
+        hasExtensionsToDisable 
+        <a class="anchor" href="#-hasExtensionsToDisable" id="-hasExtensionsToDisable"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns true if there are any extensions marked for disabling.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if there are extensions to disable</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function hasExtensionsToDisable() {
+        return Object.keys(_idsToDisable).length &gt; 0;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         hasExtensionsToRemove 
         <a class="anchor" href="#-hasExtensionsToRemove" id="-hasExtensionsToRemove"><span class="icon-link"></span></a>
     </h4>
@@ -1362,6 +1559,36 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function hasExtensionsToUpdate() {
         return Object.keys(_idsToUpdate).length &gt; 0;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isMarkedForDisabling 
+        <a class="anchor" href="#-isMarkedForDisabling" id="-isMarkedForDisabling"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns true if an extension is mark for disabling.</p>
+</div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension to check.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if it's been mark for disabling, false otherwise.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isMarkedForDisabling(id) {
+        return !!(_idsToDisable[id]);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1451,6 +1678,43 @@ the repository. Does not guarantee that the extension exists at that URL.</p>
         if (extension.installInfo &amp;&amp; extension.installInfo.metadata &amp;&amp; extension.installInfo.metadata.theme) {
             ThemeManager.loadPackage(extension.installInfo);
         }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        markForDisabling 
+        <a class="anchor" href="#-markForDisabling" id="-markForDisabling"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Marks an extension for disabling later, or unmarks an extension previously marked.</p>
+</div>
+    
+<dl>
+    <dt>
+        id
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The id of the extension</dd>
+    <dt>
+        mark
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Whether to mark or unmark the extension.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function markForDisabling(id, mark) {
+        if (mark) {
+            _idsToDisable[id] = true;
+        } else {
+            delete _idsToDisable[id];
+        }
+        exports.trigger(&quot;statusChange&quot;, id);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1645,7 +1909,7 @@ downloaded package file.</p>
             entry.installInfo.updateAvailable   = true;
             &#x2F;&#x2F; Calculate updateCompatible to check if there&#39;s an update for current version of Brackets
             var lastCompatibleVersionInfo = _.findLast(entry.registryInfo.versions, function (versionInfo) {
-                return semver.satisfies(brackets.metadata.apiVersion, versionInfo.brackets);
+                return !versionInfo.brackets || semver.satisfies(brackets.metadata.apiVersion, versionInfo.brackets);
             });
             if (lastCompatibleVersionInfo &amp;&amp; lastCompatibleVersionInfo.version &amp;&amp; semver.lt(currentVersion, lastCompatibleVersionInfo.version)) {
                 entry.installInfo.updateCompatible        = true;
@@ -1656,6 +1920,28 @@ downloaded package file.</p>
         }
 
         exports.trigger(&quot;registryUpdate&quot;, id);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        unmarkAllForDisabling 
+        <a class="anchor" href="#-unmarkAllForDisabling" id="-unmarkAllForDisabling"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Unmarks all the extensions that have been marked for disabling.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function unmarkAllForDisabling() {
+        _idsToDisable = {};
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

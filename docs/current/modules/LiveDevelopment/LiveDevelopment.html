@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -630,6 +640,28 @@ The status codes are:</p>
     
 </span>
     <h4>
+        _regServers 
+        <a class="anchor" href="#-_regServers" id="-_regServers"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _regServers = [];
+
+    function _isPromisePending(promise) {
+        return promise &amp;&amp; promise.state() === &quot;pending&quot;;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _relatedDocuments 
         <a class="anchor" href="#-_relatedDocuments" id="-_relatedDocuments"><span class="icon-link"></span></a>
     </h4>
@@ -665,11 +697,7 @@ The status codes are:</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _server;
-
-    function _isPromisePending(promise) {
-        return promise &amp;&amp; promise.state() === &quot;pending&quot;;
-    }</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _server;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -1630,6 +1658,22 @@ _adds extension, url and root to the document</p>
         }
         
         return deferred.promise();
+    }
+
+    function getCurrentProjectServerConfig() {
+        return {
+            baseUrl: ProjectManager.getBaseUrl(),
+            pathResolver: ProjectManager.makeProjectRelativeIfPossible,
+            root: ProjectManager.getProjectRoot().fullPath
+        };
+    }
+    
+    function _createUserServer() {
+        return new UserServer(getCurrentProjectServerConfig());
+    }
+    
+    function _createFileServer() {
+        return new FileServer(getCurrentProjectServerConfig());
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1656,22 +1700,6 @@ _adds extension, url and root to the document</p>
             &#x2F;&#x2F; Set status to out of sync if dirty. Otherwise, set it to active status.
             _setStatus(_docIsOutOfSync(doc) ? STATUS_OUT_OF_SYNC : STATUS_ACTIVE);
         }
-    }
-
-    function getCurrentProjectServerConfig() {
-        return {
-            baseUrl: ProjectManager.getBaseUrl(),
-            pathResolver: ProjectManager.makeProjectRelativeIfPossible,
-            root: ProjectManager.getProjectRoot().fullPath
-        };
-    }
-    
-    function _createUserServer() {
-        return new UserServer(getCurrentProjectServerConfig());
-    }
-    
-    function _createFileServer() {
-        return new FileServer(getCurrentProjectServerConfig());
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -2043,6 +2071,11 @@ the status accordingly.</p>
             var closeDeferred = (brackets.platform === &quot;mac&quot;) ? NativeApp.closeLiveBrowser() : $.Deferred().resolve();
             closeDeferred.done(function () {
                 _setStatus(STATUS_INACTIVE, reason || &quot;explicit_close&quot;);
+                &#x2F;&#x2F; clean-up registered servers
+                _regServers.forEach(function (server) {
+                    LiveDevServerManager.removeServer(server);
+                });
+                _regServers = [];
                 _closeDeferred.resolve();
             }).fail(function (err) {
                 if (err) {
@@ -2235,10 +2268,6 @@ the status accordingly.</p>
             .on(&quot;dirtyFlagChange&quot;, _onDirtyFlagChange);
         ProjectManager
             .on(&quot;beforeProjectClose beforeAppClose&quot;, close);
-        
-        &#x2F;&#x2F; Register user defined server provider
-        LiveDevServerManager.registerServer({ create: _createUserServer }, 99);
-        LiveDevServerManager.registerServer({ create: _createFileServer }, 0);
 
         &#x2F;&#x2F; Initialize exports.status
         _setStatus(STATUS_INACTIVE);
@@ -2458,6 +2487,10 @@ file you edit is probably related to the live preview.</p>
                 });
             }
         }
+        
+        &#x2F;&#x2F; Register user defined server provider and keep handlers for further clean-up
+        _regServers.push(LiveDevServerManager.registerServer({ create: _createUserServer }, 99));
+        _regServers.push(LiveDevServerManager.registerServer({ create: _createFileServer }, 0));
         
         &#x2F;&#x2F; TODO: need to run _onFileChanged() after load if doc != currentDocument here? Maybe not, since activeEditorChange
         &#x2F;&#x2F; doesn&#39;t trigger it, while inline editors can still cause edits in doc other than currentDoc...

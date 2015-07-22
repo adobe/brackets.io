@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -727,6 +737,42 @@ Takes precedence over _collapsed.</p>
     Public API
 </span>
     <h4>
+        getProviderIDsForLanguage 
+        <a class="anchor" href="#-getProviderIDsForLanguage" id="-getProviderIDsForLanguage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns an array of the IDs of providers registered for a specific language</p>
+</div>
+    
+<dl>
+    <dt>
+        languageId
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
+</dt>
+    <dd>Names of registered providers.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getProviderIDsForLanguage(languageId) {
+        if (!_providers[languageId]) {
+            return [];
+        }
+        return _providers[languageId].map(function (provider) {
+            return provider.name;
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         getProvidersForPath 
         <a class="anchor" href="#-getProvidersForPath" id="-getProvidersForPath"><span class="icon-link"></span></a>
     </h4>
@@ -816,18 +862,33 @@ Decision is made depending on the file extension.</p>
     CommandManager.register(Strings.CMD_GOTO_FIRST_PROBLEM,     Commands.NAVIGATE_GOTO_FIRST_PROBLEM,   handleGotoFirstProblem);
     
     &#x2F;&#x2F; Register preferences
-    prefs.definePreference(PREF_ENABLED, &quot;boolean&quot;, brackets.config[&quot;linting.enabled_by_default&quot;])
+    prefs.definePreference(PREF_ENABLED, &quot;boolean&quot;, brackets.config[&quot;linting.enabled_by_default&quot;], {
+        description: Strings.DESCRIPTION_LINTING_ENABLED
+    })
         .on(&quot;change&quot;, function (e, data) {
             toggleEnabled(prefs.get(PREF_ENABLED), true);
         });
     
-    prefs.definePreference(PREF_COLLAPSED, &quot;boolean&quot;, false)
+    prefs.definePreference(PREF_COLLAPSED, &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_LINTING_COLLAPSED
+    })
         .on(&quot;change&quot;, function (e, data) {
             toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
         });
     
-    prefs.definePreference(PREF_ASYNC_TIMEOUT, &quot;number&quot;, 10000);
-        
+    prefs.definePreference(PREF_ASYNC_TIMEOUT, &quot;number&quot;, 10000, {
+        description: Strings.DESCRIPTION_ASYNC_TIMEOUT
+    });
+
+    prefs.definePreference(PREF_PREFER_PROVIDERS, &quot;array&quot;, [], {
+        description: Strings.DESCRIPTION_LINTING_PREFER,
+        valueType: &quot;string&quot;
+    });
+
+    prefs.definePreference(PREF_PREFERRED_ONLY, &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_USE_PREFERED_ONLY
+    });
+
     &#x2F;&#x2F; Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         &#x2F;&#x2F; Create bottom panel to list error details
@@ -895,12 +956,13 @@ Decision is made depending on the file extension.</p>
     exports._PREF_PREFERRED_ONLY    = PREF_PREFERRED_ONLY;
 
     &#x2F;&#x2F; Public API
-    exports.register            = register;
-    exports.Type                = Type;
-    exports.toggleEnabled       = toggleEnabled;
-    exports.inspectFile         = inspectFile;
-    exports.requestRun          = run;
-    exports.getProvidersForPath = getProvidersForPath;
+    exports.register                    = register;
+    exports.Type                        = Type;
+    exports.toggleEnabled               = toggleEnabled;
+    exports.inspectFile                 = inspectFile;
+    exports.requestRun                  = run;
+    exports.getProvidersForPath         = getProvidersForPath;
+    exports.getProviderIDsForLanguage   = getProviderIDsForLanguage;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

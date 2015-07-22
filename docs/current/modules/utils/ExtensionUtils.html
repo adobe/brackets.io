@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -463,6 +473,7 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
     </ul>
@@ -727,12 +738,16 @@ so that&#39;s why we need a different check here</p>
     Public API
 </span>
     <h4>
-        loadPackageJson 
-        <a class="anchor" href="#-loadPackageJson" id="-loadPackageJson"><span class="icon-link"></span></a>
+        loadMetadata 
+        <a class="anchor" href="#-loadMetadata" id="-loadMetadata"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Loads the package.json file in the given extension folder.</p>
+    <div class="description"><p>Loads the package.json file in the given extension folder as well as any additional
+metadata.</p>
+<p>If there&#39;s a .disabled file in the extension directory, then the content of package.json
+will be augmented with disabled property set to true. It will override whatever value of
+disabled might be set.</p>
 </div>
     
 <dl>
@@ -744,24 +759,44 @@ so that&#39;s why we need a different check here</p>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span>
 </dt>
-    <dd>A promise object that is resolved with the parsed contents of the package.json file, or rejected if there is no package.json or the contents are not valid JSON.</dd>
+    <dd>A promise object that is resolved with the parsed contents of the package.json file, or rejected if there is no package.json with the boolean indicating whether .disabled file exists.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function loadPackageJson(folder) {
-        var file = FileSystem.getFileForPath(folder + &quot;&#x2F;package.json&quot;),
-            result = new $.Deferred();
-        FileUtils.readAsText(file)
-            .done(function (text) {
+<pre class="code language-javascript"><code class="language-javascript">    function loadMetadata(folder) {
+        var packageJSONFile = FileSystem.getFileForPath(folder + &quot;&#x2F;package.json&quot;),
+            disabledFile = FileSystem.getFileForPath(folder + &quot;&#x2F;.disabled&quot;),
+            result = new $.Deferred(),
+            jsonPromise = new $.Deferred(),
+            disabledPromise = new $.Deferred(),
+            json,
+            disabled;
+        FileUtils.readAsText(packageJSONFile)
+            .then(function (text) {
                 try {
-                    var json = JSON.parse(text);
-                    result.resolve(json);
+                    json = JSON.parse(text);
+                    jsonPromise.resolve();
                 } catch (e) {
-                    result.reject();
+                    jsonPromise.reject();
                 }
             })
-            .fail(function () {
-                result.reject();
+            .fail(jsonPromise.reject);
+        disabledFile.exists(function (err, exists) {
+            if (err) {
+                disabled = false;
+            } else {
+                disabled = exists;
+            }
+            disabledPromise.resolve();
+        });
+        Async.waitForAll([jsonPromise, disabledPromise])
+            .always(function () {
+                if (!json) {
+                    result.reject(disabled);
+                } else {
+                    json.disabled = disabled;
+                    result.resolve(json);
+                }
             });
         return result.promise();
     }
@@ -773,7 +808,7 @@ so that&#39;s why we need a different check here</p>
     exports.getModuleUrl          = getModuleUrl;
     exports.loadFile              = loadFile;
     exports.loadStyleSheet        = loadStyleSheet;
-    exports.loadPackageJson       = loadPackageJson;
+    exports.loadMetadata          = loadMetadata;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

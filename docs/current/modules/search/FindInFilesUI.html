@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -589,38 +599,31 @@
         if (_findBar) {
             _findBar.close();
         }
-    }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-    &#x2F;&#x2F; Initialize items dependent on HTML DOM
-    AppInit.htmlReady(function () {
-        var model = FindInFiles.searchModel;
-        _resultsView = new SearchResultsView(model, &quot;find-in-files-results&quot;, &quot;find-in-files.results&quot;);
-        _resultsView
-            .on(&quot;replaceAll&quot;, function () {
-                _finishReplaceAll(model);
-            })
-            .on(&quot;close&quot;, function () {
-                FindInFiles.clearSearch();
-            });
-    });
+</span>
+    <h4>
+        _defferedSearch 
+        <a class="anchor" href="#-_defferedSearch" id="-_defferedSearch"><span class="icon-link"></span></a>
+    </h4>
+
     
-    &#x2F;&#x2F; Initialize: register listeners
-    ProjectManager.on(&quot;beforeProjectClose&quot;, function () { _resultsView.close(); });
+    <div class="description"><p>Issues a search if find bar is visible and is multi file search and not instant search</p>
+</div>
     
-    &#x2F;&#x2F; Initialize: command handlers
-    CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
-    CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree);
-    
-    CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar);
-    CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
-    
-    &#x2F;&#x2F; Public exports
-    exports.searchAndShowResults = searchAndShowResults;
-    
-    &#x2F;&#x2F; For unit testing
-    exports._showFindBar  = _showFindBar;
-    exports._closeFindBar = _closeFindBar;
-});</code></pre></div><div class="member private">
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _defferedSearch() {
+        if (_findBar &amp;&amp; _findBar._options.multifile &amp;&amp; !_findBar._options.replace) {
+            _findBar.redoInstantSearch();
+        }
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -716,7 +719,130 @@
         }
     }
 
-    &#x2F;&#x2F; Command handlers</code></pre></div><div class="member private public">
+    &#x2F;&#x2F; Command handlers</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _searchIfRequired 
+        <a class="anchor" href="#-_searchIfRequired" id="-_searchIfRequired"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Schedules a search on search scope/filter changes. Have to schedule as when we listen to this event, the file filters
+might not have been updated yet.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _searchIfRequired() {
+        if (!FindUtils.isInstantSearchDisabled() &amp;&amp; _findBar &amp;&amp; _findBar._options.multifile &amp;&amp; !_findBar._options.replace) {
+            setTimeout(_defferedSearch, 100);
+        }
+    }
+
+    &#x2F;&#x2F; Initialize items dependent on HTML DOM
+    AppInit.htmlReady(function () {
+        var model = FindInFiles.searchModel;
+        _resultsView = new SearchResultsView(model, &quot;find-in-files-results&quot;, &quot;find-in-files.results&quot;);
+        _resultsView
+            .on(&quot;replaceAll&quot;, function () {
+                _finishReplaceAll(model);
+            })
+            .on(&quot;close&quot;, function () {
+                FindInFiles.clearSearch();
+            })
+            .on(&quot;getNextPage&quot;, function () {
+                FindInFiles.getNextPageofSearchResults().done(function () {
+                    if (FindInFiles.searchModel.hasResults()) {
+                        _resultsView.showNextPage();
+                    }
+                });
+            })
+            .on(&quot;getLastPage&quot;, function () {
+                FindInFiles.getAllSearchResults().done(function () {
+                    if (FindInFiles.searchModel.hasResults()) {
+                        _resultsView.showLastPage();
+                    }
+                });
+            });
+    });
+    
+    &#x2F;&#x2F; Initialize: register listeners
+    ProjectManager.on(&quot;beforeProjectClose&quot;, function () { _resultsView.close(); });
+    
+    &#x2F;&#x2F; Initialize: command handlers
+    CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
+    CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree);
+    
+    CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar);
+    CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
+    
+    FindUtils.on(FindUtils.SEARCH_INDEXING_STARTED, _searchIndexingStarted);
+    FindUtils.on(FindUtils.SEARCH_INDEXING_FINISHED, _searchIndexingFinished);
+    FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchIfRequired);
+    FindUtils.on(FindUtils.SEARCH_SCOPE_CHANGED, _searchIfRequired);
+
+    &#x2F;&#x2F; Public exports
+    exports.searchAndShowResults = searchAndShowResults;
+    
+    &#x2F;&#x2F; For unit testing
+    exports._showFindBar  = _showFindBar;
+    exports._closeFindBar = _closeFindBar;
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _searchIndexingFinished 
+        <a class="anchor" href="#-_searchIndexingFinished" id="-_searchIndexingFinished"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Once the indexing has finished, clear the indexing spinner</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _searchIndexingFinished() {
+        if (_findBar) {
+            _findBar.hideIndexingSpinner();
+        }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _searchIndexingStarted 
+        <a class="anchor" href="#-_searchIndexingStarted" id="-_searchIndexingStarted"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>When the search indexing is started, we need to show the indexing status on the find bar if present.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _searchIndexingStarted() {
+        if (_findBar &amp;&amp; _findBar._options.multifile &amp;&amp; FindUtils.isIndexingInProgress()) {
+            _findBar.showIndexingSpinner();
+        }
+    }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
@@ -748,6 +874,7 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _showFindBar(scope, showReplace) {
+        FindUtils.notifySearchScopeChanged();
         &#x2F;&#x2F; If the scope is a file with a custom viewer, then we
         &#x2F;&#x2F; don&#39;t show find in files dialog.
         if (scope &amp;&amp; !EditorManager.canOpenPath(scope.fullPath)) {
@@ -812,10 +939,11 @@
         }
         
         function startSearch(replaceText) {
-            var queryInfo = _findBar.getQueryInfo();
+            var queryInfo = _findBar.getQueryInfo(),
+                disableFindBar = FindUtils.isNodeSearchDisabled() || (replaceText ? true : false);
             if (queryInfo &amp;&amp; queryInfo.query) {
-                _findBar.enable(false);
-                StatusBar.showBusyIndicator(true);
+                _findBar.enable(!disableFindBar);
+                StatusBar.showBusyIndicator(disableFindBar);
 
                 var filter;
                 if (filterPicker) {
@@ -900,6 +1028,7 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _showFindBarForSubtree() {
+        FindUtils.notifySearchScopeChanged();
         var selectedEntry = ProjectManager.getSelectedItem();
         _showFindBar(selectedEntry);
     }</code></pre></div><div class="member private">
@@ -922,6 +1051,7 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _showReplaceBar() {
+        FindUtils.notifySearchScopeChanged();
         _showFindBar(null, true);
     }</code></pre></div><div class="member private">
 
@@ -943,6 +1073,7 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _showReplaceBarForSubtree() {
+        FindUtils.notifySearchScopeChanged();
         var selectedEntry = ProjectManager.getSelectedItem();
         _showFindBar(selectedEntry, true);
     }</code></pre></div><div class="member public">
@@ -1005,7 +1136,8 @@
                     _resultsView.open();
 
                     if (_findBar) {
-                        _findBar.close();
+                        _findBar.enable(true);
+                        _findBar.focus();
                     }
 
                 } else {
@@ -1014,7 +1146,6 @@
                     if (_findBar) {
                         var showMessage = false;
                         _findBar.enable(true);
-                        _findBar.focusQuery();
                         if (zeroFilesToken === FindInFiles.ZERO_FILES_TO_SEARCH) {
                             _findBar.showError(StringUtils.format(Strings.FIND_IN_FILES_ZERO_FILES, FindUtils.labelForScope(FindInFiles.searchModel.scope)), true);
                         } else {

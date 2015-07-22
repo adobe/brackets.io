@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -653,6 +663,63 @@
     Public API
 </span>
     <h4>
+        hashCode 
+        <a class="anchor" href="#-hashCode" id="-hashCode"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Computes a 32bit hash from the given string
+Taken from <a href="http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery">http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery</a></p>
+</div>
+    
+<dl>
+    <dt>
+        str
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The string for which hash is to be computed</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd>The 32-bit hash</dd>
+</dl>
+<dl>
+        <dt>CC</dt>
+        <dd>wiki attribution: esmiralha</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function hashCode(str) {
+        var hash = 0, i, chr, len;
+        if (str.length === 0) {
+            return hash;
+        }
+        for (i = 0, len = str.length; i &lt; len; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash &lt;&lt; 5) - hash) + chr;
+            hash |= 0; &#x2F;&#x2F; Convert to 32bit integer
+        }
+        return hash;
+    }
+
+    &#x2F;&#x2F; Define public API
+    exports.format              = format;
+    exports.regexEscape         = regexEscape;
+    exports.jQueryIdEscape      = jQueryIdEscape;
+    exports.getLines            = getLines;
+    exports.offsetToLineNum     = offsetToLineNum;
+    exports.urlSort             = urlSort;
+    exports.breakableUrl        = breakableUrl;
+    exports.startsWith          = startsWith;
+    exports.endsWith            = endsWith;
+    exports.prettyPrintBytes    = prettyPrintBytes;
+    exports.truncate            = truncate;
+    exports.hashCode            = hashCode;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         offsetToLineNum 
         <a class="anchor" href="#-offsetToLineNum" id="-offsetToLineNum"><span class="icon-link"></span></a>
     </h4>
@@ -771,6 +838,41 @@ If param bytes is negative it returns the number without any changes.</p>
     Public API
 </span>
     <h4>
+        startsWith 
+        <a class="anchor" href="#-startsWith" id="-startsWith"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns true if the given string starts with the given prefix.</p>
+</div>
+    
+<dl>
+    <dt>
+        str
+        <span class="label label-info">String</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        prefix
+        <span class="label label-info">String</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function startsWith(str, prefix) {
+        return str.slice(0, prefix.length) === prefix;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         truncate 
         <a class="anchor" href="#-truncate" id="-truncate"><span class="icon-link"></span></a>
     </h4>
@@ -810,20 +912,7 @@ If param bytes is negative it returns the number without any changes.</p>
             }
             return str;
         }
-    }
-
-    &#x2F;&#x2F; Define public API
-    exports.format              = format;
-    exports.regexEscape         = regexEscape;
-    exports.jQueryIdEscape      = jQueryIdEscape;
-    exports.getLines            = getLines;
-    exports.offsetToLineNum     = offsetToLineNum;
-    exports.urlSort             = urlSort;
-    exports.breakableUrl        = breakableUrl;
-    exports.endsWith            = endsWith;
-    exports.prettyPrintBytes    = prettyPrintBytes;
-    exports.truncate            = truncate;
-});</code></pre></div>
+    }</code></pre></div>
 </section>
 
         </div>
