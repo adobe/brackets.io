@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -468,11 +478,15 @@
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/search/FileFilters.html">FileFilters</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/NodeDomain.html">NodeDomain</a></li>
         <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/search/SearchModel.html">SearchModel</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -545,7 +559,7 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _documentChangeHandler, _fileSystemChangeHandler, _fileNameChangeHandler;</code></pre></div><div class="member public">
+<pre class="code language-javascript"><code class="language-javascript">    var _documentChangeHandler, _fileSystemChangeHandler, _fileNameChangeHandler, clearSearch;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -596,14 +610,23 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addListeners() {
-        if (searchModel.hasResults()) {
-            &#x2F;&#x2F; Avoid adding duplicate listeners - e.g. if a 2nd search is run without closing the old results panel first
-            _removeListeners();
-        
-            DocumentModule.on(&quot;documentChange&quot;, _documentChangeHandler);
-            FileSystem.on(&quot;change&quot;, _fileSystemChangeHandler);
-            DocumentManager.on(&quot;fileNameChange&quot;,  _fileNameChangeHandler);
-        }
+        &#x2F;&#x2F; Avoid adding duplicate listeners - e.g. if a 2nd search is run without closing the old results panel first
+        _removeListeners();
+
+        DocumentModule.on(&quot;documentChange&quot;, _documentChangeHandler);
+        FileSystem.on(&quot;change&quot;, _fileSystemChangeHandler);
+        DocumentManager.on(&quot;fileNameChange&quot;,  _fileNameChangeHandler);
+    }
+    
+    function nodeFileCacheComplete(event, numFiles, cacheSize) {
+        var projectName = ProjectManager.getProjectRoot().name || &quot;noName00&quot;;
+        FindUtils.setInstantSearchDisabled(false);
+        &#x2F;&#x2F; Node search could be disabled if some error has happened in node. But upon
+        &#x2F;&#x2F; project change, if we get this message, then it means that node search is working,
+        &#x2F;&#x2F; we re-enable node search. If a search fails, node search will be switched off eventually.
+        FindUtils.setNodeSearchDisabled(false);
+        FindUtils.notifyIndexingFinished();
+        HealthLogger.setProjectDetail(projectName, numFiles, cacheSize);
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -634,6 +657,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function _addSearchResultsForEntry(entry) {
             var addedFiles = [],
+                addedFilePaths = [],
                 deferred = new $.Deferred();
             
             &#x2F;&#x2F; gather up added files
@@ -644,6 +668,7 @@
                         &#x2F;&#x2F; Re-check the filtering that the initial search applied
                         if (_inSearchScope(child)) {
                             addedFiles.push(child);
+                            addedFilePaths.push(child.fullPath);
                         }
                     }
                     return true;
@@ -657,13 +682,18 @@
                     return;
                 }
                 
-                &#x2F;&#x2F; find additional matches in all added files
-                Async.doInParallel(addedFiles, function (file) {
-                    return _doSearchInOneFile(file)
-                        .done(function (foundMatches) {
-                            resultsChanged = resultsChanged || foundMatches;
-                        });
-                }).always(deferred.resolve);
+                &#x2F;&#x2F;node Search : inform node about the file changes
+                filesChanged(addedFilePaths);
+
+                if (findOrReplaceInProgress) {
+                    &#x2F;&#x2F; find additional matches in all added files
+                    Async.doInParallel(addedFiles, function (file) {
+                        return _doSearchInOneFile(file)
+                            .done(function (foundMatches) {
+                                resultsChanged = resultsChanged || foundMatches;
+                            });
+                    }).always(deferred.resolve);
+                }
             });
     
             return deferred.promise();
@@ -701,21 +731,7 @@
                 searchModel.fireChanged();
             }
         });
-    };
-    
-    &#x2F;&#x2F; Public exports
-    exports.searchModel          = searchModel;
-    exports.doSearchInScope      = doSearchInScope;
-    exports.doReplace            = doReplace;
-    exports.getCandidateFiles    = getCandidateFiles;
-    exports.clearSearch          = clearSearch;
-    exports.ZERO_FILES_TO_SEARCH = ZERO_FILES_TO_SEARCH;
-    
-    &#x2F;&#x2F; For unit tests only
-    exports._documentChangeHandler = _documentChangeHandler;
-    exports._fileNameChangeHandler = _fileNameChangeHandler;
-    exports._fileSystemChangeHandler = _fileSystemChangeHandler;
-});</code></pre></div><div class="member private">
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -765,38 +781,34 @@
         var scopeName = searchModel.scope ? searchModel.scope.fullPath : ProjectManager.getProjectRoot().fullPath,
             perfTimer = PerfUtils.markStart(&quot;FindIn: &quot; + scopeName + &quot; - &quot; + queryInfo.query);
         
+        findOrReplaceInProgress = true;
+
         return candidateFilesPromise
             .then(function (fileListResult) {
                 &#x2F;&#x2F; Filter out files&#x2F;folders that match user&#39;s current exclusion filter
                 fileListResult = FileFilters.filterFileList(filter, fileListResult);
+
+                if (searchModel.isReplace || FindUtils.isNodeSearchDisabled()) {
+                    if (fileListResult.length) {
+                        searchModel.allResultsAvailable = true;
+                        return Async.doInParallel(fileListResult, _doSearchInOneFile);
+                    } else {
+                        return ZERO_FILES_TO_SEARCH;
+                    }
+                }
+            
+                var searchDeferred = new $.Deferred();
                 
                 if (fileListResult.length) {
-                    return Async.doInParallel(fileListResult, _doSearchInOneFile);
-                } else {
-                    return ZERO_FILES_TO_SEARCH;
-                }
-            })
-            .then(function (zeroFilesToken) {
-                exports._searchDone = true; &#x2F;&#x2F; for unit tests
-                PerfUtils.addMeasurement(perfTimer);
-                
-                &#x2F;&#x2F; Listen for FS &amp; Document changes to keep results up to date
-                _addListeners();
-                
-                if (zeroFilesToken === ZERO_FILES_TO_SEARCH) {
-                    return zeroFilesToken;
-                } else {
-                    return searchModel.results;
-                }
-            }, function (err) {
-                console.log(&quot;find in files failed: &quot;, err);
-                PerfUtils.finalizeMeasurement(perfTimer);
-                
-                &#x2F;&#x2F; In jQuery promises, returning the error here propagates the rejection,
-                &#x2F;&#x2F; unlike in Promises&#x2F;A, where we would need to re-throw it to do so.
-                return err;
-            });
-    }</code></pre></div><div class="member private">
+                    var searchObject;
+                    if (searchScopeChanged) {
+                        var files = fileListResult
+                            .filter(function (entry) {
+                                return entry.isFile &amp;&amp; _isReadableText(entry.fullPath);
+                            })
+                            .map(function (entry) {
+                                return entry.fullPath;
+                            });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1010,6 +1022,52 @@ after it.</p>
     
 </span>
     <h4>
+        _initCache 
+        <a class="anchor" href="#-_initCache" id="-_initCache"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>On project change, inform node about the new list of files that needs to be crawled.
+Instant search is also disabled for the time being till the crawl is complete in node.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _initCache = function () {
+        function filter(file) {
+            return _subtreeFilter(file, null) &amp;&amp; _isReadableText(file.fullPath);
+        }
+        FindUtils.setInstantSearchDisabled(true);
+
+        &#x2F;&#x2F;we always listen for filesytem changes.
+        _addListeners();
+
+        if (!PreferencesManager.get(&quot;findInFiles.nodeSearch&quot;)) {
+            return;
+        }
+        ProjectManager.getAllFiles(filter, true, true)
+            .done(function (fileListResult) {
+                var files = fileListResult
+                    .filter(function (entry) {
+                        return entry.isFile &amp;&amp; _isReadableText(entry.fullPath);
+                    })
+                    .map(function (entry) {
+                        return entry.fullPath;
+                    });
+                FindUtils.notifyIndexingStarted();
+                searchDomain.exec(&quot;initCache&quot;, files);
+            });
+        _searchScopeChanged();
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _isReadableText 
         <a class="anchor" href="#-_isReadableText" id="-_isReadableText"><span class="icon-link"></span></a>
     </h4>
@@ -1086,11 +1144,61 @@ after it.</p>
             Object.keys(searchModel.results).forEach(function (fullPath) {
                 if (fullPath === entry.fullPath ||
                         (entry.isDirectory &amp;&amp; fullPath.indexOf(entry.fullPath) === 0)) {
-                    searchModel.removeResults(fullPath);
-                    resultsChanged = true;
+                    &#x2F;&#x2F; node search : inform node that the file is removed
+                    filesRemoved([fullPath]);
+                    if (findOrReplaceInProgress) {
+                        searchModel.removeResults(fullPath);
+                        resultsChanged = true;
+                    }
                 }
             });
         }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _searchScopeChanged 
+        <a class="anchor" href="#-_searchScopeChanged" id="-_searchScopeChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _searchScopeChanged = function () {
+        searchScopeChanged = true;
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _searchcollapseResults 
+        <a class="anchor" href="#-_searchcollapseResults" id="-_searchcollapseResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notify node that the results should be collapsed</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _searchcollapseResults() {
+        if (FindUtils.isNodeSearchDisabled()) {
+            return;
+        }
+        searchDomain.exec(&quot;collapseResults&quot;, FindUtils.isCollapsedResults());
+    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1137,6 +1245,64 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
             }
         }
         return true;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateChangedDocs 
+        <a class="anchor" href="#-_updateChangedDocs" id="-_updateChangedDocs"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateChangedDocs() {
+        var key = null;
+        for (key in changedFileList) {
+            if (changedFileList.hasOwnProperty(key)) {
+                _updateDocumentInNode(key);
+            }
+        }
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _updateDocumentInNode 
+        <a class="anchor" href="#-_updateDocumentInNode" id="-_updateDocumentInNode"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        docPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the path of the changed document</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateDocumentInNode(docPath) {
+        DocumentManager.getDocumentForPath(docPath).done(function (doc) {
+            var updateObject = {
+                    &quot;filePath&quot;: docPath,
+                    &quot;docContents&quot;: doc.getText()
+                };
+            searchDomain.exec(&quot;documentChanged&quot;, updateObject);
+        });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1257,34 +1423,6 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
             &#x2F;&#x2F; avoiding lots of updates if the user types quickly.
             searchModel.fireChanged(true);
         }
-    }</code></pre></div><div class="member private public">
-
-<span class="pull-right scope">
-    Private
-    Public API
-</span>
-    <h4>
-        clearSearch 
-        <a class="anchor" href="#-clearSearch" id="-clearSearch"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        scope
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Entry</span>
-    </dt>
-    <dd>Project file/subfolder to search within; else searches whole project.</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function clearSearch() {
-        _removeListeners();
-        searchModel.clear();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1391,6 +1529,80 @@ programmatically.</p>
         }
         candidateFilesPromise = candidateFilesPromise || getCandidateFiles(scope);
         return _doSearch(queryInfo, candidateFilesPromise, filter);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        filesChanged 
+        <a class="anchor" href="#-filesChanged" id="-filesChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Inform node that the list of files has changed.</p>
+</div>
+    
+<dl>
+    <dt>
+        fileList
+        <span class="label label-info">array</span>
+    </dt>
+    <dd>The list of files that changed.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function filesChanged(fileList) {
+        if (FindUtils.isNodeSearchDisabled()) {
+            return;
+        }
+        var updateObject = {
+            &quot;fileList&quot;: fileList
+        };
+        if (searchModel.filter) {
+            updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
+            _searchScopeChanged();
+        }
+        searchDomain.exec(&quot;filesChanged&quot;, updateObject);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        filesRemoved 
+        <a class="anchor" href="#-filesRemoved" id="-filesRemoved"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Inform node that the list of files have been removed.</p>
+</div>
+    
+<dl>
+    <dt>
+        fileList
+        <span class="label label-info">array</span>
+    </dt>
+    <dd>The list of files that was removed.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function filesRemoved(fileList) {
+        if (FindUtils.isNodeSearchDisabled()) {
+            return;
+        }
+        var updateObject = {
+            &quot;fileList&quot;: fileList
+        };
+        if (searchModel.filter) {
+            updateObject.filesInSearchScope = FileFilters.getPathsMatchingFilter(searchModel.filter, fileList);
+            _searchScopeChanged();
+        }
+        searchDomain.exec(&quot;filesRemoved&quot;, updateObject);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1432,9 +1644,110 @@ the current filter yet.</p>
         if (scope &amp;&amp; scope.isFile) {
             return new $.Deferred().resolve(filter(scope) ? [scope] : []).promise();
         } else {
-            return ProjectManager.getAllFiles(filter, true);
+            return ProjectManager.getAllFiles(filter, true, true);
         }
-    }</code></pre></div>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getNextPageofSearchResults 
+        <a class="anchor" href="#-getNextPageofSearchResults" id="-getNextPageofSearchResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets the next page of search recults to append to the result set.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">object</span>
+</dt>
+    <dd>A promise that's resolved with the search results or rejected when the find competes.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getNextPageofSearchResults() {
+        var searchDeferred = $.Deferred();
+        if (searchModel.allResultsAvailable) {
+            return searchDeferred.resolve().promise();
+        }
+        _updateChangedDocs();
+        FindUtils.notifyNodeSearchStarted();
+        searchDomain.exec(&quot;nextPage&quot;)
+            .done(function (rcvd_object) {
+                FindUtils.notifyNodeSearchFinished();
+                if (searchModel.results) {
+                    var resultEntry;
+                    for (resultEntry in rcvd_object.results ) {
+                        if (rcvd_object.results.hasOwnProperty(resultEntry)) {
+                            searchModel.results[resultEntry.toString()] = rcvd_object.results[resultEntry];
+                        }
+                    }
+                } else {
+                    searchModel.results = rcvd_object.results;
+                }
+                searchModel.fireChanged();
+                searchDeferred.resolve();
+            })
+            .fail(function () {
+                FindUtils.notifyNodeSearchFinished();
+                console.log(&#39;node fails&#39;);
+                FindUtils.setNodeSearchDisabled(true);
+                searchDeferred.reject();
+            });
+        return searchDeferred.promise();
+    }
+
+    function getAllSearchResults() {
+        var searchDeferred = $.Deferred();
+        if (searchModel.allResultsAvailable) {
+            return searchDeferred.resolve().promise();
+        }
+        _updateChangedDocs();
+        FindUtils.notifyNodeSearchStarted();
+        searchDomain.exec(&quot;getAllResults&quot;)
+            .done(function (rcvd_object) {
+                FindUtils.notifyNodeSearchFinished();
+                searchModel.results = rcvd_object.results;
+                searchModel.numMatches = rcvd_object.numMatches;
+                searchModel.numFiles = rcvd_object.numFiles;
+                searchModel.allResultsAvailable = true;
+                searchModel.fireChanged();
+                searchDeferred.resolve();
+            })
+            .fail(function () {
+                FindUtils.notifyNodeSearchFinished();
+                console.log(&#39;node fails&#39;);
+                FindUtils.setNodeSearchDisabled(true);
+                searchDeferred.reject();
+            });
+        return searchDeferred.promise();
+    }
+
+    ProjectManager.on(&quot;projectOpen&quot;, _initCache);
+    FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchScopeChanged);
+    FindUtils.on(FindUtils.SEARCH_SCOPE_CHANGED, _searchScopeChanged);
+    FindUtils.on(FindUtils.SEARCH_COLLAPSE_RESULTS, _searchcollapseResults);
+    searchDomain.on(&quot;crawlComplete&quot;, nodeFileCacheComplete);
+    
+    &#x2F;&#x2F; Public exports
+    exports.searchModel            = searchModel;
+    exports.doSearchInScope        = doSearchInScope;
+    exports.doReplace              = doReplace;
+    exports.getCandidateFiles      = getCandidateFiles;
+    exports.clearSearch            = clearSearch;
+    exports.ZERO_FILES_TO_SEARCH   = ZERO_FILES_TO_SEARCH;
+    exports.getNextPageofSearchResults          = getNextPageofSearchResults;
+    exports.getAllSearchResults    = getAllSearchResults;
+    
+    &#x2F;&#x2F; For unit tests only
+    exports._documentChangeHandler = _documentChangeHandler;
+    exports._fileNameChangeHandler = _fileNameChangeHandler;
+    exports._fileSystemChangeHandler = _fileSystemChangeHandler;
+});</code></pre></div>
 </section>
 
         </div>

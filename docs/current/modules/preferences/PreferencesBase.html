@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -2572,9 +2582,9 @@ access always occurring with the given prefix.</p>
     <dt>
         options
         <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Object</span>
+        <span class="label label-info">{name: string=, description: string=, validator: function=, excludeFromHints: boolean=, keys: object=, values: array=, valueType: string=}</span>
     </dt>
-    <dd>Additional options for the pref. Can include name and description that will ultimately be used in UI.</dd>
+    <dd>Additional options for the pref. - `options.name` Name of the preference that can be used in the UI. - `options.description` A description of the preference. - `options.validator` A function to validate the value of a preference. - `options.excludeFromHints` True if you want to exclude a preference from code hints. - `options.keys` An object that will hold the child preferences in case the preference type is `object` - `options.values` An array of possible values of a preference. It will show up in code hints. - `options.valueType` In case the preference type is `array`, `valueType` should hold data type of its elements.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">Object</span>
 </dt>
@@ -3344,9 +3354,9 @@ is given. The new Scope is automatically loaded.</p>
     <dt>
         options
         <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Object</span>
+        <span class="label label-info">{name: string=, description: string=, validator: function=, excludeFromHints: boolean=, keys: object=, values: array=, valueType: string=}</span>
     </dt>
-    <dd>Additional options for the pref. Can include name and description that will ultimately be used in UI.</dd>
+    <dd>Additional options for the pref. - `options.name` Name of the preference that can be used in the UI. - `options.description` A description of the preference. - `options.validator` A function to validate the value of a preference. - `options.excludeFromHints` True if you want to exclude a preference from code hints. - `options.keys` An object that will hold the child preferences in case the preference type is `object` - `options.values` An array of possible values of a preference. It will show up in code hints. - `options.valueType` In case the preference type is `array`, `valueType` should hold data type of its elements.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">Object</span>
 </dt>
@@ -3364,7 +3374,11 @@ is given. The new Scope is automatically loaded.</p>
                 initial: initial,
                 name: options.name,
                 description: options.description,
-                validator: options.validator
+                validator: options.validator,
+                excludeFromHints: options.excludeFromHints,
+                keys: options.keys,
+                values: options.values,
+                valueType: options.valueType
             });
             this.set(id, initial, {
                 location: {
@@ -3454,6 +3468,31 @@ change scope ordering or the reference filename for path-based scopes.</p>
                     }
                 }
             }
+        },</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getAllPreferences 
+        <a class="anchor" href="#PreferencesSystem-getAllPreferences" id="PreferencesSystem-getAllPreferences"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns a clone of all preferences defined.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">        getAllPreferences: function () {
+            return _.cloneDeep(this._knownPrefs);
         },</code></pre></div><div class="member">
 
 <span class="pull-right scope">

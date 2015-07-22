@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -475,6 +485,7 @@
         <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
@@ -520,7 +531,9 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var USER_CANCELED = { userCanceled: true };
 
-    PreferencesManager.definePreference(&quot;defaultExtension&quot;, &quot;string&quot;, &quot;&quot;);</code></pre></div><div class="member">
+    PreferencesManager.definePreference(&quot;defaultExtension&quot;, &quot;string&quot;, &quot;&quot;, {
+        excludeFromHints: true
+    });</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -2132,16 +2145,34 @@ never get further down the list.</p>
     </h4>
 
     
-    <div class="description"><p>Navigate to the next/previous (MRU) document. Don&#39;t update MRU order yet</p>
+    <div class="description"><p>Navigate to the next/previous (MRU or list order) document. Don&#39;t update MRU order yet</p>
 </div>
     
 <dl>
+    <dt>
+        inc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Delta indicating in which direction we're going</dd>
+    <dt>
+        listOrder
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>Whether to navigate using MRU or list order. Defaults to MRU order</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function goNextPrevDoc(inc) {
-        var result = MainViewManager.traverseToNextViewByMRU(inc);
+<pre class="code language-javascript"><code class="language-javascript">    function goNextPrevDoc(inc, listOrder) {
+        var result;
+        if (listOrder) {
+            result = MainViewManager.traverseToNextViewInListOrder(inc);
+        } else {
+            result = MainViewManager.traverseToNextViewByMRU(inc);
+        }
+
         if (result) {
             var file = result.file,
                 paneId = result.paneId;
@@ -2389,6 +2420,7 @@ never get further down the list.</p>
         return handleFileOpen(commandData).done(function (file) {
             var paneId = (commandData &amp;&amp; commandData.paneId) || MainViewManager.ACTIVE_PANE;
             MainViewManager.addToWorkingSet(paneId, file, commandData.index, commandData.forceRedraw);
+            HealthLogger.fileOpened(file.fullPath, true);
         });
     }</code></pre></div><div class="member">
 
@@ -2772,6 +2804,7 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         
         _doOpenWithOptionalPath(fileInfo.path, silent, paneId, commandData &amp;&amp; commandData.options)
             .done(function (file) {
+                HealthLogger.fileOpened(fileInfo.path);
                 if (!commandData || !commandData.options || !commandData.options.noPaneActivate) {
                     MainViewManager.setActivePaneId(paneId);
                 }
@@ -2955,7 +2988,7 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
     </h4>
 
     
-    <div class="description"><p>Next Doc command handler *</p>
+    <div class="description"><p>Next Doc command handler (MRU order) *</p>
 </div>
     
 <dl>
@@ -2965,7 +2998,28 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function handleGoNextDoc() {
         goNextPrevDoc(+1);
+    }</code></pre></div><div class="member">
 
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        handleGoNextDocListOrder 
+        <a class="anchor" href="#-handleGoNextDocListOrder" id="-handleGoNextDocListOrder"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Next Doc command handler (list order) *</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoNextDocListOrder() {
+        goNextPrevDoc(+1, true);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2978,7 +3032,7 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
     </h4>
 
     
-    <div class="description"><p>Previous Doc command handler *</p>
+    <div class="description"><p>Previous Doc command handler (MRU order) *</p>
 </div>
     
 <dl>
@@ -2988,6 +3042,28 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function handleGoPrevDoc() {
         goNextPrevDoc(-1);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        handleGoPrevDocListOrder 
+        <a class="anchor" href="#-handleGoPrevDocListOrder" id="-handleGoPrevDocListOrder"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Previous Doc command handler (list order) *</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoPrevDocListOrder() {
+        goNextPrevDoc(-1, true);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">

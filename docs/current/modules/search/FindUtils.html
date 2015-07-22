@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -464,11 +474,13 @@
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -683,7 +695,117 @@ will do the replacement there, otherwise does it directly on disk.</p>
 
             return Async.promisify(file, &quot;write&quot;, newContents);
         });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _prefInstantSearchDisabled 
+        <a class="anchor" href="#-_prefInstantSearchDisabled" id="-_prefInstantSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>returns true if the used instant search in his preferences</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _prefInstantSearchDisabled() {
+        return !PreferencesManager.get(&quot;findInFiles.instantSearch&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _prefNodeSearchDisabled 
+        <a class="anchor" href="#-_prefNodeSearchDisabled" id="-_prefNodeSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>returns true if the used disabled node based search in his preferences</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _prefNodeSearchDisabled() {
+        return !PreferencesManager.get(&quot;findInFiles.nodeSearch&quot;);
     }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getHealthReport 
+        <a class="anchor" href="#-getHealthReport" id="-getHealthReport"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the health data pertaining to Find in files</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getHealthReport() {
+        return {
+            prefNodeSearchDisabled : _prefNodeSearchDisabled(),
+            prefInstantSearchDisabled : _prefInstantSearchDisabled()
+        };
+    }
+
+    exports.parseDollars                    = parseDollars;
+    exports.getInitialQuery                 = getInitialQuery;
+    exports.hasCheckedMatches               = hasCheckedMatches;
+    exports.performReplacements             = performReplacements;
+    exports.labelForScope                   = labelForScope;
+    exports.parseQueryInfo                  = parseQueryInfo;
+    exports.prioritizeOpenFile              = prioritizeOpenFile;
+    exports.getOpenFilePath                 = getOpenFilePath;
+    exports.setNodeSearchDisabled           = setNodeSearchDisabled;
+    exports.isNodeSearchDisabled            = isNodeSearchDisabled;
+    exports.setInstantSearchDisabled        = setInstantSearchDisabled;
+    exports.isInstantSearchDisabled         = isInstantSearchDisabled;
+    exports.isNodeSearchInProgress          = isNodeSearchInProgress;
+    exports.isIndexingInProgress            = isIndexingInProgress;
+    exports.setCollapseResults              = setCollapseResults;
+    exports.isCollapsedResults              = isCollapsedResults;
+    exports.getHealthReport                 = getHealthReport;
+    exports.ERROR_FILE_CHANGED              = &quot;fileChanged&quot;;
+
+    &#x2F;&#x2F; event notification functions
+    exports.notifyFileFiltersChanged        = notifyFileFiltersChanged;
+    exports.notifySearchScopeChanged        = notifySearchScopeChanged;
+    exports.notifyNodeSearchStarted         = notifyNodeSearchStarted;
+    exports.notifyNodeSearchFinished        = notifyNodeSearchFinished;
+    exports.notifyIndexingStarted           = notifyIndexingStarted;
+    exports.notifyIndexingFinished          = notifyIndexingFinished;
+
+    &#x2F;&#x2F; events raised by FindUtils
+    exports.SEARCH_FILE_FILTERS_CHANGED              = &quot;fileFiltersChanged&quot;;
+    exports.SEARCH_SCOPE_CHANGED                     = &quot;searchScopeChanged&quot;;
+    exports.SEARCH_INDEXING_STARTED                  = &quot;searchIndexingStarted&quot;;
+    exports.SEARCH_INDEXING_FINISHED                 = &quot;searchIndexingFinished&quot;;
+    exports.SEARCH_COLLAPSE_RESULTS                  = &quot;searchCollapseResults&quot;;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -778,6 +900,32 @@ will do the replacement there, otherwise does it directly on disk.</p>
         }
 
         return {query: query, replaceText: replaceText};
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getOpenFilePath 
+        <a class="anchor" href="#-getOpenFilePath" id="-getOpenFilePath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the path of the currently open file or null if there isn&#39;t one open</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?string</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getOpenFilePath() {
+        var currentDoc = DocumentManager.getCurrentDocument();
+        return currentDoc ? currentDoc.file.fullPath : null;
     }</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -799,6 +947,135 @@ will do the replacement there, otherwise does it directly on disk.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function hasCheckedMatches(result) {
         return result.matches.some(function (match) { return match.isChecked; });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isCollapsedResults 
+        <a class="anchor" href="#-isCollapsedResults" id="-isCollapsedResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>check if results should be collapsed</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if results should be collapsed</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isCollapsedResults() {
+        return collapseResults;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isIndexingInProgress 
+        <a class="anchor" href="#-isIndexingInProgress" id="-isIndexingInProgress"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Return true if indexing is in pregress in node</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if files are being indexed in node</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isIndexingInProgress() {
+        return indexingInProgress;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isInstantSearchDisabled 
+        <a class="anchor" href="#-isInstantSearchDisabled" id="-isInstantSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>if instant search is disabled, this will return true we can only do instant search through node</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isInstantSearchDisabled() {
+        return _prefNodeSearchDisabled() || _prefInstantSearchDisabled() || nodeSearchDisabled || instantSearchDisabled;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isNodeSearchDisabled 
+        <a class="anchor" href="#-isNodeSearchDisabled" id="-isNodeSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>if node search is disabled, this will return true</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isNodeSearchDisabled() {
+        return _prefNodeSearchDisabled() || nodeSearchDisabled;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isNodeSearchInProgress 
+        <a class="anchor" href="#-isNodeSearchInProgress" id="-isNodeSearchInProgress"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>check if a search is progressing in node</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Boolean</span>
+</dt>
+    <dd>true if search is processing in node</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isNodeSearchInProgress() {
+        if (nodeSearchCount === 0) {
+            return false;
+        } else {
+            return true;
+        }
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -839,6 +1116,142 @@ will do the replacement there, otherwise does it directly on disk.</p>
         } else {
             return Strings.FIND_IN_FILES_NO_SCOPE;
         }
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifyFileFiltersChanged 
+        <a class="anchor" href="#-notifyFileFiltersChanged" id="-notifyFileFiltersChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Raises an event when the file filters applied to a search changes</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyFileFiltersChanged() {
+        exports.trigger(exports.SEARCH_FILE_FILTERS_CHANGED);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifyIndexingFinished 
+        <a class="anchor" href="#-notifyIndexingFinished" id="-notifyIndexingFinished"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notifies that a node has finished indexing the files</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyIndexingFinished() {
+        indexingInProgress = false;
+        exports.trigger(exports.SEARCH_INDEXING_FINISHED);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifyIndexingStarted 
+        <a class="anchor" href="#-notifyIndexingStarted" id="-notifyIndexingStarted"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notifies that a node has started indexing the files</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyIndexingStarted() {
+        indexingInProgress = true;
+        exports.trigger(exports.SEARCH_INDEXING_STARTED);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifyNodeSearchFinished 
+        <a class="anchor" href="#-notifyNodeSearchFinished" id="-notifyNodeSearchFinished"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notifies that a node search has finished so that we FindUtils can figure out
+if any outstanding node search requests are pendind</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyNodeSearchFinished() {
+        nodeSearchCount--;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifyNodeSearchStarted 
+        <a class="anchor" href="#-notifyNodeSearchStarted" id="-notifyNodeSearchStarted"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notifies that a node search has started so that we FindUtils can figure out
+if any outstanding node search requests are pendind</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyNodeSearchStarted() {
+        nodeSearchCount++;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        notifySearchScopeChanged 
+        <a class="anchor" href="#-notifySearchScopeChanged" id="-notifySearchScopeChanged"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Raises an event when the search scope changes[say search in a sub drictory in the project]</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifySearchScopeChanged() {
+        exports.trigger(exports.SEARCH_SCOPE_CHANGED);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -955,16 +1368,7 @@ extracted from the original text and so might be missing some context that the r
             queryExpr = new RegExp(StringUtils.regexEscape(queryInfo.query), flags);
         }
         return {valid: true, queryExpr: queryExpr};
-    }
-
-    exports.parseDollars                    = parseDollars;
-    exports.getInitialQuery                 = getInitialQuery;
-    exports.hasCheckedMatches               = hasCheckedMatches;
-    exports.performReplacements             = performReplacements;
-    exports.labelForScope                   = labelForScope;
-    exports.parseQueryInfo                  = parseQueryInfo;
-    exports.ERROR_FILE_CHANGED              = &quot;fileChanged&quot;;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -1051,6 +1455,161 @@ the time performReplacements() is called and the time the replacement actually h
                 }
             }
         });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        prioritizeOpenFile 
+        <a class="anchor" href="#-prioritizeOpenFile" id="-prioritizeOpenFile"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Prioritizes the open file and then the working set files to the starting of the list of files</p>
+</div>
+    
+<dl>
+    <dt>
+        files
+        <span class="label label-info">Array.&lt;*&gt;</span>
+    </dt>
+    <dd>An array of file paths or file objects to sort</dd>
+    <dt>
+        firstFile
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>If specified, the path to the file that should be sorted to the top.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;*&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function prioritizeOpenFile(files, firstFile) {
+        var workingSetFiles = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES),
+            workingSetFileFound = {},
+            fileSetWithoutWorkingSet = [],
+            startingWorkingFileSet = [],
+            propertyName = &quot;&quot;,
+            i = 0;
+        firstFile = firstFile || &quot;&quot;;
+
+        &#x2F;&#x2F; Create a working set path map which indicates if a file in working set is found in file list
+        for (i = 0; i &lt; workingSetFiles.length; i++) {
+            workingSetFileFound[workingSetFiles[i].fullPath] = false;
+        }
+
+        &#x2F;&#x2F; Remove all the working set files from the filtration list
+        fileSetWithoutWorkingSet = files.filter(function (key) {
+            if (workingSetFileFound[key] !== undefined) {
+                workingSetFileFound[key] = true;
+                return false;
+            }
+            return true;
+        });
+
+        &#x2F;&#x2F;push in the first file
+        if (workingSetFileFound[firstFile] === true) {
+            startingWorkingFileSet.push(firstFile);
+            workingSetFileFound[firstFile] = false;
+        }
+        &#x2F;&#x2F;push in the rest of working set files already present in file list
+        for (propertyName in workingSetFileFound) {
+            if (workingSetFileFound.hasOwnProperty(propertyName) &amp;&amp; workingSetFileFound[propertyName]) {
+                startingWorkingFileSet.push(propertyName);
+            }
+        }
+        return startingWorkingFileSet.concat(fileSetWithoutWorkingSet);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setCollapseResults 
+        <a class="anchor" href="#-setCollapseResults" id="-setCollapseResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Set if we need to collapse all results in the results pane</p>
+</div>
+    
+<dl>
+    <dt>
+        collapse
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to collapse</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setCollapseResults(collapse) {
+        collapseResults = collapse;
+        exports.trigger(exports.SEARCH_COLLAPSE_RESULTS);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setInstantSearchDisabled 
+        <a class="anchor" href="#-setInstantSearchDisabled" id="-setInstantSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>enable/disable instant search</p>
+</div>
+    
+<dl>
+    <dt>
+        disable
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to disable node based search</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setInstantSearchDisabled(disable) {
+        instantSearchDisabled = disable;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setNodeSearchDisabled 
+        <a class="anchor" href="#-setNodeSearchDisabled" id="-setNodeSearchDisabled"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>enable/disable node based search</p>
+</div>
+    
+<dl>
+    <dt>
+        disable
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true to disable node based search</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setNodeSearchDisabled(disable) {
+        if (disable) {
+            &#x2F;&#x2F; only set disable. Enabling node earch doesnt mean we have to enable instant search.
+            setInstantSearchDisabled(disable);
+        }
+        nodeSearchDisabled = disable;
     }</code></pre></div>
 </section>
 

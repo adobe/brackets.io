@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -615,7 +625,47 @@ is a string containing the new font size after applying the change.</li>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var MIN_FONT_SIZE = 1;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var MIN_FONT_SIZE = 1;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        currFontFamily 
+        <a class="anchor" href="#-currFontFamily" id="-currFontFamily"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var currFontFamily;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        currFontSize 
+        <a class="anchor" href="#-currFontSize" id="-currFontSize"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var currFontSize;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -822,8 +872,30 @@ is a string containing the new font size after applying the change.</li>
 
     PreferencesManager.convertPreferences(module, {&quot;fontSizeAdjustment&quot;: &quot;user&quot;}, true, _convertToNewViewState);
 
-    prefs.definePreference(&quot;fontSize&quot;,   &quot;string&quot;, DEFAULT_FONT_SIZE + &quot;px&quot;);
-    prefs.definePreference(&quot;fontFamily&quot;, &quot;string&quot;, DEFAULT_FONT_FAMILY);
+    prefs.definePreference(&quot;fontSize&quot;,   &quot;string&quot;, DEFAULT_FONT_SIZE + &quot;px&quot;, {
+        description: Strings.DESCRIPTION_FONT_SIZE
+    }).on(&quot;change&quot;, function () {
+        setFontSize(prefs.get(&quot;fontSize&quot;));
+    });
+    prefs.definePreference(&quot;fontFamily&quot;, &quot;string&quot;, DEFAULT_FONT_FAMILY, {
+        description: Strings.DESCRIPTION_FONT_FAMILY
+    }).on(&quot;change&quot;, function () {
+        setFontFamily(prefs.get(&quot;fontFamily&quot;));
+    });
+
+    &#x2F;&#x2F; Define a preference for font smoothing mode on Mac.
+    &#x2F;&#x2F; By default fontSmoothing is set to &quot;subpixel-antialiased&quot;
+    &#x2F;&#x2F; for the text inside code editor. It can be overridden
+    &#x2F;&#x2F; to &quot;antialiased&quot;, that would set text rendering AA to use
+    &#x2F;&#x2F; gray scale antialiasing.
+    if (brackets.platform === &quot;mac&quot;) {
+        prefs.definePreference(&quot;fontSmoothing&quot;, &quot;string&quot;, &quot;subpixel-antialiased&quot;, {
+            description: Strings.DESCRIPTION_FONT_SMOOTHING,
+            values: [&quot;subpixel-antialiased&quot;, &quot;antialiased&quot;]
+        }).on(&quot;change&quot;, function () {
+            setMacFontSmoothingType(prefs.get(&quot;fontSmoothing&quot;));
+        });
+    }
 
     &#x2F;&#x2F; Update UI when opening or closing a document
     MainViewManager.on(&quot;currentFileChange&quot;, _updateUI);
@@ -1321,8 +1393,10 @@ is a string containing the new font size after applying the change.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init() {
-        _addDynamicFontFamily(prefs.get(&quot;fontFamily&quot;));
-        _addDynamicFontSize(prefs.get(&quot;fontSize&quot;));
+        currFontFamily = prefs.get(&quot;fontFamily&quot;);
+        _addDynamicFontFamily(currFontFamily);
+        currFontSize = prefs.get(&quot;fontSize&quot;);
+        _addDynamicFontSize(currFontSize);
         _updateUI();
     }</code></pre></div><div class="member public">
 
@@ -1413,10 +1487,9 @@ view state to the new fontSize, when required</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setFontFamily(fontFamily) {
-        var editor = EditorManager.getCurrentFullEditor(),
-            oldValue = prefs.get(&quot;fontFamily&quot;);
+        var editor = EditorManager.getCurrentFullEditor();
 
-        if (oldValue === fontFamily) {
+        if (currFontFamily === fontFamily) {
             return;
         }
 
@@ -1425,7 +1498,8 @@ view state to the new fontSize, when required</p>
             _addDynamicFontFamily(fontFamily);
         }
 
-        exports.trigger(&quot;fontFamilyChange&quot;, fontFamily, oldValue);
+        exports.trigger(&quot;fontFamilyChange&quot;, fontFamily, currFontFamily);
+        currFontFamily = fontFamily;
         prefs.set(&quot;fontFamily&quot;, fontFamily);
 
         if (editor) {
@@ -1457,9 +1531,7 @@ view state to the new fontSize, when required</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setFontSize(fontSize) {
-        var oldValue = prefs.get(&quot;fontSize&quot;);
-
-        if (oldValue === fontSize) {
+        if (currFontSize === fontSize) {
             return;
         }
 
@@ -1477,8 +1549,44 @@ view state to the new fontSize, when required</p>
             }
         });
 
-        exports.trigger(&quot;fontSizeChange&quot;, fontSize, oldValue);
+        exports.trigger(&quot;fontSizeChange&quot;, fontSize, currFontSize);
+        currFontSize = fontSize;
         prefs.set(&quot;fontSize&quot;, fontSize);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setMacFontSmoothingType 
+        <a class="anchor" href="#-setMacFontSmoothingType" id="-setMacFontSmoothingType"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Font smoothing setter to set the anti-aliasing type for the code area on Mac.</p>
+</div>
+    
+<dl>
+    <dt>
+        aaType
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The antialiasing type to be set. It can take either "subpixel-antialiased" or "antialiased"</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setMacFontSmoothingType(aaType) {
+        var $editor_holder  = $(&quot;#editor-holder&quot;);
+
+        &#x2F;&#x2F; Add&#x2F;Remove the class based on the preference. Also
+        &#x2F;&#x2F; default to subpixel AA in case of invalid entries.
+        if (aaType === &quot;antialiased&quot;) {
+            $editor_holder.removeClass(&quot;subpixel-aa&quot;);
+        } else {
+            $editor_holder.addClass(&quot;subpixel-aa&quot;);
+        }
     }</code></pre></div>
 </section>
 

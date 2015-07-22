@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -567,7 +577,8 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     </h4>
 
     
-    <div class="description"><p>The method by which a server registers itself.</p>
+    <div class="description"><p>The method by which a server registers itself. It returns an
+object handler that can be used to remove that server from the list.</p>
 </div>
     
 <dl>
@@ -582,6 +593,9 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     </dt>
     <dd>A non-negative number used to break ties among providers for a particular url. Providers that register with a higher priority will have the opportunity to provide a given url before those with a lower priority. The higher the number, the higher the priority.</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">{object}</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -598,6 +612,40 @@ LiveDevelopment/Servers/BaseServer base class.</p>
 
         _serverProviders.push(providerObj);
         _serverProviders.sort(_providerSort);
+        
+        return providerObj;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        removeServer 
+        <a class="anchor" href="#-removeServer" id="-removeServer"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Remove a server from the list of the registered providers.</p>
+</div>
+    
+<dl>
+    <dt>
+        provider
+        <span class="label label-info">{object}</span>
+    </dt>
+    <dd>The provider to be removed.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeServer(provider) {
+        var i;
+        for (i = 0; i &lt; _serverProviders.length; i++) {
+            if (provider === _serverProviders[i]) {
+                _serverProviders.splice(i, 1);
+            }
+        }
     }
     
     &#x2F;&#x2F; Backwards compatibility
@@ -607,6 +655,7 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     &#x2F;&#x2F; Define public API
     exports.getServer           = getServer;
     exports.registerServer      = registerServer;
+    exports.removeServer        = removeServer;
 });</code></pre></div>
 </section>
 

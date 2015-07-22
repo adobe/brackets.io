@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -468,6 +478,7 @@ Includes both UI for selecting/editing filters, as well as the actual file-filte
         <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/edit-filter-dialog.html.html">edit-filter-dialog.html</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/filter-name.html.html">filter-name.html</a></li>
+        <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
@@ -863,14 +874,15 @@ No Files Excluded if no filter is selected.</p>
     exports.showDropdown       = showDropdown;
     exports.closeDropdown      = closeDropdown;
 
-    exports.createFilterPicker = createFilterPicker;
-    exports.commitPicker       = commitPicker;
-    exports.getActiveFilter      = getActiveFilter;
-    exports.setActiveFilter      = setActiveFilter;
-    exports.editFilter         = editFilter;
-    exports.compile            = compile;
-    exports.filterPath         = filterPath;
-    exports.filterFileList     = filterFileList;
+    exports.createFilterPicker     = createFilterPicker;
+    exports.commitPicker           = commitPicker;
+    exports.getActiveFilter        = getActiveFilter;
+    exports.setActiveFilter        = setActiveFilter;
+    exports.editFilter             = editFilter;
+    exports.compile                = compile;
+    exports.filterPath             = filterPath;
+    exports.filterFileList         = filterFileList;
+    exports.getPathsMatchingFilter = getPathsMatchingFilter;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1311,6 +1323,50 @@ before passing to filterPath()/filterFileList().</p>
     Public API
 </span>
     <h4>
+        getPathsMatchingFilter 
+        <a class="anchor" href="#-getPathsMatchingFilter" id="-getPathsMatchingFilter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns a copy of &#39;file path&#39; strings that match any of the exclusion globs in the filter.</p>
+</div>
+    
+<dl>
+    <dt>
+        compiledFilter
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>'Compiled' filter object as returned by compile(), or null to no-op</dd>
+    <dt>
+        An
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>array with a list of full file paths that matches atleast one of the filter.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!Array.&lt;string&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getPathsMatchingFilter(compiledFilter, filePaths) {
+        if (!compiledFilter) {
+            return filePaths;
+        }
+
+        var re = new RegExp(compiledFilter);
+        return filePaths.filter(function (f) {
+            return f.match(re);
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         setActiveFilter 
         <a class="anchor" href="#-setActiveFilter" id="-setActiveFilter"><span class="icon-link"></span></a>
     </h4>
@@ -1362,6 +1418,7 @@ If no filter is passed in, then clear the last active filter index by setting it
             &#x2F;&#x2F; Explicitly set to -1 to remove the active file filter
             PreferencesManager.setViewState(&quot;activeFileFilter&quot;, -1);
         }
+        FindUtils.notifyFileFiltersChanged();
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

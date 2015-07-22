@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -489,7 +499,7 @@ language.setLineCommentSyntax([&quot;--&quot;]);
 language.setBlockCommentSyntax(&quot;{-&quot;, &quot;-}&quot;);
 language.addFileExtension(&quot;lhs&quot;);
 </code></pre><p>Some CodeMirror modes define variations of themselves. They are called MIME modes.
-To find existing MIME modes, search for &quot;CodeMirror.defineMIME&quot; in thirdparty/CodeMirror2/mode
+To find existing MIME modes, search for &quot;CodeMirror.defineMIME&quot; in thirdparty/CodeMirror/mode
 For instance, C++, C# and Java all use the clike (C-like) mode with different settings and a different MIME name.
 You can refine the mode definition by specifying the MIME mode as well:</p>
 <pre><code>LanguageManager.defineLanguage(&quot;csharp&quot;, {
@@ -539,11 +549,12 @@ To register a binary language the isBinary flag must be set, i.e.</p>
 
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/text!language/languages.json.html">languages.json</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
     </ul>
 
 </section>
@@ -901,10 +912,14 @@ We may rely on the tokens provided by some of these modes.</p>
         &#x2F;&#x2F; depends on FileUtils) here. Using the async form of require fixes this.
         require([&quot;preferences&#x2F;PreferencesManager&quot;], function (pm) {
             PreferencesManager = pm;
-            pm.definePreference(_EXTENSION_MAP_PREF, &quot;object&quot;, {}).on(&quot;change&quot;, function () {
+            pm.definePreference(_EXTENSION_MAP_PREF, &quot;object&quot;, {}, {
+                description: Strings.DESCRIPTION_LANGUAGE_FILE_EXTENSIONS
+            }).on(&quot;change&quot;, function () {
                 _updateFromPrefs(_EXTENSION_MAP_PREF);
             });
-            pm.definePreference(_NAME_MAP_PREF, &quot;object&quot;, {}).on(&quot;change&quot;, function () {
+            pm.definePreference(_NAME_MAP_PREF, &quot;object&quot;, {}, {
+                description: Strings.DESCRIPTION_LANGUAGE_FILE_NAMES
+            }).on(&quot;change&quot;, function () {
                 _updateFromPrefs(_NAME_MAP_PREF);
             });
             _updateFromPrefs(_EXTENSION_MAP_PREF);
@@ -1039,7 +1054,7 @@ Otherwise the deferred is rejected with the error message.</p>
         definition.mode
         <span class="label label-info">(string,Array.&lt;string&gt;)</span>
     </dt>
-    <dd>CodeMirror mode (e.g. "htmlmixed"), optionally with a MIME mode defined by that mode ["clike", "text/x-c++src"] Unless the mode is located in thirdparty/CodeMirror2/mode/<name>/<name>.js, you need to first load it yourself. </dd>
+    <dd>CodeMirror mode (e.g. "htmlmixed"), optionally with a MIME mode defined by that mode ["clike", "text/x-c++src"] Unless the mode is located in thirdparty/CodeMirror/mode/<name>/<name>.js, you need to first load it yourself. </dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span>
 </dt>
@@ -1670,7 +1685,7 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
         mode
         <span class="label label-info">(string,Array.&lt;string&gt;)</span>
     </dt>
-    <dd>CodeMirror mode (e.g. "htmlmixed"), optionally paired with a MIME mode defined by that mode (e.g. ["clike", "text/x-c++src"]). Unless the mode is located in thirdparty/CodeMirror2/mode/<name>/<name>.js, you need to first load it yourself.</dd>
+    <dd>CodeMirror mode (e.g. "htmlmixed"), optionally paired with a MIME mode defined by that mode (e.g. ["clike", "text/x-c++src"]). Unless the mode is located in thirdparty/CodeMirror/mode/<name>/<name>.js, you need to first load it yourself.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span>
 </dt>
@@ -1724,7 +1739,7 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
         if (CodeMirror.modes[mode]) {
             finish();
         } else {
-            require([&quot;thirdparty&#x2F;CodeMirror2&#x2F;mode&#x2F;&quot; + mode + &quot;&#x2F;&quot; + mode], finish);
+            require([&quot;thirdparty&#x2F;CodeMirror&#x2F;mode&#x2F;&quot; + mode + &quot;&#x2F;&quot; + mode], finish);
         }
         
         return result.promise();

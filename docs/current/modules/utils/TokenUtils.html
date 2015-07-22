@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -462,7 +472,7 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror2/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror/lib/codemirror.html">codemirror</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
     </ul>
 
@@ -476,55 +486,6 @@
 </label>    </h3>
 
 <div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _getToken 
-        <a class="anchor" href="#-_getToken" id="-_getToken"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Like cm.getTokenAt, but with caching</p>
-</div>
-    
-<dl>
-    <dt>
-        cm
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">CodeMirror</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        pos
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{ch:number, line:number}</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        precise
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd>If given, results in more current results. Suppresses caching.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">Object</span>
-</dt>
-    <dd>Token for position</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _getToken(cm, pos, precise) {
-        if (precise) {
-            _clearCache(); &#x2F;&#x2F; reset cache
-            return cm.getTokenAt(pos, precise);
-        }
-        var cachedTokens    = _manageCache(cm, pos.line),
-            tokenIndex      = _.sortedIndex(cachedTokens, {end: pos.ch}, &quot;end&quot;), &#x2F;&#x2F; binary search is faster for long arrays
-            token           = cachedTokens[tokenIndex];
-        return token || cm.getTokenAt(pos, precise); &#x2F;&#x2F; fall back to CMs getTokenAt, for example in an empty line
-    }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -645,6 +606,11 @@ move functions.</p>
         <span class="label label-info">{line:number, ch:number}</span>
     </dt>
     <dd>Position to query for mode</dd>
+    <dt>
+        precise
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>If given, results in more current results. Suppresses caching.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">mode:{Object},name:string</span>
 </dt>
@@ -652,17 +618,22 @@ move functions.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getModeAt(cm, pos) {
-        var outerMode = cm.getMode(),
-            modeData = CodeMirror.innerMode(outerMode, cm.getTokenAt(pos, true).state),
+<pre class="code language-javascript"><code class="language-javascript">    function getModeAt(cm, pos, precise) {
+        precise = precise || true;
+        var modeData = cm.getMode(),
             name;
 
-        name = (modeData.mode.name === &quot;xml&quot;) ?
-                modeData.mode.configuration : modeData.mode.name;
+        if (modeData.innerMode) {
+            modeData = CodeMirror.innerMode(modeData, getTokenAt(cm, pos, precise).state).mode;
+        }
 
-        return {mode: modeData.mode, name: name};
+        name = (modeData.name === &quot;xml&quot;) ?
+                modeData.configuration : modeData.name;
+
+        return {mode: modeData, name: name};
     }
 
+    exports.getTokenAt              = getTokenAt;
     exports.movePrevToken           = movePrevToken;
     exports.moveNextToken           = moveNextToken;
     exports.isAtStart               = isAtStart;
@@ -672,6 +643,55 @@ move functions.</p>
     exports.offsetInToken           = offsetInToken;
     exports.getModeAt               = getModeAt;
 });</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getTokenAt 
+        <a class="anchor" href="#-getTokenAt" id="-getTokenAt"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Like cm.getTokenAt, but with caching. Way more performant for long lines.</p>
+</div>
+    
+<dl>
+    <dt>
+        cm
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">CodeMirror</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        pos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{ch:number, line:number}</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        precise
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>If given, results in more current results. Suppresses caching.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Object</span>
+</dt>
+    <dd>Token for position</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getTokenAt(cm, pos, precise) {
+        if (precise) {
+            _clearCache(); &#x2F;&#x2F; reset cache
+            return cm.getTokenAt(pos, precise);
+        }
+        var cachedTokens    = _manageCache(cm, pos.line),
+            tokenIndex      = _.sortedIndex(cachedTokens, {end: pos.ch}, &quot;end&quot;), &#x2F;&#x2F; binary search is faster for long arrays
+            token           = cachedTokens[tokenIndex];
+        return token || cm.getTokenAt(pos, precise); &#x2F;&#x2F; fall back to CMs getTokenAt, for example in an empty line
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -783,7 +803,7 @@ move functions.</p>
         } else {
             ctx.pos.ch = ctx.token.end + 1;
         }
-        ctx.token = _getToken(ctx.editor, ctx.pos, precise);
+        ctx.token = getTokenAt(ctx.editor, ctx.pos, precise);
         return true;
     }</code></pre></div><div class="member public">
 
@@ -835,7 +855,7 @@ move functions.</p>
         } else {
             ctx.pos.ch = ctx.token.start;
         }
-        ctx.token = _getToken(ctx.editor, ctx.pos, precise);
+        ctx.token = getTokenAt(ctx.editor, ctx.pos, precise);
         return true;
     }</code></pre></div><div class="member public">
 

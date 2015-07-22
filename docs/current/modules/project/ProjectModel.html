@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -1307,6 +1317,11 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
     <div class="description"></div>
     
 <dl>
+    <dt>
+        true
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>to sort files by their paths</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise.&lt;Array.&lt;File&gt;&gt;</span>
 </dt>
@@ -1314,7 +1329,7 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache() {
+<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype._getAllFilesCache = function _getAllFilesCache(sort) {
         if (!this._allFilesCachePromise) {
             var deferred = new $.Deferred(),
                 allFiles = [],
@@ -1331,9 +1346,12 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
             this._allFilesCachePromise = deferred.promise();
             
             var projectIndexTimer = PerfUtils.markStart(&quot;Creating project files cache: &quot; +
-                                                        this.projectRoot.fullPath);
+                                                        this.projectRoot.fullPath),
+                options = {
+                    sortList : sort
+                };
 
-            this.projectRoot.visit(allFilesVisitor, function (err) {
+            this.projectRoot.visit(allFilesVisitor, options, function (err) {
                 if (err) {
                     PerfUtils.finalizeMeasurement(projectIndexTimer);
                     deferred.reject(err);
@@ -1571,7 +1589,12 @@ files additional files provided. Files are filtered out by shouldShow().</p>
         <span class="label label-optional">optional</span>
         <span class="label label-info">Array.&lt;File&gt;</span>
     </dt>
-    <dd>Additional files to include (for example, the WorkingSet) Only adds files that are *not* under the project root or untitled documents. </dd>
+    <dd>Additional files to include (for example, the WorkingSet) Only adds files that are *not* under the project root or untitled documents.</dd>
+    <dt>
+        true
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>to sort files by their paths </dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span>
 </dt>
@@ -1579,7 +1602,7 @@ files additional files provided. Files are filtered out by shouldShow().</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.getAllFiles = function getAllFiles(filter, additionalFiles) {
+<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.getAllFiles = function getAllFiles(filter, additionalFiles, sort) {
         &#x2F;&#x2F; The filter and includeWorkingSet params are both optional.
         &#x2F;&#x2F; Handle the case where filter is omitted but includeWorkingSet is
         &#x2F;&#x2F; specified.
@@ -1594,7 +1617,7 @@ files additional files provided. Files are filtered out by shouldShow().</p>
         &#x2F;&#x2F; Note that with proper promises we may be able to fix this so that we&#39;re not doing this
         &#x2F;&#x2F; anti-pattern of creating a separate deferred rather than just chaining off of the promise
         &#x2F;&#x2F; from _getAllFilesCache
-        this._getAllFilesCache().done(function (result) {
+        this._getAllFilesCache(sort).done(function (result) {
             &#x2F;&#x2F; Add working set entries, if requested
             if (additionalFiles) {
                 additionalFiles.forEach(function (file) {

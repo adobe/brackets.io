@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -831,13 +841,11 @@
             })
             &#x2F;&#x2F; The link to go to the next page
             .on(&quot;click.searchResults&quot;, &quot;.next-page:not(.disabled)&quot;, function () {
-                self._currentStart += RESULTS_PER_PAGE;
-                self._render();
+                self.trigger(&#39;getNextPage&#39;);
             })
             &#x2F;&#x2F; The link to go to the last page
             .on(&quot;click.searchResults&quot;, &quot;.last-page:not(.disabled)&quot;, function () {
-                self._currentStart = self._getLastCurrentStart();
-                self._render();
+                self.trigger(&#39;getLastPage&#39;);
             })
             
             &#x2F;&#x2F; Add the file to the working set on double click
@@ -885,6 +893,7 @@
 
                         &#x2F;&#x2F;In Expand&#x2F;Collapse all, reset all search results &#39;collapsed&#39; flag to same value(true&#x2F;false).
                         if (e.metaKey || e.ctrlKey) {
+                            FindUtils.setCollapseResults(collapsed);
                             _.forEach(self._model.results, function (item) {
                                 item.collapsed = collapsed;
                             });
@@ -1115,7 +1124,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype._render = function () {
         var searchItems, match, i, item, multiLine,
             count            = this._model.countFilesMatches(),
-            searchFiles      = this._model.getSortedFiles(this._initialFilePath),
+            searchFiles      = this._model.prioritizeOpenFile(this._initialFilePath),
             lastIndex        = this._getLastIndex(count.matches),
             matchesCounter   = 0,
             showMatches      = false,
@@ -1383,6 +1392,52 @@
         &#x2F;&#x2F; Listen for user interaction events with the panel and change events from the model.
         this._addPanelListeners();
         this._model.on(&quot;change.SearchResultsView&quot;, this._handleModelChange.bind(this));
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        showLastPage 
+        <a class="anchor" href="#SearchResultsView-showLastPage" id="SearchResultsView-showLastPage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Shows the last page of the results view.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype.showLastPage = function () {
+        this._currentStart = this._getLastCurrentStart();
+        this._render();
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        showNextPage 
+        <a class="anchor" href="#SearchResultsView-showNextPage" id="SearchResultsView-showNextPage"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Shows the next page of the resultrs view if possible</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    SearchResultsView.prototype.showNextPage = function () {
+        this._currentStart += RESULTS_PER_PAGE;
+        this._render();
     };</code></pre></div>
         </section>
 

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -454,10 +464,11 @@
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>MainViewManager Manages the arrangement of all open panes as well as provides the controller
+    <div><p>MainViewManager manages the arrangement of all open panes as well as provides the controller
 logic behind all views in the MainView (e.g. ensuring that a file doesn&#39;t appear in 2 lists)</p>
 <p>Each pane contains one or more views wich are created by a view factory and inserted into a pane list. 
-There may be several panes managed  by the MainViewManager with each pane containing a list of views.<br>The panes are always visible and  the layout is determined by the MainViewManager and the user.  </p>
+There may be several panes managed by the MainViewManager with each pane containing a list of views.
+The panes are always visible and the layout is determined by the MainViewManager and the user.</p>
 <p>Currently we support only 2 panes.</p>
 <p>All of the WorkingSet APIs take a paneId Argument.  This can be an actual pane Id, ALL_PANES (in most cases) 
 or ACTIVE_PANE. ALL_PANES may not be supported for some APIs.  See the API for details.</p>
@@ -1363,7 +1374,7 @@ Do not use this API it is for internal use only</li>
         }
         
         &#x2F;&#x2F; open document will show the editor if there is one already
-        EditorManager.openDocument(doc, pane);
+        EditorManager.openDocument(doc, pane, options);
         _makeFileMostRecent(paneId, doc.file);
 
         if (!options.noPaneActivate) {
@@ -2008,7 +2019,7 @@ This also sets css properties that aid in the layout when _updateLayout is calle
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>- id of the pane to mae th file most recent or ACTIVE_PANE</dd>
+    <dd>- id of the pane to make the file most recent, or ACTIVE_PANE</dd>
     <dt>
         file
         <span class="label label-non-nullable">non-nullable</span>
@@ -3201,7 +3212,7 @@ Whatever file is current is bumped to the front of the MRU list.</p>
     </h4>
 
     
-    <div class="description"><p>Retrieves the list of all open files inlcuding temporary views</p>
+    <div class="description"><p>Retrieves the list of all open files including temporary views</p>
 </div>
     
 <dl>
@@ -3414,7 +3425,7 @@ Whatever file is current is bumped to the front of the MRU list.</p>
     </h4>
 
     
-    <div class="description"><p>Retrieves the WorkingSet for the given PaneId not including temporary views</p>
+    <div class="description"><p>Retrieves the WorkingSet for the given paneId not including temporary views</p>
 </div>
     
 <dl>
@@ -3528,7 +3539,7 @@ The state is removed from the cache after calling this function.  </p>
     </h4>
 
     
-    <div class="description"><p>Switch active pane to the specified pane Id (or ACTIVE_PANE/ALL_PANES, in which case this
+    <div class="description"><p>Switch active pane to the specified pane id (or ACTIVE_PANE/ALL_PANES, in which case this
 call does nothing).</p>
 </div>
     
@@ -3637,7 +3648,7 @@ call does nothing).</p>
 </dl><dl>
     <dt>Returns: <span class="label label-info">?{file:File,paneId:string}</span>
 </dt>
-    <dd>The File object of the next item in the travesal order or null if there aren't any files to traverse. may return current file if there are no other files to traverse.</dd>
+    <dd>The File object of the next item in the traversal order or null if there aren't any files to traverse. May return current file if there are no other files to traverse.</dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
@@ -3649,6 +3660,53 @@ call does nothing).</p>
             });
         
         return ViewUtils.traverseViewArray(_mruList, index, direction);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        traverseToNextViewInListOrder 
+        <a class="anchor" href="#-traverseToNextViewInListOrder" id="-traverseToNextViewInListOrder"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the next or previous file in list order.</p>
+</div>
+    
+<dl>
+    <dt>
+        direction
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>- Must be 1 or -1 to traverse forward or backward</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?{file:File,paneId:string}</span>
+</dt>
+    <dd>The File object of the next item in the traversal order or null if there aren't any files to traverse. May return current file if there are no other files to traverse.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function traverseToNextViewInListOrder(direction) {
+        var file = getCurrentlyViewedFile(),
+            curPaneId = getActivePaneId(),
+            allFiles = [],
+            index;
+
+        getPaneIdList().forEach(function (paneId) {
+            var paneFiles = getWorkingSet(paneId).map(function (file) {
+                return { file: file, pane: paneId };
+            });
+            allFiles = allFiles.concat(paneFiles);
+        });
+
+        index = _.findIndex(allFiles, function (record) {
+            return (record.file === file &amp;&amp; record.pane === curPaneId);
+        });
+
+        return ViewUtils.traverseViewArray(allFiles, index, direction);
     }</code></pre></div>
 </section>
 

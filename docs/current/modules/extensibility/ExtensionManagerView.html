@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (179)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -184,6 +184,7 @@
               <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
               <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
               <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
@@ -373,6 +374,14 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
             </ul>
@@ -390,6 +399,7 @@
               <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
               <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
               <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
               <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
               <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
               <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
@@ -758,6 +768,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         &#x2F;&#x2F; arrays as iteration contexts.
         context.isInstalled = !!entry.installInfo;
         context.failedToStart = (entry.installInfo &amp;&amp; entry.installInfo.status === ExtensionManager.START_FAILED);
+        context.disabled = (entry.installInfo &amp;&amp; entry.installInfo.status === ExtensionManager.DISABLED);
         context.hasVersionInfo = !!info.versions;
                 
         if (entry.registryInfo) {
@@ -796,7 +807,9 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         }
 
         context.isMarkedForRemoval = ExtensionManager.isMarkedForRemoval(info.metadata.name);
+        context.isMarkedForDisabling = ExtensionManager.isMarkedForDisabling(info.metadata.name);
         context.isMarkedForUpdate = ExtensionManager.isMarkedForUpdate(info.metadata.name);
+        var hasPendingAction = context.isMarkedForDisabling || context.isMarkedForRemoval || context.isMarkedForUpdate;
         
         context.showInstallButton = (this.model.source === this.model.SOURCE_REGISTRY || this.model.source === this.model.SOURCE_THEMES) &amp;&amp; !context.updateAvailable;
         context.showUpdateButton = context.updateAvailable &amp;&amp; !context.isMarkedForUpdate &amp;&amp; !context.isMarkedForRemoval;
@@ -851,7 +864,11 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         }
 
         context.removalAllowed = this.model.source === &quot;installed&quot; &amp;&amp;
-            !context.failedToStart &amp;&amp; !context.isMarkedForUpdate &amp;&amp; !context.isMarkedForRemoval;
+            !context.failedToStart &amp;&amp; !hasPendingAction;
+        context.disablingAllowed = this.model.source === &quot;installed&quot; &amp;&amp;
+            !context.disabled &amp;&amp; !hasPendingAction;
+        context.enablingAllowed = this.model.source === &quot;installed&quot; &amp;&amp;
+            context.disabled &amp;&amp; !hasPendingAction;
         
         &#x2F;&#x2F; Copy over helper functions that we share with the registry app.
         [&quot;lastVersionDate&quot;, &quot;authorInfo&quot;].forEach(function (helper) {
@@ -917,6 +934,8 @@ with initialize(). When the view is closed, dispose() must be called.</p>
                     ExtensionManager.markForRemoval($target.attr(&quot;data-extension-id&quot;), true);
                 } else if ($target.hasClass(&quot;undo-update&quot;)) {
                     ExtensionManager.removeUpdate($target.attr(&quot;data-extension-id&quot;));
+                } else if ($target.hasClass(&quot;undo-disable&quot;)) {
+                    ExtensionManager.markForDisabling($target.attr(&quot;data-extension-id&quot;), false);
                 } else if ($target.data(&quot;toggle-desc&quot;) === &quot;expand-desc&quot;) {
                     this._toggleDescription($target.attr(&quot;data-extension-id&quot;), $target, true);
                 } else if ($target.data(&quot;toggle-desc&quot;) === &quot;trunc-desc&quot;) {
@@ -931,6 +950,12 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             })
             .on(&quot;click&quot;, &quot;button.remove&quot;, function (e) {
                 ExtensionManager.markForRemoval($(e.target).attr(&quot;data-extension-id&quot;), true);
+            })
+            .on(&quot;click&quot;, &quot;button.disable&quot;, function (e) {
+                ExtensionManager.markForDisabling($(e.target).attr(&quot;data-extension-id&quot;), true);
+            })
+            .on(&quot;click&quot;, &quot;button.enable&quot;, function (e) {
+                ExtensionManager.enable($(e.target).attr(&quot;data-extension-id&quot;));
             });
     };</code></pre></div><div class="member private">
 

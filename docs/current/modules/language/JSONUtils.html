@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ScrollTrackMarkers - Brackets API</title>
+    <title>JSONUtils - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -458,16 +458,13 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ScrollTrackMarkers</h1>
+<h1>JSONUtils</h1>
 
 
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>Manages tickmarks shown along the scrollbar track.
-NOT yet intended for use by anyone other than the FindReplace module.
-It is assumed that markers are always clear()ed when switching editors.</p>
-</div>
+    <div></div>
     
 </section>
 
@@ -475,125 +472,9 @@ It is assumed that markers are always clear()ed when switching editors.</p>
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
     </ul>
 
-</section>
-<section id="variables">
-    
-    <h3>Variables 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        $markedTickmark 
-        <a class="anchor" href="#-$markedTickmark" id="-$markedTickmark"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Tickmark markCurrent() last called on, or null if never called / called with -1.</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?jQueryObject</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var $markedTickmark;
-    
-    
-    function _getScrollbar(editor) {
-        &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
-        return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
-    }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        editor 
-        <a class="anchor" href="#-editor" id="-editor"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Editor the markers are currently shown for, or null if not shown</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Editor</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var editor;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        marks 
-        <a class="anchor" href="#-marks" id="-marks"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Text positions of markers</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>!Array.&lt;{line: number, ch: number}&gt;</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var marks = [];</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        trackHt 
-        <a class="anchor" href="#-trackHt" id="-trackHt"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Height of scrollbar track area</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>number</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var trackHt;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        trackOffset 
-        <a class="anchor" href="#-trackOffset" id="-trackOffset"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Top of scrollbar track area, relative to top of scrollbar</p>
-</div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>number</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var trackOffset;</code></pre></div>
 </section>
 
 <section id="functions">
@@ -610,141 +491,8 @@ It is assumed that markers are always clear()ed when switching editors.</p>
     
 </span>
     <h4>
-        _calcScaling 
-        <a class="anchor" href="#-_calcScaling" id="-_calcScaling"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Measure scrollbar track</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _calcScaling() {
-        var $sb = _getScrollbar(editor);
-        
-        trackHt = $sb[0].offsetHeight;
-        
-        if (trackHt &gt; 0) {
-            &#x2F;&#x2F; Scrollbar visible: determine offset of track from top of scrollbar
-            if (brackets.platform === &quot;win&quot;) {
-                trackOffset = 0;  &#x2F;&#x2F; Custom scrollbar CSS has no gap around the track
-            } else if (brackets.platform === &quot;mac&quot;) {
-                trackOffset = 4;  &#x2F;&#x2F; Native scrollbar has padding around the track
-            } else { &#x2F;&#x2F;(Linux)
-                trackOffset = 2;  &#x2F;&#x2F; Custom scrollbar CSS has assymmetrical gap; this approximates it
-            }
-            trackHt -= trackOffset * 2;
-            
-        } else {
-            &#x2F;&#x2F; No scrollbar: use the height of the entire code content
-            var codeContainer = $(editor.getRootElement()).find(&quot;&gt; .CodeMirror-scroll &gt; .CodeMirror-sizer &gt; div &gt; .CodeMirror-lines &gt; div&quot;)[0];
-            trackHt = codeContainer.offsetHeight;
-            trackOffset = codeContainer.offsetTop;
-        }
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _renderMarks 
-        <a class="anchor" href="#-_renderMarks" id="-_renderMarks"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Add all the given tickmarks to the DOM in a batch</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _renderMarks(posArray) {
-        var html = &quot;&quot;;
-        posArray.forEach(function (pos) {
-            var top = Math.round(pos.line &#x2F; editor.lineCount() * trackHt) + trackOffset;
-            top--;  &#x2F;&#x2F; subtract ~1&#x2F;2 the ht of a tickmark to center it on ideal pos
-            
-            html += &quot;&lt;div class=&#39;tickmark&#39; style=&#39;top:&quot; + top + &quot;px&#39;&gt;&lt;&#x2F;div&gt;&quot;;
-        });
-        $(&quot;.tickmark-track&quot;, editor.getRootElement()).append($(html));
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        addTickmarks 
-        <a class="anchor" href="#-addTickmarks" id="-addTickmarks"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Add tickmarks to the editor&#39;s tickmark track, if it&#39;s visible</p>
-</div>
-    
-<dl>
-    <dt>
-        {!Editor}
-        <span class="label label-info">curEditor</span>
-    </dt>
-    <dd></dd>
-    <dt>
-        {!Array.&lt;{line:Number,
-        <span class="label label-info">posArray</span>
-    </dt>
-    <dd>ch:Number}>}</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function addTickmarks(curEditor, posArray) {
-        console.assert(editor === curEditor);
-        
-        marks = marks.concat(posArray);
-        _renderMarks(posArray);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        clear 
-        <a class="anchor" href="#-clear" id="-clear"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Clear any markers in the editor&#39;s tickmark track, but leave it visible. Safe to call when
-tickmark track is not visible also.</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function clear() {
-        if (editor) {
-            $(&quot;.tickmark-track&quot;, editor.getRootElement()).empty();
-            marks = [];
-            $markedTickmark = null;
-        }
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        markCurrent 
-        <a class="anchor" href="#-markCurrent" id="-markCurrent"><span class="icon-link"></span></a>
+        _createContextInfo 
+        <a class="anchor" href="#-_createContextInfo" id="-_createContextInfo"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -752,38 +500,366 @@ tickmark track is not visible also.</p>
     
 <dl>
     <dt>
-        index
+        token
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Object</span>
+    </dt>
+    <dd>CodeMirror token</dd>
+    <dt>
+        tokenType
+        <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">number</span>
     </dt>
-    <dd>Either -1, or an index into the array passed to addTickmarks()</dd>
+    <dd>Type of current token</dd>
+    <dt>
+        offset
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Offset in current token</dd>
+    <dt>
+        keyName
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>Name of corresponding key</dd>
+    <dt>
+        valueName
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>Name of current value</dd>
+    <dt>
+        parentKeyName
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>Name of parent key name</dd>
+    <dt>
+        isArray
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>Whether or not we are inside an array</dd>
+    <dt>
+        exclusionList
+        <span class="label label-info">Array.&lt;String&gt;</span>
+    </dt>
+    <dd>An array of keys that have already been used in the context of an object</dd>
+    <dt>
+        shouldReplace
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>Should we just replace the current token or also add colons/braces/brackets to it</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">!{token: Object,tokenType: number,offset: number,keyName: String,valueName: String,parentKeyName: String,isArray: Boolean,exclusionList: Array.&lt;String&gt;,shouldReplace: Boolean}</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function markCurrent(index) {
-        &#x2F;&#x2F; Remove previous highlight first
-        if ($markedTickmark) {
-            $markedTickmark.removeClass(&quot;tickmark-current&quot;);
-            $markedTickmark = null;
+<pre class="code language-javascript"><code class="language-javascript">    function _createContextInfo(token, tokenType, offset, keyName, valueName, parentKeyName, isArray, exclusionList, shouldReplace) {
+        return {
+            token: token || null,
+            tokenType: tokenType || null,
+            offset: offset || 0,
+            keyName: keyName || null,
+            valueName: valueName || null,
+            parentKeyName: parentKeyName || null,
+            isArray: isArray || false,
+            exclusionList: exclusionList || [],
+            shouldReplace: shouldReplace || false
+        };
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getExclusionList 
+        <a class="anchor" href="#-_getExclusionList" id="-_getExclusionList"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        constPos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{line: number, ch: number}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;String&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getExclusionList(editor, constPos) {
+        var ctxPrev, ctxNext, exclusionList = [], pos, braceParity;
+        
+        &#x2F;&#x2F; Move back to find exclusions.
+        pos = $.extend({}, constPos);
+        braceParity = 1;
+        ctxPrev = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxPrev)) {
+            if (ctxPrev.token.type === null) {
+                if (ctxPrev.token.string === &quot;}&quot;) {
+                    braceParity++;
+                } else if (ctxPrev.token.string === &quot;{&quot;) {
+                    braceParity--;
+                }
+            }
+            
+            if (braceParity === 1 &amp;&amp; ctxPrev.token.type === &quot;string property&quot;) {
+                exclusionList.push(stripQuotes(ctxPrev.token.string));
+            } else if (braceParity === 0) {
+                break;
+            }
         }
-        if (index !== -1) {
-            $markedTickmark = $(&quot;.tickmark-track &gt; .tickmark&quot;, editor.getRootElement()).eq(index).addClass(&quot;tickmark-current&quot;);
+
+        &#x2F;&#x2F; Move forward and find exclusions.
+        pos = $.extend({}, constPos);
+        braceParity = 1;
+        ctxNext = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        while (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctxNext)) {
+            if (ctxNext.token.type === null) {
+                if (ctxNext.token.string === &quot;{&quot;) {
+                    braceParity++;
+                } else if (ctxNext.token.string === &quot;}&quot;) {
+                    braceParity--;
+                }
+            }
+            
+            if (braceParity === 1 &amp;&amp; ctxNext.token.type === &quot;string property&quot;) {
+                exclusionList.push(stripQuotes(ctxNext.token.string));
+            } else if (braceParity === 0) {
+                break;
+            }
         }
+
+        return exclusionList;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getParentKeyName 
+        <a class="anchor" href="#-_getParentKeyName" id="-_getParentKeyName"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        ctx
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{editor:!CodeMirror, pos:!{ch:number, line:number}, token:Object}</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">String</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getParentKeyName(ctx) {
+        var parentKeyName, braceParity = 1, hasColon;
+        
+        &#x2F;&#x2F; Move the context back to find the parent key.
+        while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx)) {
+            if (ctx.token.type === null) {
+                if (ctx.token.string === &quot;}&quot;) {
+                    braceParity++;
+                } else if (ctx.token.string === &quot;{&quot;) {
+                    braceParity--;
+                }
+            }
+            
+            if (braceParity === 0) {
+                while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx)) {
+                    if (ctx.token.type === null &amp;&amp; ctx.token.string === &quot;:&quot;) {
+                        hasColon = true;
+                    } else if (ctx.token.type === &quot;string property&quot;) {
+                        parentKeyName = stripQuotes(ctx.token.string);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        
+        if (parentKeyName &amp;&amp; hasColon) {
+            return parentKeyName;
+        }
+        return null;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getContextInfo 
+        <a class="anchor" href="#-getContextInfo" id="-getContextInfo"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns context info at a given position in editor</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        constPos
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{line: number, ch: number}</span>
+    </dt>
+    <dd>Position of cursor in the editor</dd>
+    <dt>
+        requireParent
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>If true will look for parent key name</dd>
+    <dt>
+        requireNextToken
+        <span class="label label-info">Boolean</span>
+    </dt>
+    <dd>if true we can replace the next token of a value.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!{token: Object,tokenType: number,offset: number,keyName: String,valueName: String,parentKeyName: String,isArray: Boolean,exclusionList: Array.&lt;String&gt;,shouldReplace: Boolean}</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getContextInfo(editor, constPos, requireParent, requireNextToken) {
+        var pos, ctx, ctxPrev, ctxNext, offset, keyName, valueName, parentKeyName,
+            isArray, exclusionList, hasColon, hasComma, hasBracket, shouldReplace;
+        
+        pos = $.extend({}, constPos);
+        ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
+        offset = TokenUtils.offsetInToken(ctx);
+        
+        if (ctx.token &amp;&amp; ctx.token.type === &quot;string property&quot;) {
+            &#x2F;&#x2F; String literals used as keys.
+            
+            &#x2F;&#x2F; Disallow hints if cursor is out of the string.
+            if (&#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1)) &amp;&amp;
+                    ctx.token.string.length !== 1 &amp;&amp; ctx.token.end === pos.ch) {
+                return null;
+            }
+            keyName = stripQuotes(ctx.token.string);
+            
+            &#x2F;&#x2F; Get parent key name.
+            if (requireParent) {
+                ctxPrev = $.extend(true, {}, ctx);
+                parentKeyName = stripQuotes(_getParentKeyName(ctxPrev));
+            }
+            
+            &#x2F;&#x2F; Check if the key is followed by a colon, so we should not append colon again.
+            ctxNext = $.extend(true, {}, ctx);
+            TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctxNext);
+            if (ctxNext.token.type === null &amp;&amp; ctxNext.token.string === &quot;:&quot;) {
+                shouldReplace = true;
+            }
+            
+            &#x2F;&#x2F; Get an exclusion list of properties.
+            pos = $.extend({}, constPos);
+            exclusionList = _getExclusionList(editor, pos);
+            
+            return _createContextInfo(ctx.token, TOKEN_KEY, offset, keyName, valueName, parentKeyName, null, exclusionList, shouldReplace);
+        } else if (ctx.token &amp;&amp; (valueTokenTypes.indexOf(ctx.token.type) !== -1 ||
+                                (ctx.token.type === null &amp;&amp; regexAllowedChars.test(ctx.token.string)))) {
+            &#x2F;&#x2F; Boolean, String, Number and variable literal values.
+            
+            &#x2F;&#x2F; Disallow hints if cursor is out of the string.
+            if (ctx.token.type === &quot;string&quot; &amp;&amp; &#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1)) &amp;&amp;
+                    ctx.token.string.length !== 1 &amp;&amp; ctx.token.end === pos.ch) {
+                return null;
+            }
+            valueName = ctx.token.string;
+            
+            &#x2F;&#x2F; Check the current token
+            if (ctx.token.type === null) {
+                if (ctx.token.string === &quot;:&quot;) {
+                    hasColon = true;
+                } else if (ctx.token.string === &quot;,&quot;) {
+                    hasComma = true;
+                } else if (ctx.token.string === &quot;[&quot;) {
+                    hasBracket = true;
+                }
+            }
+            
+            &#x2F;&#x2F; move context back and find corresponding key name.
+            ctxPrev = $.extend(true, {}, ctx);
+            while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxPrev)) {
+                if (ctxPrev.token.type === &quot;string property&quot;) {
+                    keyName = stripQuotes(ctxPrev.token.string);
+                    break;
+                } else if (ctxPrev.token.type === null) {
+                    if (ctxPrev.token.string === &quot;:&quot;) {
+                        hasColon = true;
+                    } else if (ctxPrev.token.string === &quot;,&quot;) {
+                        hasComma = true;
+                    } else if (ctxPrev.token.string === &quot;[&quot;) {
+                        hasBracket = true;
+                    } else {
+                        return null;
+                    }
+                } else if (!hasComma) {
+                    return null;
+                }
+            }
+            
+            &#x2F;&#x2F; If no key name or colon found OR
+            &#x2F;&#x2F; If we have a comma but no opening bracket, return null.
+            if ((!keyName || !hasColon) || (hasComma &amp;&amp; !hasBracket)) {
+                return null;
+            } else {
+                isArray = hasBracket;
+            }
+
+            &#x2F;&#x2F; Get parent key name.
+            if (requireParent) {
+                ctxPrev = $.extend(true, {}, ctx);
+                parentKeyName = stripQuotes(_getParentKeyName(ctxPrev));
+            }
+            
+            &#x2F;&#x2F; Check if we can replace the next token of a value.
+            ctxNext = $.extend(true, {}, ctx);
+            TokenUtils.moveNextToken(ctxNext);
+            if (requireNextToken &amp;&amp; valueTokenTypes.indexOf(ctxNext.token.type) !== -1) {
+                shouldReplace = true;
+            }
+
+            return _createContextInfo((shouldReplace) ? ctxNext.token : ctx.token, TOKEN_VALUE, offset, keyName, valueName, parentKeyName, isArray, null, shouldReplace);
+        }
+        
+        return null;
     }
-
-    &#x2F;&#x2F; Private helper for unit tests
-    function _getTickmarks() {
-        return marks;
-    }
-
-
-    &#x2F;&#x2F; For unit tests
-    exports._getTickmarks   = _getTickmarks;
-
-    exports.clear           = clear;
-    exports.setVisible      = setVisible;
-    exports.addTickmarks    = addTickmarks;
-    exports.markCurrent     = markCurrent;
+    
+    &#x2F;&#x2F; Expose public API.
+    exports.TOKEN_KEY           = TOKEN_KEY;
+    exports.TOKEN_VALUE         = TOKEN_VALUE;
+    exports.regexAllowedChars   = regexAllowedChars;
+    exports.getContextInfo      = getContextInfo;
+    exports.stripQuotes         = stripQuotes;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -791,56 +867,38 @@ tickmark track is not visible also.</p>
     Public API
 </span>
     <h4>
-        setVisible 
-        <a class="anchor" href="#-setVisible" id="-setVisible"><span class="icon-link"></span></a>
+        stripQuotes 
+        <a class="anchor" href="#-stripQuotes" id="-stripQuotes"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Add or remove the tickmark track from the editor&#39;s UI</p>
+    <div class="description"><p>Removes the quotes around a string</p>
 </div>
     
 <dl>
+    <dt>
+        string
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">String</span>
+    </dt>
+    <dd></dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">String</span>
+</dt>
+    <dd></dd>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function setVisible(curEditor, visible) {
-        &#x2F;&#x2F; short-circuit no-ops
-        if ((visible &amp;&amp; curEditor === editor) || (!visible &amp;&amp; !editor)) {
-            return;
-        }
-        
-        if (visible) {
-            console.assert(!editor);
-            editor = curEditor;
-            
-            &#x2F;&#x2F; Don&#39;t support inline editors yet - search inside them is pretty screwy anyway (#2110)
-            if (editor.isTextSubset()) {
-                return;
+<pre class="code language-javascript"><code class="language-javascript">    function stripQuotes(string) {
+        if (string) {
+            if (&#x2F;^[&#39;&quot;]$&#x2F;.test(string.charAt(0))) {
+                string = string.substr(1);
             }
-            
-            var $sb = _getScrollbar(editor);
-            var $overlay = $(&quot;&lt;div class=&#39;tickmark-track&#39;&gt;&lt;&#x2F;div&gt;&quot;);
-            $sb.parent().append($overlay);
-            
-            _calcScaling();
-            
-            &#x2F;&#x2F; Update tickmarks during editor resize (whenever resizing has paused&#x2F;stopped for &gt; 1&#x2F;3 sec)
-            WorkspaceManager.on(&quot;workspaceUpdateLayout.ScrollTrackMarkers&quot;, _.debounce(function () {
-                if (marks.length) {
-                    _calcScaling();
-                    $(&quot;.tickmark-track&quot;, editor.getRootElement()).empty();
-                    _renderMarks(marks);
-                }
-            }, 300));
-            
-        } else {
-            console.assert(editor === curEditor);
-            $(&quot;.tickmark-track&quot;, curEditor.getRootElement()).remove();
-            editor = null;
-            marks = [];
-            WorkspaceManager.off(&quot;workspaceUpdateLayout.ScrollTrackMarkers&quot;);
+            if (&#x2F;^[&#39;&quot;]$&#x2F;.test(string.substr(-1, 1))) {
+                string = string.substr(0, string.length - 1);
+            }
         }
+        return string;
     }</code></pre></div>
 </section>
 
