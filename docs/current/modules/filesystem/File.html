@@ -758,9 +758,12 @@ clear the file&#39;s hash.</p>
                         &#x2F;&#x2F; Notify the caller
                         callback(null, stat);
                     } finally {
-                        &#x2F;&#x2F; If the write succeeded, fire a synthetic change event
-                        this._fileSystem._fireChangeEvent(parent, added, removed);
-                        
+                        if (parent._isWatched()) {
+                            &#x2F;&#x2F; If the write succeeded and the parent directory is watched,
+                            &#x2F;&#x2F; fire a synthetic change event
+                            this._fileSystem._fireChangeEvent(parent, added, removed);
+
+                        }
                         &#x2F;&#x2F; Always unblock external change events
                         this._fileSystem._endChange();
                     }

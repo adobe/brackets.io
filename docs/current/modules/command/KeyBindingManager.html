@@ -2306,11 +2306,20 @@ indicate that it wants to block the other hooks from running.)</p>
             displayStr = displayStr.replace(&quot;Shift&quot;, &quot;\u21E7&quot;); &#x2F;&#x2F; Shift &gt; shift symbol
             displayStr = displayStr.replace(&quot;Alt&quot;, &quot;\u2325&quot;);   &#x2F;&#x2F; Alt &gt; option symbol
         } else {
-            displayStr = descriptor.replace(&quot;Ctrl&quot;, Strings.KEYBOARD_CTRL);   &#x2F;&#x2F; Ctrl
-            displayStr = displayStr.replace(&quot;Shift&quot;, Strings.KEYBOARD_SHIFT); &#x2F;&#x2F; Shift &gt; shift symbol
-            displayStr = displayStr.replace(&quot;Space&quot;, Strings.KEYBOARD_SPACE); &#x2F;&#x2F; Alt &gt; option symbol
+            displayStr = descriptor.replace(&quot;Ctrl&quot;, Strings.KEYBOARD_CTRL);
+            displayStr = displayStr.replace(&quot;Shift&quot;, Strings.KEYBOARD_SHIFT);
             displayStr = displayStr.replace(&#x2F;-(?!$)&#x2F;g, &quot;+&quot;);
         }
+
+        displayStr = displayStr.replace(&quot;Space&quot;, Strings.KEYBOARD_SPACE);
+
+        displayStr = displayStr.replace(&quot;PageUp&quot;, Strings.KEYBOARD_PAGE_UP);
+        displayStr = displayStr.replace(&quot;PageDown&quot;, Strings.KEYBOARD_PAGE_DOWN);
+        displayStr = displayStr.replace(&quot;Home&quot;, Strings.KEYBOARD_HOME);
+        displayStr = displayStr.replace(&quot;End&quot;, Strings.KEYBOARD_END);
+
+        displayStr = displayStr.replace(&quot;Ins&quot;, Strings.KEYBOARD_INSERT);
+        displayStr = displayStr.replace(&quot;Del&quot;, Strings.KEYBOARD_DELETE);
 
         return displayStr;
     }</code></pre></div><div class="member public">
@@ -2487,13 +2496,13 @@ then a copy of the default key map is returned.</p>
         &#x2F;&#x2F; Ensure that the first letter of the key name is in upper case and the rest are
         &#x2F;&#x2F; in lower case. i.e. &#39;a&#39; =&gt; &#39;A&#39; and &#39;up&#39; =&gt; &#39;Up&#39;
         if (&#x2F;^[a-z]&#x2F;i.test(key)) {
-            key = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
+            key = _.capitalize(key.toLowerCase());
         }
         
         &#x2F;&#x2F; Also make sure that the second word of PageUp&#x2F;PageDown has the first letter in upper case.
         if (&#x2F;^Page&#x2F;.test(key)) {
             key = key.replace(&#x2F;(up|down)$&#x2F;, function (match, p1) {
-                return p1.charAt(0).toUpperCase() + p1.substr(1);
+                return _.capitalize(p1);
             });
         }
         

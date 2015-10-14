@@ -780,7 +780,7 @@ and is never used directly.</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRoot = null;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRoot = undefined;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -801,7 +801,7 @@ and is never used directly.</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRootFilterResult = false;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._watchedRootFilterResult = undefined;</code></pre></div>
         </section>
 
         <section class="methods">
@@ -871,7 +871,16 @@ and is never used directly.</p>
             
             if (watchedRoot) {
                 this._watchedRoot = watchedRoot;
-                filterResult = watchedRoot.filter(this._name, this._parentPath);
+                if (watchedRoot.entry !== this) { &#x2F;&#x2F; avoid creating entries for root&#39;s parent
+                    var parentEntry = this._fileSystem.getDirectoryForPath(this._parentPath);
+                    if (parentEntry._isWatched() === false) {
+                        filterResult = false;
+                    } else {
+                        filterResult = watchedRoot.filter(this._name, this._parentPath);
+                    }
+                } else { &#x2F;&#x2F; root itself is watched
+                    filterResult = true;
+                }
                 this._watchedRootFilterResult = filterResult;
             }
         }
@@ -1158,8 +1167,10 @@ to trash, the item is permanently deleted.</p>
                     &#x2F;&#x2F; Notify the caller
                     callback(err);
                 } finally {
-                    &#x2F;&#x2F; Notify change listeners
-                    this._fileSystem._fireChangeEvent(parent, added, removed);
+                    if (parent._isWatched()) {
+                        &#x2F;&#x2F; Notify change listeners
+                        this._fileSystem._fireChangeEvent(parent, added, removed);
+                    }
                     
                     &#x2F;&#x2F; Unblock external change events
                     this._fileSystem._endChange();
@@ -1337,8 +1348,10 @@ and all of its contents. For reversible delete, see moveToTrash().</p>
                     &#x2F;&#x2F; Notify the caller 
                     callback(err);
                 } finally {
-                    &#x2F;&#x2F; Notify change listeners
-                    this._fileSystem._fireChangeEvent(parent, added, removed);
+                    if (parent._isWatched()) {
+                        &#x2F;&#x2F; Notify change listeners
+                        this._fileSystem._fireChangeEvent(parent, added, removed);
+                    }
                     
                     &#x2F;&#x2F; Unblock external change events
                     this._fileSystem._endChange();

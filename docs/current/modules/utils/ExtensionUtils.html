@@ -924,12 +924,10 @@ Make sure URLs in the code are wrapped in quotes, like so:
             options;
         
         if (url) {
-            var dir  = url.slice(0, url.lastIndexOf(&quot;&#x2F;&quot;) + 1),
-                file = url.slice(dir.length);
+            var dir = url.slice(0, url.lastIndexOf(&quot;&#x2F;&quot;) + 1);
             
             options = {
-                filename: file,
-                paths:    [dir],
+                filename: url,
                 rootpath: dir
             };
 
@@ -944,16 +942,11 @@ Make sure URLs in the code are wrapped in quotes, like so:
             }
         }
         
-        var parser = new less.Parser(options);
-        parser.parse(code, function onParse(err, tree) {
+        less.render(code, options, function onParse(err, tree) {
             if (err) {
                 result.reject(err);
             } else {
-                try {
-                    result.resolve(tree.toCSS());
-                } catch (toCSSError) {
-                    result.reject(toCSSError);
-                }
+                result.resolve(tree.css);
             }
         });
         

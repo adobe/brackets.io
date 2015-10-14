@@ -587,12 +587,11 @@ Do nothing when in a connecting state (CONNECTING, LOADING_AGENTS).</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _loadStyles() {
-        var lessText    = require(&quot;text!LiveDevelopment&#x2F;main.less&quot;),
-            parser      = new less.Parser();
+        var lessText = require(&quot;text!LiveDevelopment&#x2F;main.less&quot;);
         
-        parser.parse(lessText, function onParse(err, tree) {
+        less.render(lessText, function onParse(err, tree) {
             console.assert(!err, err);
-            ExtensionUtils.addEmbeddedStyleSheet(tree.toCSS());
+            ExtensionUtils.addEmbeddedStyleSheet(tree.css);
         });
     }</code></pre></div><div class="member private">
 

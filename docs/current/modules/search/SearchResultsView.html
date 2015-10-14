@@ -481,6 +481,7 @@
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/search-panel.html.html">search-panel.html</a></li>
@@ -833,19 +834,23 @@
             .on(&quot;click.searchResults&quot;, &quot;.first-page:not(.disabled)&quot;, function () {
                 self._currentStart = 0;
                 self._render();
+                HealthLogger.searchDone(HealthLogger.SEARCH_FIRST_PAGE);
             })
             &#x2F;&#x2F; The link to go the previous page
             .on(&quot;click.searchResults&quot;, &quot;.prev-page:not(.disabled)&quot;, function () {
                 self._currentStart -= RESULTS_PER_PAGE;
                 self._render();
+                HealthLogger.searchDone(HealthLogger.SEARCH_PREV_PAGE);
             })
             &#x2F;&#x2F; The link to go to the next page
             .on(&quot;click.searchResults&quot;, &quot;.next-page:not(.disabled)&quot;, function () {
                 self.trigger(&#39;getNextPage&#39;);
+                HealthLogger.searchDone(HealthLogger.SEARCH_NEXT_PAGE);
             })
             &#x2F;&#x2F; The link to go to the last page
             .on(&quot;click.searchResults&quot;, &quot;.last-page:not(.disabled)&quot;, function () {
                 self.trigger(&#39;getLastPage&#39;);
+                HealthLogger.searchDone(HealthLogger.SEARCH_LAST_PAGE);
             })
             
             &#x2F;&#x2F; Add the file to the working set on double click

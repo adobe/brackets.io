@@ -687,16 +687,15 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function lessifyTheme(content, theme) {
         var deferred = new $.Deferred();
-        var parser   = new less.Parser({
+
+        less.render(&quot;#editor-holder {&quot; + content + &quot;\n}&quot;, {
             rootpath: fixPath(stylesPath),
             filename: fixPath(theme.file._path)
-        });
-
-        parser.parse(&quot;#editor-holder {&quot; + content + &quot;\n}&quot;, function (err, tree) {
+        }, function (err, tree) {
             if (err) {
                 deferred.reject(err);
             } else {
-                deferred.resolve(tree.toCSS());
+                deferred.resolve(tree.css);
             }
         });
 

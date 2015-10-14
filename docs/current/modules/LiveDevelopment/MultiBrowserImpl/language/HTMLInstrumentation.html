@@ -1152,6 +1152,7 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
             orig = doc.getText(),
             gen = &quot;&quot;,
             lastIndex = 0,
+            remoteScriptInserted = false,
             markCache;
         
         if (!dom) {
@@ -1200,11 +1201,11 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
                 
                 &#x2F;&#x2F; If we have a script to inject and this is the head tag, inject it immediately
                 &#x2F;&#x2F; after the open tag.
-                &#x2F;&#x2F; TODO: handle cases where explicit html&#x2F;head are missing
-                if (remoteScript &amp;&amp; node.tag === &quot;head&quot;) {
+                if (remoteScript &amp;&amp; !remoteScriptInserted &amp;&amp; node.tag === &quot;head&quot;) {
                     insertIndex = node.openEnd;
                     gen += orig.substr(lastIndex, insertIndex - lastIndex) + remoteScript;
                     lastIndex = insertIndex;
+                    remoteScriptInserted = true;
                 }
             }
             
@@ -1216,6 +1217,12 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
         walk(dom);
         gen += orig.substr(lastIndex);
         
+        if (remoteScript &amp;&amp; !remoteScriptInserted) {
+            &#x2F;&#x2F; if the remote script couldn&#39;t be injected before (e.g. due to missing &quot;head&quot; tag),
+            &#x2F;&#x2F; append it at the end
+            gen += remoteScript;
+        }
+
         return gen;
     }</code></pre></div><div class="member public">
 

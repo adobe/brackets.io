@@ -911,7 +911,7 @@
             
             if (highlightEndCh &lt;= MAX_DISPLAY_LENGTH) {
                 &#x2F;&#x2F; Don&#39;t store more than 200 chars per line
-                line = line.substr(0, Math.min(MAX_DISPLAY_LENGTH, line.length));
+                line = line.substr(0, MAX_DISPLAY_LENGTH);
             } else if (totalMatchLength &gt; MAX_DISPLAY_LENGTH) {
                 &#x2F;&#x2F; impossible to display the whole match
                 line = line.substr(ch, ch + MAX_DISPLAY_LENGTH);
@@ -1050,13 +1050,16 @@ Instant search is also disabled for the time being till the crawl is complete in
         }
         ProjectManager.getAllFiles(filter, true, true)
             .done(function (fileListResult) {
-                var files = fileListResult
-                    .filter(function (entry) {
-                        return entry.isFile &amp;&amp; _isReadableText(entry.fullPath);
-                    })
-                    .map(function (entry) {
-                        return entry.fullPath;
-                    });
+                var files = fileListResult,
+                    filter = FileFilters.getActiveFilter();
+                if (filter &amp;&amp; filter.patterns.length &gt; 0) {
+                    files = FileFilters.filterFileList(FileFilters.compile(filter.patterns), files);
+                }
+                files = files.filter(function (entry) {
+                    return entry.isFile &amp;&amp; _isReadableText(entry.fullPath);
+                }).map(function (entry) {
+                    return entry.fullPath;
+                });
                 FindUtils.notifyIndexingStarted();
                 searchDomain.exec(&quot;initCache&quot;, files);
             });
