@@ -821,9 +821,8 @@ we do it in batches so that node wont be blocked.</p>
             setTimeout(fileCrawler, 1000);
             return;
         }
-        var i = 0,
-            contents = &quot;&quot;;
-        for (i = 0; i &lt; 10 &amp;&amp; currentCrawlIndex &lt; files.length; i++) {
+        var contents = &quot;&quot;;
+        if (currentCrawlIndex &lt; files.length) {
             contents = getFileContentsForFile(files[currentCrawlIndex]);
             if (contents) {
                 cacheSize += contents.length;
@@ -889,7 +888,8 @@ we do it in batches so that node wont be blocked.</p>
     </h4>
 
     
-    <div class="description"><p>Get the contents of a file given the path</p>
+    <div class="description"><p>Get the contents of a file from cache given the path. Also adds the file contents to cache from disk if not cached.
+Will not read/cache files greater than MAX_FILE_SIZE_TO_INDEX in size.</p>
 </div>
     
 <dl>
@@ -910,7 +910,11 @@ we do it in batches so that node wont be blocked.</p>
             return projectCache[filePath];
         }
         try {
-            projectCache[filePath] = fs.readFileSync(filePath, &#39;utf8&#39;);
+            if (getFilesizeInBytes(filePath) &lt;= MAX_FILE_SIZE_TO_INDEX) {
+                projectCache[filePath] = fs.readFileSync(filePath, &#39;utf8&#39;);
+            } else {
+                projectCache[filePath] = &quot;&quot;;
+            }
         } catch (ex) {
             console.log(ex);
             projectCache[filePath] = null;
@@ -921,6 +925,41 @@ we do it in batches so that node wont be blocked.</p>
 <span class="pull-right scope">
     
     
+</span>
+    <h4>
+        getFilesizeInBytes
+        <a class="anchor" href="#-getFilesizeInBytes" id="-getFilesizeInBytes"><span class="icon-link"></span></a>
+    </h4>
+
+
+    <div class="description"><p>Gets the file size in bytes.</p>
+</div>
+
+<dl>
+    <dt>
+        fileName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The name of the file to get the size</dd>
+</dl><dl>
+</dl>
+<dl>
+        <dt>returns</dt>
+        <dd>{Number} the file size in bytes</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFilesizeInBytes(fileName) {
+        try {
+            var stats = fs.statSync(fileName);
+            return stats.size || 0;
+        } catch (ex) {
+            console.log(ex);
+            return 0;
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+
+
 </span>
     <h4>
         getNextPage 

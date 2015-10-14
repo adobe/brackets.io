@@ -477,6 +477,7 @@
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/findreplace-bar.html.html">findreplace-bar.html</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
@@ -523,6 +524,80 @@
         lastQueriedText = &quot;&quot;;</code></pre></div>
 </section>
 
+<section id="functions">
+
+    <h3>Functions
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+
+
+</span>
+    <h4>
+        getInitialQueryFromSelection
+        <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
+    </h4>
+
+
+    <div class="description"><p>Returns the string used to prepopulate the find bar</p>
+</div>
+
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span>
+</dt>
+    <dd>first line of primary selection to populate the find bar</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">        function getInitialQueryFromSelection(editor) {
+            var selectionText = editor.getSelectedText();
+            if (selectionText) {
+                return selectionText
+                    .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
+                    .split(&quot;\n&quot;)[0];
+            }
+            return &quot;&quot;;
+        }
+
+        if (currentFindBar &amp;&amp; !currentFindBar.isClosed()) {
+            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
+            &#x2F;&#x2F; current query instead of using the passed-in selected text.
+            query = currentFindBar.getQueryInfo().query;
+            replaceText = currentFindBar.getReplaceText();
+        } else {
+            var openedFindBar = FindBar._bars &amp;&amp; _.find(FindBar._bars, function (bar) {
+                    return !bar.isClosed();
+                });
+
+            if (openedFindBar) {
+                query = openedFindBar.getQueryInfo().query;
+                replaceText = openedFindBar.getReplaceText();
+            } else if (editor) {
+                query = getInitialQueryFromSelection(editor);
+            }
+        }
+
+        return {query: query, replaceText: replaceText};
+    };
+
+    PreferencesManager.stateManager.definePreference(&quot;caseSensitive&quot;, &quot;boolean&quot;, false);
+    PreferencesManager.stateManager.definePreference(&quot;regexp&quot;, &quot;boolean&quot;, false);
+    PreferencesManager.convertPreferences(module, {&quot;caseSensitive&quot;: &quot;user&quot;, &quot;regexp&quot;: &quot;user&quot;}, true);
+
+    exports.FindBar = FindBar;
+});</code></pre></div>
+</section>
 
 <section id="classes">
     
@@ -1075,6 +1150,46 @@ will need to refresh their enable state after calling this.</p>
     
 </span>
     <h4>
+        getInitialQuery     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#FindBar-getInitialQuery" id="FindBar-getInitialQuery"><span class="icon-link"></span></a>
+    </h4>
+
+
+    <div class="description"><p>Gets you the right query and replace text to prepopulate the Find Bar.</p>
+</div>
+
+<dl>
+    <dt>
+        currentFindBar
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">FindBar</span>
+    </dt>
+    <dd>The currently open Find Bar, if any</dd>
+    <dt>
+        The
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>active editor, if any</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">query: string,replaceText: string</span>
+</dt>
+    <dd>Query and Replace text to prepopulate the Find Bar with</dd>
+</dl>
+<dl>
+        <dt>static</dt>
+        <dd></dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FindBar.getInitialQuery = function (currentFindBar, editor) {
+        var query = &quot;&quot;,
+            replaceText = &quot;&quot;;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+
+
+</span>
+    <h4>
         getOptions 
         <a class="anchor" href="#FindBar-getOptions" id="FindBar-getOptions"><span class="icon-link"></span></a>
     </h4>
@@ -1247,6 +1362,9 @@ will need to refresh their enable state after calling this.</p>
         &#x2F;&#x2F; close the old Find bar (with no animation) before creating a new one. 
         &#x2F;&#x2F; TODO: see note above - this will move to ModalBar eventually.
         FindBar._closeFindBars();
+        if (this._options.multifile) {
+            HealthLogger.searchDone(HealthLogger.SEARCH_NEW);
+        }
         
         var templateVars = _.clone(this._options);
         templateVars.Strings = Strings;
@@ -1301,6 +1419,7 @@ will need to refresh their enable state after calling this.</p>
                         if (self._options.multifile) {
                             if ($(e.target).is(&quot;#find-what&quot;)) {
                                 if (!self._options.replace) {
+                                    HealthLogger.searchDone(HealthLogger.SEARCH_INSTANT);
                                     self.trigger(&quot;doFind&quot;);
                                     lastQueriedText = self.getQueryInfo().query;
                                 }
@@ -1320,10 +1439,12 @@ will need to refresh their enable state after calling this.</p>
                                 &#x2F;&#x2F; Just set focus to the Replace field.
                                 self.focusReplace();
                             } else {
+                                HealthLogger.searchDone(HealthLogger.SEARCH_ON_RETURN_KEY);
                                 &#x2F;&#x2F; Trigger a Find (which really means &quot;Find All&quot; in this context).
                                 self.trigger(&quot;doFind&quot;);
                             }
                         } else {
+                            HealthLogger.searchDone(HealthLogger.SEARCH_REPLACE_ALL);
                             self.trigger(&quot;doReplaceAll&quot;);
                         }
                     } else {
@@ -1399,14 +1520,7 @@ will need to refresh their enable state after calling this.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.prototype.redoInstantSearch = function () {
         this.trigger(&quot;doFind&quot;);
-    };
-
-    PreferencesManager.stateManager.definePreference(&quot;caseSensitive&quot;, &quot;boolean&quot;, false);
-    PreferencesManager.stateManager.definePreference(&quot;regexp&quot;, &quot;boolean&quot;, false);
-    PreferencesManager.convertPreferences(module, {&quot;caseSensitive&quot;: &quot;user&quot;, &quot;regexp&quot;: &quot;user&quot;}, true);
-    
-    exports.FindBar = FindBar;
-});</code></pre></div><div class="member">
+    };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     

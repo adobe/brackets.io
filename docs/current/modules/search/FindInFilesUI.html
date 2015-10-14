@@ -488,6 +488,7 @@
         <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
         <li><a href="..&#x2F;../modules/search/FindInFiles.html">FindInFiles</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
@@ -890,7 +891,7 @@ might not have been updated yet.</p>
         
         &#x2F;&#x2F; Get initial query&#x2F;replace text
         var currentEditor = EditorManager.getActiveEditor(),
-            initialQuery = FindUtils.getInitialQuery(_findBar, currentEditor);
+            initialQuery = FindBar.getInitialQuery(_findBar, currentEditor);
 
         &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new _findBar will
         &#x2F;&#x2F; take care of closing any other find bar instances.)
@@ -944,6 +945,12 @@ might not have been updated yet.</p>
             if (queryInfo &amp;&amp; queryInfo.query) {
                 _findBar.enable(!disableFindBar);
                 StatusBar.showBusyIndicator(disableFindBar);
+                if (queryInfo.isRegexp) {
+                    HealthLogger.searchDone(HealthLogger.SEARCH_REGEXP);
+                }
+                if (queryInfo.isCaseSensitive) {
+                    HealthLogger.searchDone(HealthLogger.SEARCH_CASE_SENSITIVE);
+                }
 
                 var filter;
                 if (filterPicker) {

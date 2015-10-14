@@ -1255,10 +1255,12 @@ internal change event.</p>
                 this._handleDirectoryChange(entry, function (added, removed) {
                     entry._stat = stat;
                     
-                    &#x2F;&#x2F; We send a change even if added &amp; removed are both zero-length. Something may still have changed,
-                    &#x2F;&#x2F; e.g. a file may have been quickly removed &amp; re-added before we got a chance to reread the directory
-                    &#x2F;&#x2F; listing.
-                    this._fireChangeEvent(entry, added, removed);
+                    if (entry._isWatched()) {
+                        &#x2F;&#x2F; We send a change even if added &amp; removed are both zero-length. Something may still have changed,
+                        &#x2F;&#x2F; e.g. a file may have been quickly removed &amp; re-added before we got a chance to reread the directory
+                        &#x2F;&#x2F; listing.
+                        this._fireChangeEvent(entry, added, removed);
+                    }
                 }.bind(this));
             }
         }

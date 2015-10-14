@@ -643,7 +643,8 @@ the standard file types have been opened. We only log the standard filetypes</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getStoredHealthData() {
-        return PreferencesManager.getViewState(HEALTH_DATA_STATE_KEY);
+        var storedData = PreferencesManager.getViewState(HEALTH_DATA_STATE_KEY) || {};
+        return storedData;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -666,7 +667,69 @@ the standard file types have been opened. We only log the standard filetypes</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init() {
         PreferencesManager.stateManager.definePreference(HEALTH_DATA_STATE_KEY, &quot;object&quot;, {});
-    }</code></pre></div><div class="member">
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+
+    Public API
+</span>
+    <h4>
+        searchDone
+        <a class="anchor" href="#-searchDone" id="-searchDone"><span class="icon-link"></span></a>
+    </h4>
+
+
+    <div class="description"><p>Increments health log count for a particular kind of search done</p>
+</div>
+
+<dl>
+    <dt>
+        searchType
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The kind of search type that needs to be logged- should be a js var compatible string</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function searchDone(searchType) {
+        var searchDetails = getHealthDataLog(&quot;searchDetails&quot;);
+        if (!searchDetails) {
+            searchDetails = {};
+        }
+        if (!searchDetails[searchType]) {
+            searchDetails[searchType] = 0;
+        }
+        searchDetails[searchType]++;
+        setHealthDataLog(&quot;searchDetails&quot;, searchDetails);
+    }
+
+    &#x2F;&#x2F; Define public API
+    exports.getHealthDataLog          = getHealthDataLog;
+    exports.setHealthDataLog          = setHealthDataLog;
+    exports.getAggregatedHealthData   = getAggregatedHealthData;
+    exports.clearHealthData           = clearHealthData;
+    exports.fileOpened                = fileOpened;
+    exports.setProjectDetail          = setProjectDetail;
+    exports.searchDone                = searchDone;
+    exports.setHealthLogsEnabled      = setHealthLogsEnabled;
+    exports.shouldLogHealthData       = shouldLogHealthData;
+    exports.init                      = init;
+
+    &#x2F;&#x2F; constants
+    &#x2F;&#x2F; searchType for searchDone()
+    exports.SEARCH_INSTANT            = &quot;searchInstant&quot;;
+    exports.SEARCH_ON_RETURN_KEY      = &quot;searchOnReturnKey&quot;;
+    exports.SEARCH_REPLACE_ALL        = &quot;searchReplaceAll&quot;;
+    exports.SEARCH_NEXT_PAGE          = &quot;searchNextPage&quot;;
+    exports.SEARCH_PREV_PAGE          = &quot;searchPrevPage&quot;;
+    exports.SEARCH_LAST_PAGE          = &quot;searchLastPage&quot;;
+    exports.SEARCH_FIRST_PAGE         = &quot;searchFirstPage&quot;;
+    exports.SEARCH_REGEXP             = &quot;searchRegExp&quot;;
+    exports.SEARCH_CASE_SENSITIVE     = &quot;searchCaseSensitive&quot;;
+    &#x2F;&#x2F; A new search context on search bar up-Gives an idea of number of times user did a discrete search
+    exports.SEARCH_NEW                = &quot;searchNew&quot;;
+});</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -802,19 +865,7 @@ The name of the project is never saved into the health data log, only the hash(n
             cacheSize : cacheSize
         };
         setHealthDataLog(&quot;ProjectDetails&quot;, FIFLog);
-    }
-
-    &#x2F;&#x2F; Define public API
-    exports.getHealthDataLog          = getHealthDataLog;
-    exports.setHealthDataLog          = setHealthDataLog;
-    exports.getAggregatedHealthData   = getAggregatedHealthData;
-    exports.clearHealthData           = clearHealthData;
-    exports.fileOpened                = fileOpened;
-    exports.setProjectDetail          = setProjectDetail;
-    exports.setHealthLogsEnabled      = setHealthLogsEnabled;
-    exports.shouldLogHealthData       = shouldLogHealthData;
-    exports.init                      = init;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

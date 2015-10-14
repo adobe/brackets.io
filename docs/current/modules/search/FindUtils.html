@@ -477,7 +477,6 @@
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-        <li><a href="..&#x2F;../modules/search/FindBar.html">FindBar</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
@@ -773,7 +772,6 @@ will do the replacement there, otherwise does it directly on disk.</p>
     }
 
     exports.parseDollars                    = parseDollars;
-    exports.getInitialQuery                 = getInitialQuery;
     exports.hasCheckedMatches               = hasCheckedMatches;
     exports.performReplacements             = performReplacements;
     exports.labelForScope                   = labelForScope;
@@ -806,101 +804,6 @@ will do the replacement there, otherwise does it directly on disk.</p>
     exports.SEARCH_INDEXING_FINISHED                 = &quot;searchIndexingFinished&quot;;
     exports.SEARCH_COLLAPSE_RESULTS                  = &quot;searchCollapseResults&quot;;
 });</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        getInitialQuery 
-        <a class="anchor" href="#-getInitialQuery" id="-getInitialQuery"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Gets you the right query and replace text to prepopulate the Find Bar.</p>
-</div>
-    
-<dl>
-    <dt>
-        currentFindBar
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">FindBar</span>
-    </dt>
-    <dd>The currently open Find Bar, if any</dd>
-    <dt>
-        The
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
-    <dd>active editor, if any</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">query: string,replaceText: string</span>
-</dt>
-    <dd>Query and Replace text to prepopulate the Find Bar with</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getInitialQuery(currentFindBar, editor) {
-        var query = &quot;&quot;,
-            replaceText = &quot;&quot;;</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        getInitialQueryFromSelection 
-        <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Returns the string used to prepopulate the find bar</p>
-</div>
-    
-<dl>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
-    <dd>first line of primary selection to populate the find bar</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function getInitialQueryFromSelection(editor) {
-            var selectionText = editor.getSelectedText();
-            if (selectionText) {
-                return selectionText
-                    .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
-                    .split(&quot;\n&quot;)[0];
-            }
-            return &quot;&quot;;
-        }
-
-        if (currentFindBar &amp;&amp; !currentFindBar.isClosed()) {
-            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
-            &#x2F;&#x2F; current query instead of using the passed-in selected text.
-            query = currentFindBar.getQueryInfo().query;
-            replaceText = currentFindBar.getReplaceText();
-        } else {
-            var openedFindBar = FindBar._bars &amp;&amp; _.find(FindBar._bars, function (bar) {
-                    return !bar.isClosed();
-                });
-
-            if (openedFindBar) {
-                query = openedFindBar.getQueryInfo().query;
-                replaceText = openedFindBar.getReplaceText();
-            } else if (editor) {
-                query = getInitialQueryFromSelection(editor);
-            }
-        }
-
-        return {query: query, replaceText: replaceText};
-    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

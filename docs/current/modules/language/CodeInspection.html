@@ -908,11 +908,20 @@ Decision is made depending on the file extension.</p>
 
                 &#x2F;&#x2F; This is a inspector title row, expand&#x2F;collapse on click
                 if ($selectedRow.hasClass(&quot;inspector-section&quot;)) {
-                    &#x2F;&#x2F; Clicking the inspector title section header collapses&#x2F;expands result rows
-                    $selectedRow.nextUntil(&quot;.inspector-section&quot;).toggle();
-
                     var $triangle = $(&quot;.disclosure-triangle&quot;, $selectedRow);
+                    var isExpanded = $triangle.hasClass(&quot;expanded&quot;);
+
+                    &#x2F;&#x2F; Clicking the inspector title section header collapses&#x2F;expands result rows
+                    if (isExpanded) {
+                        $selectedRow.nextUntil(&quot;.inspector-section&quot;).addClass(&quot;forced-hidden&quot;);
+                    } else {
+                        $selectedRow.nextUntil(&quot;.inspector-section&quot;).removeClass(&quot;forced-hidden&quot;);
+                    }
                     $triangle.toggleClass(&quot;expanded&quot;);
+
+                    var providerName = $selectedRow.find(&quot;input[type=&#39;hidden&#39;]&quot;).val();
+                    prefs.set(providerName + &quot;.collapsed&quot;, !isExpanded);
+                    prefs.save();
                 } else {
                     &#x2F;&#x2F; This is a problem marker row, show the result on click
                     &#x2F;&#x2F; Grab the required position data
@@ -1216,6 +1225,7 @@ match the current doc&#39;s provider name.</p>
                 &#x2F;&#x2F; Augment error objects with additional fields needed by Mustache template
                 results.forEach(function (inspectionResult) {
                     var provider = inspectionResult.provider;
+                    var isExpanded = prefs.get(provider.name + &quot;.collapsed&quot;) !== false;
 
                     if (inspectionResult.result) {
                         inspectionResult.result.errors.forEach(function (error) {
@@ -1224,12 +1234,15 @@ match the current doc&#39;s provider name.</p>
                                     (error.pos.line + 1) &gt; 0 &amp;&amp;
                                     (error.codeSnippet = currentDoc.getLine(error.pos.line)) !== undefined) {
                                 error.friendlyLine = error.pos.line + 1;
-                                error.codeSnippet = error.codeSnippet.substr(0, Math.min(175, error.codeSnippet.length));  &#x2F;&#x2F; limit snippet width
+                                error.codeSnippet = error.codeSnippet.substr(0, 175);  &#x2F;&#x2F; limit snippet width
                             }
                             
                             if (error.type !== Type.META) {
                                 numProblems++;
                             }
+
+                            &#x2F;&#x2F; Hide the errors when the provider is collapsed.
+                            error.display = isExpanded ? &quot;&quot; : &quot;forced-hidden&quot;;
                         });
 
                         &#x2F;&#x2F; if the code inspector was unable to process the whole file, we keep track to show a different status
@@ -1239,6 +1252,7 @@ match the current doc&#39;s provider name.</p>
 
                         if (inspectionResult.result.errors.length) {
                             allErrors.push({
+                                isExpanded:   isExpanded,
                                 providerName: provider.name,
                                 results:      inspectionResult.result.errors
                             });
@@ -1502,6 +1516,7 @@ change based on the number of problems reported and how many provider reported p
         if (providersReportingProblems.length === 1) {
             &#x2F;&#x2F; don&#39;t show a header if there is only one provider available for this file type
             $problemsPanelTable.find(&quot;.inspector-section&quot;).hide();
+            $problemsPanelTable.find(&quot;tr&quot;).removeClass(&quot;forced-hidden&quot;);
 
             if (numProblems === 1 &amp;&amp; !aborted) {
                 message = StringUtils.format(Strings.SINGLE_ERROR, providersReportingProblems[0].name);
