@@ -9,7 +9,7 @@ $(function () {
 
     // Make search results and dependency links go to correct location in left nav
     if (location.hash === "") {
-        var hash = location.href.slice(location.href.lastIndexOf('/') + 1, location.href.length - 5);
+        var hash = location.href.slice(location.href.lastIndexOf("/") + 1, location.href.length - 5);
         if (hash !== "brackets") {
             location.hash = hash;
         }
@@ -55,7 +55,7 @@ $(function () {
                 // when clicked they load new content on right side
                 $(this).click(function () {
                     $.get(href, function (data) {
-                        var pre = $(data).find('.span9');
+                        var pre = $(data).find(".span9");
 
                         // Adjust anchor icons' href to match page they link to
                         $(".anchor", pre).each(function () {
@@ -68,12 +68,15 @@ $(function () {
                         // Remove right side content and add modified
                         $(".span9").empty().append(pre.html());
 
+                        // Set scrollbar to top of the content div
+                        $(".span9").scrollTop(0);
+
                         // Convert dependency relative path links to absolute
                         $(".span9 li a").each(function () {
                             var depHref;
 
                             depHref = $(this).attr("href");
-                            depHref = depHref.slice(depHref.lastIndexOf('./') + 2);
+                            depHref = depHref.slice(depHref.lastIndexOf("./") + 2);
 
                             $(this).attr("href", "http://brackets.io/docs/current/" + depHref);
                         });
