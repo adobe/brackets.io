@@ -54,6 +54,11 @@ $(function () {
                 // Add click listeners to left side nav links
                 // when clicked they load new content on right side
                 $(this).click(function () {
+
+                    // Set class of left nav selected to lnsel
+                    $(".lnsel").removeAttr("class");
+                    $(this).attr("class", "lnsel");
+
                     $.get(href, function (data) {
                         var pre = $(data).find(".span9");
 
