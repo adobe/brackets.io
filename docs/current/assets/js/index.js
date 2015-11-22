@@ -10,6 +10,9 @@ $(function () {
     // Make search results and dependency links go to correct location in left nav
     if (location.hash === "") {
         var hash = location.href.slice(location.href.lastIndexOf("/") + 1, location.href.length - 5);
+
+        $(".span3 a:contains(" + hash + ")").attr("class", "lnsel");
+
         if (hash !== "brackets") {
             location.hash = hash;
         }
