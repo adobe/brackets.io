@@ -46,6 +46,11 @@ $(function () {
         $(".span3 a").each(function () {
             var href = $(this).attr("href");
 
+            // Adjust link for context menu
+            $(this).on("contextmenu", function () {
+                $(this).attr("href", href);
+            });
+
             if (href !== "javascript:;") {
                 $(this).attr("href", "#");
 
