@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -517,37 +514,37 @@ to DOM nodes in the browser, so edits can be incrementally applied.</p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function LiveHTMLDocument(protocol, urlResolver, doc, editor) {
         LiveDocument.apply(this, arguments);
-        
+
         this._instrumentationEnabled = false;
         this._relatedDocuments = {
             stylesheets: {},
             scripts: {}
         };
-        
+
         this._onChange = this._onChange.bind(this);
         this.doc.on(&quot;change&quot;, this._onChange);
-        
+
         this._onRelated = this._onRelated.bind(this);
         this.protocol.on(&quot;DocumentRelated&quot;, this._onRelated);
-        
+
         this._onStylesheetAdded = this._onStylesheetAdded.bind(this);
         this.protocol.on(&quot;StylesheetAdded&quot;, this._onStylesheetAdded);
-        
+
         this._onStylesheetRemoved = this._onStylesheetRemoved.bind(this);
         this.protocol.on(&quot;StylesheetRemoved&quot;, this._onStylesheetRemoved);
-        
+
         this._onScriptAdded = this._onScriptAdded.bind(this);
         this.protocol.on(&quot;ScriptAdded&quot;, this._onScriptAdded);
-        
+
         this._onScriptRemoved = this._onScriptRemoved.bind(this);
         this.protocol.on(&quot;ScriptRemoved&quot;, this._onScriptRemoved);
-        
+
     }
-    
+
     LiveHTMLDocument.prototype = Object.create(LiveDocument.prototype);
     LiveHTMLDocument.prototype.constructor = LiveHTMLDocument;
     LiveHTMLDocument.prototype.parentClass = LiveDocument.prototype;
-    
+
     EventDispatcher.makeEventDispatcher(LiveHTMLDocument.prototype);</code></pre>
         </div>
         
@@ -637,10 +634,10 @@ to DOM nodes in the browser, so edits can be incrementally applied.</p>
         var self                = this,
             result              = HTMLInstrumentation.getUnappliedEditList(this.editor, change),
             applyEditsPromise;
-        
+
         if (result.edits) {
             applyEditsPromise = this.protocol.evaluate(&quot;_LD.applyDOMEdits(&quot; + JSON.stringify(result.edits) + &quot;)&quot;);
-    
+
             applyEditsPromise.always(function () {
                 if (!isNestedTimer) {
                     PerfUtils.addMeasurement(perfTimerName);
@@ -650,7 +647,7 @@ to DOM nodes in the browser, so edits can be incrementally applied.</p>
 
         this.errors = result.errors || [];
         this._updateErrorDisplay();
-        
+
         &#x2F;&#x2F; Debug-only: compare in-memory vs. in-browser DOM
         &#x2F;&#x2F; edit this file or set a conditional breakpoint at the top of this function:
         &#x2F;&#x2F;     &quot;this._debug = true, false&quot;
@@ -856,7 +853,7 @@ to DOM nodes in the browser, so edits can be incrementally applied.</p>
     </h4>
 
     
-    <div class="description"><p>Returns the instrumented version of the file. </p>
+    <div class="description"><p>Returns the instrumented version of the file.</p>
 </div>
     
 <dl>
@@ -872,7 +869,7 @@ to DOM nodes in the browser, so edits can be incrementally applied.</p>
         if (this._instrumentationEnabled) {
             body = HTMLInstrumentation.generateInstrumentedHTML(this.editor, this.protocol.getRemoteScript());
         }
-        
+
         return {
             body: body || this.doc.getText()
         };
@@ -975,7 +972,7 @@ Related means that is an external Javascript or CSS file that is included as par
             HTMLInstrumentation.scanDocument(this.doc);
             HTMLInstrumentation._markText(this.editor);
         }
-        
+
         this._instrumentationEnabled = enabled;
     };</code></pre></div><div class="member">
 

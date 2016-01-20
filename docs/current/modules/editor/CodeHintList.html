@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -562,7 +559,7 @@
                     new RegExp(StringUtils.regexEscape(match), &quot;i&quot;),
                     &quot;&lt;strong&gt;$&amp;&lt;&#x2F;strong&gt;&quot;
                 );
-                
+
                 view.hints.push({ formattedHint: &quot;&lt;span&gt;&quot; + displayName + &quot;&lt;&#x2F;span&gt;&quot; });
             };
         } else {
@@ -571,7 +568,7 @@
             };
         }
 
-        &#x2F;&#x2F; clear the list 
+        &#x2F;&#x2F; clear the list
         this.$hintMenu.find(&quot;li&quot;).remove();
 
         &#x2F;&#x2F; if there are no hints then close the list; otherwise add them and
@@ -585,30 +582,30 @@
                 if (index &gt;= self.maxResults) {
                     return true;
                 }
-                
+
                 _addHint(item);
             });
-            
+
             &#x2F;&#x2F; render code hint list
             var $ul = this.$hintMenu.find(&quot;ul.dropdown-menu&quot;),
                 $parent = $ul.parent();
-            
+
             &#x2F;&#x2F; remove list temporarily to save rendering time
             $ul.remove().append(Mustache.render(CodeHintListHTML, view));
-            
+
             $ul.children(&quot;li&quot;).each(function (index, element) {
                 var hint        = self.hints[index],
                     $element    = $(element);
-                
+
                 &#x2F;&#x2F; store hint on each list item
                 $element.data(&quot;hint&quot;, hint);
-                
+
                 &#x2F;&#x2F; insert jQuery hint objects after the template is rendered
                 if (hint.jquery) {
                     $element.find(&quot;.codehint-item&quot;).append(hint);
                 }
             });
-            
+
             &#x2F;&#x2F; delegate list item events to the top-level ul list element
             $ul.on(&quot;click&quot;, &quot;li&quot;, function (e) {
                 &#x2F;&#x2F; Don&#39;t let the click propagate upward (otherwise it will
@@ -618,15 +615,15 @@
                     self.handleSelect($(this).data(&quot;hint&quot;));
                 }
             });
-            
+
             &#x2F;&#x2F; Lists with wide results require different formatting
             if (this.hints.handleWideResults) {
                 $ul.find(&quot;li a&quot;).addClass(&quot;wide-result&quot;);
             }
-            
+
             &#x2F;&#x2F; attach to DOM
             $parent.append($ul);
-            
+
             this._setSelectedIndex(selectInitial ? 0 : -1);
         }
     };</code></pre></div><div class="member private">
@@ -670,7 +667,7 @@ Also computes the largest available width.</p>
         }
 
         posTop -= 30;   &#x2F;&#x2F; shift top for hidden parent element
-        
+
         var menuWidth = $menuWindow.width();
         var availableWidth = menuWidth;
         var rightOverhang = posLeft + menuWidth - $window.width();
@@ -749,7 +746,7 @@ Also computes the largest available width.</p>
                 $items = self.$hintMenu.find(&quot;li&quot;),
                 $view = self.$hintMenu.find(&quot;ul.dropdown-menu&quot;),
                 itemHeight;
-    
+
             if ($items.length !== 0) {
                 itemHeight = $($items[0]).height();
                 if (itemHeight) {
@@ -778,7 +775,7 @@ Also computes the largest available width.</p>
                      event.keyCode === KeyEvent.DOM_VK_PAGE_UP ||
                      event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)) {
                 this.handleClose();
-                
+
                 &#x2F;&#x2F; Let the event bubble.
                 return false;
             } else if (keyCode === KeyEvent.DOM_VK_UP) {
@@ -812,19 +809,19 @@ Also computes the largest available width.</p>
                     &#x2F;&#x2F; So, assume that pending text dismisses hints and let event bubble.
                     return false;
                 }
-                
+
                 &#x2F;&#x2F; Trigger a click handler to commmit the selected item
                 $(this.$hintMenu.find(&quot;li&quot;)[this.selectedIndex]).trigger(&quot;click&quot;);
             } else {
                 &#x2F;&#x2F; Let the event bubble.
                 return false;
             }
-            
+
             event.stopImmediatePropagation();
             event.preventDefault();
             return true;
         }
-        
+
         &#x2F;&#x2F; If we didn&#39;t handle it, let other global keydown hooks handle it.
         return false;
     };</code></pre></div><div class="member private">
@@ -855,10 +852,10 @@ selection if index &lt; 0.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    CodeHintList.prototype._setSelectedIndex = function (index) {
         var items = this.$hintMenu.find(&quot;li&quot;);
-        
+
         &#x2F;&#x2F; Range check
         index = Math.max(-1, Math.min(index, items.length - 1));
-        
+
         &#x2F;&#x2F; Clear old highlight
         if (this.selectedIndex !== -1) {
             $(items[this.selectedIndex]).find(&quot;a&quot;).removeClass(&quot;highlight&quot;);
@@ -923,13 +920,13 @@ selection if index &lt; 0.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    CodeHintList.prototype.close = function () {
         this.opened = false;
-        
+
         if (this.$hintMenu) {
             this.$hintMenu.removeClass(&quot;open&quot;);
             PopUpManager.removePopUp(this.$hintMenu);
             this.$hintMenu.remove();
         }
-        
+
         KeyBindingManager.removeGlobalKeydownHook(this._keydownHook);
     };</code></pre></div><div class="member">
 
@@ -991,7 +988,7 @@ selection if index &lt; 0.</p>
         if (this.opened &amp;&amp; !this.$hintMenu.hasClass(&quot;open&quot;)) {
             this.opened = false;
         }
-        
+
         return this.opened;
     };</code></pre></div><div class="member">
 
@@ -1021,9 +1018,9 @@ selection if index &lt; 0.</p>
 <pre class="code language-javascript"><code class="language-javascript">    CodeHintList.prototype.onClose = function (callback) {
         &#x2F;&#x2F; TODO: Due to #1381, this won&#39;t get called if the user clicks out of
         &#x2F;&#x2F; the code hint menu. That&#39;s (sort of) okay right now since it doesn&#39;t
-        &#x2F;&#x2F; really matter if a single old invisible code hint list is lying 
-        &#x2F;&#x2F; around (it will ignore keydown events, and it&#39;ll get closed the next 
-        &#x2F;&#x2F; time the user pops up a code hint). Once #1381 is fixed this issue 
+        &#x2F;&#x2F; really matter if a single old invisible code hint list is lying
+        &#x2F;&#x2F; around (it will ignore keydown events, and it&#39;ll get closed the next
+        &#x2F;&#x2F; time the user pops up a code hint). Once #1381 is fixed this issue
         &#x2F;&#x2F; should go away.
         this.handleClose = callback;
     };
@@ -1090,15 +1087,15 @@ selection if index &lt; 0.</p>
         if (this.hints.length) {
             &#x2F;&#x2F; Need to add the menu to the DOM before trying to calculate its ideal location.
             $(&quot;#codehint-menu-bar &gt; ul&quot;).append(this.$hintMenu);
-            
+
             var hintPos = this._calcHintListLocation();
-            
+
             this.$hintMenu.addClass(&quot;open&quot;)
                 .css({&quot;left&quot;: hintPos.left, &quot;top&quot;: hintPos.top, &quot;width&quot;: hintPos.width + &quot;px&quot;});
             this.opened = true;
-            
+
             PopUpManager.addPopUp(this.$hintMenu, this.handleClose, true);
-            
+
             KeyBindingManager.addGlobalKeydownHook(this._keydownHook);
         }
     };</code></pre></div><div class="member">

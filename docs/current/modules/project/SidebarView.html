@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -523,7 +520,7 @@ panelCollapsed and panelExpanded:</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleSplitViewHorizontal() {
         MainViewManager.setLayoutScheme(2, 1);
     }
-    
+
     &#x2F;&#x2F; Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         $sidebar                  = $(&quot;#sidebar&quot;);
@@ -532,7 +529,7 @@ panelCollapsed and panelExpanded:</p>
         $projectTitle             = $sidebar.find(&quot;#project-title&quot;);
         $projectFilesContainer    = $sidebar.find(&quot;#project-files-container&quot;);
         $workingSetViewsContainer = $sidebar.find(&quot;#working-set-list-container&quot;);
-    
+
         function _resizeSidebarSelection() {
             var $element;
             $sidebar.find(&quot;.sidebar-selection&quot;).each(function (index, element) {
@@ -546,12 +543,12 @@ panelCollapsed and panelExpanded:</p>
             $sidebar.find(&quot;.sidebar-selection-extension&quot;).css(&quot;display&quot;, &quot;none&quot;);
             $sidebar.find(&quot;.scroller-shadow&quot;).css(&quot;display&quot;, &quot;none&quot;);
         });
-        
+
         $sidebar.on(&quot;panelResizeUpdate&quot;, function (evt, width) {
             $sidebar.find(&quot;.sidebar-selection&quot;).width(width);
             ProjectManager._setFileTreeSelectionWidth(width);
         });
-        
+
         $sidebar.on(&quot;panelResizeEnd&quot;, function (evt, width) {
             _resizeSidebarSelection();
             $sidebar.find(&quot;.sidebar-selection-extension&quot;).css(&quot;display&quot;, &quot;block&quot;).css(&quot;left&quot;, width);
@@ -559,11 +556,11 @@ panelCollapsed and panelExpanded:</p>
             $projectFilesContainer.triggerHandler(&quot;scroll&quot;);
             WorkingSetView.syncSelectionIndicator();
         });
-		
+
         $sidebar.on(&quot;panelCollapsed&quot;, function (evt, width) {
             CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_SHOW_SIDEBAR);
         });
-        
+
         $sidebar.on(&quot;panelExpanded&quot;, function (evt, width) {
             WorkingSetView.refresh();
             _resizeSidebarSelection();
@@ -573,38 +570,38 @@ panelCollapsed and panelExpanded:</p>
             WorkingSetView.syncSelectionIndicator();
             CommandManager.get(Commands.VIEW_HIDE_SIDEBAR).setName(Strings.CMD_HIDE_SIDEBAR);
         });
-        
+
         &#x2F;&#x2F; AppInit.htmlReady in utils&#x2F;Resizer executes before, so it&#39;s possible that the sidebar
         &#x2F;&#x2F; is collapsed before we add the event. Check here initially
         if (!$sidebar.is(&quot;:visible&quot;)) {
             $sidebar.trigger(&quot;panelCollapsed&quot;);
         }
-        
+
         &#x2F;&#x2F; wire up an event handler to monitor when panes are created
         MainViewManager.on(&quot;paneCreate&quot;, function (evt, paneId) {
             WorkingSetView.createWorkingSetViewForPane($workingSetViewsContainer, paneId);
         });
-        
+
         MainViewManager.on(&quot;paneLayoutChange&quot;, function () {
             _updateUIStates();
         });
-        
+
         MainViewManager.on(&quot;workingSetAdd workingSetAddList workingSetRemove workingSetRemoveList workingSetUpdate&quot;, function () {
             _updateWorkingSetState();
         });
-        
+
         &#x2F;&#x2F; create WorkingSetViews for each pane already created
         _.forEach(MainViewManager.getPaneIdList(), function (paneId) {
             WorkingSetView.createWorkingSetViewForPane($workingSetViewsContainer, paneId);
         });
-        
+
         _updateUIStates();
-        
+
         &#x2F;&#x2F; Tooltips
         $gearMenu.attr(&quot;title&quot;, Strings.GEAR_MENU_TOOLTIP);
         $splitViewMenu.attr(&quot;title&quot;, Strings.SPLITVIEW_MENU_TOOLTIP);
     });
-    
+
     ProjectManager.on(&quot;projectOpen&quot;, _updateProjectTitle);</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -671,15 +668,15 @@ panelCollapsed and panelExpanded:</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateProjectTitle() {
         var displayName = ProjectManager.getProjectRoot().name;
         var fullPath = ProjectManager.getProjectRoot().fullPath;
-        
+
         if (displayName === &quot;&quot; &amp;&amp; fullPath === &quot;&#x2F;&quot;) {
             displayName = &quot;&#x2F;&quot;;
         }
-        
+
         $projectTitle.html(_.escape(displayName));
         $projectTitle.attr(&quot;title&quot;, fullPath);
-        
-        &#x2F;&#x2F; Trigger a scroll on the project files container to 
+
+        &#x2F;&#x2F; Trigger a scroll on the project files container to
         &#x2F;&#x2F; reposition the scroller shadows and avoid issue #2255
         $projectFilesContainer.trigger(&quot;scroll&quot;);
     }</code></pre></div><div class="member private">
@@ -714,7 +711,7 @@ panelCollapsed and panelExpanded:</p>
         } else {
             spriteIndex = 0;
         }
-        
+
         &#x2F;&#x2F; SplitView Icon
         $splitViewMenu.removeClass(ICON_CLASSES.join(&quot; &quot;))
                       .addClass(ICON_CLASSES[spriteIndex]);
@@ -723,7 +720,7 @@ panelCollapsed and panelExpanded:</p>
         _cmdSplitNone.setChecked(spriteIndex === 0);
         _cmdSplitVertical.setChecked(spriteIndex === 1);
         _cmdSplitHorizontal.setChecked(spriteIndex === 2);
-        
+
         &#x2F;&#x2F; Options icon
         _updateWorkingSetState();
     }</code></pre></div><div class="member private">

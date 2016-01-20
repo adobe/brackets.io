@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -590,21 +587,21 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getTagAttributeValue(editor, pos) {
         var ctx, tagName, attrName, exclusionList = [], offset, textBefore, textAfter;
-        
+
         ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
         offset = TokenUtils.offsetInToken(ctx);
-        
+
         &#x2F;&#x2F; To support multiple options on the same attribute, we have
         &#x2F;&#x2F; to break the value, these values will not be available then.
         if (ctx.token.type === &quot;string&quot; &amp;&amp; &#x2F;\s+&#x2F;.test(ctx.token.string)) {
             textBefore = ctx.token.string.substr(1, offset);
             textAfter = ctx.token.string.substr(offset);
-            
+
             &#x2F;&#x2F; Remove quote from end of the string.
             if (&#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1))) {
                 textAfter = textAfter.substr(0, textAfter.length - 1);
             }
-            
+
             &#x2F;&#x2F; Split the text before and after the offset, skipping the current query.
             exclusionList = exclusionList.concat(textBefore.split(&#x2F;\s+&#x2F;).slice(0, -1));
             exclusionList = exclusionList.concat(textAfter.split(&#x2F;\s+&#x2F;));
@@ -616,7 +613,7 @@
                 }
             });
         }
-        
+
         &#x2F;&#x2F; Look-back and find tag and attributes.
         while (TokenUtils.movePrevToken(ctx)) {
             if (ctx.token.type === &quot;tag bracket&quot;) {
@@ -629,12 +626,12 @@
                     break;
                 }
             }
-            
+
             &#x2F;&#x2F; Get the first previous attribute.
             if (ctx.token.type === &quot;attribute&quot; &amp;&amp; !attrName) {
                 attrName = ctx.token.string;
             }
-            
+
             &#x2F;&#x2F; Stop if we get a bracket after tag.
             if (ctx.token.type === &quot;tag&quot;) {
                 tagName = ctx.token.string;
@@ -646,7 +643,7 @@
                 }
             }
         }
-        
+
         return {
             tagName: tagName,
             attrName: attrName,
@@ -689,10 +686,10 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getTagAttributes(editor, constPos) {
         var pos, ctx, ctxPrev, ctxNext, ctxTemp, tagName, exclusionList = [], shouldReplace;
-        
+
         pos = $.extend({}, constPos);
         ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
-        
+
         &#x2F;&#x2F; Stop if the cursor is before = or an attribute value.
         ctxTemp = $.extend(true, {}, ctx);
         if (ctxTemp.token.type === null &amp;&amp; regexWhitespace.test(ctxTemp.token.string)) {
@@ -704,7 +701,7 @@
                 TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxTemp);
             }
         }
-        
+
         &#x2F;&#x2F; Incase an attribute is followed by an equal sign, shouldReplace will be used
         &#x2F;&#x2F; to prevent from appending =&quot;&quot; again.
         if (ctxTemp.token.type === &quot;attribute&quot;) {
@@ -714,7 +711,7 @@
                 }
             }
         }
-        
+
         &#x2F;&#x2F; Look-Back and get the attributes and tag name.
         pos = $.extend({}, constPos);
         ctxPrev = TokenUtils.getInitialContext(editor._codeMirror, pos);
@@ -725,12 +722,12 @@
                     return null;
                 }
             }
-            
+
             &#x2F;&#x2F; Get attributes.
             if (ctxPrev.token.type === &quot;attribute&quot;) {
                 exclusionList.push(ctxPrev.token.string);
             }
-            
+
             &#x2F;&#x2F; Get tag.
             if (ctxPrev.token.type === &quot;tag&quot;) {
                 tagName = ctxPrev.token.string;
@@ -742,7 +739,7 @@
                 }
             }
         }
-        
+
         &#x2F;&#x2F; Look-Ahead and find rest of the attributes.
         pos = $.extend({}, constPos);
         ctxNext = TokenUtils.getInitialContext(editor._codeMirror, pos);
@@ -750,7 +747,7 @@
             if (ctxNext.token.type === &quot;string&quot; &amp;&amp; ctxNext.token.string === &quot;\&quot;&quot;) {
                 return null;
             }
-            
+
             &#x2F;&#x2F; Stop on closing bracket of its own tag or opening bracket of next tag.
             if (ctxNext.token.type === &quot;tag bracket&quot; &amp;&amp;
                     (ctxNext.token.string.indexOf(&quot;&gt;&quot;) &gt;= 0 || ctxNext.token.string === &quot;&lt;&quot;)) {
@@ -802,10 +799,10 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getTagInfo(editor, pos) {
         var ctx, offset, tagAttrs, tagAttrValue;
-        
+
         ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
         offset = TokenUtils.offsetInToken(ctx);
-        
+
         if (ctx.token &amp;&amp; ctx.token.type === &quot;tag bracket&quot; &amp;&amp; ctx.token.string === &quot;&lt;&quot;) {
             &#x2F;&#x2F; Returns tagInfo when an angle bracket is created.
             return _createTagInfo(ctx.token, TOKEN_TAG);
@@ -834,7 +831,7 @@
                     ctx.token.end === pos.ch) {
                 return _createTagInfo();
             }
-            
+
             tagAttrValue = _getTagAttributeValue(editor, pos);
             if (tagAttrValue &amp;&amp; tagAttrValue.tagName &amp;&amp; tagAttrValue.attrName) {
                 return _createTagInfo(ctx.token, TOKEN_VALUE, offset, tagAttrValue.exclusionList, tagAttrValue.tagName, tagAttrValue.attrName);
@@ -877,11 +874,11 @@
         }
         &#x2F;&#x2F; Remove quotation marks in query.
         query = tagInfo.token.string.substr(1, tagInfo.offset - 1);
-        
+
         &#x2F;&#x2F; Get the last option to use as a query to support multiple options.
         return query.split(&#x2F;\s+&#x2F;).slice(-1)[0];
     }
-    
+
     &#x2F;&#x2F; Expose public API.
     exports.getTagInfo      = getTagInfo;
     exports.getValueQuery   = getValueQuery;

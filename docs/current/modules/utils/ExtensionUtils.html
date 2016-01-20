@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -559,15 +556,15 @@
             rel:  &quot;stylesheet&quot;,
             href: url
         };
-        
+
         var $link = $(&quot;&lt;link&#x2F;&gt;&quot;).attr(attributes);
-        
+
         if (deferred) {
             $link.on(&#39;load&#39;, deferred.resolve).on(&#39;error&#39;, deferred.reject);
         }
-        
+
         $link.appendTo(&quot;head&quot;);
-        
+
         return $link[0];
     }</code></pre></div><div class="member public">
 
@@ -609,7 +606,7 @@
         if (path) {
             modulePath += path;
         }
-        
+
         return modulePath;
     }</code></pre></div><div class="member public">
 
@@ -648,7 +645,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getModuleUrl(module, path) {
         var url = encodeURI(getModulePath(module, path));
-        
+
         &#x2F;&#x2F; On Windows, $.get() fails if the url is a full pathname. To work around this,
         &#x2F;&#x2F; prepend &quot;file:&#x2F;&#x2F;&#x2F;&quot;. On the Mac, $.get() works fine if the url is a full pathname,
         &#x2F;&#x2F; but *doesn&#39;t* work if it is prepended with &quot;file:&#x2F;&#x2F;&quot;. Go figure.
@@ -656,7 +653,7 @@
         if (brackets.platform === &quot;win&quot; &amp;&amp; url.indexOf(&quot;:&quot;) !== -1) {
             url = &quot;file:&#x2F;&#x2F;&#x2F;&quot; + url;
         }
-        
+
         return url;
     }</code></pre></div><div class="member">
 
@@ -800,7 +797,7 @@ disabled might be set.</p>
             });
         return result.promise();
     }
-    
+
     exports.addEmbeddedStyleSheet = addEmbeddedStyleSheet;
     exports.addLinkedStyleSheet   = addLinkedStyleSheet;
     exports.parseLessCode         = parseLessCode;
@@ -850,7 +847,7 @@ disabled might be set.</p>
         loadFile(module, path)
             .done(function (content) {
                 var url = this.url;
-                
+
                 if (url.slice(-5) === &quot;.less&quot;) {
                     parseLessCode(content, url)
                         .done(function (css) {
@@ -860,7 +857,7 @@ disabled might be set.</p>
                 } else {
                     var deferred = new $.Deferred(),
                         link = addLinkedStyleSheet(url, deferred);
-                    
+
                     deferred
                         .done(function () {
                             result.resolve(link);
@@ -869,7 +866,7 @@ disabled might be set.</p>
                 }
             })
             .fail(result.reject);
-        
+
         &#x2F;&#x2F; Summarize error info to console for easier debugging
         result.fail(function (error, textStatus, httpError) {
             if (error.readyState !== undefined) {
@@ -879,7 +876,7 @@ disabled might be set.</p>
                 console.error(&quot;[Extension] Unable to process stylesheet &quot; + path, error);
             }
         });
-        
+
         return result.promise();
     }</code></pre></div><div class="member public">
 
@@ -922,10 +919,10 @@ Make sure URLs in the code are wrapped in quotes, like so:
 <pre class="code language-javascript"><code class="language-javascript">    function parseLessCode(code, url) {
         var result = new $.Deferred(),
             options;
-        
+
         if (url) {
             var dir = url.slice(0, url.lastIndexOf(&quot;&#x2F;&quot;) + 1);
-            
+
             options = {
                 filename: url,
                 rootpath: dir
@@ -941,7 +938,7 @@ Make sure URLs in the code are wrapped in quotes, like so:
                 };
             }
         }
-        
+
         less.render(code, options, function onParse(err, tree) {
             if (err) {
                 result.reject(err);
@@ -949,7 +946,7 @@ Make sure URLs in the code are wrapped in quotes, like so:
                 result.resolve(tree.css);
             }
         });
-        
+
         return result.promise();
     }</code></pre></div>
 </section>

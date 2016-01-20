@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -464,8 +461,8 @@
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>To ensure cache coherence, current and future asynchronous state-changing 
-operations of FileSystemEntry and its subclasses should implement the 
+    <div><p>To ensure cache coherence, current and future asynchronous state-changing
+operations of FileSystemEntry and its subclasses should implement the
 following high-level sequence of steps:</p>
 <ol>
 <li>Block external filesystem change events;</li>
@@ -475,7 +472,7 @@ following high-level sequence of steps:</p>
 <li>Fire an appropriate internal change notification; and</li>
 <li>Unblock external change events.</li>
 </ol>
-<p>Note that because internal filesystem state is updated first, both the original 
+<p>Note that because internal filesystem state is updated first, both the original
 caller and the change notification listeners observe filesystem state that is
 current w.r.t. the operation. Furthermore, because external change events are
 blocked before the operation begins, listeners will only receive the internal
@@ -571,7 +568,7 @@ and is never used directly.</p>
         this._fileSystem = fileSystem;
         this._id = nextId++;
     }
-    
+
     &#x2F;&#x2F; Add &quot;fullPath&quot;, &quot;name&quot;, &quot;parent&quot;, &quot;id&quot;, &quot;isFile&quot; and &quot;isDirectory&quot; getters
     Object.defineProperties(FileSystemEntry.prototype, {
         &quot;fullPath&quot;: {
@@ -865,10 +862,10 @@ and is never used directly.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype._isWatched = function (relaxed) {
         var watchedRoot = this._watchedRoot,
             filterResult = this._watchedRootFilterResult;
-        
+
         if (!watchedRoot) {
             watchedRoot = this._fileSystem._findWatchedRootForPath(this._path);
-            
+
             if (watchedRoot) {
                 this._watchedRoot = watchedRoot;
                 if (watchedRoot.entry !== this) { &#x2F;&#x2F; avoid creating entries for root&#39;s parent
@@ -884,7 +881,7 @@ and is never used directly.</p>
                 this._watchedRootFilterResult = filterResult;
             }
         }
-        
+
         if (watchedRoot) {
             if (watchedRoot.status === WatchedRoot.ACTIVE ||
                     (relaxed &amp;&amp; watchedRoot.status === WatchedRoot.STARTING)) {
@@ -929,16 +926,16 @@ and is never used directly.</p>
         }
         this._name = parts[parts.length - 1];
         parts.pop(); &#x2F;&#x2F; Remove name
-        
+
         if (parts.length &gt; 0) {
             this._parentPath = parts.join(&quot;&#x2F;&quot;) + &quot;&#x2F;&quot;;
         } else {
             &#x2F;&#x2F; root directories have no parent path
             this._parentPath = null;
         }
-        
+
         this._path = newPath;
-        
+
         var watchedRoot = this._watchedRoot;
         if (watchedRoot) {
             if (newPath.indexOf(watchedRoot.entry.fullPath) === 0) {
@@ -1000,37 +997,37 @@ and is never used directly.</p>
         var maxDepth = options.maxDepth,
             maxEntriesCounter = options.maxEntriesCounter,
             sortList = options.sortList;
-        
+
         if (maxEntriesCounter.value-- &lt;= 0 || maxDepth-- &lt; 0) {
             &#x2F;&#x2F; The outer FileSystemEntry.visit call is responsible for applying
             &#x2F;&#x2F; the main callback to FileSystemError.TOO_MANY_FILES in this case
             callback(null);
             return;
         }
-        
+
         if (this.isDirectory) {
             var visitedPath = stats.realPath || this.fullPath;
-    
+
             if (visitedPaths.hasOwnProperty(visitedPath)) {
                 &#x2F;&#x2F; Link cycle detected
                 callback(null);
                 return;
             }
-            
+
             visitedPaths[visitedPath] = true;
         }
-        
+
         if (!visitor(this) || this.isFile) {
             callback(null);
             return;
         }
-        
+
         this.getContents(function (err, entries, entriesStats) {
             if (err) {
                 callback(err);
                 return;
             }
-            
+
             var counter = entries.length;
             if (counter === 0) {
                 callback(null);
@@ -1042,13 +1039,13 @@ and is never used directly.</p>
                     callback(null);
                 }
             }
-            
+
             var nextOptions = {
                 maxDepth: maxDepth,
                 maxEntriesCounter: maxEntriesCounter,
                 sortList : sortList
             };
-            
+
             &#x2F;&#x2F;sort entries if required
             function compareFilesWithIndices(index1, index2) {
                 return entries[index1]._name.toLocaleLowerCase().localeCompare(entries[index2]._name.toLocaleLowerCase());
@@ -1084,7 +1081,7 @@ and is never used directly.</p>
     
     <div class="description"><p>Check to see if the entry exists on disk. Note that there will NOT be an
 error returned if the file does not exist on the disk; in that case the
-error parameter will be null and the boolean will be false. The error 
+error parameter will be null and the boolean will be false. The error
 parameter will only be truthy when an unexpected error was encountered
 during the test, in which case the state of the entry should be considered
 unknown.</p>
@@ -1105,18 +1102,18 @@ unknown.</p>
             callback(null, true);
             return;
         }
-        
+
         this._impl.exists(this._path, function (err, exists) {
             if (err) {
                 this._clearCachedData();
                 callback(err);
                 return;
             }
-            
+
             if (!exists) {
                 this._clearCachedData();
             }
-            
+
             callback(null, exists);
         }.bind(this));
     };</code></pre></div><div class="member">
@@ -1156,7 +1153,7 @@ to trash, the item is permanently deleted.</p>
 
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();
-        
+
         this._clearCachedData();
         this._impl.moveToTrash(this._path, function (err) {
             var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
@@ -1171,7 +1168,7 @@ to trash, the item is permanently deleted.</p>
                         &#x2F;&#x2F; Notify change listeners
                         this._fileSystem._fireChangeEvent(parent, added, removed);
                     }
-                    
+
                     &#x2F;&#x2F; Unblock external change events
                     this._fileSystem._endChange();
                 }
@@ -1210,23 +1207,23 @@ to trash, the item is permanently deleted.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.rename = function (newFullPath, callback) {
         callback = callback || function () {};
-        
+
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();
-        
+
         this._impl.rename(this._path, newFullPath, function (err) {
             var oldFullPath = this._path;
-            
+
             try {
                 if (err) {
                     this._clearCachedData();
                     callback(err);
                     return;
                 }
-                
+
                 &#x2F;&#x2F; Update internal filesystem state
                 this._fileSystem._handleRename(this._path, newFullPath, this.isDirectory);
-                
+
                 try {
                     &#x2F;&#x2F; Notify the caller
                     callback(null);
@@ -1269,18 +1266,18 @@ to trash, the item is permanently deleted.</p>
             callback(null, this._stat);
             return;
         }
-        
+
         this._impl.stat(this._path, function (err, stat) {
             if (err) {
                 this._clearCachedData();
                 callback(err);
                 return;
             }
-            
+
             if (this._isWatched()) {
                 this._stat = stat;
             }
-            
+
             callback(null, stat);
         }.bind(this));
     };</code></pre></div><div class="member">
@@ -1334,10 +1331,10 @@ and all of its contents. For reversible delete, see moveToTrash().</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystemEntry.prototype.unlink = function (callback) {
         callback = callback || function () {};
-        
+
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();
-        
+
         this._clearCachedData();
         this._impl.unlink(this._path, function (err) {
             var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
@@ -1345,14 +1342,14 @@ and all of its contents. For reversible delete, see moveToTrash().</p>
             &#x2F;&#x2F; Update internal filesystem state
             this._fileSystem._handleDirectoryChange(parent, function (added, removed) {
                 try {
-                    &#x2F;&#x2F; Notify the caller 
+                    &#x2F;&#x2F; Notify the caller
                     callback(err);
                 } finally {
                     if (parent._isWatched()) {
                         &#x2F;&#x2F; Notify change listeners
                         this._fileSystem._fireChangeEvent(parent, added, removed);
                     }
-                    
+
                     &#x2F;&#x2F; Unblock external change events
                     this._fileSystem._endChange();
                 }
@@ -1376,7 +1373,7 @@ search depth and total number of entries visited. No particular traversal
 order is guaranteed; instead of relying on such an order, it is preferable
 to use the visit function to build a list of visited entries, sort those
 entries as desired, and then process them. Whenever possible, deep
-filesystem traversals should use this method. </p>
+filesystem traversals should use this method.</p>
 </div>
     
 <dl>
@@ -1409,44 +1406,44 @@ filesystem traversals should use this method. </p>
             if (options === undefined) {
                 options = {};
             }
-            
+
             callback = callback || function () {};
         }
-        
+
         if (options.maxDepth === undefined) {
             options.maxDepth = VISIT_DEFAULT_MAX_DEPTH;
         }
-        
+
         if (options.maxEntries === undefined) {
             options.maxEntries = VISIT_DEFAULT_MAX_ENTRIES;
         }
 
         options.maxEntriesCounter = { value: options.maxEntries };
-        
+
         this.stat(function (err, stats) {
             if (err) {
                 callback(err);
                 return;
             }
-            
+
             this._visitHelper(stats, {}, visitor, options, function (err) {
                 if (callback) {
                     if (err) {
                         callback(err);
                         return;
                     }
-                    
+
                     if (options.maxEntriesCounter.value &lt; 0) {
                         callback(FileSystemError.TOO_MANY_ENTRIES);
                         return;
                     }
-                    
+
                     callback(null);
                 }
             }.bind(this));
         }.bind(this));
     };
-    
+
     &#x2F;&#x2F; Export this class
     module.exports = FileSystemEntry;
 });</code></pre></div>

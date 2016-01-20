@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -526,7 +523,7 @@ own Document change handler.</li>
             <pre class="code language-javascript"><code class="language-javascript">    function TextRange(document, startLine, endLine) {
         this.startLine = startLine;
         this.endLine = endLine;
-        
+
         this.document = document;
         document.addRef();
         &#x2F;&#x2F; store this-bound versions of listeners so we can remove them later
@@ -645,14 +642,14 @@ range can no longer be accurately maintained.</p>
             var result = this._applySingleChangeToRange(changeList[i]);
             hasChanged = hasChanged || result.hasChanged;
             hasContentChanged = hasContentChanged || result.hasContentChanged;
-            
+
             &#x2F;&#x2F; If we lost sync with the range, just bail now
             if (this.startLine === null || this.endLine === null) {
                 this.trigger(&quot;lostSync&quot;);
                 break;
             }
         }
-        
+
         if (hasChanged) {
             this.trigger(&quot;change&quot;);
         }
@@ -660,11 +657,11 @@ range can no longer be accurately maintained.</p>
             this.trigger(&quot;contentChange&quot;);
         }
     };
-    
+
     TextRange.prototype._handleDocumentChange = function (event, doc, changeList) {
         this._applyChangesToRange(changeList);
     };
-    
+
     TextRange.prototype._handleDocumentDeleted = function (event) {
         this.trigger(&quot;lostSync&quot;);
     };</code></pre></div><div class="member private">
@@ -700,19 +697,19 @@ to this range.</p>
         &#x2F;&#x2F; console.log(this + &quot; applying change to (&quot; +
         &#x2F;&#x2F;         (change.from &amp;&amp; (change.from.line+&quot;,&quot;+change.from.ch)) + &quot; - &quot; +
         &#x2F;&#x2F;         (change.to &amp;&amp; (change.to.line+&quot;,&quot;+change.to.ch)) + &quot;)&quot;);
-        
+
         &#x2F;&#x2F; Special case: the range is no longer meaningful since the entire text was replaced
         if (!change.from || !change.to) {
             this.startLine = null;
             this.endLine = null;
             return {hasChanged: true, hasContentChanged: true};
-            
+
         &#x2F;&#x2F; Special case: certain changes around the edges of the range are problematic, because
         &#x2F;&#x2F; if they&#39;re undone, we&#39;ll be unable to determine how to fix up the range to include the
         &#x2F;&#x2F; undone content. (The &quot;undo&quot; will just look like an insertion outside our bounds.) So
         &#x2F;&#x2F; in those cases, we destroy the range instead of fixing it up incorrectly. The specific
         &#x2F;&#x2F; cases are:
-        &#x2F;&#x2F; 1. Edit crosses the start boundary of the inline editor (defined as character 0 
+        &#x2F;&#x2F; 1. Edit crosses the start boundary of the inline editor (defined as character 0
         &#x2F;&#x2F;    of the first line).
         &#x2F;&#x2F; 2. Edit crosses the end boundary of the inline editor (defined as the newline at
         &#x2F;&#x2F;    the end of the last line).
@@ -725,14 +722,14 @@ to this range.</p>
             this.startLine = null;
             this.endLine = null;
             return {hasChanged: true, hasContentChanged: true};
-            
+
         &#x2F;&#x2F; Normal case: update the range end points if any content was added before them. Note that
         &#x2F;&#x2F; we don&#39;t rely on line handles for this since we want to gracefully handle cases where the
         &#x2F;&#x2F; start or end line was deleted during a change.
         } else {
             var numAdded = change.text.length - (change.to.line - change.from.line + 1);
             var result = {hasChanged: false, hasContentChanged: false};
-            
+
             &#x2F;&#x2F; This logic is so simple because we&#39;ve already excluded all cases where the change
             &#x2F;&#x2F; crosses the range boundaries
             if (numAdded !== 0) {
@@ -750,9 +747,9 @@ to this range.</p>
                 &#x2F;&#x2F; start of the change is within the range, we know the content changed.
                 result.hasContentChanged = true;
             }
-            
+
             &#x2F;&#x2F; console.log(&quot;Now &quot; + this);
-            
+
             return result;
         }
     };</code></pre></div><div class="member">
@@ -803,8 +800,8 @@ to this range.</p>
 <pre class="code language-javascript"><code class="language-javascript">    TextRange.prototype.toString = function () {
         return &quot;[TextRange &quot; + this.startLine + &quot;-&quot; + this.endLine + &quot; in &quot; + this.document + &quot;]&quot;;
     };
-    
-    
+
+
     &#x2F;&#x2F; Define public API
     exports.TextRange = TextRange;
 });</code></pre></div>

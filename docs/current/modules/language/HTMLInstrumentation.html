@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -472,8 +469,8 @@ used by both live highlighting and live HTML editing.</p>
 Each tag is assigned an ID which is stored in markers that are inserted into the editor.
 These IDs are also included in &quot;data-brackets-id&quot; attributes that are inserted in the
 HTML code that&#39;s served to the browser via the Live Development server.</p>
-<p>The primary function for that functionality is generateInstrumentedHTML(). This does just 
-what it says - it will read the HTML content in the doc and generate instrumented code by 
+<p>The primary function for that functionality is generateInstrumentedHTML(). This does just
+what it says - it will read the HTML content in the doc and generate instrumented code by
 injecting &quot;data-brackets-id&quot; attributes. Additionally, it caches the parsed DOM for use
 by future updates.</p>
 <p>As the user makes edits in the editor, we determine how the DOM structure should change
@@ -578,16 +575,16 @@ position in the document--this is used in live highlighting.</p>
         var cachedValue = _cachedValues[editor.document.file.fullPath],
             editorRoot  = cachedValue.dom,
             browserRoot;
-        
+
         browserRoot = _processBrowserSimpleDOM(browserSimpleDOM, editorRoot.tagID);
-        
+
         return {
             diff    : HTMLDOMDiff.domdiff(editorRoot, browserRoot),
             browser : browserRoot,
             editor  : editorRoot
         };
     }
-    
+
     DocumentManager.on(&quot;beforeDocumentDelete&quot;, _removeDocFromCache);</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
@@ -633,13 +630,13 @@ position in the document--this is used in live highlighting.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getMarkerAtDocumentPos(editor, pos, preferParent, markCache) {
         var marks, match;
-        
+
         markCache = markCache || {};
         marks = _getSortedTagMarks(editor._codeMirror.findMarksAt(pos), markCache);
         if (!marks.length) {
             return null;
         }
-        
+
         &#x2F;&#x2F; The mark with the latest start is the innermost one.
         match = marks[marks.length - 1];
         if (preferParent) {
@@ -654,7 +651,7 @@ position in the document--this is used in live highlighting.</p>
                 }
             }
         }
-        
+
         return match.mark;
     }</code></pre></div><div class="member private">
 
@@ -703,7 +700,7 @@ position in the document--this is used in live highlighting.</p>
                     mark1.range.from.ch - mark2.range.from.ch :
                     mark1.range.from.line - mark2.range.from.line);
         });
-        
+
         return marks;
     }</code></pre></div><div class="member private public">
 
@@ -729,7 +726,7 @@ the API is likely to change in the future.</p>
         editor
         <span class="label label-info">Editor</span>
     </dt>
-    <dd>The editor to scan. </dd>
+    <dd>The editor to scan.</dd>
     <dt>
         pos
         <span class="label label-info">{line: number,ch: number}</span>
@@ -843,7 +840,7 @@ before calling this function to create new ones.</p>
     </h4>
 
     
-    <div class="description"><p>Mark the text for the specified editor. Either scanDocument() or 
+    <div class="description"><p>Mark the text for the specified editor. Either scanDocument() or
 generateInstrumentedHTML() must be called before this function
 is called.</p>
 <p>NOTE: This function is &quot;private&quot; for now (has a leading underscore), since
@@ -866,12 +863,12 @@ the API is likely to change in the future.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _markText(editor) {
         var cache = _cachedValues[editor.document.file.fullPath],
             dom = cache &amp;&amp; cache.dom;
-        
+
         if (!dom) {
             console.error(&quot;Couldn&#39;t find the dom for &quot; + editor.document.file.fullPath);
             return;
         }
-        
+
         _markTextFromDOM(editor, dom);
     }</code></pre></div><div class="member private public">
 
@@ -905,7 +902,7 @@ the API is likely to change in the future.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _markTextFromDOM(editor, dom) {
         var cm = editor._codeMirror;
-        
+
         &#x2F;&#x2F; Remove existing marks
         var marks = cm.getAllMarks();
         cm.operation(function () {
@@ -915,7 +912,7 @@ the API is likely to change in the future.</p>
                 }
             });
         });
-                
+
         &#x2F;&#x2F; Mark
         _markTags(cm, dom);
     }</code></pre></div><div class="member private">
@@ -979,29 +976,29 @@ the API is likely to change in the future.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _processBrowserSimpleDOM(browserRoot, editorRootTagID) {
         var nodeMap         = {},
             root;
-        
+
         function _processElement(elem) {
             elem.tagID = elem.attributes[&quot;data-brackets-id&quot;];
-            
+
             &#x2F;&#x2F; remove data-brackets-id attribute for diff
             delete elem.attributes[&quot;data-brackets-id&quot;];
-            
+
             elem.children.forEach(function (child) {
                 &#x2F;&#x2F; set parent
                 child.parent = elem;
-                
+
                 if (child.isElement()) {
                     _processElement(child);
                 } else if (child.isText()) {
                     child.update();
                     child.tagID = HTMLSimpleDOM.getTextNodeID(child);
-                    
+
                     nodeMap[child.tagID] = child;
                 }
             });
-            
+
             elem.update();
-            
+
             nodeMap[elem.tagID] = elem;
 
             &#x2F;&#x2F; Choose the root element based on the root tag in the editor.
@@ -1010,7 +1007,7 @@ the API is likely to change in the future.</p>
                 root = elem;
             }
         }
-        
+
         _processElement(browserRoot);
 
         root = root || browserRoot;
@@ -1083,7 +1080,7 @@ the API is likely to change in the future.</p>
     exports._allowIncremental           = allowIncremental;
     exports._getBrowserDiff             = _getBrowserDiff;
     exports._resetCache                 = _resetCache;
-    
+
     &#x2F;&#x2F; public API
     exports.scanDocument                = scanDocument;
     exports.generateInstrumentedHTML    = generateInstrumentedHTML;
@@ -1135,14 +1132,14 @@ the API is likely to change in the future.</p>
         if (!result) {
             return { errors: updater.errors };
         }
-        
+
         var edits = HTMLDOMDiff.domdiff(result.oldSubtree, result.newSubtree);
-        
+
         &#x2F;&#x2F; We&#39;re done with the nodeMap that was added to the subtree by the updater.
         if (result.newSubtree !== result.newDOM) {
             delete result.newSubtree.nodeMap;
         }
-        
+
         return {
             dom: result.newDOM,
             edits: edits,
@@ -1160,10 +1157,10 @@ the API is likely to change in the future.</p>
     </h4>
 
     
-    <div class="description"><p>Generate instrumented HTML for the specified editor&#39;s document, and mark the associated tag 
-ranges in the editor. Each tag has a &quot;data-brackets-id&quot; attribute with a unique ID for its 
-value. For example, &quot;&lt;div&gt;&quot; becomes something like &quot;&lt;div data-brackets-id=&#39;45&#39;&gt;&quot;. The attribute 
-value is just a number that is guaranteed to be unique. </p>
+    <div class="description"><p>Generate instrumented HTML for the specified editor&#39;s document, and mark the associated tag
+ranges in the editor. Each tag has a &quot;data-brackets-id&quot; attribute with a unique ID for its
+value. For example, &quot;&lt;div&gt;&quot; becomes something like &quot;&lt;div data-brackets-id=&#39;45&#39;&gt;&quot;. The attribute
+value is just a number that is guaranteed to be unique.</p>
 <p>Also stores marks in the given editor that correspond to the tag ranges. These marks are used
 to track the DOM structure for in-browser highlighting and live HTML updating.</p>
 <p>This only needs to be done once on load of a document. As the document is edited in memory,
@@ -1190,34 +1187,34 @@ events. Call this again only if you want to do a full re-sync of the editor&#39;
             orig = doc.getText(),
             gen = &quot;&quot;,
             lastIndex = 0;
-        
+
         if (!dom) {
             return null;
         }
-        
+
         &#x2F;&#x2F; Ensure that the marks in the editor are up to date with respect to the given DOM.
         _markTextFromDOM(editor, dom);
-        
+
         &#x2F;&#x2F; Walk through the dom nodes and insert the &#39;data-brackets-id&#39; attribute at the
-        &#x2F;&#x2F; end of the open tag        
+        &#x2F;&#x2F; end of the open tag
         function walk(node) {
             if (node.tag) {
                 var attrText = &quot; data-brackets-id=&#39;&quot; + node.tagID + &quot;&#39;&quot;;
-                
+
                 &#x2F;&#x2F; Insert the attribute as the first attribute in the tag.
                 var insertIndex = node.start + node.tag.length + 1;
                 gen += orig.substr(lastIndex, insertIndex - lastIndex) + attrText;
                 lastIndex = insertIndex;
             }
-            
+
             if (node.isElement()) {
                 node.children.forEach(walk);
             }
         }
-        
+
         walk(dom);
         gen += orig.substr(lastIndex);
-        
+
         return gen;
     }</code></pre></div><div class="member public">
 
@@ -1237,10 +1234,10 @@ getUnappliedEditList() was called (whichever is most recent). Caches this state 
 it can be used as the base state for the next getUnappliedEditList().</p>
 <p>For simple text edits, this update is done quickly and incrementally. For structural
 edits (edits that change the DOM structure or add/remove attributes), the update
-requires a full reparse. </p>
-<p>If the document currently contains invalid HTML, no edits will be generated until 
-getUnappliedEditList() is called when the document is valid, at which point the edits 
-will reflect all the changes needed to catch the browser up with all the edits 
+requires a full reparse.</p>
+<p>If the document currently contains invalid HTML, no edits will be generated until
+getUnappliedEditList() is called when the document is valid, at which point the edits
+will reflect all the changes needed to catch the browser up with all the edits
 made while the document was invalid.</p>
 </div>
     
@@ -1264,15 +1261,15 @@ made while the document was invalid.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getUnappliedEditList(editor, changeList) {
         var cachedValue = _cachedValues[editor.document.file.fullPath];
-        
+
         &#x2F;&#x2F; We might not have a previous DOM if the document was empty before this edit.
         if (!cachedValue || !cachedValue.dom || _cachedValues[editor.document.file.fullPath].invalid) {
             &#x2F;&#x2F; We were in an invalid state, so do a full rebuild.
             changeList = null;
         }
-        
+
         var result = _updateDOM(cachedValue &amp;&amp; cachedValue.dom, editor, changeList);
-        
+
         if (!result.errors) {
             _cachedValues[editor.document.file.fullPath] = {
                 timestamp: editor.document.diskTimestamp,
@@ -1311,7 +1308,7 @@ instrumented HTML is requested by the browser.</p>
         doc
         <span class="label label-info">Document</span>
     </dt>
-    <dd>The doc to scan. </dd>
+    <dd>The doc to scan.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">Object</span>
 </dt>
@@ -1326,19 +1323,19 @@ instrumented HTML is requested by the browser.</p>
                     _cachedValues[doc.file.fullPath].dirty = true;
                 }
             });
-            
+
             &#x2F;&#x2F; Assign to cache, but don&#39;t set a value yet
             _cachedValues[doc.file.fullPath] = null;
         }
-        
+
         var cachedValue = _cachedValues[doc.file.fullPath];
         if (!doc.isDirty &amp;&amp; cachedValue &amp;&amp; !cachedValue.dirty &amp;&amp; cachedValue.timestamp === doc.diskTimestamp) {
             return cachedValue.dom;
         }
-        
+
         var text = doc.getText(),
             dom = HTMLSimpleDOM.build(text);
-        
+
         if (dom) {
             &#x2F;&#x2F; Cache results
             _cachedValues[doc.file.fullPath] = {
@@ -1347,7 +1344,7 @@ instrumented HTML is requested by the browser.</p>
                 dirty: false
             };
         }
-        
+
         return dom;
     }</code></pre></div>
 </section>
@@ -1386,13 +1383,13 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
         var text, startOffset = 0, startOffsetPos;
 
         this.isIncremental = false;
-        
+
         function isDangerousEdit(text) {
             &#x2F;&#x2F; We don&#39;t consider &amp; dangerous since entities only affect text content, not
             &#x2F;&#x2F; overall DOM structure.
             return (&#x2F;[&lt;&gt;\&#x2F;=\&quot;\&#39;]&#x2F;).test(text);
         }
-        
+
         &#x2F;&#x2F; If there&#39;s more than one change, be conservative and assume we have to do a full reparse.
         if (changeList &amp;&amp; changeList.length === 1) {
             &#x2F;&#x2F; If the inserted or removed text doesn&#39;t have any characters that could change the
@@ -1417,18 +1414,18 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
                 }
             }
         }
-        
+
         if (!this.changedTagID) {
             &#x2F;&#x2F; We weren&#39;t able to incrementally update, so just rebuild and diff everything.
             text = editor.document.getText();
         }
-        
+
         HTMLSimpleDOM.Builder.call(this, text, startOffset, startOffsetPos);
         this.editor = editor;
         this.cm = editor._codeMirror;
         this.previousDOM = previousDOM;
     }
-    
+
     DOMUpdater.prototype = Object.create(HTMLSimpleDOM.Builder.prototype);</code></pre>
         </div>
         
@@ -1466,7 +1463,7 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DOMUpdater.prototype._buildNodeMap = function (root) {
         var nodeMap = {};
-        
+
         function walk(node) {
             if (node.tagID) {
                 nodeMap[node.tagID] = node;
@@ -1475,7 +1472,7 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
                 node.children.forEach(walk);
             }
         }
-        
+
         walk(root);
         root.nodeMap = nodeMap;
     };</code></pre></div><div class="member private">
@@ -1520,7 +1517,7 @@ the whole editor. Also updates marks in the editor based on the new DOM state.</
                 delete nodeMap[key];
             }
         });
-        
+
         if (deletedIDs.length) {
             &#x2F;&#x2F; FUTURE: would be better to cache the mark for each node. Also, could
             &#x2F;&#x2F; conceivably combine this with _updateMarkedRanges().
@@ -1568,7 +1565,7 @@ the given nodeMap.</p>
         var updateIDs = Object.keys(nodeMap),
             cm = this.cm,
             marks = cm.getAllMarks();
-        
+
         cm.operation(function () {
             marks.forEach(function (mark) {
                 if (mark.hasOwnProperty(&quot;tagID&quot;) &amp;&amp; nodeMap[mark.tagID]) {
@@ -1584,7 +1581,7 @@ the given nodeMap.</p>
                     updateIDs.splice(updateIDs.indexOf(String(node.tagID)), 1);
                 }
             });
-            
+
             &#x2F;&#x2F; Any remaining updateIDs are new.
             updateIDs.forEach(function (id) {
                 var node = nodeMap[id], mark;
@@ -1629,7 +1626,7 @@ node.</p>
         &#x2F;&#x2F; Get the mark at the start of the tagname (not before the beginning of the tag, because that&#39;s
         &#x2F;&#x2F; actually inside the parent).
         var currentTagID = _getTagIDAtDocumentPos(this.editor, HTMLSimpleDOM._offsetPos(newTag.startPos, 1), markCache);
-        
+
         &#x2F;&#x2F; If the new tag is in an unmarked range, or the marked range actually corresponds to an
         &#x2F;&#x2F; ancestor tag, then this must be a newly inserted tag, so give it a new tag ID.
         if (currentTagID === -1 || _hasAncestorWithID(newTag, currentTagID)) {
@@ -1677,7 +1674,7 @@ subtree is swapped in for the old subtree).</p>
                 oldSubtree: this.previousDOM,
                 newSubtree: newSubtree
             };
-        
+
         if (!newSubtree) {
             return null;
         }
@@ -1686,7 +1683,7 @@ subtree is swapped in for the old subtree).</p>
             &#x2F;&#x2F; Find the old subtree that&#39;s going to get swapped out.
             var oldSubtree = this.previousDOM.nodeMap[this.changedTagID],
                 parent = oldSubtree.parent;
-            
+
             &#x2F;&#x2F; If we didn&#39;t have a parent, then the whole tree changed anyway, so
             &#x2F;&#x2F; we&#39;ll just return the default result.
             if (parent) {
@@ -1699,30 +1696,30 @@ subtree is swapped in for the old subtree).</p>
                     oldSubtree.parent = null;
                     newSubtree.parent = parent;
                     parent.children[childIndex] = newSubtree;
-                    
+
                     &#x2F;&#x2F; Overwrite any node mappings in the parent DOM with the
                     &#x2F;&#x2F; mappings for the new subtree. We keep the nodeMap around
                     &#x2F;&#x2F; on the new subtree so that the differ can use it later.
                     $.extend(this.previousDOM.nodeMap, newSubtree.nodeMap);
-                    
+
                     &#x2F;&#x2F; Update marked ranges for all items in the new subtree.
                     this._updateMarkedRanges(newSubtree.nodeMap, markCache);
-                    
+
                     &#x2F;&#x2F; Build a local nodeMap for the old subtree so the differ can
                     &#x2F;&#x2F; use it.
                     this._buildNodeMap(oldSubtree);
-                    
+
                     &#x2F;&#x2F; Clean up the info for any deleted nodes that are no longer in
                     &#x2F;&#x2F; the new tree.
                     this._handleDeletions(this.previousDOM.nodeMap, oldSubtree.nodeMap, newSubtree.nodeMap);
-                    
+
                     &#x2F;&#x2F; Update the signatures for all parents of the new subtree.
                     var curParent = parent;
                     while (curParent) {
                         curParent.update();
                         curParent = curParent.parent;
                     }
-                    
+
                     result.newDOM = this.previousDOM;
                     result.oldSubtree = oldSubtree;
                 }
@@ -1730,7 +1727,7 @@ subtree is swapped in for the old subtree).</p>
         } else {
             _markTextFromDOM(this.editor, result.newDOM);
         }
-        
+
         return result;
     };</code></pre></div>
         </section>

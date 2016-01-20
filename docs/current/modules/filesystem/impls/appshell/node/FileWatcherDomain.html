@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -514,7 +511,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">function _unwatchPath(path) {
     var watcher = _watcherMap[path];
-        
+
     if (watcher) {
         try {
             if (fsevents) {
@@ -553,7 +550,7 @@ The fileWatcher domain handles watching and un-watching directories.</p>
     if (!domainManager.hasDomain(&quot;fileWatcher&quot;)) {
         domainManager.registerDomain(&quot;fileWatcher&quot;, {major: 0, minor: 1});
     }
-    
+
     domainManager.registerCommand(
         &quot;fileWatcher&quot;,
         &quot;watchPath&quot;,
@@ -594,7 +591,7 @@ The fileWatcher domain handles watching and un-watching directories.</p>
             {name: &quot;filename&quot;, type: &quot;string&quot;}
         ]
     );
-    
+
     _domainManager = domainManager;
 }
 
@@ -620,7 +617,7 @@ exports.init = init;</code></pre></div><div class="member">
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">function unwatchAll() {
     var path;
-    
+
     for (path in _watcherMap) {
         if (_watcherMap.hasOwnProperty(path)) {
             unwatchPath(path);
@@ -686,17 +683,17 @@ exports.init = init;</code></pre></div><div class="member">
     if (_watcherMap.hasOwnProperty(path)) {
         return;
     }
-        
+
     try {
         var watcher;
-        
+
         if (fsevents) {
             watcher = fsevents(path);
             watcher.on(&quot;change&quot;, function (filename, info) {
                 var parent = filename &amp;&amp; (fspath.dirname(filename) + &quot;&#x2F;&quot;),
                     name = filename &amp;&amp; fspath.basename(filename),
                     type;
-                
+
                 switch (info.event) {
                 case &quot;modified&quot;:    &#x2F;&#x2F; triggered by file content changes
                 case &quot;unknown&quot;:     &#x2F;&#x2F; triggered by metatdata-only changes
@@ -705,7 +702,7 @@ exports.init = init;</code></pre></div><div class="member">
                 default:
                     type = &quot;rename&quot;;
                 }
-                
+
                 _domainManager.emitEvent(&quot;fileWatcher&quot;, &quot;change&quot;, [parent, type, name]);
             });
         } else {
@@ -716,7 +713,7 @@ exports.init = init;</code></pre></div><div class="member">
         }
 
         _watcherMap[path] = watcher;
-        
+
         watcher.on(&quot;error&quot;, function (err) {
             console.error(&quot;Error watching file &quot; + path + &quot;: &quot; + (err &amp;&amp; err.message));
             unwatchPath(path);

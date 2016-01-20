@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -701,7 +698,7 @@ the URL for the added/removed style sheet.</p>
             existing        = styleForURL(res.header.sourceURL),
             styleSheetId    = res.header.styleSheetId,
             duplicate;
-        
+
         &#x2F;&#x2F; detect duplicates
         duplicate = _.some(existing, function (styleSheet) {
             return styleSheet &amp;&amp; styleSheet.styleSheetId === styleSheetId;
@@ -709,10 +706,10 @@ the URL for the added/removed style sheet.</p>
         if (duplicate) {
             return;
         }
-        
+
         _styleSheetDetails[styleSheetId] = res.header;
         _styleSheetDetails[styleSheetId].canonicalizedURL = url; &#x2F;&#x2F; canonicalized URL
-        
+
         exports.trigger(&quot;styleSheetAdded&quot;, url, res.header);
     }</code></pre></div><div class="member private">
 
@@ -745,9 +742,9 @@ the URL for the added/removed style sheet.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _styleSheetRemoved(event, res) {
         var header = _styleSheetDetails[res.styleSheetId];
-        
+
         delete _styleSheetDetails[res.styleSheetId];
-        
+
         exports.trigger(&quot;styleSheetRemoved&quot;, header.canonicalizedURL, header);
     }</code></pre></div><div class="member public">
 
@@ -942,8 +939,8 @@ the URL for the added/removed style sheet.</p>
         Inspector.Page.off(&quot;.CSSAgent&quot;);
         Inspector.CSS.off(&quot;.CSSAgent&quot;);
     }
-    
-    
+
+
     EventDispatcher.makeEventDispatcher(exports);
 
     &#x2F;&#x2F; Export public functions

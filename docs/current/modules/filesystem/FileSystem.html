@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -494,8 +491,8 @@ to meet these requirements)</li>
 <p>FileSystem dispatches the following events:
 (NOTE: attach to these events via <code>FileSystem.on()</code> - not <code>$(FileSystem).on()</code>)</p>
 <p><strong>change</strong> - Sent whenever there is a change in the file system. The handler
-  is passed up to three arguments: the changed entry and, if that changed entry 
-  is a Directory, a list of entries added to the directory and a list of entries 
+  is passed up to three arguments: the changed entry and, if that changed entry
+  is a Directory, a list of entries added to the directory and a list of entries
   removed from the Directory. The entry argument can be:</p>
 <ul>
 <li>a File - the contents of the file have changed, and should be reloaded.</li>
@@ -604,13 +601,13 @@ worry about the underlying storage, which could be a local filesystem or a remot
             <pre class="code language-javascript"><code class="language-javascript">    function FileSystem() {
         &#x2F;&#x2F; Create a file index
         this._index = new FileIndex();
-        
+
         &#x2F;&#x2F; Initialize the set of watched roots
         this._watchedRoots = {};
 
         &#x2F;&#x2F; Initialize the watch&#x2F;unwatch request queue
         this._watchRequests = [];
-        
+
         &#x2F;&#x2F; Initialize the queue of pending external changes
         this._externalChanges = [];
     }
@@ -650,7 +647,7 @@ an unrelated delete-add pair).</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._activeChangeCount = 0;
-    
+
     &#x2F;&#x2F; For unit testing only
     FileSystem.prototype._getActiveChangeCount = function () {
         return this._activeChangeCount;
@@ -688,7 +685,7 @@ once _activeChangeCount drops to zero.</p>
     </h4>
 
     
-    <div class="description"><p>The low-level file system implementation used by this object. 
+    <div class="description"><p>The low-level file system implementation used by this object.
 This is set in the init() function and cannot be changed.</p>
 </div>
     
@@ -787,10 +784,10 @@ blocked and queued, to be handled once changes have finished. This is done
 because for mutating operations that originate from within the filesystem,
 synthetic change events are fired that do not depend on external file
 watchers, and we prefer the former over the latter for the following
-reasons: 1) there is no delay; and 2) they may have higher fidelity --- 
+reasons: 1) there is no delay; and 2) they may have higher fidelity ---
 e.g., a rename operation can be detected as such, instead of as a nearly
 simultaneous addition and deletion.</p>
-<p>All operations that mutate the file system MUST begin with a call to 
+<p>All operations that mutate the file system MUST begin with a call to
 _beginChange and must end with a call to _endChange.</p>
 </div>
     
@@ -825,7 +822,7 @@ _beginChange and must end with a call to _endChange.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._dequeueWatchRequest = function () {
         if (this._watchRequests.length &gt; 0) {
             var request = this._watchRequests[0];
-            
+
             request.fn.call(null, function () {
                 &#x2F;&#x2F; Apply the given callback
                 var callbackArgs = arguments;
@@ -850,7 +847,7 @@ _beginChange and must end with a call to _endChange.</p>
     </h4>
 
     
-    <div class="description"><p>Indicates that a filesystem-mutating operation has completed. See 
+    <div class="description"><p>Indicates that a filesystem-mutating operation has completed. See
 FileSystem._beginChange above.</p>
 </div>
     
@@ -862,11 +859,11 @@ FileSystem._beginChange above.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._endChange = function () {
         this._activeChangeCount--;
         &#x2F;&#x2F;console.log(&quot;&lt; endChange    -&gt; &quot; + this._activeChangeCount);
-        
+
         if (this._activeChangeCount &lt; 0) {
             console.error(&quot;FileSystem _activeChangeCount has fallen below zero!&quot;);
         }
-        
+
         if (!this._activeChangeCount) {
             this._triggerExternalChangesNow();
         }
@@ -978,14 +975,14 @@ watched root does not exist.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
         var watchedRoot = null;
-        
+
         Object.keys(this._watchedRoots).some(function (watchedPath) {
             if (fullPath.indexOf(watchedPath) === 0) {
                 watchedRoot = this._watchedRoots[watchedPath];
                 return true;
             }
         }, this);
-        
+
         return watchedRoot;
     };</code></pre></div><div class="member private">
 
@@ -1085,7 +1082,7 @@ should be either File or Directory.</p>
         path
         <span class="label label-info">string</span>
     </dt>
-    <dd>Absolute path of file. </dd>
+    <dd>Absolute path of file.</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">File,Directory</span>
 </dt>
@@ -1097,12 +1094,12 @@ should be either File or Directory.</p>
         var isDirectory = EntryConstructor === Directory;
         path = this._normalizePath(path, isDirectory);
         var entry = this._index.getEntry(path);
-        
+
         if (!entry) {
             entry = new EntryConstructor(path, this);
             this._index.addEntry(entry);
         }
-                
+
         return entry;
     };</code></pre></div><div class="member private">
 
@@ -1140,13 +1137,13 @@ internal change event.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._handleDirectoryChange = function (directory, callback) {
         var oldContents = directory._contents;
-        
+
         directory._clearCachedData();
         directory.getContents(function (err, contents) {
             var addedEntries = oldContents &amp;&amp; contents.filter(function (entry) {
                 return oldContents.indexOf(entry) === -1;
             });
-            
+
             var removedEntries = oldContents &amp;&amp; oldContents.filter(function (entry) {
                 return contents.indexOf(entry) === -1;
             });
@@ -1160,7 +1157,7 @@ internal change event.</p>
                         entry._clearCachedData(true);
                     }
                 }.bind(this));
-                
+
                 callback(addedEntries, removedEntries);
                 return;
             }
@@ -1168,22 +1165,22 @@ internal change event.</p>
             var addedCounter = addedEntries ? addedEntries.length : 0,
                 removedCounter = removedEntries ? removedEntries.length : 0,
                 counter = addedCounter + removedCounter;
-            
+
             if (counter === 0) {
                 callback(addedEntries, removedEntries);
                 return;
             }
-            
+
             var watchOrUnwatchCallback = function (err) {
                 if (err) {
                     console.error(&quot;FileSystem error in _handleDirectoryChange after watch&#x2F;unwatch entries: &quot; + err);
                 }
-                
+
                 if (--counter === 0) {
                     callback(addedEntries, removedEntries);
                 }
             };
-            
+
             if (addedEntries) {
                 addedEntries.forEach(function (entry) {
                     this._watchEntry(entry, watchedRoot, watchOrUnwatchCallback);
@@ -1234,13 +1231,13 @@ internal change event.</p>
                 &#x2F;&#x2F; Passing &#39;true&#39; for a similar reason as in _unwatchEntry() - see #7150
                 entry._clearCachedData(true);
             });
-            
+
             this._fireChangeEvent(null);
             return;
         }
-        
+
         path = this._normalizePath(path, false);
-        
+
         var entry = this._index.getEntry(path);
         if (entry) {
             var oldStat = entry._stat;
@@ -1254,7 +1251,7 @@ internal change event.</p>
             } else {
                 this._handleDirectoryChange(entry, function (added, removed) {
                     entry._stat = stat;
-                    
+
                     if (entry._isWatched()) {
                         &#x2F;&#x2F; We send a change even if added &amp; removed are both zero-length. Something may still have changed,
                         &#x2F;&#x2F; e.g. a file may have been quickly removed &amp; re-added before we got a chance to reread the directory
@@ -1337,11 +1334,11 @@ of this filtering - but they will not be watched if the watch-root&#39;s filter 
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._indexFilter = function (path, name) {
         var parentRoot = this._findWatchedRootForPath(path);
-                
+
         if (parentRoot) {
             return parentRoot.filter(name, path);
         }
-        
+
         &#x2F;&#x2F; It might seem more sensible to return false (exclude) for files outside the watch roots, but
         &#x2F;&#x2F; that would break usage of appFileSystem for &#39;system&#39;-level things like enumerating extensions.
         &#x2F;&#x2F; (Or in general, Directory.getContents() for any Directory outside the watch roots).
@@ -1383,16 +1380,16 @@ and directories guaranteed to end in a trailing &quot;/&quot;</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._normalizePath = function (path, isDirectory) {
-        
+
         if (!FileSystem.isAbsolutePath(path)) {
             throw new Error(&quot;Paths must be absolute: &#39;&quot; + path + &quot;&#39;&quot;);  &#x2F;&#x2F; expect only absolute paths
         }
-        
+
         var isUNCPath = this._impl.normalizeUNCPaths &amp;&amp; path.search(_DUPLICATED_SLASH_RE) === 0;
-        
+
         &#x2F;&#x2F; Remove duplicated &quot;&#x2F;&quot;es
         path = path.replace(_DUPLICATED_SLASH_RE, &quot;&#x2F;&quot;);
-        
+
         &#x2F;&#x2F; Remove &quot;..&quot; segments
         if (path.indexOf(&quot;..&quot;) !== -1) {
             var segments = path.split(&quot;&#x2F;&quot;),
@@ -1408,17 +1405,17 @@ and directories guaranteed to end in a trailing &quot;/&quot;</p>
             }
             path = segments.join(&quot;&#x2F;&quot;);
         }
-        
+
         if (isDirectory) {
             &#x2F;&#x2F; Make sure path DOES include trailing slash
             path = _ensureTrailingSlash(path);
         }
-        
+
         if (isUNCPath) {
             &#x2F;&#x2F; Restore the leading double slash that was removed previously
             path = &quot;&#x2F;&quot; + path;
         }
-        
+
         return path;
     };</code></pre></div><div class="member private">
 
@@ -1468,7 +1465,7 @@ watched root and ignores errors.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype._unwatchAll = function () {
         console.warn(&quot;File watchers went offline!&quot;);
-        
+
         Object.keys(this._watchedRoots).forEach(function (path) {
             var watchedRoot = this._watchedRoots[path];
 
@@ -1478,13 +1475,13 @@ watched root and ignores errors.</p>
                 console.warn(&quot;Watching disabled for&quot;, watchedRoot.entry.fullPath);
             });
         }, this);
-        
+
         &#x2F;&#x2F; Fire a wholesale change event, clearing all caches and request that
         &#x2F;&#x2F; clients manually update their state.
         this._handleExternalChange(null);
     };
 
-    
+
     &#x2F;&#x2F; The singleton instance
     var _instance;
 
@@ -1493,7 +1490,7 @@ watched root and ignores errors.</p>
             return func.apply(_instance, arguments);
         };
     }
-    
+
     &#x2F;&#x2F; Export public methods as proxies to the singleton instance
     exports.init = _wrap(FileSystem.prototype.init);
     exports.close = _wrap(FileSystem.prototype.close);
@@ -1507,10 +1504,10 @@ watched root and ignores errors.</p>
     exports.watch = _wrap(FileSystem.prototype.watch);
     exports.unwatch = _wrap(FileSystem.prototype.unwatch);
     exports.clearAllCaches = _wrap(FileSystem.prototype.clearAllCaches);
-    
+
     &#x2F;&#x2F; Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
-    
+
     &#x2F;&#x2F; For testing only
     exports._getActiveChangeCount = _wrap(FileSystem.prototype._getActiveChangeCount);</code></pre></div><div class="member private">
 
@@ -1558,7 +1555,7 @@ watched root and ignores errors.</p>
                     child._clearCachedData(true);
                 }
             }.bind(this));
-            
+
             callback(err);
         }.bind(this), false);
     };</code></pre></div><div class="member private">
@@ -1652,7 +1649,7 @@ watchedRoot.</p>
                 &#x2F;&#x2F; no-ops if the impl supports recursiveWatch
                 callback(null);
             } else {
-                &#x2F;&#x2F; The impl will handle finding all subdirectories to watch. 
+                &#x2F;&#x2F; The impl will handle finding all subdirectories to watch.
                 this._enqueueWatchRequest(function (requestCb) {
                     impl[commandName].call(impl, entry.fullPath, requestCb);
                 }.bind(this), callback);
@@ -1663,7 +1660,7 @@ watchedRoot.</p>
             this._enqueueWatchRequest(function (requestCb) {
                 &#x2F;&#x2F; First construct a list of entries to watch or unwatch
                 var entriesToWatch = [];
-                
+
                 var visitor = function (child) {
                     if (watchedRoot.filter(child.name, child.parentPath)) {
                         if (child.isDirectory || child === watchedRoot.entry) {
@@ -1673,27 +1670,27 @@ watchedRoot.</p>
                     }
                     return false;
                 };
-                
+
                 entry.visit(visitor, function (err) {
                     if (err) {
                         &#x2F;&#x2F; Unexpected error
                         requestCb(err);
                         return;
                     }
-                    
+
                     &#x2F;&#x2F; Then watch or unwatched all these entries
                     var count = entriesToWatch.length;
                     if (count === 0) {
                         requestCb(null);
                         return;
                     }
-                    
+
                     var watchCallback = function () {
                         if (--count === 0) {
                             requestCb(null);
                         }
                     };
-                    
+
                     entriesToWatch.forEach(function (entry) {
                         impl.watchPath(entry.fullPath, watchCallback);
                     });
@@ -1878,10 +1875,10 @@ mechanism.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.init = function (impl) {
         console.assert(!this._impl, &quot;This FileSystem has already been initialized!&quot;);
-        
+
         var changeCallback = this._enqueueExternalChange.bind(this),
             offlineCallback = this._unwatchAll.bind(this);
-                
+
         this._impl = impl;
         this._impl.initWatchers(changeCallback, offlineCallback);
     };</code></pre></div><div class="member public">
@@ -1962,14 +1959,14 @@ mechanism.</p>
             normalizedPath = _ensureTrailingSlash(normalizedPath);
             item = this._index.getEntry(normalizedPath);
         }
-        
+
         if (item) {
             item.stat(function (err, stat) {
                 if (err) {
                     callback(err);
                     return;
                 }
-                
+
                 callback(null, item, stat);
             });
         } else {
@@ -1978,17 +1975,17 @@ mechanism.</p>
                     callback(err);
                     return;
                 }
-                
+
                 if (stat.isFile) {
                     item = this.getFileForPath(path);
                 } else {
                     item = this.getDirectoryForPath(path);
                 }
-                
+
                 if (item._isWatched()) {
                     item._stat = stat;
                 }
-                
+
                 callback(null, item, stat);
             }.bind(this));
         }
@@ -2049,7 +2046,7 @@ mechanism.</p>
                             initialPath,
                             fileTypes,
                             callback) {
-        
+
         this._impl.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback);
     };</code></pre></div><div class="member public">
 
@@ -2127,9 +2124,9 @@ mechanism.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.unwatch = function (entry, callback) {
         var fullPath = entry.fullPath,
             watchedRoot = this._watchedRoots[fullPath];
-        
+
         callback = callback || function () {};
-        
+
         if (!watchedRoot) {
             callback(FileSystemError.ROOT_NOT_WATCHED);
             return;
@@ -2138,16 +2135,16 @@ mechanism.</p>
         &#x2F;&#x2F; Mark this as inactive, but don&#39;t delete the entry until the unwatch is complete.
         &#x2F;&#x2F; This is useful for making sure we don&#39;t try to concurrently watch overlapping roots.
         watchedRoot.status = WatchedRoot.INACTIVE;
-        
+
         this._unwatchEntry(entry, watchedRoot, function (err) {
             delete this._watchedRoots[fullPath];
-            
+
             this._index.visitAll(function (child) {
                 if (child.fullPath.indexOf(entry.fullPath) === 0) {
                     this._index.removeEntry(child);
                 }
             }.bind(this));
-            
+
             if (err) {
                 console.warn(&quot;Failed to unwatch root: &quot;, entry.fullPath, err);
                 callback(err);
@@ -2194,9 +2191,9 @@ mechanism.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.watch = function (entry, filter, callback) {
         var fullPath = entry.fullPath;
-        
+
         callback = callback || function () {};
-        
+
         var watchingParentRoot = this._findWatchedRootForPath(fullPath);
         if (watchingParentRoot &amp;&amp;
                 (watchingParentRoot.status === WatchedRoot.STARTING ||
@@ -2208,25 +2205,25 @@ mechanism.</p>
         var watchingChildRoot = Object.keys(this._watchedRoots).some(function (path) {
             var watchedRoot = this._watchedRoots[path],
                 watchedPath = watchedRoot.entry.fullPath;
-            
+
             return watchedPath.indexOf(fullPath) === 0;
         }, this);
-        
+
         if (watchingChildRoot &amp;&amp;
                 (watchingChildRoot.status === WatchedRoot.STARTING ||
                  watchingChildRoot.status === WatchedRoot.ACTIVE)) {
             callback(&quot;A child of this root is already watched&quot;);
             return;
         }
-        
+
         var watchedRoot = new WatchedRoot(entry, filter);
-        
+
         this._watchedRoots[fullPath] = watchedRoot;
 
         &#x2F;&#x2F; Enter the STARTING state early to indiate that watched Directory
         &#x2F;&#x2F; objects may cache their contents. See FileSystemEntry._isWatched.
         watchedRoot.status = WatchedRoot.STARTING;
-        
+
         this._watchEntry(entry, watchedRoot, function (err) {
             if (err) {
                 console.warn(&quot;Failed to watch root: &quot;, entry.fullPath, err);
@@ -2236,7 +2233,7 @@ mechanism.</p>
             }
 
             watchedRoot.status = WatchedRoot.ACTIVE;
-            
+
             callback(null);
         }.bind(this));
     };</code></pre></div>

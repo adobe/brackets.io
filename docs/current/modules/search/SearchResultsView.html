@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -852,13 +849,13 @@
                 self.trigger(&#39;getLastPage&#39;);
                 HealthLogger.searchDone(HealthLogger.SEARCH_LAST_PAGE);
             })
-            
+
             &#x2F;&#x2F; Add the file to the working set on double click
             .on(&quot;dblclick.searchResults&quot;, &quot;.table-container tr:not(.file-section)&quot;, function (e) {
                 var item = self._searchList[$(this).data(&quot;file-index&quot;)];
                 FileViewController.openFileAndAddToWorkingSet(item.fullPath);
             })
-        
+
             &#x2F;&#x2F; Add the click event listener directly on the table parent
             .on(&quot;click.searchResults .table-container&quot;, function (e) {
                 var $row = $(e.target).closest(&quot;tr&quot;);
@@ -903,7 +900,7 @@
                                 item.collapsed = collapsed;
                             });
                         }
-                    
+
                     &#x2F;&#x2F; This is a file row, show the result on click
                     } else {
                         &#x2F;&#x2F; Grab the required item data
@@ -917,7 +914,7 @@
                     }
                 }
             });
-        
+
         function updateHeaderCheckbox($checkAll) {
             var $allFileRows     = self._panel.$panel.find(&quot;.file-section&quot;),
                 $checkedFileRows = $allFileRows.filter(function (index) {
@@ -927,7 +924,7 @@
                 $checkAll.prop(&quot;checked&quot;, true);
             }
         }
-        
+
         function updateFileAndHeaderCheckboxes($clickedRow, isChecked) {
             var $firstMatch = ($clickedRow.data(&quot;item-index&quot;) === 0) ? $clickedRow :
                     $clickedRow.prevUntil(&quot;.file-section&quot;).last(),
@@ -935,7 +932,7 @@
                 $siblingRows = $fileRow.nextUntil(&quot;.file-section&quot;),
                 $fileCheckbox = $fileRow.find(&quot;.check-one-file&quot;),
                 $checkAll = self._panel.$panel.find(&quot;.check-all&quot;);
-        
+
             if (isChecked) {
                 if (!$fileCheckbox.is(&quot;:checked&quot;)) {
                     var $checkedSibilings = $siblingRows.filter(function (index) {
@@ -957,7 +954,7 @@
                 }
             }
         }
-        
+
         &#x2F;&#x2F; Add the Click handlers for replace functionality if required
         if (this._model.isReplace) {
             this._panel.$panel
@@ -978,7 +975,7 @@
                         item = self._searchList[$row.data(&quot;file-index&quot;)],
                         $matchRows = $row.nextUntil(&quot;.file-section&quot;),
                         $checkAll = self._panel.$panel.find(&quot;.check-all&quot;);
-                    
+
                     if (item) {
                         self._model.results[item.fullPath].matches.forEach(function (match) {
                             match.isChecked = isChecked;
@@ -1094,7 +1091,7 @@
             this.close();
             return;
         }
-        
+
         var self = this;
         if (this._timeoutID) {
             window.clearTimeout(this._timeoutID);
@@ -1135,10 +1132,10 @@
             showMatches      = false,
             allInFileChecked = true,
             self             = this;
-        
+
         this._showSummary();
         this._searchList = [];
-        
+
         &#x2F;&#x2F; Iterates throuh the files to display the results sorted by filenamess. The loop ends as soon as
         &#x2F;&#x2F; we filled the results for one page
         searchFiles.some(function (fullPath) {
@@ -1177,7 +1174,7 @@
                 while (i &lt; item.matches.length &amp;&amp; matchesCounter &lt; lastIndex) {
                     match     = item.matches[i];
                     multiLine = match.start.line !== match.end.line;
-                    
+
                     searchItems.push({
                         fileIndex:   self._searchList.length,
                         itemIndex:   searchItems.length,
@@ -1219,7 +1216,7 @@
             }
         });
 
-        
+
         &#x2F;&#x2F; Insert the search results
         this._$table
             .empty()
@@ -1228,12 +1225,12 @@
                 searchList:    this._searchList,
                 Strings:       Strings
             }));
-        
+
         if (this._$selectedRow) {
             this._$selectedRow.removeClass(&quot;selected&quot;);
             this._$selectedRow = null;
         }
-        
+
         this._panel.show();
         this._$table.scrollTop(0); &#x2F;&#x2F; Otherwise scroll pos from previous contents is remembered
     };</code></pre></div><div class="member private">
@@ -1260,13 +1257,13 @@
             lastIndex = this._getLastIndex(count.matches),
             filesStr,
             summary;
-        
+
         filesStr = StringUtils.format(
             Strings.FIND_NUM_FILES,
             count.files,
             (count.files &gt; 1 ? Strings.FIND_IN_FILES_FILES : Strings.FIND_IN_FILES_FILE)
         );
-        
+
         &#x2F;&#x2F; This text contains some formatting, so all the strings are assumed to be already escaped
         summary = StringUtils.format(
             Strings.FIND_TITLE_SUMMARY,
@@ -1277,7 +1274,7 @@
         );
 
         this._$summary.html(Mustache.render(searchSummaryTemplate, {
-            query:       (this._model.queryInfo.query &amp;&amp; this._model.queryInfo.query.toString()) || &quot;&quot;,
+            query:       (this._model.queryInfo &amp;&amp; this._model.queryInfo.query &amp;&amp; this._model.queryInfo.query.toString()) || &quot;&quot;,
             replaceWith: this._model.replaceText,
             titleLabel:  this._model.isReplace ? Strings.FIND_REPLACE_TITLE_LABEL : Strings.FIND_TITLE_LABEL,
             scope:       this._model.scope ? &quot;&amp;nbsp;&quot; + FindUtils.labelForScope(this._model.scope) + &quot;&amp;nbsp;&quot; : &quot;&quot;,
@@ -1321,7 +1318,7 @@
             if (this._currentStart &gt; numMatches) {
                 this._currentStart = this._getLastCurrentStart(numMatches);
             }
-            
+
             this._render();
 
             this._$table.scrollTop(scrollTop);
@@ -1359,7 +1356,7 @@
             this.trigger(&quot;close&quot;);
         }
     };
-    
+
     &#x2F;&#x2F; Public API
     exports.SearchResultsView = SearchResultsView;
 });</code></pre></div><div class="member">
@@ -1387,13 +1384,13 @@
         this._currentStart  = 0;
         this._$selectedRow  = null;
         this._allChecked    = true;
-        
+
         &#x2F;&#x2F; Save the currently open document&#39;s fullpath, if any, so we can sort it to the top of the result list.
         var currentDoc = DocumentManager.getCurrentDocument();
         this._initialFilePath = currentDoc ? currentDoc.file.fullPath : null;
 
         this._render();
-        
+
         &#x2F;&#x2F; Listen for user interaction events with the panel and change events from the model.
         this._addPanelListeners();
         this._model.on(&quot;change.SearchResultsView&quot;, this._handleModelChange.bind(this));

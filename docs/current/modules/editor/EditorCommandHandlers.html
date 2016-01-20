@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -569,7 +566,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _containsNotLineComment(editor, startLine, endLine, lineExp) {
         var i, line,
             containsNotLineComment = false;
-        
+
         for (i = startLine; i &lt;= endLine; i++) {
             line = editor.document.getLine(i);
             &#x2F;&#x2F; A line is commented out if it starts with 0-N whitespace chars, then a line comment prefix
@@ -621,11 +618,11 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
         var lineExp = [], escapedPrefix, nothingPushed;
-        
+
         prefixes.forEach(function (prefix) {
             escapedPrefix = StringUtils.regexEscape(prefix);
             nothingPushed = true;
-            
+
             if (blockPrefix &amp;&amp; blockPrefix.indexOf(prefix) === 0) {
                 lineExp.push(_createSpecialLineExp(prefix, blockPrefix));
                 nothingPushed = false;
@@ -677,7 +674,7 @@
         var i, character, escapedCharacter,
             subExps   = [],
             prevChars = &quot;&quot;;
-        
+
         for (i = lineSyntax.length; i &lt; blockSyntax.length; i++) {
             character = blockSyntax.charAt(i);
             escapedCharacter = StringUtils.regexEscape(character);
@@ -773,25 +770,25 @@ indicate to the caller that it needs to handle this selection as a line comment.
             result         = true,
             editGroup      = [],
             edit;
-        
+
         var searchCtx, atSuffix, suffixEnd, initialPos, endLine;
-        
+
         if (!selectionsToTrack) {
             &#x2F;&#x2F; Track the original selection.
             selectionsToTrack = [_.cloneDeep(sel)];
         }
-        
+
         &#x2F;&#x2F; First move the context to the first none white-space token
         if (!ctx.token.type &amp;&amp; !&#x2F;\S&#x2F;.test(ctx.token.string)) {
             result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
         }
-        
+
         &#x2F;&#x2F; Next, move forwards until we find a comment inside the selection
         while (result &amp;&amp; ctx.token.type !== &quot;comment&quot;) {
             result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) &amp;&amp; editor.indexFromPos(ctx.pos) &lt;= selEndIndex;
             commentAtStart = false;
         }
-        
+
         &#x2F;&#x2F; We are now in a comment, lets check if it is a block or a line comment
         if (result &amp;&amp; ctx.token.type === &quot;comment&quot;) {
             &#x2F;&#x2F; This token might be at a line comment, but we can&#39;t be sure yet
@@ -802,16 +799,16 @@ indicate to the caller that it needs to handle this selection as a line comment.
                 if (ctx.token.start === 0 &amp;&amp; !ctx.token.string.match(&#x2F;^\\s*&#x2F;) &amp;&amp; commentAtStart) {
                     searchCtx      = TokenUtils.getInitialContext(editor._codeMirror, {line: ctx.pos.line, ch: ctx.token.start});
                     isBlockComment = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
-                
+
                 &#x2F;&#x2F; If not, we already know that is a line comment
                 } else {
                     isBlockComment = false;
                 }
-                
+
             &#x2F;&#x2F; If it was not a line comment, it has to be a block comment
             } else {
                 isBlockComment = true;
-                
+
                 &#x2F;&#x2F; If we are in a line that only has a prefix or a suffix and the prefix and suffix are the same string,
                 &#x2F;&#x2F; lets find first if this is a prefix or suffix and move the context position to the inside of the block comment.
                 &#x2F;&#x2F; This means that the token will be anywere inside the block comment, including the lines with the delimiters.
@@ -826,36 +823,36 @@ indicate to the caller that it needs to handle this selection as a line comment.
                     }
                 }
             }
-            
+
             if (isBlockComment) {
                 &#x2F;&#x2F; Save the initial position to start searching for the suffix from here
                 initialPos = _.cloneDeep(ctx.pos);
-                
+
                 &#x2F;&#x2F; Find the position of the start of the prefix
                 result = true;
                 while (result &amp;&amp; !ctx.token.string.match(prefixExp)) {
                     result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
                 }
                 prefixPos = result &amp;&amp; {line: ctx.pos.line, ch: ctx.token.start};
-                
+
                 &#x2F;&#x2F; Restore the context at the initial position to find the position of the start of the suffix,
                 &#x2F;&#x2F; but only when we found the prefix alone in one line
                 if (ctx.token.string === prefix &amp;&amp; prefix === suffix) {
                     ctx = TokenUtils.getInitialContext(editor._codeMirror, _.cloneDeep(initialPos));
                 }
-                
+
                 while (result &amp;&amp; !ctx.token.string.match(suffixExp)) {
                     result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
                 }
                 suffixPos = result &amp;&amp; {line: ctx.pos.line, ch: ctx.token.end - suffix.length};
-                
+
                 &#x2F;&#x2F; Lets check if there are more comments in the selection. We do nothing if there is one
                 do {
                     result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) &amp;&amp;
                         editor.indexFromPos(ctx.pos) &lt;= selEndIndex;
                 } while (result &amp;&amp; !ctx.token.string.match(prefixExp));
                 invalidComment = result &amp;&amp; !!ctx.token.string.match(prefixExp);
-                
+
                 &#x2F;&#x2F; Make sure we didn&#39;t search so far backward or forward that we actually found a block comment
                 &#x2F;&#x2F; that&#39;s entirely before or after the selection.
                 suffixEnd = suffixPos &amp;&amp; { line: suffixPos.line, ch: suffixPos.ch + suffix.length };
@@ -922,7 +919,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                             }
                         }
                         &#x2F;&#x2F; Now adjust for the prefix insertion. In this case, we do
-                        &#x2F;&#x2F; want to adjust positions that are exactly at the insertion 
+                        &#x2F;&#x2F; want to adjust positions that are exactly at the insertion
                         &#x2F;&#x2F; point.
                         if (CodeMirror.cmpPos(pos, sel.start) &gt;= 0) {
                             if (completeLineSel) {
@@ -933,7 +930,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                             }
                         }
                     }
-                    
+
                     updatePosForEdit(trackedSel.start);
                     updatePosForEdit(trackedSel.end);
                 });
@@ -945,7 +942,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                 var line          = doc.getLine(prefixPos.line).trim(),
                     prefixAtStart = prefixPos.ch === 0 &amp;&amp; prefix.length === line.length,
                     suffixAtStart = false;
-                
+
                 if (suffixPos) {
                     line = doc.getLine(suffixPos.line).trim();
                     suffixAtStart = suffixPos.ch === 0 &amp;&amp; suffix.length === line.length;
@@ -975,7 +972,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
 
             edit = {edit: editGroup, selection: selectionsToTrack};
         }
-        
+
         return edit;
     }</code></pre></div><div class="member private">
 
@@ -1112,7 +1109,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
         &#x2F;&#x2F; some editors like Sublime don&#39;t comment them out)
         var i, line, prefix, commentI,
             containsNotLineComment = _containsNotLineComment(editor, startLine, endLine, lineExp);
-        
+
         if (containsNotLineComment) {
             &#x2F;&#x2F; Comment out - prepend the first prefix to each line
             for (i = startLine; i &lt;= endLine; i++) {
@@ -1198,12 +1195,12 @@ commented in a block-comment.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel) {
         var sel = lineSel.selectionForEdit;
-        
+
         &#x2F;&#x2F; For one-line selections, we shrink the selection to exclude the trailing newline.
         if (sel.end.line === sel.start.line + 1 &amp;&amp; sel.end.ch === 0) {
             sel.end = {line: sel.start.line, ch: editor.document.getLine(sel.start.line).length};
         }
-        
+
         &#x2F;&#x2F; Now just run the standard block comment code, but make sure to track any associated selections
         &#x2F;&#x2F; that were subsumed into this line selection.
         return _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, [], sel, lineSel.selectionsToTrack);
@@ -1316,12 +1313,12 @@ commented in a block-comment.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
         &#x2F;&#x2F; Start searching from the previous token
         var result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
-        
+
         &#x2F;&#x2F; Look backwards until we find a none line comment token
         while (result &amp;&amp; _matchExpressions(ctx.token.string, lineExp)) {
             result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
         }
-        
+
         &#x2F;&#x2F; If we are now in a block comment token
         if (result &amp;&amp; ctx.token.type === &quot;comment&quot;) {
             &#x2F;&#x2F; If it doesnt matches either prefix or suffix, we know is a block comment
@@ -1407,14 +1404,14 @@ commented in a block-comment.</p>
     function handleUndoRedo(operation) {
         var editor = EditorManager.getFocusedEditor();
         var result = new $.Deferred();
-        
+
         if (editor) {
             editor[operation]();
             result.resolve();
         } else {
             result.reject();
         }
-        
+
         return result.promise();
     }
 
@@ -1543,7 +1540,7 @@ commented in a block-comment.</p>
         if (!editor) {
             return;
         }
-        
+
         var edits = [],
             lineCommentSels = [];
         _.each(editor.getSelections(), function (sel) {
@@ -1568,12 +1565,12 @@ commented in a block-comment.</p>
                 edits.push(edit);
             }
         });
-        
+
         &#x2F;&#x2F; Handle any line-comment edits. It&#39;s okay if these are out-of-order with the other edits, since
         &#x2F;&#x2F; they shouldn&#39;t overlap, and `doMultipleEdits()` will take care of sorting the edits so the
         &#x2F;&#x2F; selections can be tracked appropriately.
         edits.push.apply(edits, _getLineCommentEdits(editor, lineCommentSels));
-        
+
         editor.setSelections(editor.document.doMultipleEdits(edits));
     }</code></pre></div><div class="member">
 
@@ -1601,7 +1598,7 @@ commented in a block-comment.</p>
         if (!editor) {
             return;
         }
-        
+
         &#x2F;&#x2F; Walk the selections, calculating the deletion edits we need to do as we go;
         &#x2F;&#x2F; document.doMultipleEdits() will take care of adjusting the edit locations when
         &#x2F;&#x2F; it actually performs the edits.
@@ -1610,7 +1607,7 @@ commented in a block-comment.</p>
             to,
             lineSelections = editor.convertToLineSelections(editor.getSelections()),
             edits = [];
-        
+
         _.each(lineSelections, function (lineSel, index) {
             var sel = lineSel.selectionForEdit;
 
@@ -1618,7 +1615,7 @@ commented in a block-comment.</p>
             to = sel.end; &#x2F;&#x2F; this is already at the beginning of the line after the last selected line
             if (to.line === editor.getLastVisibleLine() + 1) {
                 &#x2F;&#x2F; Instead of deleting the newline after the last line, delete the newline
-                &#x2F;&#x2F; before the beginning of the line--unless this is the entire visible content 
+                &#x2F;&#x2F; before the beginning of the line--unless this is the entire visible content
                 &#x2F;&#x2F; of the editor, in which case just delete the line content.
                 if (from.line &gt; editor.getFirstVisibleLine()) {
                     from.line -= 1;
@@ -1676,7 +1673,7 @@ on the second copy.</p>
                 rangeSels.push(sel);
             }
         });
-        
+
         var cursorLineSels = editor.convertToLineSelections(cursorSels);
         _.each(cursorLineSels, function (lineSel, index) {
             var sel = lineSel.selectionForEdit;
@@ -1705,7 +1702,7 @@ on the second copy.</p>
 
     
     <div class="description"><p>Special command handler that just ignores the command. This is used for Cut, Copy, and Paste.
-These menu items are handled natively, but need to be registered in our JavaScript code so the 
+These menu items are handled natively, but need to be registered in our JavaScript code so the
 menu items can be created.</p>
 </div>
     
@@ -1718,7 +1715,7 @@ menu items can be created.</p>
         &#x2F;&#x2F; Do nothing. The shell will call the native handler for the command.
         return (new $.Deferred()).reject().promise();
     }
-	
+
 	function _handleSelectAll() {
         var result = new $.Deferred(),
             editor = EditorManager.getFocusedEditor();
@@ -1732,7 +1729,7 @@ menu items can be created.</p>
 
         return result.promise();
     }
-        
+
     &#x2F;&#x2F; Register commands
     CommandManager.register(Strings.CMD_INDENT,                 Commands.EDIT_INDENT,                 indentText);
     CommandManager.register(Strings.CMD_UNINDENT,               Commands.EDIT_UNINDENT,               unindentText);
@@ -1780,7 +1777,7 @@ menu items can be created.</p>
         if (!editor) {
             return;
         }
-        
+
         editor._codeMirror.execCommand(&quot;indentMore&quot;);
     }</code></pre></div><div class="member">
 
@@ -1813,7 +1810,7 @@ menu items can be created.</p>
         if (!editor) {
             return;
         }
-        
+
         editor.setSelections(editor.document.doMultipleEdits(_getLineCommentEdits(editor, editor.getSelections())));
     }</code></pre></div><div class="member">
 
@@ -1827,7 +1824,7 @@ menu items can be created.</p>
     </h4>
 
     
-    <div class="description"><p>Moves the selected text, or current line if no selection. The cursor/selection 
+    <div class="description"><p>Moves the selected text, or current line if no selection. The cursor/selection
 moves with the line/lines.</p>
 </div>
     
@@ -1851,7 +1848,7 @@ moves with the line/lines.</p>
         if (!editor) {
             return;
         }
-        
+
         var doc             = editor.document,
             lineSelections  = editor.convertToLineSelections(editor.getSelections()),
             isInlineWidget  = !!EditorManager.getFocusedInlineWidget(),
@@ -1862,7 +1859,7 @@ moves with the line/lines.</p>
             edits           = [],
             newSels         = [],
             pos             = {};
-        
+
         _.each(lineSelections, function (lineSel) {
             var sel = lineSel.selectionForEdit,
                 editGroup = [];
@@ -1919,7 +1916,7 @@ moves with the line/lines.</p>
                         editGroup.push({text: &quot;&quot;, start: { line: sel.end.line - 1, ch: lineLength }, end: { line: sel.end.line, ch: 0 }});
                     }
                     editGroup.push({text: nextText, start: { line: sel.start.line, ch: 0 }});
-                    
+
                     &#x2F;&#x2F; In this case, we don&#39;t need to track selections, because the edits are done in such a way that
                     &#x2F;&#x2F; the existing selections will automatically be updated properly by CodeMirror as it does the edits.
                     edits.push({edit: editGroup});
@@ -1958,7 +1955,7 @@ moves with the line/lines.</p>
     </h4>
 
     
-    <div class="description"><p>Moves the selected text, or current line if no selection, one line down. The cursor/selection 
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line down. The cursor/selection
 moves with the line/lines.</p>
 </div>
     
@@ -1981,7 +1978,7 @@ moves with the line/lines.</p>
     </h4>
 
     
-    <div class="description"><p>Moves the selected text, or current line if no selection, one line up. The cursor/selection 
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line up. The cursor/selection
 moves with the line/lines.</p>
 </div>
     
@@ -2028,7 +2025,7 @@ The cursor is moved in the new line.</p>
         if (!editor) {
             return;
         }
-        
+
         var selections     = editor.getSelections(),
             isInlineWidget = !!EditorManager.getFocusedInlineWidget(),
             lastLine       = editor.getLastVisibleLine(),
@@ -2036,15 +2033,15 @@ The cursor is moved in the new line.</p>
             edits          = [],
             newSelections,
             line;
-        
-        &#x2F;&#x2F; First, insert all the newlines (skipping multiple selections on the same line), 
+
+        &#x2F;&#x2F; First, insert all the newlines (skipping multiple selections on the same line),
         &#x2F;&#x2F; then indent them all. (We can&#39;t easily do them all at once, because doMultipleEdits()
         &#x2F;&#x2F; won&#39;t do the indentation for us, but we want its help tracking any selection changes
         &#x2F;&#x2F; as the result of the edits.)
-        
+
         &#x2F;&#x2F; Note that we don&#39;t just use `editor.getLineSelections()` here because we don&#39;t actually want
         &#x2F;&#x2F; to coalesce adjacent selections - we just want to ignore dupes.
-        
+
         doc.batchOperation(function () {
             _.each(selections, function (sel, index) {
                 if (index === 0 ||
@@ -2082,7 +2079,7 @@ The cursor is moved in the new line.</p>
                 }
             });
             newSelections = doc.doMultipleEdits(edits, &quot;+input&quot;);
-            
+
             &#x2F;&#x2F; Now indent each added line (which doesn&#39;t mess up any line numbers, and
             &#x2F;&#x2F; we&#39;re going to set the character offset to the last position on each line anyway).
             _.each(newSelections, function (sel) {
@@ -2207,7 +2204,7 @@ The cursor is moved in the new line.</p>
         if (!editor) {
             return;
         }
-        
+
         editor._codeMirror.execCommand(&quot;indentLess&quot;);
     }
 

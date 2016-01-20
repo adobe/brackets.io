@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -556,16 +553,16 @@
 
 <span class="pull-right scope">
     Private
-
+    
 </span>
     <h4>
-        _cmpNames
+        _cmpNames 
         <a class="anchor" href="#-_cmpNames" id="-_cmpNames"><span class="icon-link"></span></a>
     </h4>
 
-
+    
     <div class="description"></div>
-
+    
 <dl>
     <dt>Private</dt>
 </dl><dl>
@@ -635,7 +632,7 @@ extension first and then the extensions to fix issue #4409</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function compareFilenames(filename1, filename2, extFirst) {
         var lang = brackets.getLocale();
-        
+
         filename1 = filename1.toLocaleLowerCase();
         filename2 = filename2.toLocaleLowerCase();
 
@@ -648,7 +645,7 @@ extension first and then the extensions to fix issue #4409</p>
         function cmpNames() {
             return _cmpNames(filename1, filename2, lang);
         }
-        
+
         return extFirst ? (cmpExt() || cmpNames()) : (cmpNames() || cmpExt());
     }</code></pre></div><div class="member public">
 
@@ -746,7 +743,7 @@ case, remove the initial &quot;/&quot;.</p>
         if (path.indexOf(&quot;:&quot;) !== -1 &amp;&amp; path[0] === &quot;&#x2F;&quot;) {
             return path.substr(1);
         }
-        
+
         return path;
     }</code></pre></div><div class="member public">
 
@@ -819,14 +816,14 @@ APIs generally use the &quot;C:/foo/bar/baz.txt&quot; style for &quot;native&quo
         });
         return pathArray.join(&quot;&#x2F;&quot;);
     }
-    
+
     &#x2F;&#x2F; Asynchronously load DocumentCommandHandlers
     &#x2F;&#x2F; This avoids a temporary circular dependency created
     &#x2F;&#x2F; by relocating showFileOpenError() until deprecation is over
     require([&quot;document&#x2F;DocumentCommandHandlers&quot;], function (dchModule) {
         DocumentCommandHandlers = dchModule;
     });
-    
+
     &#x2F;&#x2F; Asynchronously load LiveDevelopmentUtils
     &#x2F;&#x2F; This avoids a temporary circular dependency created
     &#x2F;&#x2F; by relocating isStaticHtmlFileExt() until deprecation is over
@@ -1105,10 +1102,10 @@ Returns a native absolute path to the module folder.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getNativeModuleDirectoryPath(module) {
         var path;
-        
+
         if (module &amp;&amp; module.uri) {
             path = decodeURI(module.uri);
-            
+
             &#x2F;&#x2F; Remove module name and trailing slash from path.
             path = path.substr(0, path.lastIndexOf(&quot;&#x2F;&quot;));
         }
@@ -1214,7 +1211,7 @@ a prefix of filename, then undefined is returned.</p>
         if (!filename || filename.substr(0, basePath.length) !== basePath) {
             return;
         }
-        
+
         return filename.substr(basePath.length);
     }</code></pre></div><div class="member public deprecated">
 
@@ -1365,7 +1362,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
                 result.reject(err);
             }
         });
-        
+
         return result.promise();
     }</code></pre></div><div class="member public deprecated">
 
@@ -1435,7 +1432,7 @@ null if usage is mixed or if no line endings found.</p>
         var subset = text.substr(0, 1000);  &#x2F;&#x2F; (length is clipped to text.length)
         var hasCRLF = &#x2F;\r\n&#x2F;.test(subset);
         var hasLF = &#x2F;[^\r]\n&#x2F;.test(subset);
-        
+
         if ((hasCRLF &amp;&amp; hasLF) || (!hasCRLF &amp;&amp; !hasLF)) {
             return null;
         } else {
@@ -1515,10 +1512,10 @@ normally, as this is the format used by Directory.fullPath.</p>
         if (lineEndings !== LINE_ENDINGS_CRLF &amp;&amp; lineEndings !== LINE_ENDINGS_LF) {
             lineEndings = getPlatformLineEndings();
         }
-        
+
         var eolStr = (lineEndings === LINE_ENDINGS_CRLF ? &quot;\r\n&quot; : &quot;\n&quot;);
         var findAnyEol = &#x2F;\r\n|\r|\n&#x2F;g;
-        
+
         return text.replace(findAnyEol, eolStr);
     }</code></pre></div><div class="member public">
 
@@ -1564,11 +1561,11 @@ normally, as this is the format used by Directory.fullPath.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function writeText(file, text, allowBlindWrite) {
         var result = new $.Deferred(),
             options = {};
-        
+
         if (allowBlindWrite) {
             options.blind = true;
         }
-        
+
         file.write(text, options, function (err) {
             if (!err) {
                 result.resolve();
@@ -1576,7 +1573,7 @@ normally, as this is the format used by Directory.fullPath.</p>
                 result.reject(err);
             }
         });
-        
+
         return result.promise();
     }</code></pre></div>
 </section>

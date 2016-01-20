@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -554,23 +551,23 @@ _versionInfoUrl is used for unit testing.</p>
         var result = new $.Deferred();
         var fetchData = false;
         var data;
-        
+
         &#x2F;&#x2F; If force is true, always fetch
         if (force) {
             fetchData = true;
         }
-        
+
         &#x2F;&#x2F; If we don&#39;t have data saved in prefs, fetch
         data = PreferencesManager.getViewState(&quot;updateInfo&quot;);
         if (!data) {
             fetchData = true;
         }
-        
+
         &#x2F;&#x2F; If more than 24 hours have passed since our last fetch, fetch again
         if ((new Date()).getTime() &gt; lastInfoURLFetchTime + ONE_DAY) {
             fetchData = true;
         }
-        
+
         if (fetchData) {
             var lookupPromise = new $.Deferred(),
                 localVersionInfoUrl;
@@ -743,11 +740,11 @@ _versionInfoUrl is used for unit testing.</p>
                     NativeApp.openURLInDefaultBrowser(updates[0].downloadURL);
                 }
             });
-        
+
         &#x2F;&#x2F; Populate the update data
         var $dlg        = $(&quot;.update-dialog.instance&quot;),
             $updateList = $dlg.find(&quot;.update-info&quot;);
-        
+
         updates.Strings = Strings;
         $updateList.html(Mustache.render(UpdateListTemplate, updates));
     }</code></pre></div><div class="member private">
@@ -776,18 +773,18 @@ Returns null if there is no new version information.</p>
         &#x2F;&#x2F; should get through the search quickly.
         var lastIndex = 0;
         var len = versionInfo.length;
-        
+
         while (lastIndex &lt; len) {
             if (versionInfo[lastIndex].buildNumber &lt;= buildNumber) {
                 break;
             }
             lastIndex++;
         }
-        
+
         if (lastIndex &gt; 0) {
             return versionInfo.slice(0, lastIndex);
         }
-        
+
         &#x2F;&#x2F; No new version info
         return null;
     }</code></pre></div><div class="member">
@@ -886,10 +883,10 @@ displayed for newly available updates.</p>
         var usingOverrides = false; &#x2F;&#x2F; true if any of the values are overridden.
         var result = new $.Deferred();
         var versionInfoUrl;
-        
+
         if (_testValues) {
             oldValues = {};
-            
+
             if (_testValues.hasOwnProperty(&quot;_buildNumber&quot;)) {
                 oldValues._buildNumber = _buildNumber;
                 _buildNumber = _testValues._buildNumber;
@@ -907,12 +904,12 @@ displayed for newly available updates.</p>
                 usingOverrides = true;
             }
         }
-        
+
         _getUpdateInformation(force || usingOverrides, usingOverrides, versionInfoUrl)
             .done(function (versionInfo) {
                 &#x2F;&#x2F; Get all available updates
                 var allUpdates = _stripOldVersionInfo(versionInfo, _buildNumber);
-                
+
                 &#x2F;&#x2F; When running directly from GitHub source (as opposed to
                 &#x2F;&#x2F; an installed build), _buildNumber is 0. In this case, if the
                 &#x2F;&#x2F; test is not forced, don&#39;t show the update notification icon or
@@ -921,11 +918,11 @@ displayed for newly available updates.</p>
                     result.resolve();
                     return;
                 }
-                
+
                 if (allUpdates) {
                     &#x2F;&#x2F; Always show the &quot;update available&quot; icon if any updates are available
                     var $updateNotification = $(&quot;#update-notification&quot;);
-                    
+
                     $updateNotification.css(&quot;display&quot;, &quot;block&quot;);
                     if (!_addedClickHandler) {
                         _addedClickHandler = true;
@@ -933,12 +930,12 @@ displayed for newly available updates.</p>
                             checkForUpdate(true);
                         });
                     }
-                
+
                     &#x2F;&#x2F; Only show the update dialog if force = true, or if the user hasn&#39;t been
                     &#x2F;&#x2F; alerted of this update
                     if (force || allUpdates[0].buildNumber &gt;  lastNotifiedBuildNumber) {
                         _showUpdateNotificationDialog(allUpdates);
-                        
+
                         &#x2F;&#x2F; Update prefs with the last notified build number
                         lastNotifiedBuildNumber = allUpdates[0].buildNumber;
                         &#x2F;&#x2F; Don&#39;t save prefs is we have overridden values
@@ -954,7 +951,7 @@ displayed for newly available updates.</p>
                         Strings.NO_UPDATE_MESSAGE
                     );
                 }
-        
+
                 if (oldValues) {
                     if (oldValues.hasOwnProperty(&quot;_buildNumber&quot;)) {
                         _buildNumber = oldValues._buildNumber;
@@ -976,7 +973,7 @@ displayed for newly available updates.</p>
                 }
                 result.reject();
             });
-        
+
         return result.promise();
     }</code></pre></div><div class="member public">
 

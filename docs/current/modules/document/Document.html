@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -538,7 +535,7 @@ if it were an array containing just that item.</p>
             <em><p>Model for the contents of a single file and its current modification state.
 See DocumentManager documentation for important usage notes.</p>
 <p>Document dispatches these events:</p>
-<p><strong>change</strong> -- When the text of the editor changes (including due to undo/redo). </p>
+<p><strong>change</strong> -- When the text of the editor changes (including due to undo/redo).</p>
 <p>Passes ({Document}, {ChangeList}), where ChangeList is an array
 of change record objects. Each change record looks like:</p>
 <pre><code>{ from: start of change, expressed as {line: &lt;line number&gt;, ch: &lt;character offset&gt;},
@@ -549,7 +546,7 @@ of change record objects. Each change record looks like:</p>
 an insertion of new content (without replacing existing content) is expressed by a range
 where from and to are the same.</p>
 <p>If &quot;from&quot; and &quot;to&quot; are undefined, then this is a replacement of the entire text content.</p>
-<p>IMPORTANT: If you listen for the &quot;change&quot; event, you MUST also addRef() the document 
+<p>IMPORTANT: If you listen for the &quot;change&quot; event, you MUST also addRef() the document
 (and releaseRef() it whenever you stop listening). You should also listen to the &quot;deleted&quot;
 event.</p>
 <p><strong>deleted</strong> -- When the file for this document has been deleted. All views onto the document should
@@ -574,7 +571,7 @@ be closed. The document will no longer be editable or dispatch &quot;change&quot
         this._updateLanguage();
         this.refreshText(rawText, initialTimestamp, true);
     }
-    
+
     EventDispatcher.makeEventDispatcher(Document.prototype);</code></pre>
         </div>
         
@@ -586,6 +583,25 @@ be closed. The document will no longer be editable or dispatch &quot;change&quot
 </label>            </h3>
 
 <div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _associatedFullEditors 
+        <a class="anchor" href="#Document-_associatedFullEditors" id="Document-_associatedFullEditors"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>List of editors which were initialized as master editors for this doc.</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Document.prototype._associatedFullEditors = [];</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -836,6 +852,32 @@ Note that this is a time as returned by Date.getTime(), not a Date object.</p>
     
 </span>
     <h4>
+        _disassociateEditor 
+        <a class="anchor" href="#Document-_disassociateEditor" id="Document-_disassociateEditor"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Disassociates an editor from this document if present in the associated editor list
+To be used internally by Editor only when destroyed and not the current master editor for the document</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Document.prototype._disassociateEditor = function (editor) {
+        &#x2F;&#x2F; Do a check before processing the request to ensure inline editors are not being handled
+        if (this._associatedFullEditors.indexOf(editor) &gt;= 0) {
+            this._associatedFullEditors.splice(this._associatedFullEditors.indexOf(editor), 1);
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _ensureMasterEditor 
         <a class="anchor" href="#Document-_ensureMasterEditor" id="Document-_ensureMasterEditor"><span class="icon-link"></span></a>
     </h4>
@@ -877,6 +919,11 @@ to that Editor&#39;s UI, OR by our setText()/refreshText() methods.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._handleEditorChange = function (event, editor, changeList) {
+        &#x2F;&#x2F; Handle editor change event only when it is originated from the master editor for this doc
+        if (this._masterEditor !== editor) {
+            return;
+        }
+
         &#x2F;&#x2F; TODO: This needs to be kept in sync with SpecRunnerUtils.createMockActiveDocument(). In the
         &#x2F;&#x2F; future, we should fix things so that we either don&#39;t need mock documents or that this
         &#x2F;&#x2F; is factored so it will just run in both.
@@ -884,13 +931,13 @@ to that Editor&#39;s UI, OR by our setText()/refreshText() methods.</p>
             &#x2F;&#x2F; Sync isDirty from CodeMirror state
             var wasDirty = this.isDirty;
             this.isDirty = !editor._codeMirror.isClean();
-            
+
             &#x2F;&#x2F; Notify if isDirty just changed (this also auto-adds us to working set if needed)
             if (wasDirty !== this.isDirty) {
                 exports.trigger(&quot;_dirtyFlagChange&quot;, this);
             }
         }
-        
+
         &#x2F;&#x2F; Notify that Document&#39;s text has changed
         this._notifyDocumentChange(changeList);
     };</code></pre></div><div class="member private">
@@ -923,12 +970,16 @@ when EditorManager has told it to act as the master editor).</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._makeEditable = function (masterEditor) {
         if (this._masterEditor) {
-            console.error(&quot;Document is already editable&quot;);
-        } else {
-            this._text = null;
-            this._masterEditor = masterEditor;
-            masterEditor.on(&quot;change&quot;, this._handleEditorChange.bind(this));
+            &#x2F;&#x2F;Already a master editor is associated , so preserve the old editor in list of full editors
+            if (this._associatedFullEditors.indexOf(this._masterEditor) &lt; 0) {
+                this._associatedFullEditors.push(this._masterEditor);
+            }
         }
+
+        this._text = null;
+        this._masterEditor = masterEditor;
+
+        masterEditor.on(&quot;change&quot;, this._handleEditorChange.bind(this));
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -957,7 +1008,14 @@ Editor.destroy() should call this.</p>
         } else {
             &#x2F;&#x2F; _text represents the raw text, so fetch without normalized line endings
             this._text = this.getText(true);
-            this._masterEditor = null;
+            this._associatedFullEditors.splice(this._associatedFullEditors.indexOf(this._masterEditor), 1);
+
+            &#x2F;&#x2F; Identify the most recently created full editor before this and set that as new master editor
+            if (this._associatedFullEditors.length &gt; 0) {
+                this._masterEditor = this._associatedFullEditors[this._associatedFullEditors.length - 1];
+            } else {
+                this._masterEditor = null;
+            }
         }
     };</code></pre></div><div class="member private">
 
@@ -1041,6 +1099,38 @@ Editor.destroy() should call this.</p>
     
 </span>
     <h4>
+        _toggleMasterEditor 
+        <a class="anchor" href="#Document-_toggleMasterEditor" id="Document-_toggleMasterEditor"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Toggles the master editor which has gained focus from a pool of full editors
+To be used internally by Editor only</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Document.prototype._toggleMasterEditor = function (masterEditor) {
+        &#x2F;&#x2F; Do a check before processing the request to ensure inline editors are not being set as master editor
+        if (this._associatedFullEditors.indexOf(masterEditor) &gt;= 0) {
+            if (this._masterEditor) {
+                &#x2F;&#x2F; Already a master editor is associated , so preserve the old editor in list of editors
+                if (this._associatedFullEditors.indexOf(this._masterEditor) &lt; 0) {
+                    this._associatedFullEditors.push(this._masterEditor);
+                }
+            }
+            this._masterEditor = masterEditor;
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _updateLanguage 
         <a class="anchor" href="#Document-_updateLanguage" id="Document-_updateLanguage"><span class="icon-link"></span></a>
     </h4>
@@ -1105,7 +1195,7 @@ Editor.destroy() should call this.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.addRef = function () {
         &#x2F;&#x2F;console.log(&quot;+++REF+++ &quot;+this);
-        
+
         if (this._refCount === 0) {
             &#x2F;&#x2F;console.log(&quot;+++ adding to open list&quot;);
             if (exports.trigger(&quot;_afterDocumentCreate&quot;, this)) {
@@ -1125,9 +1215,9 @@ Editor.destroy() should call this.</p>
     </h4>
 
     
-    <div class="description"><p>Adjusts a given position taking a given replaceRange-type edit into account. 
+    <div class="description"><p>Adjusts a given position taking a given replaceRange-type edit into account.
 If the position is within the original edit range (start and end inclusive),
-it gets pushed to the end of the content that replaced the range. Otherwise, 
+it gets pushed to the end of the content that replaced the range. Otherwise,
 if it&#39;s after the edit, it gets adjusted so it refers to the same character
 it did before the edit.</p>
 </div>
@@ -1210,7 +1300,7 @@ batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.batchOperation = function (doOperation) {
         this._ensureMasterEditor();
-        
+
         var self = this;
         self._masterEditor._codeMirror.operation(doOperation);
     };</code></pre></div><div class="member">
@@ -1263,7 +1353,7 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.doMultipleEdits = function (edits, origin) {
         var self = this;
-        
+
         &#x2F;&#x2F; Sort the edits backwards, so we don&#39;t have to adjust the edit positions as we go along
         &#x2F;&#x2F; (though we do have to adjust the selection positions).
         edits.sort(function (editDesc1, editDesc2) {
@@ -1279,11 +1369,11 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
                 return CodeMirror.cmpPos(edit2.start, edit1.start);
             }
         });
-        
+
         &#x2F;&#x2F; Pull out the selections, in the same order as the edits.
         var result = _.cloneDeep(_.pluck(edits, &quot;selection&quot;));
-        
-        &#x2F;&#x2F; Preflight the edits to specify &quot;end&quot; if unspecified and make sure they don&#39;t overlap. 
+
+        &#x2F;&#x2F; Preflight the edits to specify &quot;end&quot; if unspecified and make sure they don&#39;t overlap.
         &#x2F;&#x2F; (We don&#39;t want to do it during the actual edits, since we don&#39;t want to apply some of
         &#x2F;&#x2F; the edits before we find out.)
         _.each(edits, function (editDesc, index) {
@@ -1305,7 +1395,7 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
                 }
             });
         });
-        
+
         &#x2F;&#x2F; Perform the edits.
         this.batchOperation(function () {
             _.each(edits, function (editDesc, index) {
@@ -1333,7 +1423,7 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
                 });
             });
         });
-        
+
         result = _.chain(result)
             .filter(function (item) {
                 return item !== undefined;
@@ -1483,7 +1573,7 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
                 }
             }
             return codeMirrorText;
-            
+
         } else {
             &#x2F;&#x2F; Optimized path that doesn&#39;t require creating master editor
             if (useOriginalLineEndings) {
@@ -1518,7 +1608,7 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.isUntitled = function () {
         return this.file instanceof InMemoryFile;
     };
-    
+
     &#x2F;&#x2F; We dispatch events from the module level, and the instance level. Instance events are wired up
     &#x2F;&#x2F; in the Document constructor.
     EventDispatcher.makeEventDispatcher(exports);
@@ -1573,9 +1663,9 @@ document not dirty and notifies listeners of the save.</p>
         if (!this._masterEditor) {
             console.log(&quot;### Warning: saving a Document that is not modifiable!&quot;);
         }
-        
+
         this._markClean();
-        
+
         &#x2F;&#x2F; TODO: (issue #295) fetching timestamp async creates race conditions (albeit unlikely ones)
         var thisDoc = this;
         this.file.stat(function (err, stat) {
@@ -1631,13 +1721,13 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
         &#x2F;&#x2F; If clean, don&#39;t transiently mark dirty during refresh
         &#x2F;&#x2F; (we&#39;ll still send change events though, of course)
         this._refreshInProgress = true;
-        
+
         if (this._masterEditor) {
             this._masterEditor._resetText(text);  &#x2F;&#x2F; clears undo history too
             &#x2F;&#x2F; _handleEditorChange() triggers &quot;change&quot; event for us
         } else {
             this._text = text;
-            
+
             if (!initial) {
                 &#x2F;&#x2F; We fake a change record here that looks like CodeMirror&#39;s text change records, but
                 &#x2F;&#x2F; omits &quot;from&quot; and &quot;to&quot;, by which we mean the entire text has changed.
@@ -1648,20 +1738,20 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
             }
         }
         this._updateTimestamp(newTimestamp);
-       
+
         &#x2F;&#x2F; If Doc was dirty before refresh, reset it to clean now (don&#39;t always call, to avoid no-op dirtyFlagChange events) Since
         &#x2F;&#x2F; _resetText() above already ensures Editor state is clean, it&#39;s safe to skip _markClean() as long as our own state is already clean too.
         if (this.isDirty) {
             this._markClean();
         }
         this._refreshInProgress = false;
-        
+
         &#x2F;&#x2F; Sniff line-ending style
         this._lineEndings = FileUtils.sniffLineEndings(text);
         if (!this._lineEndings) {
             this._lineEndings = FileUtils.getPlatformLineEndings();
         }
-        
+
         exports.trigger(&quot;_documentRefreshed&quot;, this);
 
         PerfUtils.addMeasurement(perfTimerName);
@@ -1716,7 +1806,7 @@ given new text; if text == &quot;&quot;, then the entire range is effectively de
 then the new text is inserted at that point and all existing text is preserved. Line endings will
 be rewritten to match the document&#39;s current line-ending style.</p>
 <p>IMPORTANT NOTE: Because of #1688, do not use this in cases where you might be
-operating on a linked document (like the main document for an inline editor) 
+operating on a linked document (like the main document for an inline editor)
 during an outer CodeMirror operation (like a key event that&#39;s handled by the
 editor itself). A common case of this is code hints in inline editors. In
 such cases, use <code>editor._codeMirror.replaceRange()</code> instead. This should be

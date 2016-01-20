@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -600,12 +597,12 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _loadAll(directory, config, entryPoint, processExtension) {
         var result = new $.Deferred();
-        
+
         FileSystem.getDirectoryForPath(directory).getContents(function (err, contents) {
             if (!err) {
                 var i,
                     extensions = [];
-                
+
                 for (i = 0; i &lt; contents.length; i++) {
                     if (contents[i].isDirectory) {
                         &#x2F;&#x2F; FUTURE (JRB): read package.json instead of just using the entrypoint &quot;main&quot;.
@@ -618,7 +615,7 @@
                     result.resolve();
                     return;
                 }
-                
+
                 Async.doInParallel(extensions, function (item) {
                     var extConfig = {
                         baseUrl: config.baseUrl + &quot;&#x2F;&quot; + item,
@@ -634,7 +631,7 @@
                 result.reject();
             }
         });
-               
+
         return result.promise();
     }</code></pre></div><div class="member private">
 
@@ -671,13 +668,13 @@
         FileUtils.readAsText(extensionConfigFile).done(function (text) {
             try {
                 var extensionConfig = JSON.parse(text);
-                
+
                 &#x2F;&#x2F; baseConfig.paths properties will override any extension config paths
                 _.extend(extensionConfig.paths, baseConfig.paths);
 
                 &#x2F;&#x2F; Overwrite baseUrl, context, locale (paths is already merged above)
                 _.extend(extensionConfig, _.omit(baseConfig, &quot;paths&quot;));
-                
+
                 deferred.resolve(extensionConfig);
             } catch (err) {
                 &#x2F;&#x2F; Failed to parse requirejs-config.json
@@ -806,24 +803,24 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init(paths) {
         var params = new UrlParams();
-        
+
         if (_init) {
             &#x2F;&#x2F; Only init once. Return a resolved promise.
             return new $.Deferred().resolve().promise();
         }
-        
+
         if (!paths) {
             params.parse();
-            
+
             if (params.get(&quot;reloadWithoutUserExts&quot;) === &quot;true&quot;) {
                 paths = [&quot;default&quot;];
             } else {
                 paths = [&quot;default&quot;, &quot;dev&quot;, getUserExtensionPath()];
             }
         }
-        
+
         &#x2F;&#x2F; Load extensions before restoring the project
-        
+
         &#x2F;&#x2F; Get a Directory for the user extension directory and create it if it doesn&#39;t exist.
         &#x2F;&#x2F; Note that this is an async call and there are no success or failure functions passed
         &#x2F;&#x2F; in. If the directory *doesn&#39;t* exist, it will be created. Extension loading may happen
@@ -833,37 +830,37 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
         &#x2F;&#x2F; during extension loading.
         var extensionPath = getUserExtensionPath();
         FileSystem.getDirectoryForPath(extensionPath).create();
-        
+
         &#x2F;&#x2F; Create the extensions&#x2F;disabled directory, too.
         var disabledExtensionPath = extensionPath.replace(&#x2F;\&#x2F;user$&#x2F;, &quot;&#x2F;disabled&quot;);
         FileSystem.getDirectoryForPath(disabledExtensionPath).create();
-        
+
         var promise = Async.doSequentially(paths, function (item) {
             var extensionPath = item;
-            
+
             &#x2F;&#x2F; If the item has &quot;&#x2F;&quot; in it, assume it is a full path. Otherwise, load
             &#x2F;&#x2F; from our source path + &quot;&#x2F;extensions&#x2F;&quot;.
             if (item.indexOf(&quot;&#x2F;&quot;) === -1) {
                 extensionPath = FileUtils.getNativeBracketsDirectoryPath() + &quot;&#x2F;extensions&#x2F;&quot; + item;
             }
-            
+
             return loadAllExtensionsInNativeDirectory(extensionPath);
         }, false);
-        
+
         promise.always(function () {
             _init = true;
         });
-        
+
         return promise;
     }
 
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; unit tests
     exports._setInitExtensionTimeout = _setInitExtensionTimeout;
     exports._getInitExtensionTimeout = _getInitExtensionTimeout;
-    
+
     &#x2F;&#x2F; public API
     exports.init = init;
     exports.getUserExtensionPath = getUserExtensionPath;
@@ -1050,12 +1047,12 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
             config = {
                 baseUrl: directory
             };
-        
+
         config.paths = {
             &quot;perf&quot;: bracketsPath + &quot;&#x2F;perf&quot;,
             &quot;spec&quot;: bracketsPath + &quot;&#x2F;spec&quot;
         };
-        
+
         return _loadAll(directory, config, &quot;unittests&quot;, testExtension);
     }</code></pre></div><div class="member public">
 
@@ -1101,7 +1098,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function testExtension(name, config, entryPoint) {
         var result = new $.Deferred(),
             extensionPath = config.baseUrl + &quot;&#x2F;&quot; + entryPoint + &quot;.js&quot;;
-        
+
         FileSystem.resolve(extensionPath, function (err, entry) {
             if (!err &amp;&amp; entry.isFile) {
                 &#x2F;&#x2F; unit test file exists
@@ -1110,7 +1107,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
                     baseUrl: config.baseUrl,
                     paths: $.extend({}, config.paths, globalConfig)
                 });
-    
+
                 extensionRequire([entryPoint], function () {
                     result.resolve();
                 });
@@ -1118,7 +1115,7 @@ C:\Users\&lt;user&gt;\AppData\Roaming\Brackets\extensions\user on windows.</p>
                 result.reject();
             }
         });
-        
+
         return result.promise();
     }</code></pre></div>
 </section>

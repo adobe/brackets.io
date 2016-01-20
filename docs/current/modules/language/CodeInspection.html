@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -571,9 +568,9 @@ In the future, support may also be added for error/warning providers that cannot
         PREF_ASYNC_TIMEOUT      = &quot;asyncTimeout&quot;,
         PREF_PREFER_PROVIDERS   = &quot;prefer&quot;,
         PREF_PREFERRED_ONLY     = &quot;usePreferredOnly&quot;;
-    
+
     var prefs = PreferencesManager.getExtensionPrefs(&quot;linting&quot;);
-    
+
     PreferencesManager.convertPreferences(module, {
         &quot;enabled&quot;: &quot;user linting.enabled&quot;,
         &quot;collapsed&quot;: &quot;user linting.collapsed&quot;
@@ -804,12 +801,12 @@ Decision is made depending on the file extension.</p>
 
             prefPreferredProviderNames  = prefs.get(PREF_PREFER_PROVIDERS, context),
             prefPreferredOnly           = prefs.get(PREF_PREFERRED_ONLY, context),
-        
+
             providers;
-        
+
         &#x2F;&#x2F; ensure there is an instance and that a copy is returned, always
         installedProviders = (installedProviders &amp;&amp; installedProviders.slice(0)) || [];
-        
+
         if (prefPreferredProviderNames &amp;&amp; prefPreferredProviderNames.length) {
             if (typeof prefPreferredProviderNames === &quot;string&quot;) {
                 prefPreferredProviderNames = [prefPreferredProviderNames];
@@ -860,7 +857,7 @@ Decision is made depending on the file extension.</p>
     &#x2F;&#x2F; Register command handlers
     CommandManager.register(Strings.CMD_VIEW_TOGGLE_INSPECTION, Commands.VIEW_TOGGLE_INSPECTION,        toggleEnabled);
     CommandManager.register(Strings.CMD_GOTO_FIRST_PROBLEM,     Commands.NAVIGATE_GOTO_FIRST_PROBLEM,   handleGotoFirstProblem);
-    
+
     &#x2F;&#x2F; Register preferences
     prefs.definePreference(PREF_ENABLED, &quot;boolean&quot;, brackets.config[&quot;linting.enabled_by_default&quot;], {
         description: Strings.DESCRIPTION_LINTING_ENABLED
@@ -868,14 +865,14 @@ Decision is made depending on the file extension.</p>
         .on(&quot;change&quot;, function (e, data) {
             toggleEnabled(prefs.get(PREF_ENABLED), true);
         });
-    
+
     prefs.definePreference(PREF_COLLAPSED, &quot;boolean&quot;, false, {
         description: Strings.DESCRIPTION_LINTING_COLLAPSED
     })
         .on(&quot;change&quot;, function (e, data) {
             toggleCollapsed(prefs.get(PREF_COLLAPSED), true);
         });
-    
+
     prefs.definePreference(PREF_ASYNC_TIMEOUT, &quot;number&quot;, 10000, {
         description: Strings.DESCRIPTION_ASYNC_TIMEOUT
     });
@@ -930,7 +927,7 @@ Decision is made depending on the file extension.</p>
                     &#x2F;&#x2F; if there is no line number available, don&#39;t do anything
                     if (!isNaN(line)) {
                         var character = lineTd.data(&quot;character&quot;);
-    
+
                         var editor = EditorManager.getCurrentFullEditor();
                         editor.setCursorPos(line, character, true);
                         MainViewManager.focusActivePane();
@@ -1024,7 +1021,7 @@ If there are no providers registered for this file, the Promise yields null inst
             response.resolve(null);
             return response.promise();
         }
-        
+
         DocumentManager.getDocumentText(file)
             .done(function (fileText) {
                 var perfTimerInspector = PerfUtils.markStart(&quot;CodeInspection:\t&quot; + file.fullPath),
@@ -1033,11 +1030,11 @@ If there are no providers registered for this file, the Promise yields null inst
                 masterPromise = Async.doInParallel(providerList, function (provider) {
                     var perfTimerProvider = PerfUtils.markStart(&quot;CodeInspection &#39;&quot; + provider.name + &quot;&#39;:\t&quot; + file.fullPath),
                         runPromise = new $.Deferred();
-                    
+
                     runPromise.done(function (scanResult) {
                         results.push({provider: provider, result: scanResult});
                     });
-                    
+
                     if (provider.scanFileAsync) {
                         window.setTimeout(function () {
                             &#x2F;&#x2F; timeout error
@@ -1082,7 +1079,7 @@ If there are no providers registered for this file, the Promise yields null inst
                     return runPromise.promise();
 
                 }, false);
-                
+
                 masterPromise.then(function () {
                     &#x2F;&#x2F; sync async may have pushed results in different order, restore the original order
                     results.sort(function (a, b) {
@@ -1142,9 +1139,9 @@ Rejecting the promise is treated as an internal error in the provider.</p>
         if (!_providers[languageId]) {
             _providers[languageId] = [];
         }
-        
+
         _providers[languageId].push(provider);
-        
+
         run();  &#x2F;&#x2F; in case a file of this type is open currently
     }</code></pre></div><div class="member">
 
@@ -1200,7 +1197,7 @@ match the current doc&#39;s provider name.</p>
                 if (this !== _currentPromise) {
                     return;
                 }
-                
+
                 &#x2F;&#x2F; how many errors in total?
                 var errors = results.reduce(function (a, item) { return a + (item.result ? item.result.errors.length : 0); }, 0);
 
@@ -1221,7 +1218,7 @@ match the current doc&#39;s provider name.</p>
                 }
 
                 var perfTimerDOM = PerfUtils.markStart(&quot;ProblemsPanel render:\t&quot; + currentDoc.file.fullPath);
-                
+
                 &#x2F;&#x2F; Augment error objects with additional fields needed by Mustache template
                 results.forEach(function (inspectionResult) {
                     var provider = inspectionResult.provider;
@@ -1236,7 +1233,7 @@ match the current doc&#39;s provider name.</p>
                                 error.friendlyLine = error.pos.line + 1;
                                 error.codeSnippet = error.codeSnippet.substr(0, 175);  &#x2F;&#x2F; limit snippet width
                             }
-                            
+
                             if (error.type !== Type.META) {
                                 numProblems++;
                             }
@@ -1261,10 +1258,10 @@ match the current doc&#39;s provider name.</p>
                         }
                     }
                 });
-                
+
                 &#x2F;&#x2F; Update results table
                 html = Mustache.render(ResultsTemplate, {reportList: allErrors});
-                
+
                 $problemsPanelTable
                     .empty()
                     .append(html)
@@ -1363,7 +1360,7 @@ collapsed, the panel will not reopen automatically on switch files or save.</p>
         if (collapsed === undefined) {
             collapsed = !_collapsed;
         }
-        
+
         if (collapsed === _collapsed) {
             return;
         }
@@ -1373,7 +1370,7 @@ collapsed, the panel will not reopen automatically on switch files or save.</p>
             prefs.set(PREF_COLLAPSED, _collapsed);
             prefs.save();
         }
-        
+
         if (_collapsed) {
             Resizer.hide($problemsPanel);
         } else {
@@ -1417,12 +1414,12 @@ collapsed, the panel will not reopen automatically on switch files or save.</p>
         if (enabled === undefined) {
             enabled = !_enabled;
         }
-        
+
         &#x2F;&#x2F; Take no action when there is no change.
         if (enabled === _enabled) {
             return;
         }
-        
+
         _enabled = enabled;
 
         CommandManager.get(Commands.VIEW_TOGGLE_INSPECTION).setChecked(_enabled);
@@ -1431,7 +1428,7 @@ collapsed, the panel will not reopen automatically on switch files or save.</p>
             prefs.set(PREF_ENABLED, _enabled);
             prefs.save();
         }
-    
+
         &#x2F;&#x2F; run immediately
         run();
     }</code></pre></div><div class="member">
