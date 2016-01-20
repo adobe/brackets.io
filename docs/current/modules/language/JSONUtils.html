@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -603,7 +600,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getExclusionList(editor, constPos) {
         var ctxPrev, ctxNext, exclusionList = [], pos, braceParity;
-        
+
         &#x2F;&#x2F; Move back to find exclusions.
         pos = $.extend({}, constPos);
         braceParity = 1;
@@ -616,7 +613,7 @@
                     braceParity--;
                 }
             }
-            
+
             if (braceParity === 1 &amp;&amp; ctxPrev.token.type === &quot;string property&quot;) {
                 exclusionList.push(stripQuotes(ctxPrev.token.string));
             } else if (braceParity === 0) {
@@ -636,7 +633,7 @@
                     braceParity--;
                 }
             }
-            
+
             if (braceParity === 1 &amp;&amp; ctxNext.token.type === &quot;string property&quot;) {
                 exclusionList.push(stripQuotes(ctxNext.token.string));
             } else if (braceParity === 0) {
@@ -675,7 +672,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getParentKeyName(ctx) {
         var parentKeyName, braceParity = 1, hasColon;
-        
+
         &#x2F;&#x2F; Move the context back to find the parent key.
         while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx)) {
             if (ctx.token.type === null) {
@@ -685,7 +682,7 @@
                     braceParity--;
                 }
             }
-            
+
             if (braceParity === 0) {
                 while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx)) {
                     if (ctx.token.type === null &amp;&amp; ctx.token.string === &quot;:&quot;) {
@@ -698,7 +695,7 @@
                 break;
             }
         }
-        
+
         if (parentKeyName &amp;&amp; hasColon) {
             return parentKeyName;
         }
@@ -751,50 +748,50 @@
 <pre class="code language-javascript"><code class="language-javascript">    function getContextInfo(editor, constPos, requireParent, requireNextToken) {
         var pos, ctx, ctxPrev, ctxNext, offset, keyName, valueName, parentKeyName,
             isArray, exclusionList, hasColon, hasComma, hasBracket, shouldReplace;
-        
+
         pos = $.extend({}, constPos);
         ctx = TokenUtils.getInitialContext(editor._codeMirror, pos);
         offset = TokenUtils.offsetInToken(ctx);
-        
+
         if (ctx.token &amp;&amp; ctx.token.type === &quot;string property&quot;) {
             &#x2F;&#x2F; String literals used as keys.
-            
+
             &#x2F;&#x2F; Disallow hints if cursor is out of the string.
             if (&#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1)) &amp;&amp;
                     ctx.token.string.length !== 1 &amp;&amp; ctx.token.end === pos.ch) {
                 return null;
             }
             keyName = stripQuotes(ctx.token.string);
-            
+
             &#x2F;&#x2F; Get parent key name.
             if (requireParent) {
                 ctxPrev = $.extend(true, {}, ctx);
                 parentKeyName = stripQuotes(_getParentKeyName(ctxPrev));
             }
-            
+
             &#x2F;&#x2F; Check if the key is followed by a colon, so we should not append colon again.
             ctxNext = $.extend(true, {}, ctx);
             TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctxNext);
             if (ctxNext.token.type === null &amp;&amp; ctxNext.token.string === &quot;:&quot;) {
                 shouldReplace = true;
             }
-            
+
             &#x2F;&#x2F; Get an exclusion list of properties.
             pos = $.extend({}, constPos);
             exclusionList = _getExclusionList(editor, pos);
-            
+
             return _createContextInfo(ctx.token, TOKEN_KEY, offset, keyName, valueName, parentKeyName, null, exclusionList, shouldReplace);
         } else if (ctx.token &amp;&amp; (valueTokenTypes.indexOf(ctx.token.type) !== -1 ||
                                 (ctx.token.type === null &amp;&amp; regexAllowedChars.test(ctx.token.string)))) {
             &#x2F;&#x2F; Boolean, String, Number and variable literal values.
-            
+
             &#x2F;&#x2F; Disallow hints if cursor is out of the string.
             if (ctx.token.type === &quot;string&quot; &amp;&amp; &#x2F;^[&#39;&quot;]$&#x2F;.test(ctx.token.string.substr(-1, 1)) &amp;&amp;
                     ctx.token.string.length !== 1 &amp;&amp; ctx.token.end === pos.ch) {
                 return null;
             }
             valueName = ctx.token.string;
-            
+
             &#x2F;&#x2F; Check the current token
             if (ctx.token.type === null) {
                 if (ctx.token.string === &quot;:&quot;) {
@@ -805,7 +802,7 @@
                     hasBracket = true;
                 }
             }
-            
+
             &#x2F;&#x2F; move context back and find corresponding key name.
             ctxPrev = $.extend(true, {}, ctx);
             while (TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxPrev)) {
@@ -826,7 +823,7 @@
                     return null;
                 }
             }
-            
+
             &#x2F;&#x2F; If no key name or colon found OR
             &#x2F;&#x2F; If we have a comma but no opening bracket, return null.
             if ((!keyName || !hasColon) || (hasComma &amp;&amp; !hasBracket)) {
@@ -840,7 +837,7 @@
                 ctxPrev = $.extend(true, {}, ctx);
                 parentKeyName = stripQuotes(_getParentKeyName(ctxPrev));
             }
-            
+
             &#x2F;&#x2F; Check if we can replace the next token of a value.
             ctxNext = $.extend(true, {}, ctx);
             TokenUtils.moveNextToken(ctxNext);
@@ -850,10 +847,10 @@
 
             return _createContextInfo((shouldReplace) ? ctxNext.token : ctx.token, TOKEN_VALUE, offset, keyName, valueName, parentKeyName, isArray, null, shouldReplace);
         }
-        
+
         return null;
     }
-    
+
     &#x2F;&#x2F; Expose public API.
     exports.TOKEN_KEY           = TOKEN_KEY;
     exports.TOKEN_VALUE         = TOKEN_VALUE;

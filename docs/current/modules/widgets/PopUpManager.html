@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -588,16 +585,16 @@ we provide this method to tell us when to start listening for their events</p>
         &#x2F;&#x2F; Register for events
         window.document.body.addEventListener(&quot;keydown&quot;, _keydownCaptureListener, true);
         exports.on(&quot;beforeMenuPopup&quot;, _beforeMenuPopup);
-        
+
         &#x2F;&#x2F; Close all popups when a command is executed
         CommandManager.on(&quot;beforeExecuteCommand&quot;, function (event, commandId) {
             removeCurrentPopUp();
         });
     });
-    
-    
+
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     exports.addPopUp            = addPopUp;
     exports.removePopUp         = removePopUp;
     exports.listenToContextMenu = listenToContextMenu;
@@ -633,19 +630,19 @@ if the pop-up is currently visible and was not originally attached.</p>
         var $popUp,
             i,
             event = new $.Event(&quot;popUpClose&quot;);
-        
+
         for (i = _popUps.length - 1; i &gt;= 0; i--) {
             $popUp = $(_popUps[i]);
-            
+
             if ($popUp.find(&quot;:visible&quot;).length &gt; 0) {
                 $popUp.trigger(event);
-                
+
                 if (!event.isDefaultPrevented()) {
                     &#x2F;&#x2F; Stop the DOM event from propagating
                     if (keyEvent) {
                         keyEvent.stopImmediatePropagation();
                     }
-                    
+
                     removePopUp($popUp);
 
                     &#x2F;&#x2F; TODO: right now Menus and Context Menus do not take focus away from
@@ -656,12 +653,12 @@ if the pop-up is currently visible and was not originally attached.</p>
                     &#x2F;&#x2F; See story in Trello card #404
                     &#x2F;&#x2F;EditorManager.focusEditor();
                 }
-                
+
                 break;
             }
         }
     }
-    
+
     function _keydownCaptureListener(keyEvent) {
          &#x2F;&#x2F; Escape key or Alt key (Windows-only)
         if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &amp;&amp;
@@ -673,7 +670,7 @@ if the pop-up is currently visible and was not originally attached.</p>
         if (keyEvent.keyCode === KeyEvent.DOM_VK_ALT &amp;&amp; keyEvent.ctrlKey) {
             return;
         }
-        
+
         removeCurrentPopUp(keyEvent);
     }</code></pre></div><div class="member public">
 

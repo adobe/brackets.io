@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -582,7 +579,7 @@ single data set.</p>
         var lastMatchIndex = -1;
         var lastSegmentScore = 0;
         var currentRangeStartedOnSpecial = false;
-        
+
         var score = 0;
         var scoreDebug;
         if (DEBUG_SCORES) {
@@ -597,9 +594,9 @@ single data set.</p>
                 notStartingOnSpecial: 0
             };
         }
-        
+
         var currentRange = null;
-        
+
         &#x2F;&#x2F; Records the current range and adds any additional ranges required to
         &#x2F;&#x2F; get to character index c. This function is called before starting a new range
         &#x2F;&#x2F; or returning from the function.
@@ -613,7 +610,7 @@ single data set.</p>
                     }
                     score += lastSegmentScore * LAST_SEGMENT_BOOST;
                 }
-                
+
                 if (currentRange.matched &amp;&amp; !currentRangeStartedOnSpecial) {
                     if (DEBUG_SCORES) {
                         scoreDebug.notStartingOnSpecial -= NOT_STARTING_ON_SPECIAL_PENALTY;
@@ -622,7 +619,7 @@ single data set.</p>
                 }
                 ranges.push(currentRange);
             }
-            
+
             &#x2F;&#x2F; If there was space between the new range and the last,
             &#x2F;&#x2F; add a new unmatched range before the new range can be added.
             if (lastMatchIndex + 1 &lt; c) {
@@ -635,31 +632,31 @@ single data set.</p>
             currentRange = null;
             lastSegmentScore = 0;
         }
-        
+
         &#x2F;&#x2F; In some cases (see the use of this variable below), we accelerate the
         &#x2F;&#x2F; bonus the more consecutive matches there are.
         var numConsecutive = 0;
-        
+
         &#x2F;&#x2F; Adds a matched character to the appropriate range
         function addMatch(match) {
             &#x2F;&#x2F; Pull off the character index
             var c = match.index;
             var newPoints = 0;
-            
+
             &#x2F;&#x2F; A match means that we need to do some scoring bookkeeping.
             &#x2F;&#x2F; Start with points added for any match
             if (DEBUG_SCORES) {
                 scoreDebug.match += MATCH_POINTS;
             }
             newPoints += MATCH_POINTS;
-            
+
             if (match.upper) {
                 if (DEBUG_SCORES) {
                     scoreDebug.upper += UPPER_CASE_MATCH;
                 }
                 newPoints += UPPER_CASE_MATCH;
             }
-                        
+
             &#x2F;&#x2F; A bonus is given for characters that match at the beginning
             &#x2F;&#x2F; of the filename
             if (c === lastSegmentStart) {
@@ -668,7 +665,7 @@ single data set.</p>
                 }
                 newPoints += BEGINNING_OF_NAME_POINTS;
             }
-            
+
             &#x2F;&#x2F; If the new character immediately follows the last matched character,
             &#x2F;&#x2F; we award the consecutive matches bonus. The check for score &gt; 0
             &#x2F;&#x2F; handles the initial value of lastMatchIndex which is used for
@@ -682,17 +679,17 @@ single data set.</p>
                     }
                     newPoints += BEGINNING_OF_NAME_POINTS;
                 }
-                
+
                 numConsecutive++;
-                
+
                 var boost = CONSECUTIVE_MATCHES_POINTS * numConsecutive;
-                
+
                 &#x2F;&#x2F; Consecutive matches that started on a special are a
                 &#x2F;&#x2F; good indicator of intent, so we award an added bonus there.
                 if (currentRangeStartedOnSpecial) {
                     boost = boost * 2;
                 }
-                
+
                 if (DEBUG_SCORES) {
                     scoreDebug.consecutive += boost;
                 }
@@ -700,7 +697,7 @@ single data set.</p>
             } else {
                 numConsecutive = 1;
             }
-            
+
             &#x2F;&#x2F; add points for &quot;special&quot; character matches
             if (match instanceof SpecialMatch) {
                 if (DEBUG_SCORES) {
@@ -708,28 +705,28 @@ single data set.</p>
                 }
                 newPoints += SPECIAL_POINTS;
             }
-            
+
             score += newPoints;
-            
+
             &#x2F;&#x2F; points accumulated in the last segment get an extra bonus
             if (c &gt;= lastSegmentStart) {
                 lastSegmentScore += newPoints;
             }
-            
+
             &#x2F;&#x2F; if the last range wasn&#39;t a match or there&#39;s a gap, we need to close off
             &#x2F;&#x2F; the range to start a new one.
             if ((currentRange &amp;&amp; !currentRange.matched) || c &gt; lastMatchIndex + 1) {
                 closeRangeGap(c);
             }
             lastMatchIndex = c;
-            
+
             &#x2F;&#x2F; set up a new match range or add to the current one
             if (!currentRange) {
                 currentRange = {
                     text: str[c],
                     matched: true
                 };
-                
+
                 &#x2F;&#x2F; Check to see if this new matched range is starting on a special
                 &#x2F;&#x2F; character. We penalize those ranges that don&#39;t, because most
                 &#x2F;&#x2F; people will search on the logical boundaries of the name
@@ -738,16 +735,16 @@ single data set.</p>
                 currentRange.text += str[c];
             }
         }
-        
+
         &#x2F;&#x2F; scan through the matches, adding each one in turn
         for (matchCounter = 0; matchCounter &lt; matchList.length; matchCounter++) {
             var match = matchList[matchCounter];
             addMatch(match);
         }
-        
+
         &#x2F;&#x2F; add a range for the last part of the string
         closeRangeGap(str.length);
-        
+
         &#x2F;&#x2F; shorter strings that match are often better than longer ones
         var lengthPenalty = -1 * Math.round(str.length * DEDUCTION_FOR_LENGTH);
         if (DEBUG_SCORES) {
@@ -759,7 +756,7 @@ single data set.</p>
             ranges: ranges,
             matchGoodness: score
         };
-        
+
         if (DEBUG_SCORES) {
             result.scoreDebug = scoreDebug;
         }
@@ -788,7 +785,7 @@ string.</p>
 <p>A contrived example will help illustrate how the searching and backtracking works. It&#39;s a bit long,
 but it illustrates different pieces of the algorithm which can be tricky. Let&#39;s say that we&#39;re
 searching the string &quot;AzzBzzCzdzezzDgxgEF&quot; for &quot;abcdex&quot;.</p>
-<p>To start with, it will match &quot;abcde&quot; from the query to &quot;A B C D E&quot; in the string (the spaces 
+<p>To start with, it will match &quot;abcde&quot; from the query to &quot;A B C D E&quot; in the string (the spaces
 represent gaps in the matched part of the string), because those are all &quot;special characters&quot;.
 However, the &quot;x&quot; in the query doesn&#39;t match the &quot;F&quot; which is the only character left in the
 string.</p>
@@ -808,31 +805,31 @@ to ANY_MATCH and find the &quot;e&quot;.</p>
 search. Then we find the &quot;x&quot;, and we have a successful match.</p>
 <p>Here are some notes on how the algorithm works:</p>
 <ul>
-<li><p>We only backtrack() when we&#39;re exhausted both special AND normal forward searches past that point, 
-for the query remainder we currently have.  For a different query remainder, we may well get further 
-along - hence deadBranches[] being dependent on queryCounter; but in order to get a different query 
+<li><p>We only backtrack() when we&#39;re exhausted both special AND normal forward searches past that point,
+for the query remainder we currently have.  For a different query remainder, we may well get further
+along - hence deadBranches[] being dependent on queryCounter; but in order to get a different query
 remainder, we must give up one or more current matches by backtracking.</p>
 </li>
-<li><p>Normal &quot;any char&quot; forward search is a superset of special matching mode -- anything that would have 
+<li><p>Normal &quot;any char&quot; forward search is a superset of special matching mode -- anything that would have
 been matched in special mode <em>could</em> also be matched by normal mode. In practice, however,
 any special characters that could have matched would be picked up first by the specials matching
 code.</p>
 </li>
-<li><p>backtrack() always goes at least as far back as str[deadBranches[queryCounter]-1] before allowing 
+<li><p>backtrack() always goes at least as far back as str[deadBranches[queryCounter]-1] before allowing
 forward searching to resume</p>
 </li>
-<li><p>When <code>deadBranches[queryCounter] = strCounter</code> it means if we&#39;re still trying to match 
-<code>queryLower[queryCounter]</code> and we get to <code>str[strCounter]</code>, there&#39;s no way we can match the 
-remainer of <code>queryLower</code> with the remainder of <code>str</code> -- either using specials-only or 
+<li><p>When <code>deadBranches[queryCounter] = strCounter</code> it means if we&#39;re still trying to match
+<code>queryLower[queryCounter]</code> and we get to <code>str[strCounter]</code>, there&#39;s no way we can match the
+remainer of <code>queryLower</code> with the remainder of <code>str</code> -- either using specials-only or
 full any-char matching.</p>
 </li>
-<li><p>We know this because deadBranches[] is set in backtrack(), and we don&#39;t get to backtrack() unless 
+<li><p>We know this because deadBranches[] is set in backtrack(), and we don&#39;t get to backtrack() unless
 either:</p>
 <ol>
 <li>We&#39;ve already exhausted both special AND normal forward searches past that point
 (i.e. backtrack() due to <code>strCounter &gt;= str.length</code>, yet <code>queryCounter &lt; query.length</code>)</li>
 <li>We stopped searching further forward due to a previously set deadBranches[] value
-(i.e. backtrack() due to <code>strCounter &gt; deadBranches[queryCounter]</code>, yet 
+(i.e. backtrack() due to <code>strCounter &gt; deadBranches[queryCounter]</code>, yet
 <code>queryCounter &lt; query.length</code>)</li>
 </ol>
 </li>
@@ -879,15 +876,15 @@ either:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _generateMatchList(query, str, originalQuery, originalStr, specials, startingSpecial) {
         var result = [];
-        
+
         &#x2F;&#x2F; used to keep track of which special character we&#39;re testing now
         var specialsCounter = startingSpecial;
-        
+
         &#x2F;&#x2F; strCounter and queryCounter are the indexes used for pulling characters
         &#x2F;&#x2F; off of the str&#x2F;compareLower and query.
         var strCounter = specials[startingSpecial];
         var queryCounter;
-        
+
         &#x2F;&#x2F; the search branches out between special characters and normal characters
         &#x2F;&#x2F; that are found via consecutive character scanning. In the process of
         &#x2F;&#x2F; performing these scans, we discover that parts of the query will not match
@@ -896,28 +893,28 @@ either:</p>
         &#x2F;&#x2F; The value stored in the slot is the index into the string after which we
         &#x2F;&#x2F; are certain there is no match.
         var deadBranches = [];
-        
+
         for (queryCounter = 0; queryCounter &lt; query.length; queryCounter++) {
             deadBranches[queryCounter] = Infinity;
         }
-        
+
         queryCounter = 0;
-        
+
         var state = SPECIALS_MATCH;
-        
+
         &#x2F;&#x2F; Compares the current character from the query string against the
         &#x2F;&#x2F; special characters in str. Returns true if a match was found,
         &#x2F;&#x2F; false otherwise.
         function findMatchingSpecial() {
             &#x2F;&#x2F; used to loop through the specials
             var i;
-            
+
             for (i = specialsCounter; i &lt; specials.length; i++) {
                 &#x2F;&#x2F; short circuit this search when we know there are no matches following
                 if (specials[i] &gt;= deadBranches[queryCounter]) {
                     break;
                 }
-                
+
                 &#x2F;&#x2F; First, ensure that we&#39;re not comparing specials that
                 &#x2F;&#x2F; come earlier in the string than our current search position.
                 &#x2F;&#x2F; This can happen when the string position changes elsewhere.
@@ -926,7 +923,7 @@ either:</p>
                 } else if (query[queryCounter] === str[specials[i]]) {
                     &#x2F;&#x2F; we have a match! do the required tracking
                     strCounter = specials[i];
-                    
+
                     &#x2F;&#x2F; Upper case match check:
                     &#x2F;&#x2F; If the query and original string matched, but the original string
                     &#x2F;&#x2F; and the lower case version did not, that means that the original
@@ -939,48 +936,48 @@ either:</p>
                     return true;
                 }
             }
-            
+
             return false;
         }
-        
+
         &#x2F;&#x2F; This function implements the backtracking that is done when we fail to find
         &#x2F;&#x2F; a match with the query using the &quot;search for specials first&quot; approach.
         &#x2F;&#x2F;
         &#x2F;&#x2F; returns false when it is not able to backtrack successfully
         function backtrack() {
-            
+
             &#x2F;&#x2F; The idea is to pull matches off of our match list, rolling back
             &#x2F;&#x2F; characters from the query. We pay special attention to the special
             &#x2F;&#x2F; characters since they are searched first.
             while (result.length &gt; 0) {
                 var item = result.pop();
-                
+
                 &#x2F;&#x2F; nothing in the list? there&#39;s no possible match then.
                 if (!item) {
                     return false;
                 }
-                
+
                 &#x2F;&#x2F; we pulled off a match, which means that we need to put a character
                 &#x2F;&#x2F; back into our query. strCounter is going to be set once we&#39;ve pulled
                 &#x2F;&#x2F; off the right special character and know where we&#39;re going to restart
                 &#x2F;&#x2F; searching from.
                 queryCounter--;
-                
+
                 if (item instanceof SpecialMatch) {
                     &#x2F;&#x2F; pulled off a special, which means we need to make that special available
                     &#x2F;&#x2F; for matching again
                     specialsCounter--;
-                    
+
                     &#x2F;&#x2F; check to see if we&#39;ve gone back as far as we need to
                     if (item.index &lt; deadBranches[queryCounter]) {
                         &#x2F;&#x2F; we now know that this part of the query does not match beyond this
                         &#x2F;&#x2F; point
                         deadBranches[queryCounter] = item.index - 1;
-                        
+
                         &#x2F;&#x2F; since we failed with the specials along this track, we&#39;re
                         &#x2F;&#x2F; going to reset to looking for matches consecutively.
                         state = ANY_MATCH;
-                        
+
                         &#x2F;&#x2F; we figure out where to start looking based on the new
                         &#x2F;&#x2F; last item in the list. If there isn&#39;t anything else
                         &#x2F;&#x2F; in the match list, we&#39;ll start over at the starting special
@@ -998,9 +995,9 @@ either:</p>
             }
             return false;
         }
-        
+
         while (true) {
-            
+
             &#x2F;&#x2F; keep looping until we&#39;ve either exhausted the query or the string
             while (queryCounter &lt; query.length &amp;&amp; strCounter &lt; str.length &amp;&amp; strCounter &lt;= deadBranches[queryCounter]) {
                 if (state === SPECIALS_MATCH) {
@@ -1008,12 +1005,12 @@ either:</p>
                         state = ANY_MATCH;
                     }
                 }
-                
+
                 if (state === ANY_MATCH) {
                     &#x2F;&#x2F; we look character by character for matches
                     if (query[queryCounter] === str[strCounter]) {
                         &#x2F;&#x2F; got a match! record it, and switch back to searching specials
-                        
+
                         &#x2F;&#x2F; See the specials section above for a comment on the expression
                         &#x2F;&#x2F; for `upper` below.
                         var upper = originalQuery[queryCounter] === originalStr[strCounter] &amp;&amp; originalStr[strCounter] !== str[strCounter];
@@ -1027,14 +1024,14 @@ either:</p>
                     }
                 }
             }
-            
+
             &#x2F;&#x2F; if we&#39;ve finished the query, or we haven&#39;t finished the query but we have no
             &#x2F;&#x2F; more backtracking we can do, then we&#39;re all done searching.
             if (queryCounter &gt;= query.length || (queryCounter &lt; query.length &amp;&amp; !backtrack())) {
                 break;
             }
         }
-        
+
         &#x2F;&#x2F; return null when we don&#39;t find anything
         if (queryCounter &lt; query.length || result.length === 0) {
             return null;
@@ -1052,7 +1049,7 @@ either:</p>
     </h4>
 
     
-    <div class="description"><p>Seek out the best match in the last segment (generally the filename). 
+    <div class="description"><p>Seek out the best match in the last segment (generally the filename).
 Matches in the filename are preferred, but the query entered could match
 any part of the path. So, we find the best match we can get in the filename
 and then allow for searching the rest of the string with any characters that
@@ -1108,7 +1105,7 @@ at the beginning of the query which did not match in the last segment.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _lastSegmentSearch(query, str, originalQuery, originalStr, specials, startingSpecial, lastSegmentStart) {
         var queryCounter, matchList;
-        
+
         &#x2F;&#x2F; It&#39;s possible that the query is longer than the last segment.
         &#x2F;&#x2F; If so, we can chop off the bit that we know couldn&#39;t possibly be there.
         var remainder = &quot;&quot;,
@@ -1121,18 +1118,18 @@ at the beginning of the query which did not match in the last segment.</p>
             query = query.substring(extraCharacters);
             originalQuery = originalQuery.substring(extraCharacters);
         }
-        
+
         for (queryCounter = 0; queryCounter &lt; query.length; queryCounter++) {
             matchList = _generateMatchList(query.substring(queryCounter),
                                      str, originalQuery.substring(queryCounter),
                                      originalStr, specials, startingSpecial);
-            
+
             &#x2F;&#x2F; if we&#39;ve got a match *or* there are no segments in this string, we&#39;re done
             if (matchList || startingSpecial === 0) {
                 break;
             }
         }
-        
+
         if (queryCounter === query.length || !matchList) {
             return null;
         } else {
@@ -1180,20 +1177,20 @@ been performed.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _prefixMatchResult(str, query) {
         var result = new SearchResult(str);
-        
+
         result.matchGoodness = -Number.MAX_VALUE;
-        
+
         if (str.substr(0, query.length) !== query) {
             &#x2F;&#x2F; Penalize for not matching case
             result.matchGoodness *= 0.5;
         }
-        
+
         if (DEBUG_SCORES) {
             result.scoreDebug = {
                 beginning: -result.matchGoodness
             };
         }
-        
+
         result.stringRanges = [{
             text: str.substr(0, query.length),
             matched: true,
@@ -1266,12 +1263,12 @@ then search the rest of the string with the remainder.</p>
         var lastSegmentStart = specials[lastSegmentSpecialsIndex];
         var result;
         var matchList;
-        
+
         result = _lastSegmentSearch(queryLower, compareLower, originalQuery, originalStr, specials, lastSegmentSpecialsIndex, lastSegmentStart);
-        
+
         if (result) {
             matchList = result.matchList;
-            
+
             &#x2F;&#x2F; Do we have more query characters that did not fit?
             if (result.remainder) {
                 &#x2F;&#x2F; Scan with the remainder only through the beginning of the last segment
@@ -1280,7 +1277,7 @@ then search the rest of the string with the remainder.</p>
                                               result.originalRemainder,
                                               originalStr.substring(0, lastSegmentStart),
                                               specials.slice(0, lastSegmentSpecialsIndex), 0);
-                
+
                 if (remainderMatchList) {
                     &#x2F;&#x2F; add the new matched ranges to the beginning of the set of ranges we had
                     matchList.unshift.apply(matchList, remainderMatchList);
@@ -1294,7 +1291,7 @@ then search the rest of the string with the remainder.</p>
             &#x2F;&#x2F; string
             matchList = _generateMatchList(queryLower, compareLower, originalQuery, originalStr, specials, 0);
         }
-        
+
         return matchList;
     }</code></pre></div><div class="member public">
 
@@ -1363,17 +1360,17 @@ the last segment&#39;s specials separately.)</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findSpecialCharacters(str) {
         var i, c;
-        
+
         &#x2F;&#x2F; the beginning of the string is always special
         var specials = [0];
-        
+
         &#x2F;&#x2F; lastSegmentSpecialsIndex starts off with the assumption that
         &#x2F;&#x2F; there are no segments
         var lastSegmentSpecialsIndex = 0;
-        
+
         &#x2F;&#x2F; used to track down the camelCase changeovers
         var lastWasLowerCase = false;
-        
+
         for (i = 0; i &lt; str.length; i++) {
             c = str[i];
             if (c === &quot;&#x2F;&quot;) {
@@ -1407,11 +1404,11 @@ the last segment&#39;s specials separately.)</p>
             lastSegmentSpecialsIndex: lastSegmentSpecialsIndex
         };
     }
-    
+
     &#x2F;&#x2F; states used during the scanning of the string
     var SPECIALS_MATCH = 0;
     var ANY_MATCH = 1;
-    
+
     &#x2F;&#x2F; Scores can be hard to make sense of. The DEBUG_SCORES flag
     &#x2F;&#x2F; provides a way to peek into the parts that made up a score.
     &#x2F;&#x2F; This flag is used for manual debugging and in the unit tests only.
@@ -1419,7 +1416,7 @@ the last segment&#39;s specials separately.)</p>
     function _setDebugScores(ds) {
         DEBUG_SCORES = ds;
     }
-    
+
 
     &#x2F;&#x2F; Constants for scoring
     var SPECIAL_POINTS = 40;
@@ -1430,7 +1427,7 @@ the last segment&#39;s specials separately.)</p>
     var LAST_SEGMENT_BOOST = 1;
     var DEDUCTION_FOR_LENGTH = 0.2;
     var NOT_STARTING_ON_SPECIAL_PENALTY = 25;
-    
+
     &#x2F;&#x2F; Used in match lists to designate matches of &quot;special&quot; characters (see
     &#x2F;&#x2F; findSpecialCharacters above
     function SpecialMatch(index, upper) {
@@ -1439,7 +1436,7 @@ the last segment&#39;s specials separately.)</p>
             this.upper = upper;
         }
     }
-    
+
     &#x2F;&#x2F; Used in match lists to designate any matched characters that are not special
     function NormalMatch(index, upper) {
         this.index = index;
@@ -1497,7 +1494,7 @@ present on all SearchResult objects (no optional/undefined fields).</p>
                 comparisons[priority] = key;
             });
         }
-        
+
         searchResults.sort(function (a, b) {
             var priority;
             for (priority = 0; priority &lt; comparisons.length; priority++) {
@@ -1514,7 +1511,7 @@ present on all SearchResult objects (no optional/undefined fields).</p>
                         valueA = valueA.toLowerCase();
                         valueB = valueB.toLowerCase();
                     }
-                    
+
                     if (valueA &lt; valueB) {
                         return -1;
                     } else if (valueA &gt; valueB) {
@@ -1580,9 +1577,9 @@ to provide insight into the score.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function stringMatch(str, query, options, special) {
         var result;
-        
+
         options = options || {};
-        
+
         &#x2F;&#x2F; No query? Short circuit the normal work done and just
         &#x2F;&#x2F; return a single range that covers the whole string.
         if (!query) {
@@ -1598,30 +1595,30 @@ to provide insight into the score.</p>
             }];
             return result;
         }
-        
+
         &#x2F;&#x2F; comparisons are case insensitive, so switch to lower case here
         var queryLower = query.toLowerCase();
         var compareLower = str.toLowerCase();
-        
+
         if (options.preferPrefixMatches) {
             options.segmentedSearch = false;
         }
-        
+
         if (options.preferPrefixMatches &amp;&amp; compareLower.substr(0, queryLower.length) === queryLower) {
             &#x2F;&#x2F; NOTE: we compare against the case insensitive match
-            &#x2F;&#x2F;        above but we pass the case-sensitive version in 
+            &#x2F;&#x2F;        above but we pass the case-sensitive version in
             &#x2F;&#x2F;        because we want to weight the match to give case-matches
             &#x2F;&#x2F;        a higher score
             return _prefixMatchResult(str, query);
         }
-        
+
         &#x2F;&#x2F; Locate the special characters and then use orderedCompare to do the real
         &#x2F;&#x2F; work.
         if (!special) {
             special = findSpecialCharacters(str);
         }
         var lastSegmentStart, matchList;
-        
+
         &#x2F;&#x2F; For strings that are not broken into multiple segments, we can potentially
         &#x2F;&#x2F; avoid some extra work
         if (options.segmentedSearch) {

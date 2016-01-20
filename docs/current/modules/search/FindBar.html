@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -517,16 +514,18 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _searchBarTemplate = require(&quot;text!htmlContent&#x2F;findreplace-bar.html&quot;);
-    
+
     var lastTypedTime = 0,
         currentTime = 0,
         intervalId = 0,
-        lastQueriedText = &quot;&quot;;</code></pre></div>
+        lastQueriedText = &quot;&quot;,
+        lastTypedText = &quot;&quot;,
+        lastKeyCode;</code></pre></div>
 </section>
 
 <section id="functions">
 
-    <h3>Functions
+    <h3>Functions 
 <label class="checkbox">
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
@@ -534,18 +533,18 @@
 <div class="member">
 
 <span class="pull-right scope">
-
-
+    
+    
 </span>
     <h4>
-        getInitialQueryFromSelection
+        getInitialQueryFromSelection 
         <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
     </h4>
 
-
+    
     <div class="description"><p>Returns the string used to prepopulate the find bar</p>
 </div>
-
+    
 <dl>
     <dt>
         editor
@@ -584,7 +583,7 @@
                 query = openedFindBar.getQueryInfo().query;
                 replaceText = openedFindBar.getReplaceText();
             } else if (editor) {
-                query = getInitialQueryFromSelection(editor);
+                query = getInitialQueryFromSelection(editor) || lastTypedText;
             }
         }
 
@@ -643,6 +642,7 @@
         this._closed = false;
         this._enabled = true;
         this.lastQueriedText = &quot;&quot;;
+        this.lastTypedText = &quot;&quot;;
     }
     EventDispatcher.makeEventDispatcher(FindBar.prototype);</code></pre>
         </div>
@@ -778,7 +778,7 @@
             return $();
         }
     };
-    
+
     &#x2F;&#x2F; TODO: change IDs to classes</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1036,7 +1036,7 @@ will need to refresh their enable state after calling this.</p>
         this.$(&quot;#find-what, #replace-with, #find-prev, #find-next, #find-case-sensitive, #find-regexp&quot;).prop(&quot;disabled&quot;, !enable);
         this._enabled = enable;
     };
-    
+
     FindBar.prototype.focus = function (enable) {
         this.$(&quot;#find-what&quot;).focus();
     };</code></pre></div><div class="member">
@@ -1155,10 +1155,10 @@ will need to refresh their enable state after calling this.</p>
         <a class="anchor" href="#FindBar-getInitialQuery" id="FindBar-getInitialQuery"><span class="icon-link"></span></a>
     </h4>
 
-
+    
     <div class="description"><p>Gets you the right query and replace text to prepopulate the Find Bar.</p>
 </div>
-
+    
 <dl>
     <dt>
         currentFindBar
@@ -1182,12 +1182,12 @@ will need to refresh their enable state after calling this.</p>
         <dd></dd>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.getInitialQuery = function (currentFindBar, editor) {
-        var query = &quot;&quot;,
+        var query = lastTypedText,
             replaceText = &quot;&quot;;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
-
-
+    
+    
 </span>
     <h4>
         getOptions 
@@ -1355,23 +1355,23 @@ will need to refresh their enable state after calling this.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.prototype.open = function () {
         var self = this;
-        
+
         &#x2F;&#x2F; Normally, creating a new Find bar will simply cause the old one to close
         &#x2F;&#x2F; automatically. This can cause timing issues because the focus change might
         &#x2F;&#x2F; cause the new one to think it should close, too. So we simply explicitly
-        &#x2F;&#x2F; close the old Find bar (with no animation) before creating a new one. 
+        &#x2F;&#x2F; close the old Find bar (with no animation) before creating a new one.
         &#x2F;&#x2F; TODO: see note above - this will move to ModalBar eventually.
         FindBar._closeFindBars();
         if (this._options.multifile) {
             HealthLogger.searchDone(HealthLogger.SEARCH_NEW);
         }
-        
+
         var templateVars = _.clone(this._options);
         templateVars.Strings = Strings;
         templateVars.replaceAllLabel = (templateVars.multifile ? Strings.BUTTON_REPLACE_ALL_IN_FILES : Strings.BUTTON_REPLACE_ALL);
-        
+
         this._modalBar = new ModalBar(Mustache.render(_searchBarTemplate, templateVars), true);  &#x2F;&#x2F; 2nd arg = auto-close on Esc&#x2F;blur
-        
+
         &#x2F;&#x2F; When the ModalBar closes, clean ourselves up.
         this._modalBar.on(&quot;close&quot;, function (event) {
             &#x2F;&#x2F; Hide error popup, since it hangs down low enough to make the slide-out look awkward
@@ -1385,13 +1385,14 @@ will need to refresh their enable state after calling this.</p>
             MainViewManager.focusActivePane();
             self.trigger(&quot;close&quot;);
         });
-        
+
         FindBar._addFindBar(this);
-        
+
         var $root = this._modalBar.getRoot();
         $root
             .on(&quot;input&quot;, &quot;#find-what&quot;, function () {
                 self.trigger(&quot;queryChange&quot;);
+                lastTypedText = self.getQueryInfo().query;
             })
             .on(&quot;click&quot;, &quot;#find-case-sensitive, #find-regexp&quot;, function (e) {
                 $(e.currentTarget).toggleClass(&quot;active&quot;);
@@ -1403,6 +1404,7 @@ will need to refresh their enable state after calling this.</p>
             })
             .on(&quot;keydown&quot;, &quot;#find-what, #replace-with&quot;, function (e) {
                 lastTypedTime = new Date().getTime();
+                lastKeyCode = e.keyCode;
                 var executeSearchIfNeeded = function () {
                     &#x2F;&#x2F; We only do instant search via node.
                     if (FindUtils.isNodeSearchDisabled() || FindUtils.isInstantSearchDisabled()) {
@@ -1414,7 +1416,7 @@ will need to refresh their enable state after calling this.</p>
                     }
                     currentTime = new Date().getTime();
                     if (lastTypedTime &amp;&amp; (currentTime - lastTypedTime &gt;= 100) &amp;&amp; self.getQueryInfo().query !==  lastQueriedText &amp;&amp;
-                            !FindUtils.isNodeSearchInProgress() &amp;&amp; e.keyCode !== KeyEvent.DOM_VK_CONTROL) {
+                            !FindUtils.isNodeSearchInProgress()) {
                         &#x2F;&#x2F; init Search
                         if (self._options.multifile) {
                             if ($(e.target).is(&quot;#find-what&quot;)) {
@@ -1433,6 +1435,7 @@ will need to refresh their enable state after calling this.</p>
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
                     e.preventDefault();
                     e.stopPropagation();
+                    lastQueriedText = self.getQueryInfo().query;
                     if (self._options.multifile) {
                         if ($(e.target).is(&quot;#find-what&quot;)) {
                             if (self._options.replace) {
@@ -1454,7 +1457,7 @@ will need to refresh their enable state after calling this.</p>
                     }
                 }
             });
-        
+
         if (!this._options.multifile) {
             this._addShortcutToTooltip($(&quot;#find-next&quot;), Commands.CMD_FIND_NEXT);
             this._addShortcutToTooltip($(&quot;#find-prev&quot;), Commands.CMD_FIND_PREVIOUS);
@@ -1466,7 +1469,7 @@ will need to refresh their enable state after calling this.</p>
                     self.trigger(&quot;doFind&quot;, true);
                 });
         }
-        
+
         if (this._options.replace) {
             this._addShortcutToTooltip($(&quot;#replace-yes&quot;), Commands.CMD_REPLACE);
             $root
@@ -1490,7 +1493,7 @@ will need to refresh their enable state after calling this.</p>
                     }
                 });
         }
-        
+
         if (this._options.multifile &amp;&amp; FindUtils.isIndexingInProgress()) {
             this.showIndexingSpinner();
         }
@@ -1650,7 +1653,7 @@ indicate regular expression errors.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.prototype.showNoResults = function (showIndicator, showMessage) {
         ViewUtils.toggleClass(this.$(&quot;#find-what&quot;), &quot;no-results&quot;, showIndicator);
-        
+
         var $msg = this.$(&quot;.no-results-message&quot;);
         if (showMessage) {
             $msg.show();

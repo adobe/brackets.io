@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -525,8 +522,8 @@ Includes both UI for selecting/editing filters, as well as the actual file-filte
     </h4>
 
     
-    <div class="description"><p>Context Info on which files the filter will be applied to. 
-It will be initialized when createFilterPicker is called and if specified, editing UI will 
+    <div class="description"><p>Context Info on which files the filter will be applied to.
+It will be initialized when createFilterPicker is called and if specified, editing UI will
 indicate how many files are excluded by the filter. Label should be of the form &quot;in ...&quot;</p>
 </div>
     
@@ -637,7 +634,7 @@ a comma separator and appending a short message with the number of filters being
         if (!_.isArray(filter)) {
             return &quot;&quot;;
         }
-        
+
         &#x2F;&#x2F; Format filter in condensed form
         if (filter.length &gt; 2) {
             return filter.slice(0, 2).join(&quot;, &quot;) + &quot; &quot; +
@@ -674,11 +671,11 @@ a comma separator and appending a short message with the number of filters being
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getFilterIndex(filterSets, filter) {
         var index = -1;
-        
+
         if (!filter || !filterSets.length) {
             return index;
         }
-        
+
         return _.findIndex(filterSets, _.partial(_.isEqual, filter));
     }</code></pre></div><div class="member private">
 
@@ -708,7 +705,7 @@ and dropdown list UI.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleDeleteFilter(e) {
-        &#x2F;&#x2F; Remove the filter set from the preferences and 
+        &#x2F;&#x2F; Remove the filter set from the preferences and
         &#x2F;&#x2F; clear the active filter set index from view state.
         var filterSets        = PreferencesManager.get(&quot;fileFilters&quot;) || [],
             activeFilterIndex = PreferencesManager.getViewState(&quot;activeFileFilter&quot;),
@@ -721,7 +718,7 @@ and dropdown list UI.</p>
         PreferencesManager.set(&quot;fileFilters&quot;, filterSets);
 
         if (activeFilterIndex === filterIndex) {
-            &#x2F;&#x2F; Removing the active filter, so clear the active filter 
+            &#x2F;&#x2F; Removing the active filter, so clear the active filter
             &#x2F;&#x2F; both in the view state.
             setActiveFilter(null);
         } else if (activeFilterIndex &gt; filterIndex) {
@@ -766,7 +763,7 @@ and dropdown list UI.</p>
         &#x2F;&#x2F; Don&#39;t let the click bubble upward.
         e.stopPropagation();
 
-        &#x2F;&#x2F; Close the dropdown first before opening the edit filter dialog 
+        &#x2F;&#x2F; Close the dropdown first before opening the edit filter dialog
         &#x2F;&#x2F; so that it will restore focus to the DOM element that has focus
         &#x2F;&#x2F; prior to opening it.
         _picker.closeDropdown();
@@ -812,7 +809,7 @@ when the dropdown is open. Also set check mark on the active filter.</p>
 
         $dropdown.find(&quot;.filter-trash-icon&quot;)
             .on(&quot;click&quot;, _handleDeleteFilter);
-        
+
         $dropdown.find(&quot;.filter-edit-icon&quot;)
             .on(&quot;click&quot;, _handleEditFilter);
     }</code></pre></div><div class="member private">
@@ -827,7 +824,7 @@ when the dropdown is open. Also set check mark on the active filter.</p>
     </h4>
 
     
-    <div class="description"><p>Update the picker button label with the name/patterns of the selected filter or 
+    <div class="description"><p>Update the picker button label with the name/patterns of the selected filter or
 No Files Excluded if no filter is selected.</p>
 </div>
     
@@ -869,7 +866,7 @@ No Files Excluded if no filter is selected.</p>
             _picker.closeDropdown();
         }
     }
-    
+
     &#x2F;&#x2F; For unit tests only
     exports.showDropdown       = showDropdown;
     exports.closeDropdown      = closeDropdown;
@@ -962,7 +959,7 @@ that can be used with filterPath()/filterFileList().</p>
             }
             return glob;
         });
-        
+
         &#x2F;&#x2F; Convert to regular expression for fast matching
         var regexStrings = wrappedGlobs.map(function (glob) {
             var reStr = &quot;&quot;, i;
@@ -1006,8 +1003,8 @@ that can be used with filterPath()/filterFileList().</p>
 
     
     <div class="description"><p>Creates a UI element for selecting a filter, populated with a list of recently used filters, an option to
-edit the selected filter and another option to create a new filter. The client should call commitDropdown() 
-when the UI containing the filter picker is confirmed (which updates the MRU order) and then use the 
+edit the selected filter and another option to create a new filter. The client should call commitDropdown()
+when the UI containing the filter picker is confirmed (which updates the MRU order) and then use the
 returned filter object as needed.</p>
 </div>
     
@@ -1026,20 +1023,20 @@ returned filter object as needed.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function createFilterPicker(context) {
-        
+
         function itemRenderer(item, index) {
             if (index &lt; FIRST_FILTER_INDEX) {
                 &#x2F;&#x2F; Prefix the two filter commands with &#39;recent-filter-name&#39; so that
                 &#x2F;&#x2F; they also get the same margin-left as the actual filters.
                 return &quot;&lt;span class=&#39;recent-filter-name&#39;&gt;&lt;&#x2F;span&gt;&quot; + _.escape(item);
             }
-            
+
             var condensedPatterns = _getCondensedForm(item.patterns),
                 templateVars = {
                     &quot;filter-name&quot;    : _.escape(item.name || condensedPatterns),
                     &quot;filter-patterns&quot;: item.name ? &quot; - &quot; + _.escape(condensedPatterns) : &quot;&quot;
                 };
-                
+
             return Mustache.render(FilterNameTemplate, templateVars);
         }
 
@@ -1048,16 +1045,16 @@ returned filter object as needed.</p>
 
         _updatePicker();
         _doPopulate();
-        
+
         &#x2F;&#x2F; Add &#39;file-filter-picker&#39; to keep some margin space on the left of the button
         _picker.$button.addClass(&quot;file-filter-picker no-focus&quot;);
-        
+
         &#x2F;&#x2F; Set up mouse click event listeners for &#39;Delete&#39; and &#39;Edit&#39; buttons
         _picker.on(&quot;listRendered&quot;, _handleListRendered);
-        
+
         _picker.on(&quot;select&quot;, function (event, item, itemIndex) {
             if (itemIndex === 0) {
-                &#x2F;&#x2F; Close the dropdown first before opening the edit filter dialog 
+                &#x2F;&#x2F; Close the dropdown first before opening the edit filter dialog
                 &#x2F;&#x2F; so that it will restore focus to the DOM element that has focus
                 &#x2F;&#x2F; prior to opening it.
                 _picker.closeDropdown();
@@ -1067,7 +1064,7 @@ returned filter object as needed.</p>
             } else if (itemIndex === 1) {
                 &#x2F;&#x2F; Uncheck the prior active filter in the dropdown list.
                 _picker.setChecked(itemIndex, false);
-                
+
                 &#x2F;&#x2F; Clear the active filter
                 setActiveFilter(null);
                 _updatePicker();
@@ -1077,7 +1074,7 @@ returned filter object as needed.</p>
                 _updatePicker();
             }
         });
-        
+
         return _picker.$button;
     }</code></pre></div><div class="member public">
 
@@ -1116,7 +1113,7 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function editFilter(filter, index) {
         var lastFocus = window.document.activeElement;
-        
+
         var templateVars = {
                 instruction: StringUtils.format(Strings.FILE_FILTER_INSTRUCTIONS, brackets.config.glob_help_url),
                 Strings: Strings
@@ -1124,10 +1121,10 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
         var dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(EditFilterTemplate, templateVars)),
             $nameField = dialog.getElement().find(&quot;.exclusions-name&quot;),
             $editField = dialog.getElement().find(&quot;.exclusions-editor&quot;);
-        
+
         $nameField.val(filter.name);
         $editField.val(filter.patterns.join(&quot;\n&quot;)).focus();
-        
+
         function getValue() {
             var newFilter = $editField.val().split(&quot;\n&quot;);
 
@@ -1136,7 +1133,7 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
                 return glob.trim().length;
             });
         }
-        
+
         dialog.done(function (buttonId) {
             if (buttonId === Dialogs.DIALOG_BTN_OK) {
                 &#x2F;&#x2F; Update saved filter preference
@@ -1146,10 +1143,10 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
             }
             lastFocus.focus();  &#x2F;&#x2F; restore focus to old pos
         });
-        
+
         &#x2F;&#x2F; Code to update the file count readout at bottom of dialog (if context provided)
         var $fileCount = dialog.getElement().find(&quot;.exclusions-filecount&quot;);
-        
+
         function updateFileCount() {
             _context.promise.done(function (files) {
                 var filter = getValue();
@@ -1161,7 +1158,7 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
                 }
             });
         }
-        
+
         &#x2F;&#x2F; Code to enable&#x2F;disable the OK button at the bottom of dialog (whether filter is empty or not)
         var $primaryBtn = dialog.getElement().find(&quot;.primary&quot;);
 
@@ -1180,7 +1177,7 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
         } else {
             $fileCount.hide();
         }
-        
+
         return dialog.getPromise();
     }</code></pre></div><div class="member public">
 
@@ -1221,7 +1218,7 @@ reflect the edits. If the dialog was canceled, the preference is left unchanged.
         if (!compiledFilter) {
             return files;
         }
-        
+
         var re = new RegExp(compiledFilter);
         return files.filter(function (f) {
             return !re.test(f.fullPath);
@@ -1267,7 +1264,7 @@ for much better performance.</p>
         if (!compiledFilter) {
             return true;
         }
-        
+
         var re = new RegExp(compiledFilter);
         return !fullPath.match(re);
     }</code></pre></div><div class="member public">
@@ -1303,7 +1300,7 @@ before passing to filterPath()/filterFileList().</p>
         if (activeFilterIndex === undefined &amp;&amp; oldFilter.length) {
             activeFilter = { name: &quot;&quot;, patterns: oldFilter };
             activeFilterIndex = _getFilterIndex(filterSets, activeFilter);
-            
+
             &#x2F;&#x2F; Migrate the old filter into the new filter storage
             if (activeFilterIndex === -1) {
                 activeFilterIndex = filterSets.length;
@@ -1314,7 +1311,7 @@ before passing to filterPath()/filterFileList().</p>
         } else if (activeFilterIndex &gt; -1 &amp;&amp; activeFilterIndex &lt; filterSets.length) {
             activeFilter = filterSets[activeFilterIndex];
         }
-        
+
         return activeFilter;
     }</code></pre></div><div class="member public">
 
@@ -1395,7 +1392,7 @@ If no filter is passed in, then clear the last active filter index by setting it
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setActiveFilter(filter, index) {
         var filterSets = PreferencesManager.get(&quot;fileFilters&quot;) || [];
-        
+
         if (filter) {
             if (index === -1) {
                 &#x2F;&#x2F; Add a new filter set

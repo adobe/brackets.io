@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -511,7 +508,7 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
         this._isFile = true;
         FileSystemEntry.call(this, fullPath, fileSystem);
     }
-    
+
     File.prototype = Object.create(FileSystemEntry.prototype);
     File.prototype.constructor = File;
     File.prototype.parentClass = FileSystemEntry.prototype;</code></pre>
@@ -639,7 +636,7 @@ clear the file&#39;s hash.</p>
             callback = options;
             options = {};
         }
-        
+
         &#x2F;&#x2F; We don&#39;t need to check isWatched() here because contents are only saved
         &#x2F;&#x2F; for watched files. Note that we need to explicitly test this._contents
         &#x2F;&#x2F; for a default value; otherwise it could be the empty string, which is
@@ -648,28 +645,28 @@ clear the file&#39;s hash.</p>
             callback(null, this._contents, this._stat);
             return;
         }
-        
+
         var watched = this._isWatched();
         if (watched) {
             options.stat = this._stat;
         }
-        
+
         this._impl.readFile(this._path, options, function (err, data, stat) {
             if (err) {
                 this._clearCachedData();
                 callback(err);
                 return;
             }
-            
+
             &#x2F;&#x2F; Always store the hash
             this._hash = stat._hash;
-            
+
             &#x2F;&#x2F; Only cache data for watched files
             if (watched) {
                 this._stat = stat;
                 this._contents = data;
             }
-            
+
             callback(err, data, stat);
         }.bind(this));
     };</code></pre></div><div class="member">
@@ -717,19 +714,19 @@ clear the file&#39;s hash.</p>
             if (options === undefined) {
                 options = {};
             }
-            
+
             callback = callback || function () {};
         }
-        
+
         &#x2F;&#x2F; Request a consistency check if the write is not blind
         if (!options.blind) {
             options.expectedHash = this._hash;
             options.expectedContents = this._contents;
         }
-        
+
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();
-        
+
         this._impl.writeFile(this._path, data, options, function (err, stat, created) {
             if (err) {
                 this._clearCachedData();
@@ -741,16 +738,16 @@ clear the file&#39;s hash.</p>
                     this._fileSystem._endChange();
                 }
             }
-            
+
             &#x2F;&#x2F; Always store the hash
             this._hash = stat._hash;
-            
+
             &#x2F;&#x2F; Only cache data for watched files
             if (this._isWatched()) {
                 this._stat = stat;
                 this._contents = data;
             }
-            
+
             if (created) {
                 var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
                 this._fileSystem._handleDirectoryChange(parent, function (added, removed) {
@@ -775,14 +772,14 @@ clear the file&#39;s hash.</p>
                 } finally {
                     &#x2F;&#x2F; existing file modified
                     this._fileSystem._fireChangeEvent(this);
-                    
+
                     &#x2F;&#x2F; Always unblock external change events
                     this._fileSystem._endChange();
                 }
             }
         }.bind(this));
     };
-    
+
     &#x2F;&#x2F; Export this class
     module.exports = File;
 });</code></pre></div>

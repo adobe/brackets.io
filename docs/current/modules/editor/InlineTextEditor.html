@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -515,7 +512,7 @@ show (or hide) the dirty indicator.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _dirtyFlagChangeHandler(event, doc) {
         var $dirtyIndicators = $(&quot;.inline-text-editor .dirty-indicator&quot;),
             $indicator;
-        
+
         $dirtyIndicators.each(function (index, indicator) {
             $indicator = $(this);
             if ($indicator.data(&quot;fullPath&quot;) === doc.file.fullPath) {
@@ -574,10 +571,10 @@ show (or hide) the dirty indicator.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _syncGutterWidths(hostEditor) {
         var allHostedEditors = EditorManager.getInlineEditors(hostEditor);
-        
+
         &#x2F;&#x2F; add the host itself to the list too
         allHostedEditors.push(hostEditor);
-        
+
         var maxWidth = 0;
         allHostedEditors.forEach(function (editor) {
             var $gutter = $(editor._codeMirror.getGutterElement()).find(&quot;.CodeMirror-linenumbers&quot;);
@@ -587,17 +584,17 @@ show (or hide) the dirty indicator.</p>
                 maxWidth = curWidth;
             }
         });
-        
+
         if (allHostedEditors.length === 1) {
             &#x2F;&#x2F;There&#39;s only the host, just refresh the gutter
             allHostedEditors[0]._codeMirror.setOption(&quot;gutters&quot;, allHostedEditors[0]._codeMirror.getOption(&quot;gutters&quot;));
             return;
         }
-        
+
         maxWidth = maxWidth + &quot;px&quot;;
         allHostedEditors.forEach(function (editor) {
             $(editor._codeMirror.getGutterElement()).find(&quot;.CodeMirror-linenumbers&quot;).css(&quot;min-width&quot;, maxWidth);
-            
+
             &#x2F;&#x2F; Force CodeMirror to refresh the gutter
             editor._codeMirror.setOption(&quot;gutters&quot;, editor._codeMirror.getOption(&quot;gutters&quot;));
         });
@@ -630,7 +627,7 @@ show (or hide) the dirty indicator.</p>
         InlineWidget.call(this);
 
         this.editor = null;
-        
+
         &#x2F;&#x2F; We need to set this as a capture handler so CodeMirror doesn&#39;t handle Esc before we see it.
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.htmlContent.addEventListener(&quot;keydown&quot;, this.handleKeyDown, true);
@@ -638,7 +635,7 @@ show (or hide) the dirty indicator.</p>
     InlineTextEditor.prototype = Object.create(InlineWidget.prototype);
     InlineTextEditor.prototype.constructor = InlineTextEditor;
     InlineTextEditor.prototype.parentClass = InlineWidget.prototype;
-    
+
     InlineTextEditor.prototype.$wrapper = null;</code></pre>
         </div>
         
@@ -706,8 +703,8 @@ show (or hide) the dirty indicator.</p>
         &#x2F;&#x2F; better than leaving it open but suddenly removing one rule from the result list.
         this.close();
     };
-    
-    
+
+
     &#x2F;&#x2F; Consolidate all dirty document updates
     &#x2F;&#x2F; Due to circular dependencies, not safe to call on() directly
     EventDispatcher.on_duringInit(DocumentManager, &quot;dirtyFlagChange&quot;, _dirtyFlagChangeHandler);
@@ -858,7 +855,7 @@ show (or hide) the dirty indicator.</p>
         var self = this;
 
         InlineTextEditor.prototype.parentClass.onAdded.apply(this, arguments);
-        
+
         if (this.editor) {
             this.editor.refresh();
         }
@@ -874,9 +871,9 @@ show (or hide) the dirty indicator.</p>
                 }
             }, 0);
         });
-        
+
         _syncGutterWidths(this.hostEditor);
-        
+
         if (this.editor) {
             this.editor.focus();
         }
@@ -902,9 +899,9 @@ show (or hide) the dirty indicator.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.onClosed = function () {
         InlineTextEditor.prototype.parentClass.onClosed.apply(this, arguments);
-            
+
         _syncGutterWidths(this.hostEditor);
-        
+
         &#x2F;&#x2F; Destroy the inline editor.
         this.setInlineContent(null);
         this.htmlContent.removeEventListener(&quot;keydown&quot;, this.handleKeyDown, true);
@@ -977,7 +974,7 @@ the content blank.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    InlineTextEditor.prototype.setInlineContent = function (doc, startLine, endLine) {
         var self = this;
-        
+
         &#x2F;&#x2F; Destroy the previous editor if we had one and clear out the filename info.
         if (this.editor) {
             this.editor.off(&quot;.InlineTextEditor&quot;);
@@ -987,23 +984,23 @@ the content blank.</p>
                 .removeAttr(&quot;title&quot;);
             this.$filename.html(&quot;&quot;);
         }
-        
+
         if (!doc) {
             return;
         }
-        
+
         var range = {
             startLine: startLine,
             endLine: endLine
         };
-        
+
         &#x2F;&#x2F; dirty indicator, with file path stored on it
         var $dirtyIndicatorDiv = $(&quot;&lt;div&#x2F;&gt;&quot;)
             .addClass(&quot;dirty-indicator&quot;)
             .html(&quot;&amp;bull;&quot;)
             .width(0); &#x2F;&#x2F; initialize indicator as hidden
         $dirtyIndicatorDiv.data(&quot;fullPath&quot;, doc.file.fullPath);
-        
+
         this.$lineNumber = $(&quot;&lt;span class=&#39;line-number&#39;&#x2F;&gt;&quot;);
 
         &#x2F;&#x2F; update contents of filename link
@@ -1011,7 +1008,7 @@ the content blank.</p>
             .append(doc.file.name + &quot; : &quot;)
             .append(this.$lineNumber)
             .attr(&quot;title&quot;, doc.file.fullPath);
-        
+
         &#x2F;&#x2F; clicking filename jumps to full editor view
         this.$filename.on(&quot;click.InlineTextEditor&quot;, function () {
             CommandManager.execute(Commands.FILE_OPEN, { fullPath: doc.file.fullPath })
@@ -1022,7 +1019,7 @@ the content blank.</p>
 
         var inlineInfo = EditorManager.createInlineEditorForDocument(doc, range, this.$editorHolder.get(0));
         this.editor = inlineInfo.editor;
-        
+
         &#x2F;&#x2F; Init line number display
         this._updateLineRange(inlineInfo.editor);
 
@@ -1041,12 +1038,12 @@ the content blank.</p>
                 self._updateLineRange(editor);
             }
         });
-        
+
         &#x2F;&#x2F; If Document&#39;s file is deleted, or Editor loses sync with Document, delegate to this._onLostContent()
         this.editor.on(&quot;lostContent.InlineTextEditor&quot;, function () {
             self._onLostContent.apply(self, arguments);
         });
-        
+
         &#x2F;&#x2F; set dirty indicator state
         _showDirtyIndicator($dirtyIndicatorDiv, doc.isDirty);
     };</code></pre></div><div class="member">

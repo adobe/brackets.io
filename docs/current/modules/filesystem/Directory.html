@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -561,7 +558,7 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
         this._isDirectory = true;
         FileSystemEntry.call(this, fullPath, fileSystem);
     }
-    
+
     Directory.prototype = Object.create(FileSystemEntry.prototype);
     Directory.prototype.constructor = Directory;
     Directory.prototype.parentClass = FileSystemEntry.prototype;</code></pre>
@@ -661,7 +658,7 @@ corresponds to this._contents[i].</p>
 
     
     <div class="description"><p>Clear any cached data for this directory. By default, we clear the contents
-of immediate children as well, because in some cases file watchers fail 
+of immediate children as well, because in some cases file watchers fail
 provide precise change notifications. (Sometimes, like after a &quot;git
 checkout&quot;, they just report that some directory has changed when in fact
 many of the file within the directory have changed.</p>
@@ -680,7 +677,7 @@ many of the file within the directory have changed.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Directory.prototype._clearCachedData = function (preserveImmediateChildren) {
         FileSystemEntry.prototype._clearCachedData.apply(this);
-        
+
         if (!preserveImmediateChildren) {
             if (this._contents) {
                 this._contents.forEach(function (child) {
@@ -697,7 +694,7 @@ many of the file within the directory have changed.</p>
                 });
             }
         }
-        
+
         this._contents = undefined;
         this._contentsStats = undefined;
         this._contentsStatsErrors = undefined;
@@ -729,10 +726,10 @@ many of the file within the directory have changed.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Directory.prototype.create = function (callback) {
         callback = callback || function () {};
-        
+
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();
-        
+
         this._impl.mkdir(this._path, function (err, stat) {
             if (err) {
                 this._clearCachedData();
@@ -746,12 +743,12 @@ many of the file within the directory have changed.</p>
             }
 
             var parent = this._fileSystem.getDirectoryForPath(this.parentPath);
-            
+
             &#x2F;&#x2F; Update internal filesystem state
             if (this._isWatched()) {
                 this._stat = stat;
             }
-            
+
             this._fileSystem._handleDirectoryChange(parent, function (added, removed) {
                 try {
                     callback(null, stat);
@@ -765,7 +762,7 @@ many of the file within the directory have changed.</p>
             }.bind(this));
         }.bind(this));
     };
-    
+
     &#x2F;&#x2F; Export this class
     module.exports = Directory;
 });</code></pre></div><div class="member">
@@ -813,28 +810,28 @@ function.</p>
             callback(null, this._contents, this._contentsStats, this._contentsStatsErrors);
             return;
         }
-        
+
         this._contentsCallbacks = [callback];
-        
+
         this._impl.readdir(this.fullPath, function (err, names, stats) {
             var contents = [],
                 contentsStats = [],
                 contentsStatsErrors;
-            
+
             if (err) {
                 this._clearCachedData();
             } else {
                 &#x2F;&#x2F; Use the &quot;relaxed&quot; parameter to _isWatched because it&#39;s OK to
                 &#x2F;&#x2F; cache data even while watchers are still starting up
                 var watched = this._isWatched(true);
-                
+
                 names.forEach(function (name, index) {
                     var entryPath = this.fullPath + name;
-                    
+
                     if (this._fileSystem._indexFilter(entryPath, name)) {
                         var entryStats = stats[index],
                             entry;
-                        
+
                         &#x2F;&#x2F; Note: not all entries necessarily have associated stats.
                         if (typeof entryStats === &quot;string&quot;) {
                             &#x2F;&#x2F; entryStats is an error string
@@ -849,11 +846,11 @@ function.</p>
                             } else {
                                 entry = this._fileSystem.getDirectoryForPath(entryPath);
                             }
-                            
+
                             if (watched) {
                                 entry._stat = entryStats;
                             }
-                            
+
                             contents.push(entry);
                             contentsStats.push(entryStats);
                         }
@@ -866,13 +863,13 @@ function.</p>
                     this._contentsStatsErrors = contentsStatsErrors;
                 }
             }
-            
+
             &#x2F;&#x2F; Reset the callback list before we begin calling back so that
             &#x2F;&#x2F; synchronous reentrant calls are handled correctly.
             var currentCallbacks = this._contentsCallbacks;
-            
+
             this._contentsCallbacks = null;
-            
+
             &#x2F;&#x2F; Invoke all saved callbacks
             var callbackArgs = [err, contents, contentsStats, contentsStatsErrors];
             _applyAllCallbacks(currentCallbacks, callbackArgs);

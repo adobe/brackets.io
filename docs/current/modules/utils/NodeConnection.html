@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -601,26 +598,26 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
         var port = null;
         var ws = null;
         setDeferredTimeout(deferred, CONNECTION_TIMEOUT);
-        
+
         brackets.app.getNodeState(function (err, nodePort) {
             if (!err &amp;&amp; nodePort &amp;&amp; deferred.state() !== &quot;rejected&quot;) {
                 port = nodePort;
                 ws = new WebSocket(&quot;ws:&#x2F;&#x2F;localhost:&quot; + port);
-                
+
                 &#x2F;&#x2F; Expect ArrayBuffer objects from Node when receiving binary
                 &#x2F;&#x2F; data instead of DOM Blobs, which are the default.
                 ws.binaryType = &quot;arraybuffer&quot;;
-                
+
                 &#x2F;&#x2F; If the server port isn&#39;t open, we get a close event
-                &#x2F;&#x2F; at some point in the future (and will not get an onopen 
+                &#x2F;&#x2F; at some point in the future (and will not get an onopen
                 &#x2F;&#x2F; event)
                 ws.onclose = function () {
                     deferred.reject(&quot;WebSocket closed&quot;);
                 };
 
                 ws.onopen = function () {
-                    &#x2F;&#x2F; If we successfully opened, remove the old onclose 
-                    &#x2F;&#x2F; handler (which was present to detect failure to 
+                    &#x2F;&#x2F; If we successfully opened, remove the old onclose
+                    &#x2F;&#x2F; handler (which was present to detect failure to
                     &#x2F;&#x2F; connect at all).
                     ws.onclose = null;
                     deferred.resolveWith(null, [ws, port]);
@@ -629,7 +626,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
                 deferred.reject(&quot;brackets.app.getNodeState error: &quot; + err);
             }
         });
-        
+
         return deferred.promise();
     }</code></pre></div><div class="member private">
 
@@ -888,7 +885,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
         &#x2F;&#x2F; clear out the domains, since we may get different ones
         &#x2F;&#x2F; on the next connection
         this.domains = {};
-        
+
         &#x2F;&#x2F; shut down the old connection if there is one
         if (this._ws &amp;&amp; this._ws.readyState !== WebSocket.CLOSED) {
             try {
@@ -902,7 +899,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
         });
         this._pendingInterfaceRefreshDeferreds = [];
         this._pendingCommandDeferreds = [];
-        
+
         this._ws = null;
         this._port = null;
     };</code></pre></div><div class="member private">
@@ -931,9 +928,9 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
 <pre class="code language-javascript"><code class="language-javascript">    NodeConnection._getConnectionTimeout = function () {
         return CONNECTION_TIMEOUT;
     };
-    
+
     module.exports = NodeConnection;
-    
+
 });</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -958,13 +955,13 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    NodeConnection.prototype._getNextCommandID = function () {
         var nextID;
-        
+
         if (this._commandCount &gt; MAX_COUNTER_VALUE) {
             nextID = this._commandCount = 0;
         } else {
             nextID = this._commandCount++;
         }
-        
+
         return nextID;
     };</code></pre></div><div class="member private">
 
@@ -994,19 +991,19 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
         var responseDeferred = null;
         var data = message.data;
         var m;
-        
+
         if (message.data instanceof ArrayBuffer) {
             &#x2F;&#x2F; The first four bytes encode the command ID as an unsigned 32-bit integer
             if (data.byteLength &lt; 4) {
                 console.error(&quot;[NodeConnection] received malformed binary message&quot;);
                 return;
             }
-            
+
             var header = data.slice(0, 4),
                 body = data.slice(4),
                 headerView = new Uint32Array(header),
                 id = headerView[0];
-            
+
             &#x2F;&#x2F; Unpack the binary message into a commandResponse
             m = {
                 type: &quot;commandResponse&quot;,
@@ -1023,13 +1020,13 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
                 return;
             }
         }
-        
+
         switch (m.type) {
         case &quot;event&quot;:
             if (m.message.domain === &quot;base&quot; &amp;&amp; m.message.event === &quot;newDomains&quot;) {
                 this._refreshInterface();
             }
-            
+
             &#x2F;&#x2F; Event type &quot;domain:event&quot;
             EventDispatcher.triggerWithArray(this, m.message.domain + &quot;:&quot; + m.message.event,
                                              m.message.parameters);
@@ -1086,7 +1083,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
 <pre class="code language-javascript"><code class="language-javascript">    NodeConnection.prototype._refreshInterface = function () {
         var deferred = $.Deferred();
         var self = this;
-        
+
         var pendingDeferreds = this._pendingInterfaceRefreshDeferreds;
         this._pendingInterfaceRefreshDeferreds = [];
         deferred.then(
@@ -1097,7 +1094,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
                 pendingDeferreds.forEach(function (d) { d.reject(err); });
             }
         );
-        
+
         function refreshInterfaceCallback(spec) {
             function makeCommandFunction(domainName, commandSpec) {
                 return function () {
@@ -1113,7 +1110,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
                     return deferred;
                 };
             }
-            
+
             &#x2F;&#x2F; TODO: Don&#39;t replace the domain object every time. Instead, merge.
             self.domains = {};
             self.domainEvents = {};
@@ -1131,7 +1128,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
             });
             deferred.resolve();
         }
-        
+
         if (this.connected()) {
             $.getJSON(&quot;http:&#x2F;&#x2F;localhost:&quot; + this._port + &quot;&#x2F;api&quot;)
                 .done(refreshInterfaceCallback)
@@ -1139,7 +1136,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
         } else {
             deferred.reject(&quot;Attempted to call _refreshInterface when not connected.&quot;);
         }
-        
+
         return deferred.promise();
     };</code></pre></div><div class="member private">
 
@@ -1179,7 +1176,7 @@ connection timeout even if we try to connect to a port that isn&#39;t open.</p>
                     console.error(&quot;[NodeConnection] Unable to stringify message in order to send: &quot; + stringifyError.message);
                 }
             }
-            
+
             &#x2F;&#x2F; If we succeded in making a string, try to send it
             if (messageString) {
                 try {
@@ -1228,7 +1225,7 @@ event will also include a jQuery promise for the connection.</p>
         var deferred = $.Deferred();
         var attemptCount = 0;
         var attemptTimestamp = null;
-        
+
         &#x2F;&#x2F; Called after a successful connection to do final setup steps
         function registerHandlersAndDomains(ws, port) {
             &#x2F;&#x2F; Called if we succeed at the final setup
@@ -1249,11 +1246,11 @@ event will also include a jQuery promise for the connection.</p>
                 self._cleanup();
                 deferred.reject(err);
             }
-            
+
             self._ws = ws;
             self._port = port;
             self._ws.onmessage = self._receive.bind(self);
-            
+
             &#x2F;&#x2F; refresh the current domains, then re-register any
             &#x2F;&#x2F; &quot;autoregister&quot; modules
             self._refreshInterface().then(
@@ -1270,7 +1267,7 @@ event will also include a jQuery promise for the connection.</p>
                 fail
             );
         }
-        
+
         &#x2F;&#x2F; Repeatedly tries to connect until we succeed or until we&#39;ve
         &#x2F;&#x2F; failed CONNECTION_ATTEMPT times. After each attempt, waits
         &#x2F;&#x2F; at least RETRY_DELAY before trying again.
@@ -1294,7 +1291,7 @@ event will also include a jQuery promise for the connection.</p>
                 }
             );
         }
-        
+
         &#x2F;&#x2F; Start the connection process
         self._cleanup();
         doConnect();
@@ -1391,7 +1388,7 @@ by calling connect() again.</p>
         if (!Array.isArray(paths)) {
             pathArray = [paths];
         }
-        
+
         if (autoReload) {
             Array.prototype.push.apply(this._registeredModules, pathArray);
         }
@@ -1416,7 +1413,7 @@ by calling connect() again.</p>
         } else {
             deferred.reject(&quot;this.domains.base is undefined&quot;);
         }
-        
+
         return deferred.promise();
     };</code></pre></div>
         </section>

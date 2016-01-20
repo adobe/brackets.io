@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -581,13 +578,13 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _changeIndentWidth(fullPath, value) {
         $indentWidthLabel.removeClass(&quot;hidden&quot;);
         $indentWidthInput.addClass(&quot;hidden&quot;);
-        
+
         &#x2F;&#x2F; remove all event handlers from the input field
         $indentWidthInput.off(&quot;blur keyup&quot;);
-        
+
         &#x2F;&#x2F; restore focus to the editor
         MainViewManager.focusActivePane();
-        
+
         var valInt = parseInt(value, 10);
         if (Editor.getUseTabChar(fullPath)) {
             if (!Editor.setTabSize(valInt, fullPath)) {
@@ -695,25 +692,25 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _init() {
-        
+
         $cursorInfo         = $(&quot;#status-cursor&quot;);
         $fileInfo           = $(&quot;#status-file&quot;);
         $indentType         = $(&quot;#indent-type&quot;);
         $indentWidthLabel   = $(&quot;#indent-width-label&quot;);
         $indentWidthInput   = $(&quot;#indent-width-input&quot;);
         $statusOverwrite    = $(&quot;#status-overwrite&quot;);
-        
+
         languageSelect      = new DropdownButton(&quot;&quot;, [], function (item, index) {
             var document = EditorManager.getActiveEditor().document,
                 defaultLang = LanguageManager.getLanguageForPath(document.file.fullPath, true);
-            
+
             if (item === LANGUAGE_SET_AS_DEFAULT) {
                 var label = _.escape(StringUtils.format(Strings.STATUSBAR_SET_DEFAULT_LANG, LanguageManager.getCompoundFileExtension(document.file.fullPath)));
                 return { html: label, enabled: document.getLanguage() !== defaultLang };
             }
-            
+
             var html = _.escape(item.getName());
-            
+
             &#x2F;&#x2F; Show indicators for currently selected &amp; default languages for the current file
             if (item === defaultLang) {
                 html += &quot; &lt;span class=&#39;default-language&#39;&gt;&quot; + Strings.STATUSBAR_DEFAULT_LANG + &quot;&lt;&#x2F;span&gt;&quot;;
@@ -723,12 +720,12 @@
             }
             return html;
         });
-        
+
         languageSelect.dropdownExtraClasses = &quot;dropdown-status-bar&quot;;
         languageSelect.$button.addClass(&quot;btn-status-bar&quot;);
         $(&quot;#status-language&quot;).append(languageSelect.$button);
         languageSelect.$button.attr(&quot;title&quot;, Strings.STATUSBAR_LANG_TOOLTIP);
-        
+
         &#x2F;&#x2F; indentation event handlers
         $indentType.on(&quot;click&quot;, _toggleIndentType);
         $indentWidthLabel
@@ -740,7 +737,7 @@
                 $indentWidthLabel.addClass(&quot;hidden&quot;);
                 $indentWidthInput.removeClass(&quot;hidden&quot;);
                 $indentWidthInput.focus();
-        
+
                 $indentWidthInput
                     .on(&quot;blur&quot;, function () {
                         _changeIndentWidth(fullPath, $indentWidthInput.val());
@@ -760,13 +757,13 @@
         languageSelect.on(&quot;select&quot;, function (e, lang) {
             var document = EditorManager.getActiveEditor().document,
                 fullPath = document.file.fullPath;
-            
+
             if (lang === LANGUAGE_SET_AS_DEFAULT) {
                 &#x2F;&#x2F; Set file&#39;s current language in preferences as a file extension override (only enabled if not default already)
                 var fileExtensionMap = PreferencesManager.get(&quot;language.fileExtensions&quot;);
                 fileExtensionMap[LanguageManager.getCompoundFileExtension(fullPath)] = document.getLanguage().getId();
                 PreferencesManager.set(&quot;language.fileExtensions&quot;, fileExtensionMap);
-                
+
             } else {
                 &#x2F;&#x2F; Set selected language as a path override for just this one file (not persisted)
                 var defaultLang = LanguageManager.getLanguageForPath(fullPath, true);
@@ -780,7 +777,7 @@
 
     &#x2F;&#x2F; Initialize: status bar focused listener
     EditorManager.on(&quot;activeEditorChange&quot;, _onActiveEditorChange);
-    
+
     AppInit.htmlReady(_init);
     AppInit.appReady(function () {
         &#x2F;&#x2F; Populate language switcher with all languages after startup; update it later if this set changes
@@ -858,13 +855,13 @@
             previous.document.off(&quot;.statusbar&quot;);
             previous.document.releaseRef();
         }
-        
+
         if (!current) {
             StatusBar.hideAllPanes();
         } else {
             var fullPath = current.document.file.fullPath;
             StatusBar.showAllPanes();
-            
+
             current.on(&quot;cursorActivity.statusbar&quot;, _updateCursorInfo);
             current.on(&quot;optionChange.statusbar&quot;, function () {
                 _updateIndentType(fullPath);
@@ -875,12 +872,12 @@
                 window.setTimeout(function () { _updateFileInfo(current); }, 0);
             });
             current.on(&quot;overwriteToggle.statusbar&quot;, _updateOverwriteLabel);
-            
+
             current.document.addRef();
             current.document.on(&quot;languageChanged.statusbar&quot;, function () {
                 _updateLanguageInfo(current);
             });
-            
+
             _updateCursorInfo(null, current);
             _updateLanguageInfo(current);
             _updateFileInfo(current);
@@ -913,14 +910,14 @@
         var languages = _.values(LanguageManager.getLanguages()).filter(function (language) {
             return !language.isBinary();
         });
-        
+
         &#x2F;&#x2F; sort dropdown alphabetically
         languages.sort(function (a, b) {
             return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
         });
-        
+
         languageSelect.items = languages;
-        
+
         &#x2F;&#x2F; Add option to top of menu for persisting the override
         languageSelect.items.unshift(&quot;---&quot;);
         languageSelect.items.unshift(LANGUAGE_SET_AS_DEFAULT);
@@ -986,9 +983,9 @@
 
         &#x2F;&#x2F; compute columns, account for tab size
         var cursor = editor.getCursorPos(true);
-        
+
         var cursorStr = StringUtils.format(Strings.STATUSBAR_CURSOR_POSITION, cursor.line + 1, cursor.ch + 1);
-        
+
         var sels = editor.getSelections(),
             selStr = &quot;&quot;;
 
@@ -1155,7 +1152,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _updateLanguageInfo(editor) {
         var doc = editor.document,
             lang = doc.getLanguage();
-        
+
         &#x2F;&#x2F; Ensure width isn&#39;t left locked by a previous click of the dropdown (which may not have resulted in a &quot;change&quot; event at the time)
         languageSelect.$button.css(&quot;width&quot;, &quot;auto&quot;);
         &#x2F;&#x2F; Setting Untitled documents to non-text mode isn&#39;t supported yet, so disable the switcher in that case for now

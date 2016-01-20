@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -889,8 +886,8 @@
         } else {
             targetPlatform = brackets.platform;
         }
-        
-        
+
+
         &#x2F;&#x2F; Skip if the key binding is not for this platform.
         if (explicitPlatform === &quot;mac&quot; &amp;&amp; brackets.platform !== &quot;mac&quot;) {
             return null;
@@ -905,18 +902,18 @@
                 keyBinding.displayKey = keyBinding.displayKey.replace(&quot;Ctrl&quot;, &quot;Cmd&quot;);
             }
         }
-        
+
         normalized = normalizeKeyDescriptorString(key);
-        
-        &#x2F;&#x2F; skip if the key binding is invalid 
+
+        &#x2F;&#x2F; skip if the key binding is invalid
         if (!normalized) {
             console.error(&quot;Unable to parse key binding &quot; + key + &quot;. Permitted modifiers: Ctrl, Cmd, Alt, Opt, Shift; separated by &#39;-&#39; (not &#39;+&#39;).&quot;);
             return null;
         }
-        
+
         &#x2F;&#x2F; check for duplicate key bindings
         existing = _keyMap[normalized];
-        
+
         &#x2F;&#x2F; for cross-platform compatibility
         if (exports.useWindowsCompatibleBindings) {
             &#x2F;&#x2F; windows-only key bindings are used as the default binding
@@ -930,17 +927,17 @@
                     &#x2F;&#x2F; do not clobber existing binding with windows-only binding
                     return null;
                 }
-                
+
                 &#x2F;&#x2F; target this windows binding for the current platform
                 targetPlatform = brackets.platform;
             }
         }
-        
+
         &#x2F;&#x2F; skip if this binding doesn&#39;t match the current platform
         if (targetPlatform !== brackets.platform) {
             return null;
         }
-        
+
         &#x2F;&#x2F; skip if the key is already assigned
         if (existing) {
             if (!existing.explicitPlatform &amp;&amp; explicitPlatform) {
@@ -949,7 +946,7 @@
                 existing = false;
             }
         }
-        
+
         &#x2F;&#x2F; delete existing bindings when
         &#x2F;&#x2F; (1) replacing a windows-compatible binding with a generic or
         &#x2F;&#x2F;     platform-specific binding
@@ -958,16 +955,16 @@
             isWindowsCompatible,
             isReplaceGeneric,
             ignoreGeneric;
-        
+
         existingBindings.forEach(function (binding) {
             &#x2F;&#x2F; remove windows-only bindings in _commandMap
             isWindowsCompatible = exports.useWindowsCompatibleBindings &amp;&amp;
                 binding.explicitPlatform === &quot;win&quot;;
-            
+
             &#x2F;&#x2F; remove existing generic binding
             isReplaceGeneric = !binding.explicitPlatform &amp;&amp;
                 explicitPlatform;
-            
+
             if (isWindowsCompatible || isReplaceGeneric) {
                 bindingsToDelete.push(binding);
             } else {
@@ -980,34 +977,34 @@
             &#x2F;&#x2F; explicit command binding overrides this one
             return null;
         }
-        
+
         if (existing) {
             &#x2F;&#x2F; do not re-assign a key binding
             console.error(&quot;Cannot assign &quot; + normalized + &quot; to &quot; + commandID + &quot;. It is already assigned to &quot; + _keyMap[normalized].commandID);
             return null;
         }
-        
+
         &#x2F;&#x2F; remove generic or windows-compatible bindings
         bindingsToDelete.forEach(function (binding) {
             removeBinding(binding.key);
         });
-        
+
         &#x2F;&#x2F; optional display-friendly string (e.g. CMD-+ instead of CMD-=)
         normalizedDisplay = (keyBinding.displayKey) ? normalizeKeyDescriptorString(keyBinding.displayKey) : normalized;
-        
+
         &#x2F;&#x2F; 1-to-many commandID mapping to key binding
         if (!_commandMap[commandID]) {
             _commandMap[commandID] = [];
         }
-        
+
         result = {
             key                 : normalized,
             displayKey          : normalizedDisplay,
             explicitPlatform    : explicitPlatform
         };
-        
+
         _commandMap[commandID].push(result);
-        
+
         &#x2F;&#x2F; 1-to-1 key binding to commandID
         _keyMap[normalized] = {
             commandID           : commandID,
@@ -1015,18 +1012,18 @@
             displayKey          : normalizedDisplay,
             explicitPlatform    : explicitPlatform
         };
-        
+
         if (!userBindings) {
             _updateCommandAndKeyMaps(_keyMap[normalized]);
         }
-        
+
         &#x2F;&#x2F; notify listeners
         command = CommandManager.get(commandID);
-        
+
         if (command) {
             command.trigger(&quot;keyBindingAdded&quot;, result);
         }
-        
+
         return result;
     }</code></pre></div><div class="member private">
 
@@ -1057,19 +1054,19 @@
             multipleKeys       = [],
             duplicateBindings  = [],
             errorMessage       = &quot;&quot;;
-        
+
         _.forEach(_customKeyMap, function (commandID, key) {
             var normalizedKey    = normalizeKeyDescriptorString(key),
                 existingBindings = _commandMap[commandID] || [];
 
-            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update key binding of a special 
+            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update key binding of a special
             &#x2F;&#x2F; command like cut, copy, paste, undo, redo and select all.
             if (_isSpecialCommand(commandID)) {
                 restrictedCommands.push(commandID);
                 return;
             }
 
-            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update a shortcut used in 
+            &#x2F;&#x2F; Skip this since we don&#39;t allow user to update a shortcut used in
             &#x2F;&#x2F; a special command or any Mac system command.
             if (_isReservedShortcuts(normalizedKey)) {
                 restrictedKeys.push(key);
@@ -1081,11 +1078,11 @@
                 invalidKeys.push(key);
                 return;
             }
-            
+
             if (_isKeyAssigned(normalizedKey)) {
                 if (remappedKeys.indexOf(normalizedKey) !== -1) {
                     &#x2F;&#x2F; JSON parser already removed all the duplicates that have the exact
-                    &#x2F;&#x2F; same case or order in their keys. So we&#39;re only detecting duplicate 
+                    &#x2F;&#x2F; same case or order in their keys. So we&#39;re only detecting duplicate
                     &#x2F;&#x2F; bindings that have different orders or different cases used in the key.
                     duplicateBindings.push(key);
                     return;
@@ -1205,9 +1202,9 @@
             console.log(&quot;KeyBindingManager _buildKeyDescriptor() - No key provided!&quot;);
             return &quot;&quot;;
         }
-        
+
         var keyDescriptor = [];
-       
+
         if (hasMacCtrl) {
             keyDescriptor.push(&quot;Ctrl&quot;);
         }
@@ -1228,7 +1225,7 @@
         }
 
         keyDescriptor.push(key);
-        
+
         return keyDescriptor.join(&quot;-&quot;);
     }</code></pre></div><div class="member private">
 
@@ -1264,7 +1261,7 @@
             if (_ctrlDown !== CtrlDownStates.DETECTED_AND_IGNORED &amp;&amp; e.ctrlKey &amp;&amp; e.keyIdentifier === &quot;Control&quot;) {
                 _ctrlDown = CtrlDownStates.DETECTED;
             } else if (e.repeat &amp;&amp; e.ctrlKey &amp;&amp; e.keyIdentifier === &quot;Control&quot;) {
-                &#x2F;&#x2F; We get here if the user is holding down left&#x2F;right Control key. Set it to false 
+                &#x2F;&#x2F; We get here if the user is holding down left&#x2F;right Control key. Set it to false
                 &#x2F;&#x2F; so that we don&#39;t misidentify the combination of Ctrl and Alt keys as AltGr key.
                 _ctrlDown = CtrlDownStates.DETECTED_AND_IGNORED;
             } else if (_ctrlDown === CtrlDownStates.DETECTED &amp;&amp; e.altKey &amp;&amp; e.ctrlKey &amp;&amp; e.keyIdentifier === &quot;Alt&quot; &amp;&amp;
@@ -1281,7 +1278,7 @@
             _lastTimeStamp = e.timeStamp;
         } else if (e.keyIdentifier === &quot;Control&quot; || e.keyIdentifier === &quot;Alt&quot;) {
             &#x2F;&#x2F; If the user is NOT holding down AltGr key or is also pressing Ctrl key,
-            &#x2F;&#x2F; then _lastKeyIdentifier will be the same as keyIdentifier in the current 
+            &#x2F;&#x2F; then _lastKeyIdentifier will be the same as keyIdentifier in the current
             &#x2F;&#x2F; key event. So we need to quit AltGr mode to re-enable KBM.
             if (e.altKey &amp;&amp; e.ctrlKey &amp;&amp; e.keyIdentifier === _lastKeyIdentifier) {
                 _quitAltGrMode();
@@ -1417,7 +1414,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _handleCommandRegistered(event, command) {
         var commandId   = command.getID(),
             defaults    = KeyboardPrefs[commandId];
-        
+
         if (defaults) {
             addBinding(commandId, defaults);
         }
@@ -1506,7 +1503,7 @@ deciding to handle it ourselves.</p>
             _handleKeyEvent,
             true
         );
-        
+
         exports.useWindowsCompatibleBindings = (brackets.platform !== &quot;mac&quot;) &amp;&amp;
             (brackets.platform !== &quot;win&quot;);
     });</code></pre></div><div class="member private public">
@@ -1593,16 +1590,16 @@ deciding to handle it ourselves.</p>
         if (!normalizedKey) {
             return false;
         }
-        
+
         if (_reservedShortcuts.indexOf(normalizedKey) &gt; -1 ||
                 _reservedShortcuts.indexOf(normalizedKey.replace(&quot;Cmd&quot;, &quot;Ctrl&quot;)) &gt; -1) {
             return true;
         }
-        
+
         if (brackets.platform === &quot;mac&quot; &amp;&amp; _macReservedShortcuts.indexOf(normalizedKey) &gt; -1) {
             return true;
         }
-        
+
         return false;
     }</code></pre></div><div class="member private">
 
@@ -1636,7 +1633,7 @@ deciding to handle it ourselves.</p>
         if (brackets.platform === &quot;mac&quot; &amp;&amp; commandID === &quot;file.quit&quot;) {
             return true;
         }
-        
+
         return (_specialCommands.indexOf(commandID) &gt; -1);
     }</code></pre></div><div class="member private">
 
@@ -1680,8 +1677,8 @@ deciding to handle it ourselves.</p>
         } else if (keycode &gt;= KeyEvent.DOM_VK_NUMPAD0 &amp;&amp; keycode &lt;= KeyEvent.DOM_VK_NUMPAD9) {
             return String(keycode - KeyEvent.DOM_VK_NUMPAD0);
         }
-        
-        
+
+
         switch (keycode) {
         case KeyEvent.DOM_VK_SEMICOLON:
             return &quot;;&quot;;
@@ -1742,7 +1739,7 @@ deciding to handle it ourselves.</p>
                 var defaultContent = &quot;{\n    \&quot;documentation\&quot;: \&quot;https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;wiki&#x2F;User-Key-Bindings\&quot;,&quot; +
                                      &quot;\n    \&quot;overrides\&quot;: {&quot; +
                                      &quot;\n        \n    }\n}\n&quot;;
-                
+
                 FileUtils.writeText(file, defaultContent, true)
                     .done(function () {
                         CommandManager.execute(Commands.FILE_OPEN, { fullPath: userKeyMapPath });
@@ -1750,7 +1747,7 @@ deciding to handle it ourselves.</p>
             }
         });
     }
-    
+
     &#x2F;&#x2F; Due to circular dependencies, not safe to call on() directly
     EventDispatcher.on_duringInit(CommandManager, &quot;commandRegistered&quot;, _handleCommandRegistered);
     CommandManager.register(Strings.CMD_OPEN_KEYMAP, Commands.FILE_OPEN_KEYMAP, _openUserKeyMap);
@@ -1813,7 +1810,7 @@ deciding to handle it ourselves.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _readUserKeyMap() {
         var file   = FileSystem.getFileForPath(_getUserKeyMapFilePath()),
             result = new $.Deferred();
-       
+
         file.exists(function (err, doesExist) {
             if (doesExist) {
                 FileUtils.readAsText(file)
@@ -1897,7 +1894,7 @@ deciding to handle it ourselves.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _setUserKeyMapFilePath(fullPath) {
         _userKeyMapFilePath = fullPath;
     }
-    
+
     AppInit.extensionsLoaded(function () {
         var params  = new UrlParams();
         params.parse();
@@ -1959,13 +1956,13 @@ deciding to handle it ourselves.</p>
         &#x2F;&#x2F; Asynchronously loading Dialogs module to avoid the circular dependency
         require([&quot;widgets&#x2F;Dialogs&quot;], function (Dialogs) {
             var errorMessage = Strings.ERROR_KEYMAP_CORRUPT;
-            
+
             if (err === FileSystemError.UNSUPPORTED_ENCODING) {
                 errorMessage = Strings.ERROR_LOADING_KEYMAP;
             } else if (message) {
                 errorMessage = message;
             }
-            
+
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.ERROR_KEYMAP_TITLE,
@@ -2026,7 +2023,7 @@ deciding to handle it ourselves.</p>
             hasAlt = (event.altKey),
             hasShift = (event.shiftKey),
             key = String.fromCharCode(event.keyCode);
-        
+
         &#x2F;&#x2F;From the W3C, if we can get the KeyboardEvent.keyIdentifier then look here
         &#x2F;&#x2F;As that will let us use keys like then function keys &quot;F5&quot; for commands. The
         &#x2F;&#x2F;full set of values we can use is here
@@ -2041,7 +2038,7 @@ deciding to handle it ourselves.</p>
                 key = ident;
             }
         }
-        
+
         &#x2F;&#x2F; Translate some keys to their common names
         if (key === &quot;\t&quot;) {
             key = &quot;Tab&quot;;
@@ -2102,7 +2099,7 @@ deciding to handle it ourselves.</p>
                 addBinding(commandID, defaults, brackets.platform);
             }
 
-            &#x2F;&#x2F; Reassign the default key binding of the previously modified command. 
+            &#x2F;&#x2F; Reassign the default key binding of the previously modified command.
             &#x2F;&#x2F; e.g. &quot;Cmd-W&quot;: &quot;file.open&quot; in _customKeyMapCache will require us to reassign Cmd-W
             &#x2F;&#x2F; shortcut to file.close command.
             if (defaultCommand &amp;&amp; defaultCommand.key) {
@@ -2137,10 +2134,10 @@ deciding to handle it ourselves.</p>
         if (_allCommands.length === 0) {
             return;
         }
-        
+
         if (newBinding &amp;&amp; newBinding.commandID &amp;&amp; _allCommands.indexOf(newBinding.commandID) === -1) {
             _defaultKeyMap[newBinding.commandID] = _.cloneDeep(newBinding);
-            
+
             &#x2F;&#x2F; Process user key map again to catch any reassignment to all new key bindings added from extensions.
             _loadUserKeyMap();
         }
@@ -2188,31 +2185,31 @@ deciding to handle it ourselves.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function addBinding(command, keyBindings, platform) {
         var commandID = &quot;&quot;,
             results;
-        
+
         if (!command) {
             console.error(&quot;addBinding(): missing required parameter: command&quot;);
             return;
         }
-        
+
         if (!keyBindings) { return; }
-        
+
         if (typeof (command) === &quot;string&quot;) {
             commandID = command;
         } else {
             commandID = command.getID();
         }
-        
+
         if (Array.isArray(keyBindings)) {
             var keyBinding;
             results = [];
 
             &#x2F;&#x2F; process platform-specific bindings first
             keyBindings.sort(_sortByPlatform);
-            
+
             keyBindings.forEach(function addSingleBinding(keyBindingRequest) {
                 &#x2F;&#x2F; attempt to add keybinding
                 keyBinding = _addBinding(commandID, keyBindingRequest, keyBindingRequest.platform);
-                
+
                 if (keyBinding) {
                     results.push(keyBinding);
                 }
@@ -2220,7 +2217,7 @@ deciding to handle it ourselves.</p>
         } else {
             results = _addBinding(commandID, keyBindings, platform);
         }
-        
+
         return results;
     }</code></pre></div><div class="member public">
 
@@ -2234,24 +2231,24 @@ deciding to handle it ourselves.</p>
     </h4>
 
     
-    <div class="description"><p>Adds a global keydown hook that gets first crack at keydown events 
-before standard keybindings do. This is intended for use by modal or 
-semi-modal UI elements like dialogs or the code hint list that should 
-execute before normal command bindings are run. </p>
-<p>The hook is passed one parameter, the original keyboard event. If the 
-hook handles the event (or wants to block other global hooks from 
+    <div class="description"><p>Adds a global keydown hook that gets first crack at keydown events
+before standard keybindings do. This is intended for use by modal or
+semi-modal UI elements like dialogs or the code hint list that should
+execute before normal command bindings are run.</p>
+<p>The hook is passed one parameter, the original keyboard event. If the
+hook handles the event (or wants to block other global hooks from
 handling the event), it should return true. Note that this will <em>only</em>
 stop other global hooks and KeyBindingManager from handling the
 event; to prevent further event propagation, you will need to call
 stopPropagation(), stopImmediatePropagation(), and/or preventDefault()
 as usual.</p>
-<p>Multiple keydown hooks can be registered, and are executed in order, 
+<p>Multiple keydown hooks can be registered, and are executed in order,
 most-recently-added first.</p>
 <p>(We have to have a special API for this because (1) handlers are normally
-called in least-recently-added order, and we want most-recently-added; 
-(2) native DOM events don&#39;t have a way for us to find out if 
+called in least-recently-added order, and we want most-recently-added;
+(2) native DOM events don&#39;t have a way for us to find out if
 stopImmediatePropagation()/stopPropagation() has been called on the
-event, so we have to have some other way for one of the hooks to 
+event, so we have to have some other way for one of the hooks to
 indicate that it wants to block the other hooks from running.)</p>
 </div>
     
@@ -2298,7 +2295,7 @@ indicate that it wants to block the other hooks from running.)</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function formatKeyDescriptor(descriptor) {
         var displayStr;
-        
+
         if (brackets.platform === &quot;mac&quot;) {
             displayStr = descriptor.replace(&#x2F;-(?!$)&#x2F;g, &quot;&quot;);     &#x2F;&#x2F; remove dashes
             displayStr = displayStr.replace(&quot;Ctrl&quot;, &quot;\u2303&quot;);  &#x2F;&#x2F; Ctrl &gt; control symbol
@@ -2354,18 +2351,18 @@ indicate that it wants to block the other hooks from running.)</p>
 <pre class="code language-javascript"><code class="language-javascript">    function getKeyBindings(command) {
         var bindings    = [],
             commandID   = &quot;&quot;;
-        
+
         if (!command) {
             console.error(&quot;getKeyBindings(): missing required parameter: command&quot;);
             return [];
         }
-        
+
         if (typeof (command) === &quot;string&quot;) {
             commandID = command;
         } else {
             commandID = command.getID();
         }
-        
+
         bindings = _commandMap[commandID];
         return bindings || [];
     }</code></pre></div><div class="member public">
@@ -2442,10 +2439,10 @@ then a copy of the default key map is returned.</p>
             }
             left = left.trim().toLowerCase();
             right = right.trim().toLowerCase();
-            
+
             return (left.length &gt; 0 &amp;&amp; left === right);
         }
-        
+
         origDescriptor.split(&quot;-&quot;).forEach(function parseDescriptor(ele, i, arr) {
             if (_compareModifierString(&quot;ctrl&quot;, ele)) {
                 if (brackets.platform === &quot;mac&quot;) {
@@ -2476,7 +2473,7 @@ then a copy of the default key map is returned.</p>
                 key = ele;
             }
         });
-        
+
         if (error) {
             return null;
         }
@@ -2485,34 +2482,34 @@ then a copy of the default key map is returned.</p>
         if (key === &quot;&quot; &amp;&amp; origDescriptor.search(&#x2F;^.+--$&#x2F;) !== -1) {
             key = &quot;-&quot;;
         }
-        
+
         &#x2F;&#x2F; &#39;+&#39; char is valid if it&#39;s the only key. Keyboard shortcut strings should use
         &#x2F;&#x2F; unicode characters (unescaped). Keyboard shortcut display strings may use
         &#x2F;&#x2F; unicode escape sequences (e.g. \u20AC euro sign)
         if ((key.indexOf(&quot;+&quot;)) &gt;= 0 &amp;&amp; (key.length &gt; 1)) {
             return null;
         }
-        
+
         &#x2F;&#x2F; Ensure that the first letter of the key name is in upper case and the rest are
         &#x2F;&#x2F; in lower case. i.e. &#39;a&#39; =&gt; &#39;A&#39; and &#39;up&#39; =&gt; &#39;Up&#39;
         if (&#x2F;^[a-z]&#x2F;i.test(key)) {
             key = _.capitalize(key.toLowerCase());
         }
-        
+
         &#x2F;&#x2F; Also make sure that the second word of PageUp&#x2F;PageDown has the first letter in upper case.
         if (&#x2F;^Page&#x2F;.test(key)) {
             key = key.replace(&#x2F;(up|down)$&#x2F;, function (match, p1) {
                 return _.capitalize(p1);
             });
         }
-        
-        &#x2F;&#x2F; No restriction on single character key yet, but other key names are restricted to either 
+
+        &#x2F;&#x2F; No restriction on single character key yet, but other key names are restricted to either
         &#x2F;&#x2F; Function keys or those listed in _keyNames array.
         if (key.length &gt; 1 &amp;&amp; !&#x2F;F\d+&#x2F;.test(key) &amp;&amp;
                 _keyNames.indexOf(key) === -1) {
             return null;
         }
-        
+
         return _buildKeyDescriptor(hasMacCtrl, hasCtrl, hasAlt, hasShift, key);
     }</code></pre></div><div class="member public">
 
@@ -2552,23 +2549,23 @@ then a copy of the default key map is returned.</p>
         }
 
         var normalizedKey = normalizeKeyDescriptorString(key);
-        
+
         if (!normalizedKey) {
             console.log(&quot;Fail to nomalize &quot; + key);
         } else if (_isKeyAssigned(normalizedKey)) {
             var binding = _keyMap[normalizedKey],
                 command = CommandManager.get(binding.commandID),
                 bindings = _commandMap[binding.commandID];
-            
+
             &#x2F;&#x2F; delete key binding record
             delete _keyMap[normalizedKey];
-            
+
             if (bindings) {
                 &#x2F;&#x2F; delete mapping from command to key binding
                 _commandMap[binding.commandID] = bindings.filter(function (b) {
                     return (b.key !== normalizedKey);
                 });
-    
+
                 if (command) {
                     command.trigger(&quot;keyBindingRemoved&quot;, {key: normalizedKey, displayKey: binding.displayKey});
                 }

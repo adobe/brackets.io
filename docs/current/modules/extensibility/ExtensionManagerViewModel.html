@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -542,7 +539,7 @@ Events:</p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function ExtensionManagerViewModel() {
         this._handleStatusChange = this._handleStatusChange.bind(this);
-        
+
         &#x2F;&#x2F; Listen for extension status changes.
         ExtensionManager
             .on(&quot;statusChange.&quot; + this.source, this._handleStatusChange)
@@ -1046,9 +1043,9 @@ Events:</p>
             &#x2F;&#x2F; This is a new query, so start with the full list.
             initialList = this.sortedFullSet;
         }
-        
+
         var keywords = query.toLowerCase().split(&#x2F;\s+&#x2F;);
-        
+
         &#x2F;&#x2F; Takes &#39;extensionList&#39; and returns a version filtered to only those that match &#39;keyword&#39;
         function filterForKeyword(extensionList, word) {
             var filteredList = [];
@@ -1060,13 +1057,13 @@ Events:</p>
             });
             return filteredList;
         }
-        
+
         &#x2F;&#x2F; &quot;AND&quot; the keywords together: successively filter down the result set by each keyword in turn
         var i, currentList = initialList;
         for (i = 0; i &lt; keywords.length; i++) {
             currentList = filterForKeyword(currentList, keywords[i]);
         }
-        
+
         this._lastQuery = query;
         this.filterSet = currentList;
 
@@ -1095,11 +1092,11 @@ Events:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerViewModel.prototype.initialize = function () {
         var self = this;
-        
+
         this._initializeFromSourcePromise = this._initializeFromSource().always(function () {
             self._updateMessage();
         });
-        
+
         return this._initializeFromSourcePromise;
     };</code></pre></div>
         </section>
@@ -1115,7 +1112,7 @@ Events:</p>
                 
             </h4>
             
-            <em><p>The model for the ExtensionManagerView that is responsible for handling registry-based extensions. 
+            <em><p>The model for the ExtensionManagerView that is responsible for handling registry-based extensions.
 This extends ExtensionManagerViewModel.
 Must be disposed with dispose() when done.</p>
 <p>Events:</p>
@@ -1134,7 +1131,7 @@ Must be disposed with dispose() when done.</p>
         ExtensionManagerViewModel.call(this);
         this.infoMessage = Strings.REGISTRY_SANITY_CHECK_WARNING;
     }
-    
+
     RegistryViewModel.prototype = Object.create(ExtensionManagerViewModel.prototype);
     RegistryViewModel.prototype.constructor = RegistryViewModel;</code></pre>
         </div>
@@ -1236,7 +1233,7 @@ Must be disposed with dispose() when done.</p>
         return ExtensionManager.downloadRegistry()
             .done(function () {
                 self.extensions = ExtensionManager.extensions;
-                
+
                 &#x2F;&#x2F; Sort the registry by last published date and store the sorted list of IDs.
                 self.sortedFullSet = registry_utils.sortRegistry(self.extensions, &quot;registryInfo&quot;)
                     .filter(function (entry) {
@@ -1266,7 +1263,7 @@ Must be disposed with dispose() when done.</p>
                 
             </h4>
             
-            <em><p>The model for the ExtensionManagerView that is responsible for handling previously-installed extensions. 
+            <em><p>The model for the ExtensionManagerView that is responsible for handling previously-installed extensions.
 This extends ExtensionManagerViewModel.
 Must be disposed with dispose() when done.</p>
 <p>Events:</p>
@@ -1291,7 +1288,7 @@ Must be disposed with dispose() when done.</p>
             self._setInitialFilter();
         });
     }
-    
+
     InstalledViewModel.prototype = Object.create(ExtensionManagerViewModel.prototype);
     InstalledViewModel.prototype.constructor = InstalledViewModel;</code></pre>
         </div>
@@ -1438,12 +1435,12 @@ Must be disposed with dispose() when done.</p>
         if (refilter) {
             this.filter(this._lastQuery || &quot;&quot;, true);
         }
-        
+
         if (this.extensions[id].installInfo) {
             &#x2F;&#x2F; If our count of available updates may have been affected, re-count
             this._countUpdates();
         }
-        
+
         ExtensionManagerViewModel.prototype._handleStatusChange.call(this, e, id);
     };</code></pre></div><div class="member private">
 
@@ -1480,7 +1477,7 @@ alphabetically by id (or name of the extension folder for legacy extensions).</p
         this._sortFullSet();
         this._setInitialFilter();
         this._countUpdates();
-        
+
         return new $.Deferred().resolve().promise();
     };</code></pre></div><div class="member private">
 
@@ -1503,7 +1500,7 @@ alphabetically by id (or name of the extension folder for legacy extensions).</p
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    InstalledViewModel.prototype._sortFullSet = function () {
         var self = this;
-        
+
         this.sortedFullSet = this.sortedFullSet.sort(function (key1, key2) {
             &#x2F;&#x2F; before sorting by name, put first extensions that have updates
             var ua1 = self.extensions[key1].installInfo.updateAvailable,
@@ -1536,7 +1533,7 @@ alphabetically by id (or name of the extension folder for legacy extensions).</p
                 
             </h4>
             
-            <em><p>The model for the ExtensionManagerView that is responsible for handling registry-based theme extensions. 
+            <em><p>The model for the ExtensionManagerView that is responsible for handling registry-based theme extensions.
 This extends ExtensionManagerViewModel.
 Must be disposed with dispose() when done.</p>
 <p>Events:</p>

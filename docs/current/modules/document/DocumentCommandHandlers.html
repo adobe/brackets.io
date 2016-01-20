@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -942,7 +939,7 @@ file creation call is outstanding</p>
 
         } else if (unsavedDocs.length === 1) {
             &#x2F;&#x2F; Only one unsaved file: show the usual single-file-close confirmation UI
-            var fileCloseArgs = { file: unsavedDocs[0].file, promptOnly: promptOnly };
+            var fileCloseArgs = { file: unsavedDocs[0].file, promptOnly: promptOnly, spawnedRequest: true };
 
             handleFileClose(fileCloseArgs).done(function () {
                 &#x2F;&#x2F; still need to close any other, non-unsaved documents
@@ -1092,7 +1089,7 @@ file creation call is outstanding</p>
         <span class="label label-optional">optional</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>the id oi the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE. </dd>
+    <dd>the id oi the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE.</dd>
     <dt>
         options,
         <span class="label label-optional">optional</span>
@@ -1113,8 +1110,8 @@ file creation call is outstanding</p>
         &#x2F;&#x2F; TODO should be removed once bug is closed.
         &#x2F;&#x2F; if we are already displaying a file do nothing but resolve immediately.
         &#x2F;&#x2F; this fixes timing issues in test cases.
-        if (MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE) === fullPath) {
-            result.resolve(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE));
+        if (MainViewManager.getCurrentlyViewedPath(paneId || MainViewManager.ACTIVE_PANE) === fullPath) {
+            result.resolve(MainViewManager.getCurrentlyViewedFile(paneId || MainViewManager.ACTIVE_PANE));
             return result.promise();
         }
 
@@ -1225,7 +1222,7 @@ file creation call is outstanding</p>
                             filesToOpen.push(FileSystem.getFileForPath(path));
                         });
                         MainViewManager.addListToWorkingSet(paneId, filesToOpen);
-                        
+
                         _doOpen(paths[paths.length - 1], silent, paneId, options)
                             .done(function (file) {
                                 _defaultOpenDialogFullPath =
@@ -2459,6 +2456,7 @@ is open. Prompts user about saving changes first, if document is dirty.</p>
         var file,
             promptOnly,
             _forceClose,
+            _spawnedRequest,
             paneId = MainViewManager.ACTIVE_PANE;
 
         if (commandData) {
@@ -2466,6 +2464,7 @@ is open. Prompts user about saving changes first, if document is dirty.</p>
             promptOnly  = commandData.promptOnly;
             _forceClose = commandData._forceClose;
             paneId      = commandData.paneId || paneId;
+            _spawnedRequest = commandData.spawnedRequest || false;
         }
 
         &#x2F;&#x2F; utility function for handleFileClose: closes document &amp; removes from workingset
@@ -2490,8 +2489,9 @@ is open. Prompts user about saving changes first, if document is dirty.</p>
 
         var doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
 
-        if (doc &amp;&amp; doc.isDirty &amp;&amp; !_forceClose) {
-            &#x2F;&#x2F; Document is dirty: prompt to save changes before closing
+        if (doc &amp;&amp; doc.isDirty &amp;&amp; !_forceClose &amp;&amp; (MainViewManager.isExclusiveToPane(doc.file, paneId) || _spawnedRequest)) {
+            &#x2F;&#x2F; Document is dirty: prompt to save changes before closing if only the document is exclusively
+            &#x2F;&#x2F; listed in the requested pane or this is part of a list close request
             var filename = FileUtils.getBaseName(doc.file.fullPath);
 
             Dialogs.showModalDialog(
@@ -2804,7 +2804,7 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
             silent = (commandData &amp;&amp; commandData.silent) || false,
             paneId = (commandData &amp;&amp; commandData.paneId) || MainViewManager.ACTIVE_PANE,
             result = new $.Deferred();
-        
+
         _doOpenWithOptionalPath(fileInfo.path, silent, paneId, commandData &amp;&amp; commandData.options)
             .done(function (file) {
                 HealthLogger.fileOpened(fileInfo.path);

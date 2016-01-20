@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -590,30 +587,30 @@
             scrollTop           = scrollElement.scrollTop,
             topShadowOffset     = Math.min(scrollTop - SCROLL_SHADOW_HEIGHT, 0),
             displayElementWidth = $displayElement.width();
-        
+
         if ($shadowTop) {
             $shadowTop.css(&quot;background-position&quot;, &quot;0px &quot; + topShadowOffset + &quot;px&quot;);
-            
+
             if (isPositionFixed) {
                 offsetTop = $displayElement.offset().top;
                 $shadowTop.css(&quot;top&quot;, offsetTop);
             }
-            
+
             if (isPositionFixed) {
                 $shadowTop.css(&quot;width&quot;, displayElementWidth);
             }
         }
-        
+
         if ($shadowBottom) {
             var clientHeight        = scrollElement.clientHeight,
                 outerHeight         = $displayElement.outerHeight(),
                 scrollHeight        = scrollElement.scrollHeight,
                 bottomShadowOffset  = SCROLL_SHADOW_HEIGHT; &#x2F;&#x2F; outside of shadow div viewport
-            
+
             if (scrollHeight &gt; clientHeight) {
                 bottomShadowOffset -= Math.min(SCROLL_SHADOW_HEIGHT, (scrollHeight - (scrollTop + clientHeight)));
             }
-    
+
             $shadowBottom.css(&quot;background-position&quot;, &quot;0px &quot; + bottomShadowOffset + &quot;px&quot;);
             $shadowBottom.css(&quot;top&quot;, offsetTop + outerHeight - SCROLL_SHADOW_HEIGHT);
             $shadowBottom.css(&quot;width&quot;, displayElementWidth);
@@ -627,7 +624,7 @@
             $findShadow = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;scroller-shadow &quot; + position);
             $displayElement.append($findShadow);
         }
-        
+
         if (!isPositionFixed) {
             &#x2F;&#x2F; position is fixed by default
             $findShadow.css(&quot;position&quot;, &quot;absolute&quot;);
@@ -676,31 +673,31 @@
 <pre class="code language-javascript"><code class="language-javascript">    function addScrollerShadow(displayElement, scrollElement, showBottom) {
         &#x2F;&#x2F; use fixed positioning when the display and scroll elements are the same
         var isPositionFixed = false;
-        
+
         if (!scrollElement) {
             scrollElement = displayElement;
             isPositionFixed = true;
         }
-        
+
         &#x2F;&#x2F; update shadows when the scrolling element is scrolled
         var $displayElement = $(displayElement),
             $scrollElement = $(scrollElement);
-        
+
         var $shadowTop = getOrCreateShadow($displayElement, &quot;top&quot;, isPositionFixed);
         var $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, &quot;bottom&quot;, isPositionFixed) : null;
-        
+
         var doUpdate = function () {
             _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed);
         };
-        
+
         &#x2F;&#x2F; remove any previously installed listeners on this node
         $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
         $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
-        
+
         &#x2F;&#x2F; add new ones
         $scrollElement.on(&quot;scroll.scroller-shadow&quot;, doUpdate);
         $displayElement.on(&quot;contentChanged.scroller-shadow&quot;, doUpdate);
-        
+
         &#x2F;&#x2F; update immediately
         doUpdate();
     }</code></pre></div><div class="member public">
@@ -806,11 +803,25 @@ for each file in list.</p>
 
             return viewArray[startIndex];
         }
-        
+
         &#x2F;&#x2F; If no doc open or view list empty, there is no &quot;next&quot; file
         return null;
     }
-    
+
+    function hideMainToolBar() {
+        $(&quot;#main-toolbar&quot;).addClass(&quot;forced-hidden&quot;);
+        $(&quot;.main-view .content&quot;).each(function (index, element) {
+            $(element).addClass(&quot;force-right-zero&quot;);
+        });
+    }
+
+    function showMainToolBar() {
+        $(&quot;#main-toolbar&quot;).removeClass(&quot;forced-hidden&quot;);
+        $(&quot;.main-view .content&quot;).each(function (index, element) {
+            $(element).removeClass(&quot;force-right-zero&quot;);
+        });
+    }
+
     &#x2F;&#x2F; handle all resize handlers in a single listener
     $(window).resize(_handleResize);
 
@@ -819,6 +830,8 @@ for each file in list.</p>
     exports.addScrollerShadow            = addScrollerShadow;
     exports.removeScrollerShadow         = removeScrollerShadow;
     exports.sidebarList                  = sidebarList;
+    exports.showMainToolBar              = showMainToolBar;
+    exports.hideMainToolBar              = hideMainToolBar;
     exports.scrollElementIntoView        = scrollElementIntoView;
     exports.getElementClipSize           = getElementClipSize;
     exports.getFileEntryDisplay          = getFileEntryDisplay;
@@ -923,14 +936,14 @@ for each file in list.</p>
         var name = entry.name,
             ext = LanguageManager.getCompoundFileExtension(name),
             i = name.lastIndexOf(&quot;.&quot; + ext);
-        
+
         if (i &gt; 0) {
             &#x2F;&#x2F; Escape all HTML-sensitive characters in filename.
             name = _.escape(name.substring(0, i)) + &quot;&lt;span class=&#39;extension&#39;&gt;&quot; + _.escape(name.substring(i)) + &quot;&lt;&#x2F;span&gt;&quot;;
         } else {
             name = _.escape(name);
         }
-        
+
         return name;
     }</code></pre></div><div class="member public">
 
@@ -968,14 +981,14 @@ for each file in list.</p>
         if (!scrollElement) {
             scrollElement = displayElement;
         }
-        
+
         var $displayElement = $(displayElement),
             $scrollElement = $(scrollElement);
-        
+
         &#x2F;&#x2F; remove scrollerShadow elements from DOM
         $displayElement.find(&quot;.scroller-shadow.top&quot;).remove();
         $displayElement.find(&quot;.scroller-shadow.bottom&quot;).remove();
-        
+
         &#x2F;&#x2F; remove event handlers
         $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
         $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
@@ -1040,7 +1053,7 @@ for each file in list.</p>
                 width:  $element.width()
             },
             clip = getElementClipSize($view, elementRect);
-        
+
         if (clip.bottom &gt; 0) {
             &#x2F;&#x2F; below viewport
             $view.scrollTop($view.scrollTop() + clip.bottom);
@@ -1101,24 +1114,24 @@ selectedClassName is assigned to a new list item</li>
             $selectionExtension,
             $sidebar = $(&quot;#sidebar&quot;),
             showExtension = true;
-        
+
         &#x2F;&#x2F; build selectionMarker and position absolute within the scroller
         $selectionMarker = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection&quot;);
         $scrollerElement.prepend($selectionMarker);
-        
+
         &#x2F;&#x2F; enable scrolling
         $scrollerElement.css(&quot;overflow&quot;, &quot;auto&quot;);
-        
+
         &#x2F;&#x2F; use relative postioning for clipping the selectionMarker within the scrollElement
         $scrollerElement.css(&quot;position&quot;, &quot;relative&quot;);
-        
+
         &#x2F;&#x2F; build selectionExtension and position fixed to the window
         $selectionExtension = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection-extension&quot;);
-        
+
         $scrollerElement.append($selectionExtension);
-        
+
         selectedClassName = &quot;.&quot; + (selectedClassName || &quot;selected&quot;);
-        
+
         var updateSelectionExtension = function () {
             var selectionMarkerHeight = $selectionMarker.height(),
                 selectionMarkerOffset = $selectionMarker.offset(),  &#x2F;&#x2F; offset relative to *document*
@@ -1127,14 +1140,14 @@ selectedClassName is assigned to a new list item</li>
                 scrollerTop = scrollerOffset.top,
                 scrollerBottom = scrollerTop + $scrollerElement.outerHeight(),
                 selectionExtensionTop = selectionMarkerOffset.top;
-            
+
             $selectionExtension.css(&quot;top&quot;, selectionExtensionTop);
             $selectionExtension.css(&quot;left&quot;, $sidebar.width() - $selectionExtension.outerWidth());
             toggleClass($selectionExtension, &quot;selectionExtension-visible&quot;, showExtension);
-                
+
             var selectionExtensionClipOffsetYBy = Math.floor((selectionMarkerHeight - selectionExtensionHeight) &#x2F; 2),
                 selectionExtensionBottom = selectionExtensionTop + selectionExtensionHeight + selectionExtensionClipOffsetYBy;
-            
+
             if (selectionExtensionTop &lt; scrollerTop || selectionExtensionBottom &gt; scrollerBottom) {
                 $selectionExtension.css(&quot;clip&quot;, &quot;rect(&quot; + Math.max(scrollerTop - selectionExtensionTop - selectionExtensionClipOffsetYBy, 0) + &quot;px, auto, &quot; +
                                            (selectionExtensionHeight - Math.max(selectionExtensionBottom - scrollerBottom, 0)) + &quot;px, auto)&quot;);
@@ -1142,48 +1155,48 @@ selectedClassName is assigned to a new list item</li>
                 $selectionExtension.css(&quot;clip&quot;, &quot;&quot;);
             }
         };
-        
+
         var hideSelectionMarker = function (event) {
             $selectionExtension.addClass(&quot;forced-hidden&quot;);
             $selectionMarker.addClass(&quot;forced-hidden&quot;);
         };
-        
+
         var updateSelectionMarker = function (event, reveal) {
             &#x2F;&#x2F; find the selected list item
             var $listItem = $listElement.find(selectedClassName).closest(&quot;li&quot;);
-            
+
             if (leafClassName) {
                 showExtension = $listItem.hasClass(leafClassName);
             }
 
             $selectionExtension.removeClass(&quot;forced-hidden&quot;);
             $selectionMarker.removeClass(&quot;forced-hidden&quot;);
-            
+
             &#x2F;&#x2F; always hide selection visuals first to force layout (issue #719)
             $selectionExtension.hide();
             $selectionMarker.hide();
-            
+
             if ($listItem.length === 1) {
                 &#x2F;&#x2F; list item position is relative to scroller
                 var selectionMarkerTop = $listItem.offset().top - $scrollerElement.offset().top + $scrollerElement.get(0).scrollTop;
-                    
+
                 &#x2F;&#x2F; force selection width to match scroller
                 $selectionMarker.width($scrollerElement.get(0).scrollWidth);
-                
+
                 &#x2F;&#x2F; move the selectionMarker position to align with the list item
                 $selectionMarker.css(&quot;top&quot;, selectionMarkerTop);
                 $selectionMarker.show();
-                
+
                 updateSelectionExtension();
                 $selectionExtension.show();
-            
+
                 &#x2F;&#x2F; fully scroll to the selectionMarker if it&#39;s not initially in the viewport
                 var scrollerElement = $scrollerElement.get(0),
                     scrollerHeight = scrollerElement.clientHeight,
                     selectionMarkerHeight = $selectionMarker.height(),
                     selectionMarkerBottom = selectionMarkerTop + selectionMarkerHeight,
                     currentScrollBottom = scrollerElement.scrollTop + scrollerHeight;
-                
+
                 &#x2F;&#x2F; update scrollTop to reveal the selected list item
                 if (reveal) {
                     if (selectionMarkerTop &gt;= currentScrollBottom) {
@@ -1194,15 +1207,15 @@ selectedClassName is assigned to a new list item</li>
                 }
             }
         };
-        
+
         $listElement.on(&quot;selectionChanged&quot;, updateSelectionMarker);
         $scrollerElement.on(&quot;scroll&quot;, updateSelectionExtension);
         $scrollerElement.on(&quot;selectionRedraw&quot;, updateSelectionExtension);
         $scrollerElement.on(&quot;selectionHide&quot;, hideSelectionMarker);
-        
+
         &#x2F;&#x2F; update immediately
         updateSelectionMarker();
-        
+
         &#x2F;&#x2F; update clipping when the window resizes
         _resizeHandlers.push(updateSelectionExtension);
     }</code></pre></div><div class="member public">

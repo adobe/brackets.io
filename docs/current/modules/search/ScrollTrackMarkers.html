@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -508,8 +505,8 @@ It is assumed that markers are always clear()ed when switching editors.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var $markedTickmark;
-    
-    
+
+
     function _getScrollbar(editor) {
         &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
         return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
@@ -625,9 +622,9 @@ It is assumed that markers are always clear()ed when switching editors.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _calcScaling() {
         var $sb = _getScrollbar(editor);
-        
+
         trackHt = $sb[0].offsetHeight;
-        
+
         if (trackHt &gt; 0) {
             &#x2F;&#x2F; Scrollbar visible: determine offset of track from top of scrollbar
             if (brackets.platform === &quot;win&quot;) {
@@ -638,7 +635,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
                 trackOffset = 2;  &#x2F;&#x2F; Custom scrollbar CSS has assymmetrical gap; this approximates it
             }
             trackHt -= trackOffset * 2;
-            
+
         } else {
             &#x2F;&#x2F; No scrollbar: use the height of the entire code content
             var codeContainer = $(editor.getRootElement()).find(&quot;&gt; .CodeMirror-scroll &gt; .CodeMirror-sizer &gt; div &gt; .CodeMirror-lines &gt; div&quot;)[0];
@@ -670,7 +667,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
         posArray.forEach(function (pos) {
             var top = Math.round(pos.line &#x2F; editor.lineCount() * trackHt) + trackOffset;
             top--;  &#x2F;&#x2F; subtract ~1&#x2F;2 the ht of a tickmark to center it on ideal pos
-            
+
             html += &quot;&lt;div class=&#39;tickmark&#39; style=&#39;top:&quot; + top + &quot;px&#39;&gt;&lt;&#x2F;div&gt;&quot;;
         });
         $(&quot;.tickmark-track&quot;, editor.getRootElement()).append($(html));
@@ -706,7 +703,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addTickmarks(curEditor, posArray) {
         console.assert(editor === curEditor);
-        
+
         marks = marks.concat(posArray);
         _renderMarks(posArray);
     }</code></pre></div><div class="member public">
@@ -809,22 +806,22 @@ tickmark track is not visible also.</p>
         if ((visible &amp;&amp; curEditor === editor) || (!visible &amp;&amp; !editor)) {
             return;
         }
-        
+
         if (visible) {
             console.assert(!editor);
             editor = curEditor;
-            
+
             &#x2F;&#x2F; Don&#39;t support inline editors yet - search inside them is pretty screwy anyway (#2110)
             if (editor.isTextSubset()) {
                 return;
             }
-            
+
             var $sb = _getScrollbar(editor);
             var $overlay = $(&quot;&lt;div class=&#39;tickmark-track&#39;&gt;&lt;&#x2F;div&gt;&quot;);
             $sb.parent().append($overlay);
-            
+
             _calcScaling();
-            
+
             &#x2F;&#x2F; Update tickmarks during editor resize (whenever resizing has paused&#x2F;stopped for &gt; 1&#x2F;3 sec)
             WorkspaceManager.on(&quot;workspaceUpdateLayout.ScrollTrackMarkers&quot;, _.debounce(function () {
                 if (marks.length) {
@@ -833,7 +830,7 @@ tickmark track is not visible also.</p>
                     _renderMarks(marks);
                 }
             }, 300));
-            
+
         } else {
             console.assert(editor === curEditor);
             $(&quot;.tickmark-track&quot;, curEditor.getRootElement()).remove();

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -511,7 +508,7 @@ and loads the SHA from that file in turn.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _loadSHA(path, callback) {
         var result = new $.Deferred();
-        
+
         if (brackets.inBrowser) {
             result.reject();
         } else {
@@ -524,7 +521,7 @@ and loads the SHA from that file in turn.</p>
                     var basePath    = path.substr(0, path.lastIndexOf(&quot;&#x2F;&quot;)),
                         refRelPath  = text.substr(5).trim(),
                         branch      = text.substr(16).trim();
-                    
+
                     _loadSHA(basePath + &quot;&#x2F;&quot; + refRelPath, callback).done(function (data) {
                         result.resolve({ branch: branch, sha: data.sha.trim() });
                     }).fail(function () {
@@ -563,17 +560,17 @@ and loads the SHA from that file in turn.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getBracketsSHA() {
         var result = new $.Deferred();
-        
+
         &#x2F;&#x2F; Look for Git metadata on disk to load the SHAs for &#39;brackets&#39;. Done on
         &#x2F;&#x2F; startup instead of on demand because the version that&#39;s currently running is what was
         &#x2F;&#x2F; loaded at startup (the src on disk may be updated to a different version later).
         &#x2F;&#x2F; Git metadata may be missing (e.g. in the release builds) - silently ignore if so.
         var bracketsSrc = FileUtils.getNativeBracketsDirectoryPath();
-        
+
         &#x2F;&#x2F; Assumes Brackets is a standalone repo and not a submodule (prior to brackets-shell,
         &#x2F;&#x2F; brackets-app was setup this way)
         var bracketsGitRoot = bracketsSrc.substr(0, bracketsSrc.lastIndexOf(&quot;&#x2F;&quot;)) + &quot;&#x2F;.git&#x2F;HEAD&quot;;
-        
+
         _loadSHA(bracketsGitRoot).done(function (data) {
             &#x2F;&#x2F; Found a repository
             result.resolve(data.branch || &quot;HEAD&quot;, data.sha || &quot;unknown&quot;, true);
@@ -581,12 +578,12 @@ and loads the SHA from that file in turn.</p>
             &#x2F;&#x2F; If package.json has repository data, Brackets is running from the installed &#x2F;www folder
             result.resolve(brackets.metadata.repository.branch, brackets.metadata.repository.SHA, false);
         });
-        
+
         return result.promise();
     }
 
     exports.getBracketsSHA      = getBracketsSHA;
-    
+
     &#x2F;&#x2F; FIXME (jasonsanjose): Since the move to brackets-shell, can&#39;t reliably get SHA for shell.
     &#x2F;&#x2F; exports._getBracketsShellSHA = getBracketsShellSHA;
 });</code></pre></div>

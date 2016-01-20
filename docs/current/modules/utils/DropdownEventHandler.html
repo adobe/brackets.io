@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -517,11 +514,11 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function _keydownHook(event) {
             var keyCode;
-    
+
             &#x2F;&#x2F; (page) up, (page) down, enter and tab key are handled by the list
             if (event.type === &quot;keydown&quot;) {
                 keyCode = event.keyCode;
-    
+
                 if (keyCode === KeyEvent.DOM_VK_TAB) {
                     self.close();
                 } else if (keyCode === KeyEvent.DOM_VK_UP) {
@@ -536,27 +533,27 @@
                 } else if (keyCode === KeyEvent.DOM_VK_PAGE_DOWN) {
                     &#x2F;&#x2F; Move down roughly one &#39;page&#39;, stopping at edges (not wrapping) (if nothing selected, selects the item one page down from the top)
                     self._tryToSelect((self._selectedIndex || 0) + self._itemsPerPage(), +1, true);
-                    
+
                 } else if (keyCode === KeyEvent.DOM_VK_HOME) {
                     self._tryToSelect(0, +1);
                 } else if (keyCode === KeyEvent.DOM_VK_END) {
                     self._tryToSelect(self.$items.length - 1, -1);
-                    
+
                 } else if (self._selectedIndex !== -1 &amp;&amp;
                         (keyCode === KeyEvent.DOM_VK_RETURN)) {
-    
+
                     &#x2F;&#x2F; Trigger a click handler to commmit the selected item
                     self._selectionHandler();
                 } else {
                     &#x2F;&#x2F; Let the event bubble.
                     return false;
                 }
-                
+
                 event.stopImmediatePropagation();
                 event.preventDefault();
                 return true;
             }
-            
+
             &#x2F;&#x2F; If we didn&#39;t handle it, let other global keydown hooks handle it.
             return false;
         }</code></pre></div><div class="member">
@@ -583,9 +580,9 @@
             KeyBindingManager.removeGlobalKeydownHook(_keydownHook);
             self._cleanup();
         }
-        
+
         KeyBindingManager.addGlobalKeydownHook(_keydownHook);
-        
+
         if (this.$list) {
             this._registerMouseEvents();
             PopUpManager.addPopUp(this.$list, closeCallback, true);
@@ -635,7 +632,7 @@
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function DropdownEventHandler($list, selectionCallback, closeCallback) {
-        
+
         this.$list = $list;
         this.$items = $list.find(&quot;li&quot;);
         this.selectionCallback = selectionCallback;
@@ -711,7 +708,7 @@
         if ($link.hasClass(&quot;disabled&quot;)) {
             return;
         }
-        
+
         this.selectionCallback($link);
         PopUpManager.removePopUp(this.$list);
     };</code></pre></div><div class="member private">
@@ -772,7 +769,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._registerMouseEvents = function () {
         var self = this;
-        
+
         this.$list
             .on(&quot;click.dropdownEventHandler&quot;, &quot;a&quot;, function () {
                 self._clickHandler($(this));
@@ -783,7 +780,7 @@
                     self.scrolling = false;
                     return;
                 }
-                
+
                 var $link = $(e.currentTarget),
                     $item = $link.closest(&quot;li&quot;),
                     viewOffset = self.$list.offset(),
@@ -822,7 +819,7 @@
         if (this._selectedIndex === -1) {
             return;
         }
-        
+
         var $link = this.$items.eq(this._selectedIndex).find(&quot;a&quot;);
         this._clickHandler($link);
     };</code></pre></div><div class="member private">
@@ -852,10 +849,10 @@ selection if index &lt; 0.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype._setSelectedIndex = function (index, scrollIntoView) {
-        
+
         &#x2F;&#x2F; Range check
         index = Math.max(-1, Math.min(index, this.$items.length - 1));
-        
+
         &#x2F;&#x2F; Clear old highlight
         if (this._selectedIndex !== -1) {
             this.$items.eq(this._selectedIndex).find(&quot;a&quot;).removeClass(&quot;selected&quot;);
@@ -1011,10 +1008,10 @@ index by &#39;direction&#39; each time (wrapping around if needed).</p>
 <pre class="code language-javascript"><code class="language-javascript">    DropdownEventHandler.prototype.reRegisterMouseHandlers = function ($list) {
         if (this.$list) {
             this.$list.off(&quot;.dropdownEventHandler&quot;);
-            
+
             this.$list = $list;
             this.$items = $list.find(&quot;li&quot;);
-            
+
             this._registerMouseEvents();
         }
     };

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -754,10 +751,10 @@ The status codes are:</p>
         if (!_server) {
             return undefined;
         }
-        
+
         return _server.get(path);
     }
-    
+
     function getLiveDocForEditor(editor) {
         if (!editor) {
             return null;
@@ -828,11 +825,11 @@ The status codes are:</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _closeDocument(liveDocument) {
         _doClearErrors(liveDocument);
         liveDocument.close();
-        
+
         if (liveDocument.editor) {
             liveDocument.editor.off(&quot;.livedev&quot;);
         }
-        
+
         liveDocument.off(&quot;.livedev&quot;);
     }</code></pre></div><div class="member private">
 
@@ -858,12 +855,12 @@ The status codes are:</p>
             _closeDocument(_liveDocument);
             _liveDocument = undefined;
         }
-        
+
         Object.keys(_relatedDocuments).forEach(function (url) {
             _closeDocument(_relatedDocuments[url]);
             delete _relatedDocuments[url];
         });
-        
+
         &#x2F;&#x2F; Clear all documents from request filtering
         if (_server) {
             _server.clear();
@@ -894,11 +891,11 @@ if the related file has been deleted on disk).</p>
         if (_relatedDocuments[liveDoc.doc.url]) {
             delete _relatedDocuments[liveDoc.doc.url];
         }
-            
+
         if (_server) {
             _server.remove(liveDoc);
         }
-        
+
         _closeDocument(liveDoc);
     }</code></pre></div><div class="member private">
 
@@ -1000,22 +997,22 @@ if the related file has been deleted on disk).</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _doClearErrors(liveDocument) {
         var lineHandle;
-        
+
         if (!liveDocument.editor ||
                 !liveDocument._errorLineHandles ||
                 !liveDocument._errorLineHandles.length) {
             return;
         }
-        
+
         liveDocument.editor._codeMirror.operation(function () {
             while (true) {
                 &#x2F;&#x2F; Iterate over all lines that were previously marked with an error
                 lineHandle = liveDocument._errorLineHandles.pop();
-                
+
                 if (!lineHandle) {
                     break;
                 }
-                
+
                 liveDocument.editor._codeMirror.removeLineClass(lineHandle, &quot;wrap&quot;, SYNC_ERROR_CLASS);
             }
         });
@@ -1052,7 +1049,7 @@ if the related file has been deleted on disk).</p>
             connected   = Inspector.connected();
 
         EditorManager.off(&quot;activeEditorChange&quot;, onActiveEditorChange);
-        
+
         Inspector.Page.off(&quot;.livedev&quot;);
         Inspector.off(&quot;.livedev&quot;);
 
@@ -1062,10 +1059,10 @@ if the related file has been deleted on disk).</p>
         } else {
             unloadAgents();
         }
-        
-        &#x2F;&#x2F; Close live documents 
+
+        &#x2F;&#x2F; Close live documents
         _closeDocuments();
-        
+
         if (_server) {
             &#x2F;&#x2F; Stop listening for requests when disconnected
             _server.stop();
@@ -1220,19 +1217,19 @@ _adds extension, url and root to the document</p>
                 containingFolder,
                 indexFileFound = false,
                 stillInProjectTree = true;
-            
+
             if (refPath) {
                 containingFolder = FileUtils.getDirectoryPath(refPath);
             } else {
                 containingFolder = projectRoot;
             }
-            
+
             var filteredFiltered = allFiles.filter(function (item) {
                 var parent = FileUtils.getParentPath(item.fullPath);
-                
+
                 return (containingFolder.indexOf(parent) === 0);
             });
-            
+
             var filterIndexFile = function (fileInfo) {
                 if (fileInfo.fullPath.indexOf(containingFolder) === 0) {
                     if (FileUtils.getFilenameWithoutExtension(fileInfo.name) === &quot;index&quot;) {
@@ -1270,7 +1267,7 @@ _adds extension, url and root to the document</p>
                 DocumentManager.getDocumentForPath(filteredFiltered[i].fullPath).then(result.resolve, result.resolve);
                 return;
             }
-            
+
             result.resolve(null);
         });
 
@@ -1317,7 +1314,7 @@ _adds extension, url and root to the document</p>
             status = (liveDocument.errors.length) ? STATUS_SYNC_ERROR : STATUS_ACTIVE;
 
         _setStatus(status);
-        
+
         if (!liveDocument.editor) {
             return;
         }
@@ -1326,13 +1323,13 @@ _adds extension, url and root to the document</p>
         liveDocument.editor._codeMirror.operation(function () {
             &#x2F;&#x2F; Remove existing errors before marking new ones
             _doClearErrors(liveDocument);
-            
+
             liveDocument._errorLineHandles = liveDocument._errorLineHandles || [];
-    
+
             liveDocument.errors.forEach(function (error) {
                 startLine = error.startPos.line;
                 endLine = error.endPos.line;
-                
+
                 for (i = startLine; i &lt; endLine + 1; i++) {
                     lineHandle = liveDocument.editor._codeMirror.addLineClass(i, &quot;wrap&quot;, SYNC_ERROR_CLASS);
                     liveDocument._errorLineHandles.push(lineHandle);
@@ -1397,7 +1394,7 @@ _adds extension, url and root to the document</p>
             &#x2F;&#x2F; load only enabled agents
             enabledAgents = _enabledAgentNames;
         }
-        
+
         return Object.keys(enabledAgents);
     }</code></pre></div><div class="member private">
 
@@ -1454,7 +1451,7 @@ _adds extension, url and root to the document</p>
 
         &#x2F;&#x2F; When the Inspector WebSocket disconnects unexpectedely
         Inspector.on(&quot;disconnect.livedev&quot;, _onDisconnect);
-		
+
         _waitForInterstitialPageLoad()
             .fail(function () {
                 close();
@@ -1485,11 +1482,11 @@ _adds extension, url and root to the document</p>
         );
         _openDeferred.reject();
     }
-    
+
     function _openInterstitialPage() {
         var browserStarted  = false,
             retryCount      = 0;
-        
+
         &#x2F;&#x2F; Open the live browser if the connection fails, retry 3 times
         Inspector.connectToURL(launcherUrl).fail(function onConnectFail(err) {
             if (err === &quot;CANCEL&quot;) {
@@ -1570,7 +1567,7 @@ _adds extension, url and root to the document</p>
                         } else {
                             message = StringUtils.format(Strings.ERROR_LAUNCHING_BROWSER, err);
                         }
-                        
+
                         Dialogs.showModalDialog(
                             DefaultDialogs.DIALOG_ID_ERROR,
                             Strings.ERROR_LAUNCHING_BROWSER_TITLE,
@@ -1580,7 +1577,7 @@ _adds extension, url and root to the document</p>
                         _openDeferred.reject(&quot;OPEN_LIVE_BROWSER&quot;);
                     });
             }
-                
+
             if (exports.status !== STATUS_ERROR) {
                 window.setTimeout(function retryConnect() {
                     Inspector.connectToURL(launcherUrl).fail(onConnectFail);
@@ -1601,10 +1598,10 @@ _adds extension, url and root to the document</p>
 
         &#x2F;&#x2F; Install a one-time event handler when connected to the launcher page
         Inspector.one(&quot;connect&quot;, _onConnect);
-        
+
         &#x2F;&#x2F; open browser to the interstitial page to prepare for loading agents
         _openInterstitialPage();
-        
+
         &#x2F;&#x2F; Once all agents loaded (see _onInterstitialPageLoad()), begin Live Highlighting for preprocessor documents
         _openDeferred.done(function () {
             &#x2F;&#x2F; Setup activeEditorChange event listener so that we can track cursor positions in
@@ -1617,11 +1614,11 @@ _adds extension, url and root to the document</p>
             onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
         });
     }
-    
+
     function _prepareServer(doc) {
         var deferred = new $.Deferred(),
             showBaseUrlPrompt = false;
-        
+
         _server = LiveDevServerManager.getServer(doc.file.fullPath);
 
         &#x2F;&#x2F; Optionally prompt for a base URL if no server was found but the
@@ -1656,7 +1653,7 @@ _adds extension, url and root to the document</p>
             &#x2F;&#x2F; No server found
             deferred.reject();
         }
-        
+
         return deferred.promise();
     }
 
@@ -1667,11 +1664,11 @@ _adds extension, url and root to the document</p>
             root: ProjectManager.getProjectRoot().fullPath
         };
     }
-    
+
     function _createUserServer() {
         return new UserServer(getCurrentProjectServerConfig());
     }
-    
+
     function _createFileServer() {
         return new FileServer(getCurrentProjectServerConfig());
     }</code></pre></div><div class="member private">
@@ -1769,19 +1766,19 @@ _adds extension, url and root to the document</p>
         if (!Inspector.connected() || !_server) {
             return;
         }
-        
+
         var absolutePath            = doc.file.fullPath,
             liveDocument            = absolutePath &amp;&amp; _server.get(absolutePath),
             liveEditingEnabled      = liveDocument &amp;&amp; liveDocument.isLiveEditingEnabled  &amp;&amp; liveDocument.isLiveEditingEnabled();
-        
+
         &#x2F;&#x2F; Skip reload if the saved document has live editing enabled
         if (liveEditingEnabled) {
             return;
         }
-        
+
         var documentUrl     = _server.pathToUrl(absolutePath),
             wasRequested    = agents.network &amp;&amp; agents.network.wasURLRequested(documentUrl);
-        
+
         if (wasRequested) {
             reload();
         }
@@ -1807,7 +1804,7 @@ _adds extension, url and root to the document</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onError(event, error, msgData) {
         var message;
-        
+
         &#x2F;&#x2F; Sometimes error.message is undefined
         if (!error.message) {
             console.warn(&quot;Expected a non-empty string in error.message, got this instead:&quot;, error.message);
@@ -1830,7 +1827,7 @@ _adds extension, url and root to the document</p>
         &#x2F;&#x2F; Show the message, but include the error object for further information (e.g. error code)
         console.error(message, error, msgData);
     }
-    
+
     function _styleSheetAdded(event, url) {
         var path = _server &amp;&amp; _server.urlToPath(url),
             exists = !!_relatedDocuments[url];
@@ -1883,17 +1880,17 @@ _adds extension, url and root to the document</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onFileChanged() {
         var doc = _getCurrentDocument();
-        
+
         if (!doc || !Inspector.connected()) {
             return;
         }
-        
+
         &#x2F;&#x2F; close the current session and begin a new session if the current
         &#x2F;&#x2F; document changes to an HTML document that was not loaded yet
         var docUrl = _server &amp;&amp; _server.pathToUrl(doc.file.fullPath),
             wasRequested = agents.network &amp;&amp; agents.network.wasURLRequested(docUrl),
             isViewable = exports.config.experimental || (_server &amp;&amp; _server.canServe(doc.file.fullPath));
-        
+
         if (!wasRequested &amp;&amp; isViewable) {
             &#x2F;&#x2F; Update status
             _setStatus(STATUS_CONNECTING);
@@ -1944,7 +1941,7 @@ _adds extension, url and root to the document</p>
         var enablePromise = Inspector.Page.enable().then(function () {
             return Inspector.DOM.enable().then(_enableAgents, _enableAgents);
         });
-        
+
         enablePromise.done(function () {
             &#x2F;&#x2F; Some agents (e.g. DOMAgent and RemoteAgent) require us to
             &#x2F;&#x2F; navigate to the page first before loading can complete.
@@ -2011,9 +2008,9 @@ _adds extension, url and root to the document</p>
         if (status === exports.status) {
             return;
         }
-        
+
         exports.status = status;
-        
+
         var reason = status === STATUS_INACTIVE ? closeReason : null;
         exports.trigger(&quot;statusChange&quot;, status, reason);
     }</code></pre></div><div class="member private">
@@ -2066,7 +2063,7 @@ the status accordingly.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        function cleanup() {
-            &#x2F;&#x2F; Need to do this in order to trigger the corresponding CloseLiveBrowser cleanups required on 
+            &#x2F;&#x2F; Need to do this in order to trigger the corresponding CloseLiveBrowser cleanups required on
             &#x2F;&#x2F; the native Mac side
             var closeDeferred = (brackets.platform === &quot;mac&quot;) ? NativeApp.closeLiveBrowser() : $.Deferred().resolve();
             closeDeferred.done(function () {
@@ -2085,7 +2082,7 @@ the status accordingly.</p>
                 _closeDeferred.resolve();
             });
         }
-        
+
         if (_isPromisePending(_openDeferred)) {
             &#x2F;&#x2F; Reject calls to open if requests are still pending
             _openDeferred.reject();
@@ -2097,7 +2094,7 @@ the status accordingly.</p>
         } else {
             _doInspectorDisconnect(doCloseWindow).always(cleanup);
         }
-        
+
         return promise;
     }
 
@@ -2253,14 +2250,14 @@ the status accordingly.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init(theConfig) {
         exports.config = theConfig;
-        
+
         Inspector.on(&quot;error&quot;, _onError);
         Inspector.Inspector.on(&quot;detached&quot;, _onDetached);
 
         &#x2F;&#x2F; Only listen for styleSheetAdded
         &#x2F;&#x2F; We may get interim added&#x2F;removed events when pushing incremental updates
         CSSAgent.on(&quot;styleSheetAdded.livedev&quot;, _styleSheetAdded);
-        
+
         MainViewManager
             .on(&quot;currentFileChange&quot;, _onFileChanged);
         DocumentManager
@@ -2281,9 +2278,9 @@ the status accordingly.</p>
         return _server &amp;&amp; _server.getBaseUrl();
     }
 
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; For unit testing
     exports.launcherUrl               = launcherUrl;
     exports._getServer                = _getServer;
@@ -2329,10 +2326,10 @@ the status accordingly.</p>
         if (_loadAgentsPromise) {
             return _loadAgentsPromise;
         }
-        
+
         var result = new $.Deferred(),
             allAgentsPromise;
-        
+
         _loadAgentsPromise = result.promise();
 
         _setStatus(STATUS_LOADING_AGENTS);
@@ -2360,7 +2357,7 @@ the status accordingly.</p>
                 if (_docIsOutOfSync(doc)) {
                     status = STATUS_OUT_OF_SYNC;
                 }
-                
+
                 _setStatus(status);
                 result.resolve();
             } else {
@@ -2369,7 +2366,7 @@ the status accordingly.</p>
         });
 
         allAgentsPromise.fail(result.reject);
-        
+
         _loadAgentsPromise
             .fail(function () {
                 &#x2F;&#x2F; show error loading live dev dialog
@@ -2398,10 +2395,10 @@ the status accordingly.</p>
     </h4>
 
     
-    <div class="description"><p>If the current editor is for a CSS preprocessor file, then add it to the style sheet 
+    <div class="description"><p>If the current editor is for a CSS preprocessor file, then add it to the style sheet
 so that we can track cursor positions in the editor to show live preview highlighting.
-For normal CSS we only do highlighting from files we know for sure are referenced by the 
-current live preview document, but for preprocessors we just assume that any preprocessor 
+For normal CSS we only do highlighting from files we know for sure are referenced by the
+current live preview document, but for preprocessors we just assume that any preprocessor
 file you edit is probably related to the live preview.</p>
 </div>
     
@@ -2429,7 +2426,7 @@ file you edit is probably related to the live preview.</p>
         if (previous &amp;&amp; previous.document &amp;&amp;
                 CSSUtils.isCSSPreprocessorFile(previous.document.file.fullPath)) {
             var prevDocUrl = _server &amp;&amp; _server.pathToUrl(previous.document.file.fullPath);
-            
+
             if (_relatedDocuments &amp;&amp; _relatedDocuments[prevDocUrl]) {
                 _closeRelatedDocument(_relatedDocuments[prevDocUrl]);
             }
@@ -2487,11 +2484,11 @@ file you edit is probably related to the live preview.</p>
                 });
             }
         }
-        
+
         &#x2F;&#x2F; Register user defined server provider and keep handlers for further clean-up
         _regServers.push(LiveDevServerManager.registerServer({ create: _createUserServer }, 99));
         _regServers.push(LiveDevServerManager.registerServer({ create: _createFileServer }, 0));
-        
+
         &#x2F;&#x2F; TODO: need to run _onFileChanged() after load if doc != currentDocument here? Maybe not, since activeEditorChange
         &#x2F;&#x2F; doesn&#39;t trigger it, while inline editors can still cause edits in doc other than currentDoc...
         _getInitialDocFromCurrent().done(function (doc) {
@@ -2543,7 +2540,7 @@ finished loading; if not, check again until timing out.</p>
             if (keepPolling &amp;&amp; Inspector.connected()) {
                 Inspector.Runtime.evaluate(&quot;window.isBracketsLiveDevelopmentInterstitialPageLoaded&quot;, function (response) {
                     var result = response.result;
-                    
+
                     if (result.type === &quot;boolean&quot; &amp;&amp; result.value) {
                         window.clearTimeout(timer);
                         deferred.resolve();
@@ -2555,7 +2552,7 @@ finished loading; if not, check again until timing out.</p>
                 deferred.reject();
             }
         }
-        
+
         pollInterstitialPage();
         return deferred.promise();
     }</code></pre></div><div class="member public">
@@ -2588,7 +2585,7 @@ finished loading; if not, check again until timing out.</p>
         }
 
         unloadAgents();
-        
+
         &#x2F;&#x2F; Clear any existing related documents before we reload the agents.
         &#x2F;&#x2F; We need to recreate them for the reloaded document due to some
         &#x2F;&#x2F; desirable side-effects (see #7606). Eventually, we should simplify
@@ -2674,7 +2671,7 @@ finished loading; if not, check again until timing out.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function showHighlight() {
         var doc = getLiveDocForEditor(EditorManager.getActiveEditor());
-        
+
         if (doc &amp;&amp; doc.updateHighlight) {
             doc.updateHighlight();
         }

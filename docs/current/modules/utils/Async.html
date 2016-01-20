@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -522,10 +519,10 @@
     </h4>
 
     
-    <div class="description"><p>Chains a series of synchronous and asynchronous (jQuery promise-returning) functions 
-together, using the result of each successive function as the argument(s) to the next. 
-A promise is returned that resolves with the result of the final call if all calls 
-resolve or return normally. Otherwise, if any of the functions reject or throw, the 
+    <div class="description"><p>Chains a series of synchronous and asynchronous (jQuery promise-returning) functions
+together, using the result of each successive function as the argument(s) to the next.
+A promise is returned that resolves with the result of the final call if all calls
+resolve or return normally. Otherwise, if any of the functions reject or throw, the
 computation is halted immediately and the promise is rejected with this halting error.</p>
 </div>
     
@@ -550,7 +547,7 @@ computation is halted immediately and the promise is rejected with this halting 
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function chain(functions, args) {
         var deferred = $.Deferred();
-        
+
         function chainHelper(index, args) {
             if (functions.length === index) {
                 deferred.resolveWith(null, args);
@@ -574,9 +571,9 @@ computation is halted immediately and the promise is rejected with this halting 
                 }
             }
         }
-        
+
         chainHelper(0, args || []);
-        
+
         return deferred.promise();
     }</code></pre></div><div class="member public">
 
@@ -653,18 +650,18 @@ visible dialog: because they run in parallel, you could show multiple dialogs at
 <pre class="code language-javascript"><code class="language-javascript">    function doInParallel(items, beginProcessItem, failFast) {
         var promises = [];
         var masterDeferred = new $.Deferred();
-        
+
         if (items.length === 0) {
             masterDeferred.resolve();
-            
+
         } else {
             var numCompleted = 0;
             var hasFailed = false;
-            
+
             items.forEach(function (item, i) {
                 var itemPromise = beginProcessItem(item, i);
                 promises.push(itemPromise);
-                
+
                 itemPromise.fail(function () {
                     if (failFast) {
                         masterDeferred.reject();
@@ -683,9 +680,9 @@ visible dialog: because they run in parallel, you could show multiple dialogs at
                     }
                 });
             });
-            
+
         }
-        
+
         return masterDeferred.promise();
     }</code></pre></div><div class="member public">
 
@@ -732,9 +729,9 @@ argument: an array objects, one per failed task. Each error object contains:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doInParallel_aggregateErrors(items, beginProcessItem) {
         var errors = [];
-        
+
         var masterDeferred = new $.Deferred();
-        
+
         var parallelResult = doInParallel(
             items,
             function (item, i) {
@@ -746,7 +743,7 @@ argument: an array objects, one per failed task. Each error object contains:</p>
             },
             false
         );
-        
+
         parallelResult
             .done(function () {
                 masterDeferred.resolve();
@@ -754,7 +751,7 @@ argument: an array objects, one per failed task. Each error object contains:</p>
             .fail(function () {
                 masterDeferred.reject(errors);
             });
-        
+
         return masterDeferred.promise();
     }</code></pre></div><div class="member public">
 
@@ -828,7 +825,7 @@ Promise before beginProcessItem() returns it.</p>
 
         var masterDeferred = new $.Deferred(),
             hasFailed = false;
-        
+
         function doItem(i) {
             if (i &gt;= items.length) {
                 if (hasFailed) {
@@ -838,9 +835,9 @@ Promise before beginProcessItem() returns it.</p>
                 }
                 return;
             }
-            
+
             var itemPromise = beginProcessItem(items[i], i);
-            
+
             itemPromise.done(function () {
                 doItem(i + 1);
             });
@@ -854,9 +851,9 @@ Promise before beginProcessItem() returns it.</p>
                 }
             });
         }
-        
+
         doItem(0);
-        
+
         return masterDeferred.promise();
     }</code></pre></div><div class="member public">
 
@@ -907,18 +904,18 @@ Processing yields by idleTime between time-slices.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doSequentiallyInBackground(items, fnProcessItem, maxBlockingTime, idleTime) {
-        
+
         maxBlockingTime = maxBlockingTime || 15;
         idleTime = idleTime || 30;
-        
+
         var sliceStartTime = (new Date()).getTime();
-        
+
         return doSequentially(items, function (item, i) {
             var result = new $.Deferred();
-            
+
             &#x2F;&#x2F; process the next item
             fnProcessItem(item, i);
-            
+
             &#x2F;&#x2F; if we&#39;ve exhausted our maxBlockingTime
             if ((new Date()).getTime() - sliceStartTime &gt;= maxBlockingTime) {
                 &#x2F;&#x2F;yield
@@ -1114,19 +1111,19 @@ Async.withTimeout.</p>
             results = [],
             count = 0,
             sawRejects = false;
-        
+
         if (!promises || promises.length === 0) {
             masterDeferred.resolve();
             return masterDeferred.promise();
         }
-        
+
         &#x2F;&#x2F; set defaults if needed
         failOnReject = (failOnReject === undefined) ? false : true;
-        
+
         if (timeout !== undefined) {
             withTimeout(masterDeferred, timeout);
         }
-        
+
         promises.forEach(function (promise) {
             promise
                 .fail(function (err) {
@@ -1146,7 +1143,7 @@ Async.withTimeout.</p>
                     }
                 });
         });
-        
+
         return masterDeferred.promise();
     }</code></pre></div><div class="member public">
 
@@ -1194,7 +1191,7 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function withTimeout(promise, timeout, resolveTimeout) {
         var wrapper = new $.Deferred();
-        
+
         var timer = window.setTimeout(function () {
             if (resolveTimeout) {
                 wrapper.resolve();
@@ -1205,11 +1202,11 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p
         promise.always(function () {
             window.clearTimeout(timer);
         });
-        
+
         &#x2F;&#x2F; If the wrapper was already rejected due to timeout, the Promise&#39;s calls to resolve&#x2F;reject
         &#x2F;&#x2F; won&#39;t do anything
         promise.then(wrapper.resolve, wrapper.reject);
-        
+
         return wrapper.promise();
     }</code></pre></div>
 </section>
@@ -1229,8 +1226,8 @@ fail() (with Async.ERROR_TIMEOUT) is called based on value of resolveTimeout.</p
             </h4>
             
             <em><p>Creates a queue of async operations that will be executed sequentially. Operations can be added to the
-queue at any time. If the queue is empty and nothing is currently executing when an operation is added, 
-it will execute immediately. Otherwise, it will execute when the last operation currently in the queue 
+queue at any time. If the queue is empty and nothing is currently executing when an operation is added,
+it will execute immediately. Otherwise, it will execute when the last operation currently in the queue
 has finished.</p>
 </em>
             
@@ -1331,7 +1328,7 @@ has finished.</p>
             });
         }
     };
-    
+
     &#x2F;&#x2F; Define public API
     exports.doInParallel        = doInParallel;
     exports.doSequentially      = doSequentially;

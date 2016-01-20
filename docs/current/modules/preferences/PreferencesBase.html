@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -467,26 +464,26 @@
     <div><p>Infrastructure for the preferences system.</p>
 <p>At the top, the level at which most people will interact, is the <code>PreferencesSystem</code> object.
 The most common operation is <code>get(id)</code>, which simply retrieves the value of a given preference.</p>
-<p>The PreferencesSystem has a collection of Scopes, which it traverses in a specified order. 
-Each Scope holds one level of settings. </p>
+<p>The PreferencesSystem has a collection of Scopes, which it traverses in a specified order.
+Each Scope holds one level of settings.</p>
 <p>PreferencesManager.js sets up a singleton PreferencesSystem that has the following Scopes:</p>
 <ul>
 <li>default (the default values for any settings that are explicitly registered)</li>
-<li>user (the user&#39;s customized settings – the equivalent of Brackets&#39; old 
+<li>user (the user&#39;s customized settings – the equivalent of Brackets&#39; old
 localStorage-based system. This is the settings file that lives in AppData)</li>
 <li>Additional scopes for each .brackets.json file going upward in the file tree from the
 current file</li>
 </ul>
-<p>For example, if spaceUnits has a value set in a .brackets.json file near the open file, 
-then a call to get(&quot;spaceUnits&quot;) would return the value from that file. File values come 
-first, user values next, default values last. If the setting is not known 
+<p>For example, if spaceUnits has a value set in a .brackets.json file near the open file,
+then a call to get(&quot;spaceUnits&quot;) would return the value from that file. File values come
+first, user values next, default values last. If the setting is not known
 at all, undefined is returned.</p>
-<p>Each Scope has an associated Storage object that knows how to load and 
-save the preferences value for that Scope. There are two implementations: 
+<p>Each Scope has an associated Storage object that knows how to load and
+save the preferences value for that Scope. There are two implementations:
 MemoryStorage and FileStorage.</p>
-<p>The final concept used is that of Layers, which can be added to Scopes. Generally, a Layer looks 
-for a collection of preferences that are nested in some fashion in the Scope&#39;s 
-data. Under certain circumstances (decided upon by the Layer object), 
+<p>The final concept used is that of Layers, which can be added to Scopes. Generally, a Layer looks
+for a collection of preferences that are nested in some fashion in the Scope&#39;s
+data. Under certain circumstances (decided upon by the Layer object),
 those nested preferences will take precedence over the main preferences in the Scope.</p>
 </div>
     
@@ -620,7 +617,7 @@ This is suitable for single session data or testing.</p>
             <pre class="code language-javascript"><code class="language-javascript">    function MemoryStorage(data) {
         this.data = data || {};
     }
-    
+
     MemoryStorage.prototype = {</code></pre>
         </div>
         
@@ -660,7 +657,7 @@ This is suitable for single session data or testing.</p>
 <pre class="code language-javascript"><code class="language-javascript">        fileChanged: function (filePath) {
         }
     };
-    
+
     &#x2F;&#x2F; MemoryStorage never actually dispatches change events, but Storage interface requires implementing on()&#x2F;off()
     EventDispatcher.makeEventDispatcher(MemoryStorage.prototype);</code></pre></div><div class="member">
 
@@ -752,7 +749,7 @@ the <code>newData</code> object reference without cloning it.</p>
         this.name = &quot;ParsingError&quot;;
         this.message = message || &quot;&quot;;
     }
-    
+
     ParsingError.prototype = new Error();</code></pre>
         </div>
         
@@ -789,7 +786,7 @@ the <code>newData</code> object reference without cloning it.</p>
         this.recreateIfInvalid = recreateIfInvalid;
         this._lineEndings = FileUtils.getPlatformLineEndings();
     }
-    
+
     FileStorage.prototype = {</code></pre>
         </div>
         
@@ -832,7 +829,7 @@ the <code>newData</code> object reference without cloning it.</p>
             }
         }
     };
-    
+
     EventDispatcher.makeEventDispatcher(FileStorage.prototype);</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -863,7 +860,7 @@ readable or parseable.</p>
             var createIfMissing = this.createIfMissing;
             var recreateIfInvalid = this.recreateIfInvalid;
             var self = this;
-            
+
             if (path) {
                 var prefFile = FileSystem.getFileForPath(path);
                 prefFile.read({}, function (err, text) {
@@ -885,9 +882,9 @@ readable or parseable.</p>
                         }
                         return;
                     }
-                    
+
                     self._lineEndings = FileUtils.sniffLineEndings(text);
-                    
+
                     &#x2F;&#x2F; If the file is empty, turn it into an empty object
                     if (&#x2F;^\s*$&#x2F;.test(text)) {
                         result.resolve({});
@@ -914,7 +911,7 @@ readable or parseable.</p>
             } else {
                 result.resolve({});
             }
-            
+
             return result.promise();
         },</code></pre></div><div class="member">
 
@@ -948,11 +945,11 @@ readable or parseable.</p>
             var result = new $.Deferred();
             var path = this.path;
             var prefFile = FileSystem.getFileForPath(path);
-            
+
             if (path) {
                 try {
                     var text = JSON.stringify(newData, null, 4);
-                    
+
                     &#x2F;&#x2F; maintain the original line endings
                     text = FileUtils.translateLineEndings(text, this._lineEndings);
                     prefFile.write(text, {}, function (err) {
@@ -1034,7 +1031,7 @@ that are stored within a single preferences file.</p>
         this._layerMap = {};
         this._exclusions = [];
     }
-    
+
     _.extend(Scope.prototype, {</code></pre>
         </div>
         
@@ -1163,7 +1160,7 @@ of context.</p>
 <pre class="code language-javascript"><code class="language-javascript">        contextChanged: function (oldContext, newContext) {
             var changes = [],
                 data    = this.data;
-            
+
             _.each(this._layers, function (layer) {
                 if (data[layer.key] &amp;&amp; oldContext[layer.key] !== newContext[layer.key]) {
                     var changesInLayer = layer.contextChanged(data[layer.key],
@@ -1177,10 +1174,10 @@ of context.</p>
             return _.union.apply(null, changes);
         }
     });
-    
+
     EventDispatcher.makeEventDispatcher(Scope.prototype);
-    
-    
+
+
     &#x2F;&#x2F; Utility functions for the PathLayer</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1251,9 +1248,9 @@ layers will often exclude values from consideration.</p>
                 layer,
                 data = this.data,
                 result;
-            
+
             context = context || {};
-            
+
             for (layerCounter = 0; layerCounter &lt; layers.length; layerCounter++) {
                 layer = layers[layerCounter];
                 result = layer.get(data[layer.key], id, context);
@@ -1261,7 +1258,7 @@ layers will often exclude values from consideration.</p>
                     return result;
                 }
             }
-            
+
             if (this._exclusions.indexOf(id) === -1) {
                 return data[id];
             }
@@ -1298,18 +1295,18 @@ all keys in each layer will be returned.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        getKeys: function (context) {
             context = context || {};
-            
+
             var layerCounter,
                 layers = this._layers,
                 layer,
                 data = this.data;
-            
+
             var keySets = [_.difference(_.keys(data), this._exclusions)];
             for (layerCounter = 0; layerCounter &lt; layers.length; layerCounter++) {
                 layer = layers[layerCounter];
                 keySets.push(layer.getKeys(data[layer.key], context));
             }
-            
+
             return _.union.apply(null, keySets);
         },</code></pre></div><div class="member">
 
@@ -1351,9 +1348,9 @@ all keys in each layer will be returned.</p>
                 layer,
                 data = this.data,
                 result;
-            
+
             context = context || {};
-            
+
             for (layerCounter = 0; layerCounter &lt; layers.length; layerCounter++) {
                 layer = layers[layerCounter];
                 result = layer.getPreferenceLocation(data[layer.key], id, context);
@@ -1364,14 +1361,14 @@ all keys in each layer will be returned.</p>
                     };
                 }
             }
-            
+
             if (this._exclusions.indexOf(id) === -1 &amp;&amp; data[id] !== undefined) {
                 &#x2F;&#x2F; The value is defined in this Scope, which means we need to return an
                 &#x2F;&#x2F; empty object as a signal to the PreferencesSystem that this pref
                 &#x2F;&#x2F; is defined in this Scope (in the base data)
                 return {};
             }
-            
+
             &#x2F;&#x2F; return undefined when this Scope does not have the requested pref
             return undefined;
         },</code></pre></div><div class="member">
@@ -1500,7 +1497,7 @@ given, nothing will be set and no exception is thrown.</p>
                     if (this.data[layer.key] === undefined) {
                         this.data[layer.key] = {};
                     }
-                    
+
                     var wasSet = layer.set(this.data[layer.key], id, value, context, location.layerID);
                     this._dirty = this._dirty || wasSet;
                     return wasSet;
@@ -1525,7 +1522,7 @@ given, nothing will be set and no exception is thrown.</p>
             </h4>
             
             <em><p>Create a default project layer object that has a single property &quot;key&quot;
-with &quot;project&quot; as its value. </p>
+with &quot;project&quot; as its value.</p>
 </em>
             
             <dl>
@@ -1677,7 +1674,7 @@ this project layer for the current project path.</p>
 
     
     <div class="description"><p>Sets the preference value in the given data structure for the layerID provided. If no
-layerID is provided, then the current project path is used. If a layerID is provided 
+layerID is provided, then the current project path is used. If a layerID is provided
 and it does not exist, it will be created.</p>
 <p>This function returns whether or not a value was set.</p>
 </div>
@@ -1789,7 +1786,7 @@ and it does not exist, it will be created.</p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function LanguageLayer() {
     }
-   
+
     LanguageLayer.prototype = {
         key: &quot;language&quot;,</code></pre>
         </div>
@@ -1850,7 +1847,7 @@ language.</p>
             if (oldContext.language === undefined) {
                 return _.keys(data[newContext.language]);
             }
-            
+
             return _.union(_.keys(data[newContext.language]), _.keys(data[oldContext.language]));
         }
     };</code></pre></div><div class="member">
@@ -1940,7 +1937,7 @@ empty, it will return all the keys provided in all the layerIDs
             if (!data) {
                 return;
             }
-            
+
             &#x2F;&#x2F; do not upset other layers if context for the this one is not specified
             if (!_.isEmpty(context)) {
                 if (data[context.language]) {
@@ -2106,7 +2103,7 @@ currently edited file wins.</p>
             <pre class="code language-javascript"><code class="language-javascript">    function PathLayer(prefFilePath) {
         this.setPrefFilePath(prefFilePath);
     }
-    
+
     PathLayer.prototype = {
         key: &quot;path&quot;,</code></pre>
         </div>
@@ -2164,7 +2161,7 @@ of the context and looks up matching globes if any.</p>
                               FileUtils.getRelativeFilename(this.prefFilePath, newContext[this.key])),
                 oldGlob = _findMatchingGlob(data,
                               FileUtils.getRelativeFilename(this.prefFilePath, oldContext[this.key]));
-                        
+
             if (newGlob === oldGlob) {
                 return;
             }
@@ -2174,7 +2171,7 @@ of the context and looks up matching globes if any.</p>
             if (oldGlob === undefined) {
                 return _.keys(data[newGlob]);
             }
-            
+
             return _.union(_.keys(data[oldGlob]), _.keys(data[newGlob]));
         }
     };</code></pre></div><div class="member">
@@ -2216,11 +2213,11 @@ PathLayer was set up with.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        get: function (data, id, context) {
             var glob = this.getPreferenceLocation(data, id, context);
-            
+
             if (!glob) {
                 return;
             }
-            
+
             return data[glob][id];
         },</code></pre></div><div class="member">
 
@@ -2259,9 +2256,9 @@ are provided.</p>
             if (!data) {
                 return;
             }
-            
+
             var relativeFilename = FileUtils.getRelativeFilename(this.prefFilePath, context[this.key]);
-            
+
             if (relativeFilename) {
                 var glob = _findMatchingGlob(data, relativeFilename);
                 if (glob) {
@@ -2314,12 +2311,12 @@ this path layer for the current path.</p>
             if (!data) {
                 return;
             }
-            
+
             var relativeFilename = FileUtils.getRelativeFilename(this.prefFilePath, context[this.key]);
             if (!relativeFilename) {
                 return;
             }
-            
+
             return _findMatchingGlob(data, relativeFilename);
         },</code></pre></div><div class="member">
 
@@ -2377,11 +2374,11 @@ does not exist, it will be created.</p>
             if (!layerID) {
                 layerID = this.getPreferenceLocation(data, id, context);
             }
-            
+
             if (!layerID) {
                 return false;
             }
-            
+
             var section = data[layerID];
             if (!section) {
                 data[layerID] = section = {};
@@ -2453,7 +2450,7 @@ does not exist, it will be created.</p>
             <pre class="code language-javascript"><code class="language-javascript">    function Preference(properties) {
         _.extend(this, properties);
     }
-    
+
     EventDispatcher.makeEventDispatcher(Preference.prototype);</code></pre>
         </div>
         
@@ -2488,7 +2485,7 @@ access always occurring with the given prefix.</p>
         this.prefix = prefix;
         this._listenerInstalled = false;
     }
-    
+
     PrefixedPreferencesSystem.prototype = {</code></pre>
         </div>
         
@@ -2525,28 +2522,28 @@ access always occurring with the given prefix.</p>
             }
             var self = this,
                 prefix = this.prefix;
-            
+
             var onlyWithPrefix = function (id) {
                 if (_.startsWith(id, prefix)) {
                     return true;
                 }
                 return false;
             };
-            
+
             var withoutPrefix = function (id) {
                 return id.substr(prefix.length);
             };
-            
+
             this.base.on(PREFERENCE_CHANGE, function (e, data) {
                 var prefixedIds = data.ids.filter(onlyWithPrefix);
-                
+
                 if (prefixedIds.length &gt; 0) {
                     self.trigger(PREFERENCE_CHANGE, {
                         ids: prefixedIds.map(withoutPrefix)
                     });
                 }
             });
-            
+
             this._listenerInstalled = true;
         },</code></pre></div><div class="member">
 
@@ -2733,7 +2730,7 @@ or a specific handler function.</p>
                 handler = preferenceID;
                 preferenceID = null;
             }
-            
+
             if (preferenceID) {
                 var pref = this.getPreference(preferenceID);
                 pref.off(event, handler);
@@ -2782,7 +2779,7 @@ will notify. Optionally, you can set up a listener for a specific preference.</p
                 handler = preferenceID;
                 preferenceID = null;
             }
-            
+
             if (preferenceID) {
                 var pref = this.getPreference(preferenceID);
                 pref.on(event, handler);
@@ -2818,7 +2815,7 @@ that save operation.</p>
             return this.base.save();
         }
     };
-    
+
     _addEventDispatcherImpl(PrefixedPreferencesSystem.prototype);</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2898,14 +2895,14 @@ context systems. It can be passed in at construction time or set later.</p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function PreferencesSystem(contextBuilder) {
         this.contextBuilder = contextBuilder;
-        
+
         this._knownPrefs = {};
         this._scopes = {
             &quot;default&quot;: new Scope(new MemoryStorage())
         };
-        
+
         this._scopes[&quot;default&quot;].load();
-        
+
         this._defaults = {
             scopeOrder: [&quot;default&quot;],
             _shadowScopeOrder: [{
@@ -2914,40 +2911,40 @@ context systems. It can be passed in at construction time or set later.</p>
                 promise: (new $.Deferred()).resolve().promise()
             }]
         };
-        
+
         this._pendingScopes = {};
-        
+
         this._saveInProgress = false;
         this._nextSaveDeferred = null;
-        
+
         &#x2F;&#x2F; The objects that define the different kinds of path-based Scope handlers.
         &#x2F;&#x2F; Examples could include the handler for .brackets.json files or an .editorconfig
         &#x2F;&#x2F; handler.
         this._pathScopeDefinitions = {};
-        
+
         &#x2F;&#x2F; Names of the files that contain path scopes
         this._pathScopeFilenames = [];
-        
+
         &#x2F;&#x2F; Keeps track of cached path scope objects.
         this._pathScopes = {};
-        
+
         &#x2F;&#x2F; Keeps track of change events that need to be sent when change events are resumed
         this._changeEventQueue = null;
-        
+
         var notifyPrefChange = function (id) {
             var pref = this._knownPrefs[id];
             if (pref) {
                 pref.trigger(PREFERENCE_CHANGE);
             }
         }.bind(this);
-        
+
         &#x2F;&#x2F; When we signal a general change message on this manager, we also signal a change
         &#x2F;&#x2F; on the individual preference object.
         this.on(PREFERENCE_CHANGE, function (e, data) {
             data.ids.forEach(notifyPrefChange);
         }.bind(this));
     }
-    
+
     _.extend(PreferencesSystem.prototype, {</code></pre>
         </div>
         
@@ -3184,7 +3181,7 @@ context systems. It can be passed in at construction time or set later.</p>
                     return entry === shadowEntry;
                 }),
                 i = index + 1;
-            
+
             &#x2F;&#x2F; Find an appropriate scope of lower priority to add it before
             while (i &lt; shadowScopeOrder.length) {
                 if (shadowScopeOrder[i].promise.state() === &quot;pending&quot; ||
@@ -3256,20 +3253,20 @@ is given. The new Scope is automatically loaded.</p>
 <pre class="code language-javascript"><code class="language-javascript">        addScope: function (id, scope, options) {
             var promise;
             options = options || {};
-            
+
             if (this._scopes[id]) {
                 throw new Error(&quot;Attempt to redefine preferences scope: &quot; + id);
             }
-            
+
             &#x2F;&#x2F; Check to see if scope is a Storage that needs to be wrapped
             if (!scope.get) {
                 scope = new Scope(scope);
             }
-            
+
             promise = scope.load();
 
             this._addToScopeOrder(id, scope, promise, options.before);
-            
+
             promise
                 .fail(function (err) {
                     &#x2F;&#x2F; With preferences, it is valid for there to be no file.
@@ -3278,7 +3275,7 @@ is given. The new Scope is automatically loaded.</p>
                         console.error(err);
                     }
                 });
-            
+
             return promise;
         },</code></pre></div><div class="member">
 
@@ -3450,11 +3447,11 @@ change scope ordering or the reference filename for path-based scopes.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        get: function (id, context) {
             var scopeCounter;
-            
+
             context = this._getContext(context);
-            
+
             var scopeOrder = this._getScopeOrder(context);
-            
+
             for (scopeCounter = 0; scopeCounter &lt; scopeOrder.length; scopeCounter++) {
                 var scope = this._scopes[scopeOrder[scopeCounter]];
                 if (scope) {
@@ -3557,11 +3554,11 @@ change scope ordering or the reference filename for path-based scopes.</p>
 <pre class="code language-javascript"><code class="language-javascript">        getPreferenceLocation: function (id, context) {
             var scopeCounter,
                 scopeName;
-            
+
             context = this._getContext(context);
-            
+
             var scopeOrder = this._getScopeOrder(context);
-            
+
             for (scopeCounter = 0; scopeCounter &lt; scopeOrder.length; scopeCounter++) {
                 scopeName = scopeOrder[scopeCounter];
                 var scope = this._scopes[scopeName];
@@ -3600,12 +3597,12 @@ done.</p>
 <pre class="code language-javascript"><code class="language-javascript">        getPrefixedSystem: function (prefix) {
             return new PrefixedPreferencesSystem(this, prefix + &quot;.&quot;);
         },
-        
+
     });
-    
+
     _addEventDispatcherImpl(PreferencesSystem.prototype);
-    
-    
+
+
     &#x2F;&#x2F; Public interface
     exports.PreferencesSystem   = PreferencesSystem;
     exports.Scope               = Scope;
@@ -3656,7 +3653,7 @@ or a specific handler function.</p>
                 handler = preferenceID;
                 preferenceID = null;
             }
-            
+
             if (preferenceID) {
                 var pref = this.getPreference(preferenceID);
                 pref.off(event, handler);
@@ -3705,7 +3702,7 @@ specific preference.</p>
                 handler = preferenceID;
                 preferenceID = null;
             }
-            
+
             if (preferenceID) {
                 var pref = this.getPreference(preferenceID);
                 pref.on(event, handler);
@@ -3876,11 +3873,11 @@ that save operation.</p>
                 }
                 return this._nextSaveDeferred.promise();
             }
-            
+
             var deferred = this._nextSaveDeferred || (new $.Deferred());
             this._saveInProgress = true;
             this._nextSaveDeferred = null;
-            
+
             Async.doInParallel(_.values(this._scopes), function (scope) {
                 if (scope) {
                     return scope.save();
@@ -3898,7 +3895,7 @@ that save operation.</p>
                 .fail(function (err) {
                     deferred.reject(err);
                 });
-            
+
             return deferred.promise();
         },</code></pre></div><div class="member">
 
@@ -3952,16 +3949,16 @@ default.</p>
 <pre class="code language-javascript"><code class="language-javascript">        set: function (id, value, options, doNotSave) {
             options = options || {};
             var context = this._getContext(options.context),
-                
+
                 &#x2F;&#x2F; The case where the &quot;default&quot; scope was chosen specifically is special.
                 &#x2F;&#x2F; Usually &quot;default&quot; would come up only when a preference did not have any
                 &#x2F;&#x2F; user-set value, in which case we&#39;d want to set the value in a different scope.
                 forceDefault = options.location &amp;&amp; options.location.scope === &quot;default&quot; ? true : false,
                 location = options.location || this.getPreferenceLocation(id, context);
-            
+
             if (!location || (location.scope === &quot;default&quot; &amp;&amp; !forceDefault)) {
                 var scopeOrder = this._getScopeOrder(context);
-                
+
                 &#x2F;&#x2F; The default scope for setting a preference is the lowest priority
                 &#x2F;&#x2F; scope after &quot;default&quot;.
                 if (scopeOrder.length &gt; 1) {
@@ -3972,18 +3969,18 @@ default.</p>
                     return { valid: true, stored: false };
                 }
             }
-            
+
             var scope = this._scopes[location.scope];
             if (!scope) {
                 return { valid: true, stored: false };
             }
-            
+
             var pref      = this.getPreference(id),
                 validator = pref &amp;&amp; pref.validator;
             if (validator &amp;&amp; !validator(value)) {
                 return { valid: false, stored: false };
             }
-            
+
             var wasSet = scope.set(id, value, context, location);
             if (wasSet) {
                 if (!doNotSave) {
@@ -4028,14 +4025,14 @@ signaling the changes to PreferencesSystem.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        signalContextChanged: function (oldContext, newContext) {
             var changes = [];
-            
+
             _.each(this._scopes, function (scope) {
                 var changedInScope = scope.contextChanged(oldContext, newContext);
                 if (changedInScope) {
                     changes.push(changedInScope);
                 }
             });
-            
+
             changes = _.union.apply(null, changes);
             if (changes.length &gt; 0) {
                 this._triggerChange({

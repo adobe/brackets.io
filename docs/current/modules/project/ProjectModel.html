@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -1344,7 +1341,7 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
                 };
 
             this._allFilesCachePromise = deferred.promise();
-            
+
             var projectIndexTimer = PerfUtils.markStart(&quot;Creating project files cache: &quot; +
                                                         this.projectRoot.fullPath),
                 options = {
@@ -1740,7 +1737,7 @@ provided or the project root.</p>
         } else {
             path = null;
         }
-        
+
         if (!path || (typeof path !== &quot;string&quot;) || !this.isWithinProject(path)) {
             path = this.projectRoot.fullPath;
         }
@@ -1864,7 +1861,7 @@ of paths that are at the same depth in the tree. All of the paths are full paths
                     }
                     self._viewModel.setDirectoryContents(self.makeProjectRelativeIfPossible(entry.fullPath), contents);
                 });
-                
+
                 &#x2F;&#x2F; Exit early because we can&#39;t update the viewModel until we get the directory contents.
                 return;
             }
@@ -1881,12 +1878,12 @@ of paths that are at the same depth in the tree. All of the paths are full paths
                     _.find(removed, { fullPath: this._selections.selected })) {
                 this.setSelected(null);
             }
-            
+
             if (this._selections.rename &amp;&amp;
                     _.find(removed, { fullPath: this._selections.rename.path })) {
                 this.cancelRename();
             }
-            
+
             if (this._selections.context &amp;&amp;
                     _.find(removed, { fullPath: this._selections.context })) {
                 this.setContext(null);
@@ -2010,14 +2007,14 @@ Does not support paths containing &quot;..&quot;</p>
         if (isFolder) {
             newPath += &quot;&#x2F;&quot;;
         }
-        
+
         delete this._selections.rename;
         delete this._selections.context;
-        
+
         viewModel.moveMarker(&quot;rename&quot;, oldProjectPath, null);
         viewModel.moveMarker(&quot;context&quot;, oldProjectPath, null);
         viewModel.moveMarker(&quot;creating&quot;, oldProjectPath, null);
-        
+
         function finalizeRename() {
             viewModel.renameItem(oldProjectPath, newName);
             if (self._selections.selected &amp;&amp; self._selections.selected.indexOf(oldPath) === 0) {
@@ -2078,7 +2075,7 @@ Does not support paths containing &quot;..&quot;</p>
             selections  = this._selections,
             viewModel   = this._viewModel,
             deferred    = new $.Deferred();
-        
+
         this.setProjectRoot(projectRoot).then(function () {
             self.reopenNodes(openNodes).then(function () {
                 if (selections.selected) {
@@ -2291,7 +2288,7 @@ open/selected file.</p>
         }
 
         path = _getPathFromFSObject(path);
-        
+
         if (!_doNotRename) {
             this.performRename();
         }
@@ -2606,7 +2603,7 @@ Directories will not be selected.</p>
             path = null;
             pathInProject = null;
         }
-        
+
         this.performRename();
 
         this._viewModel.moveMarker(&quot;selected&quot;, oldProjectPath, pathInProject);
@@ -2614,7 +2611,7 @@ Directories will not be selected.</p>
             this._viewModel.moveMarker(&quot;context&quot;, this.makeProjectRelativeIfPossible(this._selections.context), null);
             delete this._selections.context;
         }
-        
+
         var previousSelection = this._selections.selected;
         this._selections.selected = path;
 
@@ -2626,7 +2623,7 @@ Directories will not be selected.</p>
                     hadFocus: this._focused
                 });
             }
-            
+
             this.trigger(EVENT_SHOULD_FOCUS);
         }
     };</code></pre></div><div class="member">
@@ -2715,7 +2712,7 @@ will be opened and a promise is returned to show when the entire operation is co
 <pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.showInTree = function (path) {
         var d = new $.Deferred();
         path = _getPathFromFSObject(path);
-        
+
         if (!this.isWithinProject(path)) {
             return d.resolve().promise();
         }
@@ -2831,13 +2828,13 @@ not provided, the current context is used.</p>
         if (this._selections.rename &amp;&amp; this._selections.rename.path === path) {
             return;
         }
-        
+
         var projectRelativePath = this.makeProjectRelativeIfPossible(path);
-        
+
         if (!this._viewModel.isFilePathVisible(projectRelativePath)) {
             this.showInTree(path);
         }
-        
+
         if (path !== this._selections.context) {
             this.setContext(path);
         } else {
@@ -2895,7 +2892,7 @@ not provided, the current context is used.</p>
         this.setDirectoryOpen(path, true).then(function () {
             var projectRelativePath = self.makeProjectRelativeIfPossible(path),
                 childNodes = self._viewModel.getChildDirectories(projectRelativePath);
-            
+
             Async.doInParallel(childNodes, function (node) {
                 return self.setDirectoryOpen(path + node, openOrClose);
             }, true).then(function () {
@@ -2904,7 +2901,7 @@ not provided, the current context is used.</p>
                 d.reject(err);
             });
         });
-        
+
         return d.promise();
     };</code></pre></div>
         </section>

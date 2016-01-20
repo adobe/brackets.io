@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (176)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -560,7 +557,7 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var findBar;
-    
+
     function SearchState() {
         this.searchStartPos = null;
         this.parsedQuery = null;
@@ -583,16 +580,16 @@
         &#x2F;&#x2F; Heuristic: if the query string is all lowercase, do a case insensitive search.
         return cm.getSearchCursor(state.parsedQuery, pos, !state.queryInfo.isCaseSensitive);
     }
-    
+
     function parseQuery(queryInfo) {
         if (findBar) {
             findBar.showError(null);
         }
-        
+
         if (!queryInfo || !queryInfo.query) {
             return &quot;&quot;;
         }
-    
+
         &#x2F;&#x2F; Is it a (non-blank) regex?
         if (queryInfo.isRegexp) {
             try {
@@ -603,7 +600,7 @@
                 }
                 return &quot;&quot;;
             }
-        
+
         } else {
             return queryInfo.query;
         }
@@ -629,7 +626,7 @@
     </h4>
 
     
-    <div class="description"><p>Expands each empty range in the selection to the nearest word boundaries. Then, if the primary selection 
+    <div class="description"><p>Expands each empty range in the selection to the nearest word boundaries. Then, if the primary selection
 was already a range (even a non-word range), adds the next instance of the contents of that range as a selection.</p>
 </div>
     
@@ -655,13 +652,13 @@ was already a range (even a non-word range), adds the next instance of the conte
         if (!editor) {
             return;
         }
-        
+
         var selections = editor.getSelections(),
             primarySel,
             primaryIndex,
             searchText,
             added = false;
-        
+
         _.each(selections, function (sel, index) {
             var isEmpty = (CodeMirror.cmpPos(sel.start, sel.end) === 0);
             if (sel.primary) {
@@ -682,13 +679,13 @@ was already a range (even a non-word range), adds the next instance of the conte
                 }
             }
         });
-        
+
         if (searchText &amp;&amp; searchText.length) {
             &#x2F;&#x2F; We store this as a query in the state so that if the user next does a &quot;Find Next&quot;,
             &#x2F;&#x2F; it will use the same query (but throw away the existing selection).
             var state = getSearchState(editor._codeMirror);
             setQueryInfo(state, { query: searchText, isCaseSensitive: false, isRegexp: false });
-            
+
             &#x2F;&#x2F; Skip over matches that are already in the selection.
             var searchStart = primarySel.end,
                 nextMatch,
@@ -700,7 +697,7 @@ was already a range (even a non-word range), adds the next instance of the conte
                     &#x2F;&#x2F; JSLint complains about creating a function in a loop, even though it&#39;s safe in this case.
                     isInSelection = _.find(selections, _.partial(_selEq, nextMatch));
                     searchStart = nextMatch.end;
-                    
+
                     &#x2F;&#x2F; If we&#39;ve gone all the way around, then all instances must have been selected already.
                     if (CodeMirror.cmpPos(searchStart, primarySel.end) === 0) {
                         nextMatch = null;
@@ -708,18 +705,18 @@ was already a range (even a non-word range), adds the next instance of the conte
                     }
                 }
             } while (nextMatch &amp;&amp; isInSelection);
-            
+
             if (nextMatch) {
                 nextMatch.primary = true;
                 selections.push(nextMatch);
                 added = true;
             }
         }
-        
+
         if (removePrimary) {
             selections.splice(primaryIndex, 1);
         }
-        
+
         if (added) {
             &#x2F;&#x2F; Center the new match, but avoid scrolling to matches that are already on screen.
             _selectAndScrollTo(editor, selections, true, true);
@@ -728,7 +725,7 @@ was already a range (even a non-word range), adds the next instance of the conte
             _selectAndScrollTo(editor, selections, false);
         }
     }
-    
+
     function _skipCurrentMatch(editor) {
         return _expandWordAndAddNextToSelection(editor, true);
     }</code></pre></div><div class="member private public">
@@ -758,7 +755,7 @@ is not a range after expansion.</p>
         if (!editor) {
             return;
         }
-        
+
         var sel = editor.getSelection(),
             newSelections = [];
         if (CodeMirror.cmpPos(sel.start, sel.end) === 0) {
@@ -769,7 +766,7 @@ is not a range after expansion.</p>
                 state = getSearchState(editor._codeMirror),
                 nextMatch;
             setQueryInfo(state, { query: editor.document.getRange(sel.start, sel.end), isCaseSensitive: false, isRegexp: false });
-            
+
             while ((nextMatch = _getNextMatch(editor, false, searchStart, false)) !== null) {
                 if (_selEq(sel, nextMatch)) {
                     nextMatch.primary = true;
@@ -777,7 +774,7 @@ is not a range after expansion.</p>
                 newSelections.push(nextMatch);
                 searchStart = nextMatch.end;
             }
-            
+
             &#x2F;&#x2F; This should find at least the original selection, but just in case...
             if (newSelections.length) {
                 &#x2F;&#x2F; Don&#39;t change the scroll position.
@@ -947,9 +944,9 @@ is not a range after expansion.</p>
             doReplace(editor, false);
             return;
         }
-        
+
         openSearchBar(editor, true);
-        
+
         findBar
             .on(&quot;doReplace.FindReplace&quot;, function (e) {
                 doReplace(editor, false);
@@ -998,7 +995,7 @@ is not a range after expansion.</p>
     CommandManager.register(Strings.CMD_FIND_ALL_AND_SELECT,    Commands.CMD_FIND_ALL_AND_SELECT,   _findAllAndSelect);
     CommandManager.register(Strings.CMD_ADD_NEXT_MATCH,         Commands.CMD_ADD_NEXT_MATCH,        _expandWordAndAddNextToSelection);
     CommandManager.register(Strings.CMD_SKIP_CURRENT_MATCH,     Commands.CMD_SKIP_CURRENT_MATCH,    _skipCurrentMatch);
-    
+
     &#x2F;&#x2F; For unit testing
     exports._getWordAt                       = _getWordAt;
     exports._expandWordAndAddNextToSelection = _expandWordAndAddNextToSelection;
@@ -1090,7 +1087,7 @@ is not a range after expansion.</p>
             &#x2F;&#x2F; no need to scroll if the line with the match is in view
             centerOptions = Editor.BOUNDARY_IGNORE_TOP;
         }
-        
+
         &#x2F;&#x2F; Make sure the primary selection is fully visible on screen.
         var primary = _.find(selections, function (sel) {
             return sel.primary;
@@ -1142,7 +1139,7 @@ is not a range after expansion.</p>
         if (!state.foundAny) {
             return;
         }
-        
+
         if (findBar) {
             if (state.matchIndex === -1) {
                 state.matchIndex = _.findIndex(state.resultSet, matchRange);
@@ -1150,14 +1147,14 @@ is not a range after expansion.</p>
                 state.matchIndex = searchBackwards ? state.matchIndex - 1 : state.matchIndex + 1;
                 &#x2F;&#x2F; Adjust matchIndex for modulo wraparound
                 state.matchIndex = (state.matchIndex + state.resultSet.length) % state.resultSet.length;
-                
-                &#x2F;&#x2F; Confirm that we find the right matchIndex. If not, then search 
+
+                &#x2F;&#x2F; Confirm that we find the right matchIndex. If not, then search
                 &#x2F;&#x2F; matchRange in the entire resultSet.
                 if (!_.isEqual(state.resultSet[state.matchIndex], matchRange)) {
                     state.matchIndex = _.findIndex(state.resultSet, matchRange);
                 }
             }
-        
+
             console.assert(state.matchIndex !== -1);
             if (state.matchIndex !== -1) {
                 &#x2F;&#x2F; Convert to 1-based by adding one before showing the index.
@@ -1219,7 +1216,7 @@ is not a range after expansion.</p>
         });
         state.marked.length = 0;
         state.markedCurrent = null;
-        
+
         ScrollTrackMarkers.clear();
 
         state.resultSet = [];
@@ -1237,7 +1234,7 @@ is not a range after expansion.</p>
             clearHighlights(cm, state);
         });
     }
-    
+
     function toggleHighlighting(editor, enabled) {
         &#x2F;&#x2F; Temporarily change selection color to improve highlighting - see LESS code for details
         if (enabled) {
@@ -1245,7 +1242,7 @@ is not a range after expansion.</p>
         } else {
             $(editor.getRootElement()).removeClass(&quot;find-highlighting&quot;);
         }
-        
+
         ScrollTrackMarkers.setVisible(editor, enabled);
     }</code></pre></div><div class="member">
 
@@ -1274,7 +1271,7 @@ next/prev result (depending on &#39;searchBackwards&#39;)</p>
             findNext(editor, searchBackwards);
             return;
         }
-        
+
         openSearchBar(editor, false);
     }</code></pre></div><div class="member">
 
@@ -1329,7 +1326,7 @@ to false.</p>
         cm.operation(function () {
             var state = getSearchState(cm);
             clearCurrentMatchHighlight(cm, state);
-            
+
             var nextMatch = _getNextMatch(editor, searchBackwards, pos);
             if (nextMatch) {
                 &#x2F;&#x2F; Update match index indicators - only possible if we have resultSet saved (missing if FIND_MAX_FILE_SIZE threshold hit)
@@ -1341,9 +1338,9 @@ to false.</p>
                         ScrollTrackMarkers.markCurrent(state.matchIndex);  &#x2F;&#x2F; _updateFindBarWithMatchInfo() has updated this index
                     }
                 }
-                
+
                 _selectAndScrollTo(editor, [nextMatch], true, preferNoScroll);
-                
+
                 &#x2F;&#x2F; Only mark text with &quot;current match&quot; highlight if search bar still open
                 if (findBar &amp;&amp; !findBar.isClosed()) {
                     &#x2F;&#x2F; If highlighting disabled, apply both match AND current-match styles for correct appearance
@@ -1397,7 +1394,7 @@ the first matching result, starting from the original cursor position.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function handleQueryChange(editor, state, initial) {
         setQueryInfo(state, findBar.getQueryInfo());
         updateResultSet(editor);
-        
+
         if (state.parsedQuery) {
             &#x2F;&#x2F; 3rd arg: prefer to avoid scrolling if result is anywhere within view, since in this case user
             &#x2F;&#x2F; is in the middle of typing, not navigating explicitly; viewport jumping would be distracting.
@@ -1440,22 +1437,22 @@ the first matching result, starting from the original cursor position.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function openSearchBar(editor, replace) {
         var cm = editor._codeMirror,
             state = getSearchState(cm);
-        
+
         &#x2F;&#x2F; Use the selection start as the searchStartPos. This way if you
         &#x2F;&#x2F; start with a pre-populated search and enter an additional character,
         &#x2F;&#x2F; it will extend the initial selection instead of jumping to the next
         &#x2F;&#x2F; occurrence.
         state.searchStartPos = editor.getCursorPos(false, &quot;start&quot;);
-        
+
         &#x2F;&#x2F; Prepopulate the search field
         var initialQuery = FindBar.getInitialQuery(findBar, editor);
-        
+
         &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new findBar will
         &#x2F;&#x2F; take care of closing any other find bar instances.)
         if (findBar) {
             findBar.close();
         }
-        
+
         &#x2F;&#x2F; Create the search bar UI (closing any previous find bar in the process)
         findBar = new FindBar({
             multifile: false,
@@ -1483,7 +1480,7 @@ the first matching result, starting from the original cursor position.</p>
                 findBar.off(&quot;.FindReplace&quot;);
                 findBar = null;
             });
-        
+
         handleQueryChange(editor, state, true);
     }</code></pre></div><div class="member private">
 
@@ -1545,22 +1542,22 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
 <pre class="code language-javascript"><code class="language-javascript">    function updateResultSet(editor) {
         var cm = editor._codeMirror,
             state = getSearchState(cm);
-        
+
         function indicateHasMatches(numResults) {
             &#x2F;&#x2F; Make the field red if it&#39;s not blank and it has no matches (which also covers invalid regexes)
             findBar.showNoResults(!state.foundAny &amp;&amp; findBar.getQueryInfo().query);
-            
+
             &#x2F;&#x2F; Navigation buttons enabled if we have a query and more than one match
             findBar.enableNavigation(state.foundAny &amp;&amp; numResults &gt; 1);
             findBar.enableReplace(state.foundAny);
         }
-        
+
         cm.operation(function () {
             &#x2F;&#x2F; Clear old highlights
             if (state.marked) {
                 clearHighlights(cm, state);
             }
-            
+
             if (!state.parsedQuery) {
                 &#x2F;&#x2F; Search field is empty - no results
                 findBar.showFindCount(&quot;&quot;);
@@ -1568,7 +1565,7 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
                 indicateHasMatches();
                 return;
             }
-            
+
             &#x2F;&#x2F; Find *all* matches, searching from start of document
             &#x2F;&#x2F; (Except on huge documents, where this is too expensive)
             var cursor = getSearchCursor(cm, state);
@@ -1578,11 +1575,11 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
                 while (cursor.findNext()) {
                     state.resultSet.push(cursor.pos);  &#x2F;&#x2F; pos is unique obj per search result
                 }
-                
+
                 &#x2F;&#x2F; Highlight all matches if there aren&#39;t too many
                 if (state.resultSet.length &lt;= FIND_HIGHLIGHT_MAX) {
                     toggleHighlighting(editor, true);
-                    
+
                     state.resultSet.forEach(function (result) {
                         state.marked.push(cm.markText(result.from, result.to,
                              { className: &quot;CodeMirror-searching&quot;, startStyle: &quot;searching-first&quot;, endStyle: &quot;searching-last&quot; }));
@@ -1590,13 +1587,13 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
                     var scrollTrackPositions = state.resultSet.map(function (result) {
                         return result.from;
                     });
-                    
+
                     ScrollTrackMarkers.addTickmarks(editor, scrollTrackPositions);
                 }
-                
-                &#x2F;&#x2F; Here we only update find bar with no result. In the case of a match 
+
+                &#x2F;&#x2F; Here we only update find bar with no result. In the case of a match
                 &#x2F;&#x2F; a findNext() call is guaranteed to be followed by this function call,
-                &#x2F;&#x2F; and findNext() in turn calls _updateFindBarWithMatchInfo() to show the 
+                &#x2F;&#x2F; and findNext() in turn calls _updateFindBarWithMatchInfo() to show the
                 &#x2F;&#x2F; match index.
                 if (state.resultSet.length === 0) {
                     findBar.showFindCount(Strings.FIND_NO_RESULTS);
@@ -1604,7 +1601,7 @@ the match count, match highlights and scrollbar tickmarks. Does not change the c
 
                 state.foundAny = (state.resultSet.length &gt; 0);
                 indicateHasMatches(state.resultSet.length);
-                
+
             } else {
                 &#x2F;&#x2F; On huge documents, just look for first match &amp; then stop
                 findBar.showFindCount(&quot;&quot;);
