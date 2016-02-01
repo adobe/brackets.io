@@ -446,9 +446,8 @@
             cache: false
         });
         $.when(ajaxRequest, i18nLoaded).done(function (data) {
-            data = data[0]; // get actual data
-            var build = data[0];
-            var buildName = build.versionString;
+            var build = data[0][0],
+                buildName = build.versionString;
 
             if (buildName) {
                 var buildNum = buildName.match(/([\d.]+)/);
@@ -457,20 +456,18 @@
                 }
 
                 // update button
-                if (OS != "OTHER" && buildNum) {
+                if (OS !== "OTHER" && buildNum) {
                     var tag = buildName.toLowerCase().split(" ").join("-"),
                         url = "https://github.com/adobe/brackets/releases/" + tag,
-                        urlE4B = "https://github.com/adobe/brackets/releases/download/release-1.6%2Beb4/Brackets.1.6.Extract" + ext;
+                        urlE4B = "https://github.com/adobe/brackets/releases/" + tag + "%2Beb4";
+
                     if (ext) {
-                        url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+                        url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ")
+                        .join(".") + ext;
+                        urlE4B = "https://github.com/adobe/brackets/releases/download/" + tag + "%2Beb4/Brackets." + buildNum + ".Extract" + ext;
                     }
 
-                    ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
-                    ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-
-                    var version_label = buildName.match(/(\d+.*$)/)[1];
-                    //if (OS != "UNKNOWN") version_label += " (" + OS + ")";
-                    $("#download-brackets-version").text(version_label);
+                    $("#download-brackets-version").text(buildNum);
 
                     logAndGo("hero-cta-button", urlE4B, ['_trackEvent', 'E4BDownloads', buildNum, OS]);
                     logAndGo("e4b-secondary-download", urlE4B, ['_trackEvent', 'E4BDownloads', buildNum, OS]);
@@ -503,7 +500,7 @@
                 downloadStarted = true;
                 setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
             });
-        }
+        };
     }
 </script>
 
