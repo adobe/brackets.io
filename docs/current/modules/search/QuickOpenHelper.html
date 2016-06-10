@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ViewUtils - Brackets API</title>
+    <title>QuickOpenHelper - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -456,7 +456,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>ViewUtils</h1>
+<h1>QuickOpenHelper</h1>
 
 
 <section class="description">
@@ -470,37 +470,12 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/search/QuickOpen.html">QuickOpen</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringMatch.html">StringMatch</a></li>
     </ul>
 
-</section>
-<section id="variables">
-    
-    <h3>Variables 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _resizeHandlers 
-        <a class="anchor" href="#-_resizeHandlers" id="-_resizeHandlers"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _resizeHandlers = [];</code></pre></div>
 </section>
 
 <section id="functions">
@@ -510,129 +485,52 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private">
+<div class="member public">
 
 <span class="pull-right scope">
-    Private
     
+    Public API
 </span>
     <h4>
-        _handleResize 
-        <a class="anchor" href="#-_handleResize" id="-_handleResize"><span class="icon-link"></span></a>
+        itemFocus 
+        <a class="anchor" href="#-itemFocus" id="-itemFocus"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _handleResize() {
-        _resizeHandlers.forEach(function (f) {
-            f.apply();
-        });
-    }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _updateScrollerShadow 
-        <a class="anchor" href="#-_updateScrollerShadow" id="-_updateScrollerShadow"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Positions shadow background elements to indicate vertical scrolling.</p>
+    <div class="description"><p>Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)</p>
 </div>
     
 <dl>
     <dt>
-        $displayElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
+        selectedItem
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">SearchResult</span>
     </dt>
-    <dd>the DOMElement that displays the shadow</dd>
+    <dd></dd>
     <dt>
-        $scrollElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Object</span>
+        query
+        <span class="label label-info">string</span>
     </dt>
-    <dd>the object that is scrolled</dd>
+    <dd></dd>
     <dt>
-        $shadowTop
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>div .scroller-shadow.top</dd>
-    <dt>
-        $shadowBottom
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>div .scroller-shadow.bottom</dd>
-    <dt>
-        isPositionFixed
+        explicit
         <span class="label label-info">boolean</span>
     </dt>
-    <dd>When using absolute position, top remains at 0.</dd>
+    <dd>False if this is only highlighted due to being at top of list after search()</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed) {
-        var offsetTop           = 0,
-            scrollElement       = $scrollElement.get(0),
-            scrollTop           = scrollElement.scrollTop,
-            topShadowOffset     = Math.min(scrollTop - SCROLL_SHADOW_HEIGHT, 0),
-            displayElementWidth = $displayElement.width();
-
-        if ($shadowTop) {
-            $shadowTop.css(&quot;background-position&quot;, &quot;0px &quot; + topShadowOffset + &quot;px&quot;);
-
-            if (isPositionFixed) {
-                offsetTop = $displayElement.offset().top;
-                $shadowTop.css(&quot;top&quot;, offsetTop);
-            }
-
-            if (isPositionFixed) {
-                $shadowTop.css(&quot;width&quot;, displayElementWidth);
-            }
+<pre class="code language-javascript"><code class="language-javascript">    function itemFocus(selectedItem, query, explicit) {
+        if (!selectedItem || (query.length &lt; 2 &amp;&amp; !explicit)) {
+            return;
         }
+        var fileLocation = selectedItem.fileLocation;
 
-        if ($shadowBottom) {
-            var clientHeight        = scrollElement.clientHeight,
-                outerHeight         = $displayElement.outerHeight(),
-                scrollHeight        = scrollElement.scrollHeight,
-                bottomShadowOffset  = SCROLL_SHADOW_HEIGHT; &#x2F;&#x2F; outside of shadow div viewport
-
-            if (scrollHeight &gt; clientHeight) {
-                bottomShadowOffset -= Math.min(SCROLL_SHADOW_HEIGHT, (scrollHeight - (scrollTop + clientHeight)));
-            }
-
-            $shadowBottom.css(&quot;background-position&quot;, &quot;0px &quot; + bottomShadowOffset + &quot;px&quot;);
-            $shadowBottom.css(&quot;top&quot;, offsetTop + outerHeight - SCROLL_SHADOW_HEIGHT);
-            $shadowBottom.css(&quot;width&quot;, displayElementWidth);
-        }
-    }
-
-    function getOrCreateShadow($displayElement, position, isPositionFixed) {
-        var $findShadow = $displayElement.find(&quot;.scroller-shadow.&quot; + position);
-
-        if ($findShadow.length === 0) {
-            $findShadow = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;scroller-shadow &quot; + position);
-            $displayElement.append($findShadow);
-        }
-
-        if (!isPositionFixed) {
-            &#x2F;&#x2F; position is fixed by default
-            $findShadow.css(&quot;position&quot;, &quot;absolute&quot;);
-            $findShadow.css(position, &quot;0&quot;);
-        }
-
-        return $findShadow;
+        var from = {line: fileLocation.line, ch: fileLocation.chFrom};
+        var to = {line: fileLocation.line, ch: fileLocation.chTo};
+        EditorManager.getCurrentFullEditor().setSelection(from, to, true);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -640,205 +538,38 @@
     Public API
 </span>
     <h4>
-        addScrollerShadow 
-        <a class="anchor" href="#-addScrollerShadow" id="-addScrollerShadow"><span class="icon-link"></span></a>
+        itemSelect 
+        <a class="anchor" href="#-itemSelect" id="-itemSelect"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Installs event handlers for updatng shadow background elements to indicate vertical scrolling.</p>
+    <div class="description"><p>Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)</p>
 </div>
     
 <dl>
     <dt>
-        displayElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>the DOMElement that displays the shadow. Must fire "contentChanged" events when the element is resized or repositioned.</dd>
-    <dt>
-        scrollElement
+        selectedItem
         <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Object</span>
+        <span class="label label-info">SearchResult</span>
     </dt>
-    <dd>the object that is scrolled. Must fire "scroll" events when the element is scrolled. If null, the displayElement is used.</dd>
+    <dd></dd>
     <dt>
-        showBottom
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">boolean</span>
+        query
+        <span class="label label-info">string</span>
     </dt>
-    <dd>optionally show the bottom shadow</dd>
+    <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function addScrollerShadow(displayElement, scrollElement, showBottom) {
-        &#x2F;&#x2F; use fixed positioning when the display and scroll elements are the same
-        var isPositionFixed = false;
-
-        if (!scrollElement) {
-            scrollElement = displayElement;
-            isPositionFixed = true;
-        }
-
-        &#x2F;&#x2F; update shadows when the scrolling element is scrolled
-        var $displayElement = $(displayElement),
-            $scrollElement = $(scrollElement);
-
-        var $shadowTop = getOrCreateShadow($displayElement, &quot;top&quot;, isPositionFixed);
-        var $shadowBottom = (showBottom) ? getOrCreateShadow($displayElement, &quot;bottom&quot;, isPositionFixed) : null;
-
-        var doUpdate = function () {
-            _updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed);
-        };
-
-        &#x2F;&#x2F; remove any previously installed listeners on this node
-        $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
-        $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
-
-        &#x2F;&#x2F; add new ones
-        $scrollElement.on(&quot;scroll.scroller-shadow&quot;, doUpdate);
-        $displayElement.on(&quot;contentChanged.scroller-shadow&quot;, doUpdate);
-
-        &#x2F;&#x2F; update immediately
-        doUpdate();
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
+<pre class="code language-javascript"><code class="language-javascript">    function itemSelect(selectedItem, query) {
+        itemFocus(selectedItem, query, true);
+    }
     
-    Public API
-</span>
-    <h4>
-        getDirNamesForDuplicateFiles 
-        <a class="anchor" href="#-getDirNamesForDuplicateFiles" id="-getDirNamesForDuplicateFiles"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Determine the minimum directory path to distinguish duplicate file names
-for each file in list.</p>
-</div>
-    
-<dl>
-    <dt>
-        files
-        <span class="label label-info">Array.&lt;File&gt;</span>
-    </dt>
-    <dd>- list of Files with the same filename</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
-</dt>
-    <dd>directory paths to match list of files</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getDirNamesForDuplicateFiles(files) {
-        &#x2F;&#x2F; Must have at least two files in list for this to make sense
-        if (files.length &lt;= 1) {
-            return [];
-        }
-
-        &#x2F;&#x2F; First collect paths from the list of files and fill map with them
-        var map = {}, filePaths = [], displayPaths = [];
-        files.forEach(function (file, index) {
-            var fp = file.fullPath.split(&quot;&#x2F;&quot;);
-            fp.pop(); &#x2F;&#x2F; Remove the filename itself
-            displayPaths[index] = fp.pop();
-            filePaths[index] = fp;
-
-            if (!map[displayPaths[index]]) {
-                map[displayPaths[index]] = [index];
-            } else {
-                map[displayPaths[index]].push(index);
-            }
-        });
-
-        &#x2F;&#x2F; This function is used to loop through map and resolve duplicate names
-        var processMap = function (map) {
-            var didSomething = false;
-            _.forEach(map, function (arr, key) {
-                &#x2F;&#x2F; length &gt; 1 means we have duplicates that need to be resolved
-                if (arr.length &gt; 1) {
-                    arr.forEach(function (index) {
-                        if (filePaths[index].length !== 0) {
-                            displayPaths[index] = filePaths[index].pop() + &quot;&#x2F;&quot; + displayPaths[index];
-                            didSomething = true;
-
-                            if (!map[displayPaths[index]]) {
-                                map[displayPaths[index]] = [index];
-                            } else {
-                                map[displayPaths[index]].push(index);
-                            }
-                        }
-                    });
-                }
-                delete map[key];
-            });
-            return didSomething;
-        };
-
-        var repeat;
-        do {
-            repeat = processMap(map);
-        } while (repeat);
-
-        return displayPaths;
-    }
-
-    function traverseViewArray(viewArray, startIndex, direction) {
-        if (Math.abs(direction) !== 1) {
-            console.error(&quot;traverseViewArray called with unsupported direction: &quot; + direction.toString());
-            return null;
-        }
-        if (startIndex === -1) {
-            &#x2F;&#x2F; If doc not in view list, return most recent view list item
-            if (viewArray.length &gt; 0) {
-                return viewArray[0];
-            }
-        } else if (viewArray.length &gt; 1) {
-            &#x2F;&#x2F; If doc is in view list, return next&#x2F;prev item with wrap-around
-            startIndex += direction;
-            if (startIndex &gt;= viewArray.length) {
-                startIndex = 0;
-            } else if (startIndex &lt; 0) {
-                startIndex = viewArray.length - 1;
-            }
-
-            return viewArray[startIndex];
-        }
-
-        &#x2F;&#x2F; If no doc open or view list empty, there is no &quot;next&quot; file
-        return null;
-    }
-
-    function hideMainToolBar() {
-        $(&quot;#main-toolbar&quot;).addClass(&quot;forced-hidden&quot;);
-        $(&quot;.main-view .content&quot;).each(function (index, element) {
-            $(element).addClass(&quot;force-right-zero&quot;);
-        });
-    }
-
-    function showMainToolBar() {
-        $(&quot;#main-toolbar&quot;).removeClass(&quot;forced-hidden&quot;);
-        $(&quot;.main-view .content&quot;).each(function (index, element) {
-            $(element).removeClass(&quot;force-right-zero&quot;);
-        });
-    }
-
-    &#x2F;&#x2F; handle all resize handlers in a single listener
-    $(window).resize(_handleResize);
-
-    &#x2F;&#x2F; Define public API
-    exports.SCROLL_SHADOW_HEIGHT         = SCROLL_SHADOW_HEIGHT;
-    exports.addScrollerShadow            = addScrollerShadow;
-    exports.removeScrollerShadow         = removeScrollerShadow;
-    exports.sidebarList                  = sidebarList;
-    exports.showMainToolBar              = showMainToolBar;
-    exports.hideMainToolBar              = hideMainToolBar;
-    exports.scrollElementIntoView        = scrollElementIntoView;
-    exports.getElementClipSize           = getElementClipSize;
-    exports.getFileEntryDisplay          = getFileEntryDisplay;
-    exports.toggleClass                  = toggleClass;
-    exports.getDirNamesForDuplicateFiles = getDirNamesForDuplicateFiles;
-    exports.traverseViewArray            = traverseViewArray;
+    exports.match      = match;
+    exports.itemFocus  = itemFocus;
+    exports.itemSelect = itemSelect;
 });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -846,423 +577,30 @@ for each file in list.</p>
     Public API
 </span>
     <h4>
-        getElementClipSize 
-        <a class="anchor" href="#-getElementClipSize" id="-getElementClipSize"><span class="icon-link"></span></a>
+        match 
+        <a class="anchor" href="#-match" id="-match"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Determine how much of an element rect is clipped in view.</p>
-</div>
+    <div class="description"></div>
     
 <dl>
     <dt>
-        $view
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>- A jQuery scrolling container</dd>
-    <dt>
-        elementRect
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{top: number, left: number, height: number, width: number}</span>
-    </dt>
-    <dd>- rectangle of element's default position/size</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">{top: number,right: number,bottom: number,left: number}</span>
-</dt>
-    <dd>amount element rect is clipped in each direction</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getElementClipSize($view, elementRect) {
-        var delta,
-            clip = { top: 0, right: 0, bottom: 0, left: 0 },
-            viewOffset = $view.offset() || { top: 0, left: 0};
-
-        &#x2F;&#x2F; Check if element extends below viewport
-        delta = (elementRect.top + elementRect.height) - (viewOffset.top + $view.height());
-        if (delta &gt; 0) {
-            clip.bottom = delta;
-        }
-
-        &#x2F;&#x2F; Check if element extends above viewport
-        delta = viewOffset.top - elementRect.top;
-        if (delta &gt; 0) {
-            clip.top = delta;
-        }
-
-        &#x2F;&#x2F; Check if element extends to the left of viewport
-        delta = viewOffset.left - elementRect.left;
-        if (delta &gt; 0) {
-            clip.left = delta;
-        }
-
-        &#x2F;&#x2F; Check if element extends to the right of viewport
-        delta = (elementRect.left + elementRect.width) - (viewOffset.left + $view.width());
-        if (delta &gt; 0) {
-            clip.right = delta;
-        }
-
-        return clip;
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        getFileEntryDisplay 
-        <a class="anchor" href="#-getFileEntryDisplay" id="-getFileEntryDisplay"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>HTML formats a file entry name  for display in the sidebar.</p>
-</div>
-    
-<dl>
-    <dt>
-        entry
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">File</span>
-    </dt>
-    <dd>File entry to display</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
-    <dd>HTML formatted string</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getFileEntryDisplay(entry) {
-        var name = entry.name,
-            ext = LanguageManager.getCompoundFileExtension(name),
-            i = name.lastIndexOf(&quot;.&quot; + ext);
-
-        if (i &gt; 0) {
-            &#x2F;&#x2F; Escape all HTML-sensitive characters in filename.
-            name = _.escape(name.substring(0, i)) + &quot;&lt;span class=&#39;extension&#39;&gt;&quot; + _.escape(name.substring(i)) + &quot;&lt;&#x2F;span&gt;&quot;;
-        } else {
-            name = _.escape(name);
-        }
-
-        return name;
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        removeScrollerShadow 
-        <a class="anchor" href="#-removeScrollerShadow" id="-removeScrollerShadow"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Remove scroller-shadow effect.</p>
-</div>
-    
-<dl>
-    <dt>
-        displayElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>the DOMElement that displays the shadow</dd>
-    <dt>
-        scrollElement
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Object</span>
-    </dt>
-    <dd>the object that is scrolled</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function removeScrollerShadow(displayElement, scrollElement) {
-        if (!scrollElement) {
-            scrollElement = displayElement;
-        }
-
-        var $displayElement = $(displayElement),
-            $scrollElement = $(scrollElement);
-
-        &#x2F;&#x2F; remove scrollerShadow elements from DOM
-        $displayElement.find(&quot;.scroller-shadow.top&quot;).remove();
-        $displayElement.find(&quot;.scroller-shadow.bottom&quot;).remove();
-
-        &#x2F;&#x2F; remove event handlers
-        $scrollElement.off(&quot;scroll.scroller-shadow&quot;);
-        $displayElement.off(&quot;contentChanged.scroller-shadow&quot;);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        scrollElementIntoView 
-        <a class="anchor" href="#-scrollElementIntoView" id="-scrollElementIntoView"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Within a scrolling DOMElement, if necessary, scroll element into viewport.</p>
-<p>To Perform the minimum amount of scrolling necessary, cases should be handled as follows:</p>
-<ul>
-<li>element already completely in view : no scrolling</li>
-<li>element above    viewport          : scroll view so element is at top</li>
-<li>element left of  viewport          : scroll view so element is at left</li>
-<li>element below    viewport          : scroll view so element is at bottom</li>
-<li>element right of viewport          : scroll view so element is at right</li>
-</ul>
-<p>Assumptions:</p>
-<ul>
-<li>$view is a scrolling container</li>
-</ul>
-</div>
-    
-<dl>
-    <dt>
-        $view
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>- A jQuery scrolling container</dd>
-    <dt>
-        $element
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>- A jQuery element</dd>
-    <dt>
-        scrollHorizontal
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">boolean</span>
-    </dt>
-    <dd>- whether to also scroll horizontally</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function scrollElementIntoView($view, $element, scrollHorizontal) {
-        var elementOffset = $element.offset();
-
-        &#x2F;&#x2F; scroll minimum amount
-        var elementRect = {
-                top:    elementOffset.top,
-                left:   elementOffset.left,
-                height: $element.height(),
-                width:  $element.width()
-            },
-            clip = getElementClipSize($view, elementRect);
-
-        if (clip.bottom &gt; 0) {
-            &#x2F;&#x2F; below viewport
-            $view.scrollTop($view.scrollTop() + clip.bottom);
-        } else if (clip.top &gt; 0) {
-            &#x2F;&#x2F; above viewport
-            $view.scrollTop($view.scrollTop() - clip.top);
-        }
-
-        if (scrollHorizontal) {
-            if (clip.left &gt; 0) {
-                $view.scrollLeft($view.scrollLeft() - clip.left);
-            } else if (clip.right &gt; 0) {
-                $view.scrollLeft($view.scrollLeft() + clip.right);
-            }
-        }
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        sidebarList 
-        <a class="anchor" href="#-sidebarList" id="-sidebarList"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Within a scrolling DOMElement, creates and positions a styled selection
-div to align a single selected list item from a ul list element.</p>
-<p>Assumptions:</p>
-<ul>
-<li>scrollerElement is a child of the #sidebar div</li>
-<li>ul list element fires a &quot;selectionChanged&quot; event after the
-selectedClassName is assigned to a new list item</li>
-</ul>
-</div>
-    
-<dl>
-    <dt>
-        scrollElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">DOMElement</span>
-    </dt>
-    <dd>A DOMElement containing a ul list element</dd>
-    <dt>
-        selectedClassName
-        <span class="label label-non-nullable">non-nullable</span>
+        query
         <span class="label label-info">string</span>
     </dt>
-    <dd>A CSS class name on at most one list item in the contained list</dd>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function sidebarList($scrollerElement, selectedClassName, leafClassName) {
-        var $listElement = $scrollerElement.find(&quot;ul&quot;),
-            $selectionMarker,
-            $selectionExtension,
-            $sidebar = $(&quot;#sidebar&quot;),
-            showExtension = true;
-
-        &#x2F;&#x2F; build selectionMarker and position absolute within the scroller
-        $selectionMarker = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection&quot;);
-        $scrollerElement.prepend($selectionMarker);
-
-        &#x2F;&#x2F; enable scrolling
-        $scrollerElement.css(&quot;overflow&quot;, &quot;auto&quot;);
-
-        &#x2F;&#x2F; use relative postioning for clipping the selectionMarker within the scrollElement
-        $scrollerElement.css(&quot;position&quot;, &quot;relative&quot;);
-
-        &#x2F;&#x2F; build selectionExtension and position fixed to the window
-        $selectionExtension = $(window.document.createElement(&quot;div&quot;)).addClass(&quot;sidebar-selection-extension&quot;);
-
-        $scrollerElement.append($selectionExtension);
-
-        selectedClassName = &quot;.&quot; + (selectedClassName || &quot;selected&quot;);
-
-        var updateSelectionExtension = function () {
-            var selectionMarkerHeight = $selectionMarker.height(),
-                selectionMarkerOffset = $selectionMarker.offset(),  &#x2F;&#x2F; offset relative to *document*
-                scrollerOffset = $scrollerElement.offset(),
-                selectionExtensionHeight = $selectionExtension.outerHeight(),
-                scrollerTop = scrollerOffset.top,
-                scrollerBottom = scrollerTop + $scrollerElement.outerHeight(),
-                selectionExtensionTop = selectionMarkerOffset.top;
-
-            $selectionExtension.css(&quot;top&quot;, selectionExtensionTop);
-            $selectionExtension.css(&quot;left&quot;, $sidebar.width() - $selectionExtension.outerWidth());
-            toggleClass($selectionExtension, &quot;selectionExtension-visible&quot;, showExtension);
-
-            var selectionExtensionClipOffsetYBy = Math.floor((selectionMarkerHeight - selectionExtensionHeight) &#x2F; 2),
-                selectionExtensionBottom = selectionExtensionTop + selectionExtensionHeight + selectionExtensionClipOffsetYBy;
-
-            if (selectionExtensionTop &lt; scrollerTop || selectionExtensionBottom &gt; scrollerBottom) {
-                $selectionExtension.css(&quot;clip&quot;, &quot;rect(&quot; + Math.max(scrollerTop - selectionExtensionTop - selectionExtensionClipOffsetYBy, 0) + &quot;px, auto, &quot; +
-                                           (selectionExtensionHeight - Math.max(selectionExtensionBottom - scrollerBottom, 0)) + &quot;px, auto)&quot;);
-            } else {
-                $selectionExtension.css(&quot;clip&quot;, &quot;&quot;);
-            }
-        };
-
-        var hideSelectionMarker = function (event) {
-            $selectionExtension.addClass(&quot;forced-hidden&quot;);
-            $selectionMarker.addClass(&quot;forced-hidden&quot;);
-        };
-
-        var updateSelectionMarker = function (event, reveal) {
-            &#x2F;&#x2F; find the selected list item
-            var $listItem = $listElement.find(selectedClassName).closest(&quot;li&quot;);
-
-            if (leafClassName) {
-                showExtension = $listItem.hasClass(leafClassName);
-            }
-
-            $selectionExtension.removeClass(&quot;forced-hidden&quot;);
-            $selectionMarker.removeClass(&quot;forced-hidden&quot;);
-
-            &#x2F;&#x2F; always hide selection visuals first to force layout (issue #719)
-            $selectionExtension.hide();
-            $selectionMarker.hide();
-
-            if ($listItem.length === 1) {
-                &#x2F;&#x2F; list item position is relative to scroller
-                var selectionMarkerTop = $listItem.offset().top - $scrollerElement.offset().top + $scrollerElement.get(0).scrollTop;
-
-                &#x2F;&#x2F; force selection width to match scroller
-                $selectionMarker.width($scrollerElement.get(0).scrollWidth);
-
-                &#x2F;&#x2F; move the selectionMarker position to align with the list item
-                $selectionMarker.css(&quot;top&quot;, selectionMarkerTop);
-                $selectionMarker.show();
-
-                updateSelectionExtension();
-                $selectionExtension.show();
-
-                &#x2F;&#x2F; fully scroll to the selectionMarker if it&#39;s not initially in the viewport
-                var scrollerElement = $scrollerElement.get(0),
-                    scrollerHeight = scrollerElement.clientHeight,
-                    selectionMarkerHeight = $selectionMarker.height(),
-                    selectionMarkerBottom = selectionMarkerTop + selectionMarkerHeight,
-                    currentScrollBottom = scrollerElement.scrollTop + scrollerHeight;
-
-                &#x2F;&#x2F; update scrollTop to reveal the selected list item
-                if (reveal) {
-                    if (selectionMarkerTop &gt;= currentScrollBottom) {
-                        $listItem.get(0).scrollIntoView(false);
-                    } else if (selectionMarkerBottom &lt;= scrollerElement.scrollTop) {
-                        $listItem.get(0).scrollIntoView(true);
-                    }
-                }
-            }
-        };
-
-        $listElement.on(&quot;selectionChanged&quot;, updateSelectionMarker);
-        $scrollerElement.on(&quot;scroll&quot;, updateSelectionExtension);
-        $scrollerElement.on(&quot;selectionRedraw&quot;, updateSelectionExtension);
-        $scrollerElement.on(&quot;selectionHide&quot;, hideSelectionMarker);
-
-        &#x2F;&#x2F; update immediately
-        updateSelectionMarker();
-
-        &#x2F;&#x2F; update clipping when the window resizes
-        _resizeHandlers.push(updateSelectionExtension);
-    }</code></pre></div><div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        toggleClass 
-        <a class="anchor" href="#-toggleClass" id="-toggleClass"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Utility function to replace jQuery.toggleClass when used with the second argument, which needs to be a true boolean for jQuery</p>
-</div>
-    
-<dl>
+    <dd>what the user is searching for</dd>
     <dt>
-        $domElement
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">jQueryObject</span>
-    </dt>
-    <dd>The jQueryObject to toggle the Class on</dd>
-    <dt>
-        className
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>Class name or names (separated by spaces) to toggle</dd>
-    <dt>
-        addClass
-        <span class="label label-non-nullable">non-nullable</span>
+        returns
         <span class="label label-info">boolean</span>
     </dt>
-    <dd>A truthy value to add the class and a falsy value to remove the class</dd>
+    <dd>true if this plug-in wants to provide results for this query</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function toggleClass($domElement, className, addClass) {
-        if (addClass) {
-            $domElement.addClass(className);
-        } else {
-            $domElement.removeClass(className);
-        }
+<pre class="code language-javascript"><code class="language-javascript">    function match(query) {
+        return (query[0] === &quot;@&quot;);
     }</code></pre></div>
 </section>
 

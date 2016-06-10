@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -364,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -1315,9 +1316,15 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         var createdNewEditor = false,
             editor = document._masterEditor;
 
-        &#x2F;&#x2F;Check if a master editor is not set already or the current master editor doesn&#39;t belong
-        &#x2F;&#x2F;to the pane container requested - to support creation of multiple full editors
-        if (!editor || editor._paneId !== pane.id) {
+        &#x2F;&#x2F; Check if a master editor is not set already or the current master editor doesn&#39;t belong
+        &#x2F;&#x2F; to the pane container requested - to support creation of multiple full editors
+        &#x2F;&#x2F; This check is required as _masterEditor is the active full editor for the document
+        &#x2F;&#x2F; and there can be existing full editor created for other panes
+        if (editor &amp;&amp; editor._paneId &amp;&amp; editor._paneId !== pane.id) {
+            editor = document._checkAssociatedEditorForPane(pane.id);
+        }
+
+        if (!editor) {
             &#x2F;&#x2F; Performance (see #4757) Chrome wastes time messing with selection
             &#x2F;&#x2F; that will just be changed at end, so clear it for now
             if (window.getSelection &amp;&amp; window.getSelection().empty) {  &#x2F;&#x2F; Chrome
@@ -1327,6 +1334,10 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             &#x2F;&#x2F; Editor doesn&#39;t exist: populate a new Editor with the text
             editor = _createFullEditorForDocument(document, pane, editorOptions);
             createdNewEditor = true;
+        } else if (editor.$el.parent()[0] !== pane.$content[0]) {
+            &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the
+            &#x2F;&#x2F;  pane (which will switch the view&#39;s container as well)
+            pane.addView(editor);
         }
 
         &#x2F;&#x2F; show the view
