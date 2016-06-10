@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -649,7 +647,7 @@ Mostly taken from <a href="http://www.w3.org/html/wg/drafts/html/master/syntax.h
 <pre class="code language-javascript"><code class="language-javascript">    function _dumpDOM(root) {
         var result = &quot;&quot;,
             indent = &quot;&quot;;
-        
+
         function walk(node) {
             if (node.tag) {
                 result += indent + &quot;TAG &quot; + node.tagID + &quot; &quot; + node.tag + &quot; &quot; + JSON.stringify(node.attributes) + &quot;\n&quot;;
@@ -663,15 +661,15 @@ Mostly taken from <a href="http://www.w3.org/html/wg/drafts/html/master/syntax.h
             }
         }
         walk(root);
-        
+
         return result;
     }
-    
+
     &#x2F;&#x2F; Public API
     exports.build                       = build;
     exports.Builder                     = Builder;
     exports.SimpleNode                  = SimpleNode;
-    
+
     &#x2F;&#x2F; Private API
     exports._dumpDOM                    = _dumpDOM;
     exports._offsetPos                  = _offsetPos;
@@ -801,7 +799,7 @@ property. All Elements will have a <code>tagID</code> and text nodes <em>can</em
             <pre class="code language-javascript"><code class="language-javascript">    function SimpleNode(properties) {
         $.extend(this, properties);
     }
-    
+
     SimpleNode.prototype = {</code></pre>
         </div>
         
@@ -978,7 +976,7 @@ The nodes include information about their position in the text provided.</p>
         var error       = { token: token },
             startPos    = token ? (token.startPos || token.endPos) : this.startOffsetPos,
             endPos      = token ? token.endPos : this.startOffsetPos;
-        
+
         error.startPos = _addPos(this.startOffsetPos, startPos);
         error.endPos = _addPos(this.startOffsetPos, endPos);
 
@@ -1009,7 +1007,7 @@ The nodes include information about their position in the text provided.</p>
     </h4>
 
     
-    <div class="description"><p>Returns the best tag ID for the new tag object given. 
+    <div class="description"><p>Returns the best tag ID for the new tag object given.
 The default implementation just calls <code>getNewID</code>
 and returns a unique ID.</p>
 </div>
@@ -1068,9 +1066,9 @@ and returns a unique ID.</p>
         var stack = this.stack;
         var attributeName = null;
         var nodeMap = {};
-                
+
         markCache = markCache || {};
-        
+
         &#x2F;&#x2F; Start timers for building full and partial DOMs.
         &#x2F;&#x2F; Appropriate timer is used, and the other is discarded.
         var timerBuildFull = &quot;HTMLInstr. Build DOM Full&quot;;
@@ -1079,16 +1077,16 @@ and returns a unique ID.</p>
         timers = PerfUtils.markStart([timerBuildFull, timerBuildPart]);
         timerBuildFull = timers[0];
         timerBuildPart = timers[1];
-        
+
         function closeTag(endIndex, endPos) {
             lastClosedTag = stack[stack.length - 1];
             stack.pop();
             lastClosedTag.update();
-            
+
             lastClosedTag.end = self.startOffset + endIndex;
             lastClosedTag.endPos = _addPos(self.startOffsetPos, endPos);
         }
-        
+
         while ((token = this.t.nextToken()) !== null) {
             &#x2F;&#x2F; lastTextNode is used to glue text nodes together
             &#x2F;&#x2F; If the last node we saw was text but this one is not, then we&#39;re done gluing.
@@ -1096,7 +1094,7 @@ and returns a unique ID.</p>
             if (token.type !== &quot;text&quot; &amp;&amp; token.type !== &quot;comment&quot; &amp;&amp; lastTextNode) {
                 lastTextNode = null;
             }
-            
+
             if (token.type === &quot;error&quot;) {
                 PerfUtils.finalizeMeasurement(timerBuildFull);  &#x2F;&#x2F; discard
                 PerfUtils.addMeasurement(timerBuildPart);       &#x2F;&#x2F; use
@@ -1105,7 +1103,7 @@ and returns a unique ID.</p>
             } else if (token.type === &quot;opentagname&quot;) {
                 var newTagName = token.contents.toLowerCase(),
                     newTag;
-                
+
                 if (openImpliesClose.hasOwnProperty(newTagName)) {
                     var closable = openImpliesClose[newTagName];
                     while (stack.length &gt; 0 &amp;&amp; closable.hasOwnProperty(stack[stack.length - 1].tag)) {
@@ -1114,7 +1112,7 @@ and returns a unique ID.</p>
                         closeTag(token.start - 1, _offsetPos(token.startPos, -1));
                     }
                 }
-                
+
                 newTag = new SimpleNode({
                     tag: token.contents.toLowerCase(),
                     children: [],
@@ -1124,20 +1122,20 @@ and returns a unique ID.</p>
                     startPos: _addPos(this.startOffsetPos, _offsetPos(token.startPos, -1)) &#x2F;&#x2F; ok because we know the previous char was a &quot;&lt;&quot;
                 });
                 newTag.tagID = this.getID(newTag, markCache);
-                
+
                 &#x2F;&#x2F; During undo in particular, it&#39;s possible that tag IDs may be reused and
                 &#x2F;&#x2F; the marks in the document may be misleading. If a tag ID has been reused,
                 &#x2F;&#x2F; we apply a new tag ID to ensure that our edits come out correctly.
                 if (nodeMap[newTag.tagID]) {
                     newTag.tagID = this.getNewID();
                 }
-                
+
                 nodeMap[newTag.tagID] = newTag;
                 if (newTag.parent) {
                     newTag.parent.children.push(newTag);
                 }
                 this.currentTag = newTag;
-                
+
                 if (voidElements.hasOwnProperty(newTag.tag)) {
                     &#x2F;&#x2F; This is a self-closing element.
                     newTag.update();
@@ -1223,7 +1221,7 @@ and returns a unique ID.</p>
                 if (stack.length) {
                     var parent = stack[stack.length - 1];
                     var newNode;
-                    
+
                     &#x2F;&#x2F; Check to see if we&#39;re continuing a previous text.
                     if (lastTextNode) {
                         newNode = lastTextNode;
@@ -1238,13 +1236,13 @@ and returns a unique ID.</p>
                         nodeMap[newNode.tagID] = newNode;
                         lastTextNode = newNode;
                     }
-                    
+
                     newNode.update();
                 }
             }
             lastIndex = token.end;
         }
-        
+
         &#x2F;&#x2F; If we have any tags hanging open (e.g. html or body), fail the parse if we&#39;re in strict mode,
         &#x2F;&#x2F; otherwise close them at the end of the document.
         if (stack.length) {
@@ -1264,7 +1262,7 @@ and returns a unique ID.</p>
                 }
             }
         }
-        
+
         var dom = lastClosedTag;
         if (!dom) {
             &#x2F;&#x2F; This can happen if the document has no nontrivial content, or if the user tries to
@@ -1273,11 +1271,11 @@ and returns a unique ID.</p>
             this._logError(token);
             return null;
         }
-        
+
         dom.nodeMap = nodeMap;
         PerfUtils.addMeasurement(timerBuildFull);       &#x2F;&#x2F; use
         PerfUtils.finalizeMeasurement(timerBuildPart);  &#x2F;&#x2F; discard
-        
+
         return dom;
     };</code></pre></div><div class="member">
 

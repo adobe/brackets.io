@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -518,20 +516,20 @@
             endChar = attrValue.charAt(attrValue.length - 1),
             offset = TokenUtils.offsetInToken(ctx),
             foundEqualSign = false;
-        
+
         &#x2F;&#x2F;If this is a fully quoted value, return the whole
         &#x2F;&#x2F;thing regardless of position
         if (attrValue.length &gt; 1 &amp;&amp;
                 (startChar === &quot;&#39;&quot; || startChar === &#39;&quot;&#39;) &amp;&amp;
                 endChar === startChar) {
-            
-            &#x2F;&#x2F; Find an equal sign before the end quote. If found, 
-            &#x2F;&#x2F; then the user may be entering an attribute value right before 
+
+            &#x2F;&#x2F; Find an equal sign before the end quote. If found,
+            &#x2F;&#x2F; then the user may be entering an attribute value right before
             &#x2F;&#x2F; another attribute and we&#39;re getting a false balanced string.
-            &#x2F;&#x2F; An example of this case is &lt;link rel&quot; href=&quot;foo&quot;&gt; where the 
+            &#x2F;&#x2F; An example of this case is &lt;link rel&quot; href=&quot;foo&quot;&gt; where the
             &#x2F;&#x2F; cursor is right after the first double quote.
             foundEqualSign = (attrValue.match(&#x2F;\=\s*[&#39;&quot;]$&#x2F;) !== null);
-            
+
             if (!foundEqualSign) {
                 &#x2F;&#x2F;strip the quotes and return;
                 attrValue = attrValue.substring(1, attrValue.length - 1);
@@ -539,7 +537,7 @@
                 return {val: attrValue, offset: offset, quoteChar: startChar, hasEndQuote: true};
             }
         }
-        
+
         if (foundEqualSign) {
             var spaceIndex = attrValue.indexOf(&quot; &quot;),
                 bracketIndex = attrValue.indexOf(&quot;&gt;&quot;),
@@ -548,11 +546,11 @@
         } else if (offset &gt; 0 &amp;&amp; (startChar === &quot;&#39;&quot; || startChar === &#39;&quot;&#39;)) {
             &#x2F;&#x2F;The att value is getting edit in progress. There is possible extra
             &#x2F;&#x2F;stuff in this token state since the quote isn&#39;t closed, so we assume
-            &#x2F;&#x2F;the stuff from the quote to the current pos is definitely in the attribute 
+            &#x2F;&#x2F;the stuff from the quote to the current pos is definitely in the attribute
             &#x2F;&#x2F;value.
             attrValue = attrValue.substring(0, offset);
         }
-        
+
         &#x2F;&#x2F;If the attrValue start with a quote, trim that now
         startChar = attrValue.charAt(0);
         if (startChar === &quot;&#39;&quot; || startChar === &#39;&quot;&#39;) {
@@ -560,14 +558,14 @@
             offset--;
         } else {
             startChar = &quot;&quot;;
-            &#x2F;&#x2F; Make attr value empty and set offset to zero if it has the &quot;&gt;&quot; 
+            &#x2F;&#x2F; Make attr value empty and set offset to zero if it has the &quot;&gt;&quot;
             &#x2F;&#x2F; which is the closing of the tag.
             if (endChar === &quot;&gt;&quot;) {
                 attrValue = &quot;&quot;;
                 offset = 0;
             }
         }
-        
+
         return {val: attrValue, offset: offset, quoteChar: startChar, hasEndQuote: false};
     }</code></pre></div><div class="member private">
 
@@ -603,7 +601,7 @@
         if (ctx.token.type === &quot;tag bracket&quot;) {
             return innerModeData.state.tagName;
         }
-        
+
         &#x2F;&#x2F; If the ctx is inside the tag name of an end tag, innerModeData.state.tagName is
         &#x2F;&#x2F; undefined. So return token string as the tag name.
         return innerModeData.state.tagName || ctx.token.string;
@@ -645,14 +643,14 @@
         if (isPriorAttr === false &amp;&amp; ctx.token.type !== &quot;attribute&quot;) {
             return createTagInfo();
         }
-        
+
         var tagName = _extractTagName(ctx);
         var attrName = ctx.token.string;
         var offset = TokenUtils.offsetInToken(ctx);
-        
+
         if (!TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) || ctx.token.string !== &quot;=&quot;) {
             &#x2F;&#x2F; If we&#39;re checking for a prior attribute and the next token we get is a tag or an html comment or
-            &#x2F;&#x2F; an undefined token class, then we&#39;ve already scanned past our original cursor location. 
+            &#x2F;&#x2F; an undefined token class, then we&#39;ve already scanned past our original cursor location.
             &#x2F;&#x2F; So just return an empty tag info.
             if (isPriorAttr &amp;&amp;
                     (!ctx.token.type ||
@@ -663,7 +661,7 @@
             }
             return createTagInfo(ATTR_NAME, offset, tagName, attrName);
         }
-        
+
         if (!TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx)) {
             return createTagInfo(ATTR_NAME, offset, tagName, attrName);
         }
@@ -672,7 +670,7 @@
             attrVal = attrInfo.val,
             quoteChar = attrInfo.quoteChar,
             hasEndQuote = attrInfo.hasEndQuote;
-        
+
         return createTagInfo(ATTR_NAME, offset, tagName, attrName, attrVal, true, quoteChar, hasEndQuote);
     }</code></pre></div><div class="member private">
 
@@ -710,12 +708,12 @@
             quoteChar = attrInfo.quoteChar,
             hasEndQuote = attrInfo.hasEndQuote,
             strLength = ctx.token.string.length;
-        
+
         if ((ctx.token.type === &quot;string&quot; || ctx.token.type === &quot;error&quot;) &amp;&amp;
                 ctx.pos.ch === ctx.token.end &amp;&amp; strLength &gt; 1) {
             var firstChar = ctx.token.string[0],
                 lastChar = ctx.token.string[strLength - 1];
-            
+
             &#x2F;&#x2F; We get here only when the cursor is immediately on the right of the end quote
             &#x2F;&#x2F; of an attribute value. So we want to return an empty tag info so that the caller
             &#x2F;&#x2F; can dismiss the code hint popup if it is still open.
@@ -723,21 +721,21 @@
                 return createTagInfo();
             }
         }
-        
+
         &#x2F;&#x2F;Move to the prev token, and check if it&#39;s &quot;=&quot;
         if (!TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx) || ctx.token.string !== &quot;=&quot;) {
             return createTagInfo();
         }
-        
+
         &#x2F;&#x2F;Move to the prev token, and check if it&#39;s an attribute
         if (!TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx) || ctx.token.type !== &quot;attribute&quot;) {
             return createTagInfo();
         }
-        
+
         var attrName = ctx.token.string;
         var tagName = _extractTagName(ctx);
- 
-        &#x2F;&#x2F;We&#39;re good. 
+
+        &#x2F;&#x2F;We&#39;re good.
         return createTagInfo(ATTR_VALUE, offset, tagName, attrName, attrVal, true, quoteChar, hasEndQuote);
     }</code></pre></div><div class="member public">
 
@@ -847,7 +845,7 @@ in the given Editor&#39;s HTML document (assumes the Editor contains HTML text).
             outerMode = editor._codeMirror.getMode(),
             tokenModeName,
             previousMode;
-        
+
         while (TokenUtils.moveNextToken(ctx, false)) {
             tokenModeName = CodeMirror.innerMode(outerMode, ctx.token.state).mode.name;
             if (inBlock) {
@@ -877,7 +875,7 @@ in the given Editor&#39;s HTML document (assumes the Editor contains HTML text).
                 &#x2F;&#x2F; else, random token: ignore
             }
         }
-        
+
         return blocks;
     }</code></pre></div><div class="member public">
 
@@ -912,17 +910,17 @@ the Editor contains HTML text).</p>
 <pre class="code language-javascript"><code class="language-javascript">    function findStyleBlocks(editor) {
         return findBlocks(editor, &quot;css&quot;);
     }
-    
-    
+
+
     &#x2F;&#x2F; Define public API
     exports.TAG_NAME         = TAG_NAME;
     exports.CLOSING_TAG      = CLOSING_TAG;
     exports.ATTR_NAME        = ATTR_NAME;
     exports.ATTR_VALUE       = ATTR_VALUE;
-    
+
     exports.getTagInfo       = getTagInfo;
     exports.getTagAttributes = getTagAttributes;
-    &#x2F;&#x2F;The createTagInfo is really only for the unit tests so they can make the same structure to 
+    &#x2F;&#x2F;The createTagInfo is really only for the unit tests so they can make the same structure to
     &#x2F;&#x2F;compare results with
     exports.createTagInfo   = createTagInfo;
     exports.findStyleBlocks = findStyleBlocks;
@@ -964,7 +962,7 @@ the Editor contains HTML text).</p>
         var attrs       = [],
             backwardCtx = TokenUtils.getInitialContext(editor._codeMirror, pos),
             forwardCtx  = $.extend({}, backwardCtx);
-        
+
         if (editor.getModeForSelection() === &quot;html&quot;) {
             if (backwardCtx.token &amp;&amp; !tagPrefixedRegExp.test(backwardCtx.token.type)) {
                 while (TokenUtils.movePrevToken(backwardCtx) &amp;&amp; !tagPrefixedRegExp.test(backwardCtx.token.type)) {
@@ -975,7 +973,7 @@ the Editor contains HTML text).</p>
                         attrs.push(backwardCtx.token.string);
                     }
                 }
-                
+
                 while (TokenUtils.moveNextToken(forwardCtx) &amp;&amp; !tagPrefixedRegExp.test(forwardCtx.token.type)) {
                     if (forwardCtx.token.type === &quot;attribute&quot;) {
                         &#x2F;&#x2F; If the current tag is not closed, codemirror may return the next opening
@@ -1000,7 +998,7 @@ the Editor contains HTML text).</p>
                 }
             }
         }
-        
+
         return attrs;
     }</code></pre></div><div class="member public">
 
@@ -1015,7 +1013,7 @@ the Editor contains HTML text).</p>
 
     
     <div class="description"><p>Figure out if we&#39;re in a tag, and if we are return info about it
-An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-arrow&quot;&gt;&lt;/span&gt; : 
+An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-arrow&quot;&gt;&lt;/span&gt; :
      className:tag       string:&quot;&lt;span&quot;
      className:          string:&quot; &quot;
      className:attribute string:&quot;id&quot;
@@ -1044,18 +1042,18 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getTagInfo(editor, constPos) {
         &#x2F;&#x2F; We&#39;re going to be changing pos a lot, but we don&#39;t want to mess up
-        &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.	
+        &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.
         var pos = $.extend({}, constPos),
             ctx = TokenUtils.getInitialContext(editor._codeMirror, pos),
             offset = TokenUtils.offsetInToken(ctx),
             tagInfo,
             tokenType;
-        
+
         &#x2F;&#x2F; Check if this is inside a style block.
         if (editor.getModeForSelection() !== &quot;html&quot;) {
             return createTagInfo();
         }
-        
+
         &#x2F;&#x2F; Check and see where we are in the tag
         if (ctx.token.string.length &gt; 0 &amp;&amp; !&#x2F;\S&#x2F;.test(ctx.token.string)) {
 
@@ -1089,7 +1087,7 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
             } else {
                 &#x2F;&#x2F; We get here if &quot;&gt;&quot; or white spaces after testPos.
                 &#x2F;&#x2F; Check if there is an equal sign after testPos by creating a new ctx
-                &#x2F;&#x2F; with the original pos. We can&#39;t use the current ctx since we need to 
+                &#x2F;&#x2F; with the original pos. We can&#39;t use the current ctx since we need to
                 &#x2F;&#x2F; use it to scan backwards if we don&#39;t find an equal sign here.
                 &#x2F;&#x2F; Comment out this block to fix issue #1510.
 &#x2F;&#x2F;                if (testToken.string.length &gt; 0 &amp;&amp; testToken.string.charAt(0) !== &quot;&gt;&quot;) {
@@ -1120,7 +1118,7 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                                 ctx.token.string === &quot;&lt;&#x2F;&quot;))) {
                         return createTagInfo();
                     }
-                    
+
                     &#x2F;&#x2F; If it wasn&#39;t an attr value, assume it was an empty attr (ie. attr with no value)
                     if (!tagInfo.tagName) {
                         tagInfo = _getTagInfoStartingFromAttrName(ctx, true);
@@ -1133,13 +1131,13 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                     }
                     return createTagInfo();
                 }
-                
+
                 &#x2F;&#x2F; We know the tag was here, so the user is adding an attr name
                 tokenType = ATTR_NAME;
                 offset = 0;
             }
         }
-        
+
         if (tagPrefixedRegExp.test(ctx.token.type)) {
             if (ctx.token.type !== &quot;tag bracket&quot;) {
                 &#x2F;&#x2F; Check if the user just typed a white space after &quot;&lt;&quot; that made an existing tag invalid.
@@ -1156,12 +1154,12 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                 &#x2F;&#x2F; movePrevToken above to detect &quot;&lt;&quot; or &quot;&lt;&#x2F;&quot;.
                 TokenUtils.moveNextToken(ctx);
             }
-            
+
             &#x2F;&#x2F; Check to see if this is the closing of a start tag or a self closing tag
             if (ctx.token.string === &quot;&gt;&quot; || ctx.token.string === &quot;&#x2F;&gt;&quot;) {
                 return createTagInfo();
             }
-            
+
             &#x2F;&#x2F; Make sure the cursor is not after an equal sign or a quote before we report the context as a tag.
             if (ctx.token.string !== &quot;=&quot; &amp;&amp; ctx.token.string.match(&#x2F;^[&quot;&#39;]&#x2F;) === null) {
                 if (!tokenType) {
@@ -1174,7 +1172,7 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                         } else {
                             offset = 0;
                         }
-                        &#x2F;&#x2F; If the cursor is right after the &quot;&lt;&quot; or &quot;&lt;&#x2F;&quot;, then 
+                        &#x2F;&#x2F; If the cursor is right after the &quot;&lt;&quot; or &quot;&lt;&#x2F;&quot;, then
                         &#x2F;&#x2F; move context to next one so that _extractTagName
                         &#x2F;&#x2F; call below can get the tag name if there is one.
                         if (offset === 0) {
@@ -1182,30 +1180,30 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                         }
                     }
                 }
-                
-                &#x2F;&#x2F; We&#39;re actually in the tag, just return that as we have no relevant 
+
+                &#x2F;&#x2F; We&#39;re actually in the tag, just return that as we have no relevant
                 &#x2F;&#x2F; info about what attr is selected
                 return createTagInfo(tokenType, offset, _extractTagName(ctx));
             }
         }
-        
+
         if (ctx.token.string === &quot;=&quot;) {
             &#x2F;&#x2F; We could be between the attr and the value
             &#x2F;&#x2F; Step back and check
             if (!TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx) || ctx.token.type !== &quot;attribute&quot;) {
                 return createTagInfo();
             }
-            
+
             &#x2F;&#x2F; The &quot;=&quot; is added, time to hint for values
             tokenType = ATTR_VALUE;
             offset = 0;
         }
-        
+
         if (ctx.token.type === &quot;attribute&quot;) {
             tagInfo = _getTagInfoStartingFromAttrName(ctx, false);
-            
+
             &#x2F;&#x2F; If we&#39;re in attr value, then we may need to calculate the correct offset
-            &#x2F;&#x2F; from the beginning of the attribute value. If the cursor position is to 
+            &#x2F;&#x2F; from the beginning of the attribute value. If the cursor position is to
             &#x2F;&#x2F; the left of attr value, then the offset is negative.
             &#x2F;&#x2F; e.g. if the cursor is just to the right of the &quot;=&quot; in &lt;a rel= &quot;rtl&quot;, then
             &#x2F;&#x2F; the offset will be -2.
@@ -1213,7 +1211,7 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
                 offset = constPos.ch - ctx.pos.ch;
             } else if (tokenType === ATTR_VALUE &amp;&amp; (constPos.ch + 1) &lt; ctx.pos.ch) {
                 &#x2F;&#x2F; The cursor may be right before an unquoted attribute or another attribute name.
-                &#x2F;&#x2F; Since we can&#39;t distinguish between them, we will empty the value so that the 
+                &#x2F;&#x2F; Since we can&#39;t distinguish between them, we will empty the value so that the
                 &#x2F;&#x2F; caller can just insert a new attribute value.
                 tagInfo.attr.value = &quot;&quot;;
             }
@@ -1221,12 +1219,12 @@ An example token stream for this tag is &lt;span id=&quot;open-files-disclosure-
             &#x2F;&#x2F; if we&#39;re not at a tag, &quot;=&quot;, or attribute name, assume we&#39;re in the value
             tagInfo = _getTagInfoStartingFromAttrValue(ctx);
         }
-        
+
         if (tokenType &amp;&amp; tagInfo.tagName) {
             tagInfo.position.tokenType = tokenType;
             tagInfo.position.offset = offset;
         }
-        
+
         return tagInfo;
     }</code></pre></div>
 </section>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -477,6 +475,7 @@
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/install-extension-dialog.html.html">install-extension-dialog.html</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/utils/NativeApp.html">NativeApp</a></li>
         <li><a href="..&#x2F;../modules/extensibility/Package.html">Package</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
@@ -540,15 +539,15 @@
         } else {
             this.pendingInstall = Package.installFromURL(url);
         }
-        
+
         &#x2F;&#x2F; Store now since we&#39;ll null pendingInstall immediately if the promise was resolved synchronously
         var promise = this.pendingInstall.promise;
-        
+
         var self = this;
         this.pendingInstall.promise.always(function () {
             self.pendingInstall = null;
         });
-        
+
         return promise;
     };
     InstallerFacade.prototype.cancel = function () {
@@ -641,7 +640,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function updateUsingDialog(urlToUpdate) {
         return installUsingDialog(urlToUpdate, true);
     }
-    
+
     exports.showDialog          = showDialog;
     exports.installUsingDialog  = installUsingDialog;
     exports.updateUsingDialog   = updateUsingDialog;
@@ -980,11 +979,11 @@ something has/hasn&#39;t been installed successfully.</p>
             msg,
             self = this,
             prevState = this._state;
-        
+
         &#x2F;&#x2F; Store the new state up front in case some of the processing below ends up changing
         &#x2F;&#x2F; the state again immediately.
         this._state = newState;
-        
+
         switch (newState) {
         case STATE_START:
             &#x2F;&#x2F; This should match the default appearance of the dialog when it first opens.
@@ -995,11 +994,11 @@ something has/hasn&#39;t been installed successfully.</p>
                 .prop(&quot;disabled&quot;, true)
                 .text(Strings.INSTALL);
             break;
-                
+
         case STATE_VALID_URL:
             this.$okButton.prop(&quot;disabled&quot;, false);
             break;
-            
+
         case STATE_INSTALLING:
             url = this.$url.val().trim();
             this.$inputArea.hide();
@@ -1032,7 +1031,7 @@ something has/hasn&#39;t been installed successfully.</p>
                     }
                 });
             break;
-            
+
         case STATE_CANCELING_INSTALL:
             &#x2F;&#x2F; This should call back the STATE_INSTALLING fail() handler above, unless it&#39;s too late to cancel
             &#x2F;&#x2F; in which case we&#39;ll still jump to STATE_INSTALLED after this
@@ -1045,14 +1044,14 @@ something has/hasn&#39;t been installed successfully.</p>
                 }
             }, this._cancelTimeout);
             break;
-            
+
         case STATE_CANCELING_HUNG:
             this.$msg.text(Strings.CANCELING_HUNG);
             this.$okButton
                 .removeAttr(&quot;disabled&quot;)
                 .text(Strings.CLOSE);
             break;
-            
+
         case STATE_INSTALLED:
         case STATE_INSTALL_FAILED:
         case STATE_INSTALL_CANCELED:
@@ -1075,7 +1074,7 @@ something has/hasn&#39;t been installed successfully.</p>
                 .text(Strings.CLOSE);
             this.$cancelButton.hide();
             break;
-        
+
         case STATE_ALREADY_INSTALLED:
             var installResult = this._installResult;
             var status = installResult.installationStatus;
@@ -1088,14 +1087,14 @@ something has/hasn&#39;t been installed successfully.</p>
                 .prop(&quot;disabled&quot;, false)
                 .text(Strings.OVERWRITE);
             break;
-        
+
         case STATE_OVERWRITE_CONFIRMED:
             this._enterState(STATE_CLOSED);
             break;
-        
+
         case STATE_CLOSED:
             $(document.body).off(&quot;.installDialog&quot;);
-            
+
            &#x2F;&#x2F; Only resolve as successful if we actually installed something.
             Dialogs.cancelModalDialogIfOpen(&quot;install-extension-dialog&quot;);
             if (prevState === STATE_INSTALLED || prevState === STATE_NEEDS_UPDATE ||
@@ -1262,11 +1261,11 @@ something has/hasn&#39;t been installed successfully.</p>
             isUpdate: this._isUpdate,
             includeBrowseExtensions: !!brackets.config.extension_listing_url
         };
-        
-        &#x2F;&#x2F; We ignore the promise returned by showModalDialogUsingTemplate, since we&#39;re managing the 
+
+        &#x2F;&#x2F; We ignore the promise returned by showModalDialogUsingTemplate, since we&#39;re managing the
         &#x2F;&#x2F; lifecycle of the dialog ourselves.
         Dialogs.showModalDialogUsingTemplate(Mustache.render(InstallDialogTemplate, context), false);
-        
+
         this.$dlg          = $(&quot;.install-extension-dialog.instance&quot;);
         this.$url          = this.$dlg.find(&quot;.url&quot;).focus();
         this.$okButton     = this.$dlg.find(&quot;.dialog-button[data-button-id=&#39;ok&#39;]&quot;);
@@ -1283,7 +1282,7 @@ something has/hasn&#39;t been installed successfully.</p>
             NativeApp.openURLInDefaultBrowser(brackets.config.extension_listing_url);
         });
         $(window.document.body).on(&quot;keyup.installDialog&quot;, this._handleKeyUp.bind(this));
-        
+
         this._enterState(STATE_START);
         if (urlToInstall) {
             &#x2F;&#x2F; Act as if the user had manually entered the URL.

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -465,28 +463,30 @@
     <h3>Description</h3>
     
     <div><p>Pane objects host views of files, editors, etc... Clients cannot access
-Pane objects directly. Instead the implementation is protected by the 
-MainViewManager -- however View Factories are given a Pane object which 
+Pane objects directly. Instead the implementation is protected by the
+MainViewManager -- however View Factories are given a Pane object which
 they can use to add views.  References to Pane objects should not be kept
 as they may be destroyed and removed from the DOM.</p>
 <p>To get a custom view, there are two components:</p>
-<p> 1) A View Factory<br> 2) A View Object  </p>
-<p>View objects are anonymous object that have a particular interface. </p>
-<p>Views can be added to a pane but do not have to exist in the Pane object&#39;s view list.<br>Such views are &quot;temporary views&quot;.  Temporary views are not serialized with the Pane state
+<p> 1) A View Factory
+ 2) A View Object</p>
+<p>View objects are anonymous object that have a particular interface.</p>
+<p>Views can be added to a pane but do not have to exist in the Pane object&#39;s view list.
+Such views are &quot;temporary views&quot;.  Temporary views are not serialized with the Pane state
 or reconstituted when the pane is serialized from disk.  They are destroyed at the earliest
 opportunity.</p>
-<p>Temporary views are added by calling <code>Pane.showView()</code> and passing it the view object. The view 
+<p>Temporary views are added by calling <code>Pane.showView()</code> and passing it the view object. The view
 will be destroyed when the next view is shown, the pane is mereged with another pane or the &quot;Close All&quot;
 command is exectuted on the Pane.  Temporary Editor Views do not contain any modifications and are
-added to the workingset (and are no longer tempoary views) once the document has been modified. They 
+added to the workingset (and are no longer tempoary views) once the document has been modified. They
 will remain in the working set until closed from that point on.</p>
-<p>Views that have a longer life span are added by calling addView to associate the view with a 
+<p>Views that have a longer life span are added by calling addView to associate the view with a
 filename in the _views object.  These views are not destroyed until they are removed from the pane
 by calling one of the following: removeView, removeViews, or _reset</p>
-<p>Pane Object Events:  </p>
+<p>Pane Object Events:</p>
 <ul>
-<li><p>viewListChange - Whenever there is a file change to a file in the working set.  These 2 events: <code>DocumentManger.pathRemove</code> 
-and <code>DocumentManger.fileNameChange</code> will cause a <code>viewListChange</code> event so the WorkingSetView can update.</p>
+<li><p>viewListChange - Whenever there is a file change to a file in the working set.  These 2 events: <code>DocumentManager.pathRemove</code>
+and <code>DocumentManager.fileNameChange</code> will cause a <code>viewListChange</code> event so the WorkingSetView can update.</p>
 </li>
 <li><p>currentViewChange - Whenever the current view changes.</p>
 <pre><code>     (e, newView:View, oldView:View)
@@ -495,13 +495,13 @@ and <code>DocumentManger.fileNameChange</code> will cause a <code>viewListChange
 <pre><code>     (e, view:View)
 </code></pre></li>
 </ul>
-<p>View Interface:  </p>
+<p>View Interface:</p>
 <p>The view is an anonymous object which has the following method signatures. see ImageViewer for an example or the sample
-provided with Brackets <code>src/extensions/samples/BracketsConfigCentral</code>  </p>
+provided with Brackets <code>src/extensions/samples/BracketsConfigCentral</code></p>
 <pre><code>{
-    $el:jQuery 
-    getFile: function ():!File 
-    updateLayout: function(forceRefresh:boolean) 
+    $el:jQuery
+    getFile: function ():!File
+    updateLayout: function(forceRefresh:boolean)
     destroy: function()
     getScrollPos: function():*=
     adjustScrollPos: function(state:Object=, heightDelta:number)=
@@ -509,7 +509,8 @@ provided with Brackets <code>src/extensions/samples/BracketsConfigCentral</code>
     notifyVisibilityChange: function(boolean)=
     focus:function()=
 }
-</code></pre><p>When views are created they can be added to the pane by calling <code>pane.addView()</code>.<br>Views can be created and parented by attaching directly  to <code>pane.$el</code> </p>
+</code></pre><p>When views are created they can be added to the pane by calling <code>pane.addView()</code>.
+Views can be created and parented by attaching directly  to <code>pane.$el</code></p>
 <pre><code>this._codeMirror = new CodeMirror(pane.$el, ...)
 </code></pre><p>Factories can create a view that&#39;s initially hidden by calling <code>pane.addView(view)</code> and passing <code>false</code> for the show parameter.
 Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
@@ -526,27 +527,27 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
 <p><code>destroy()</code></p>
 <p> Views must implement a destroy method to remove their DOM element at the very least.  There is no default
  implementation and views are hidden before this method is called. The Pane object doesn&#39;t make assumptions
- about when it is safe to remove a node. In some instances other cleanup  must take place before a the DOM 
- node is destroyed so the implementation details are left to the view.  </p>
-<p> Views can implement a simple destroy by calling </p>
+ about when it is safe to remove a node. In some instances other cleanup  must take place before a the DOM
+ node is destroyed so the implementation details are left to the view.</p>
+<p> Views can implement a simple destroy by calling</p>
 <pre><code> this.$el.remove()
-</code></pre><p> These members are optional and need not be implemented by Views </p>
+</code></pre><p> These members are optional and need not be implemented by Views</p>
 <pre><code> getScrollPos()
  adjustScrollPos()
 </code></pre><p> The system at various times will want to save and restore a view&#39;s scroll position.  The data returned by <code>getScrollPos()</code>
  is specific to the view and will be passed back to <code>adjustScrollPos()</code> when the scroll position needs to be restored.</p>
 <p> When Modal Bars are invoked, the system calls <code>getScrollPos()</code> so that the current scroll psotion of all visible Views can be cached.
  That cached scroll position is later passed to <code>adjustScrollPos()</code> along with a height delta.  The height delta is used to
- scroll the view so that it doesn&#39;t appear to have &quot;jumped&quot; when invoking the Modal Bar.  </p>
-<p> Height delta will be a positive when the Modal Bar is being shown and negative number when the Modal Bar is being hidden.  </p>
+ scroll the view so that it doesn&#39;t appear to have &quot;jumped&quot; when invoking the Modal Bar.</p>
+<p> Height delta will be a positive when the Modal Bar is being shown and negative number when the Modal Bar is being hidden.</p>
 <p> <code>getViewState()</code> is another optional member that is used to cache a view&#39;s state when hiding or destroying a view or closing the project.
- The data returned by this member is stored in <code>ViewStateManager</code> and is saved with the project.  </p>
-<p> Views or View Factories are responsible for restoring the view state when the view of that file is created by recalling the cached state </p>
+ The data returned by this member is stored in <code>ViewStateManager</code> and is saved with the project.</p>
+<p> Views or View Factories are responsible for restoring the view state when the view of that file is created by recalling the cached state</p>
 <pre><code> var view = createIconView(file, pane);
  view.restoreViewState(ViewStateManager.getViewState(file.fullPath));
 </code></pre><p> Notifications
  The following optional methods receive notifications from the Pane object when certain events take place which affect the view:</p>
-<p><code>notifyContainerChange()</code> </p>
+<p><code>notifyContainerChange()</code></p>
 <p> Optional Notification callback called when the container changes. The view can perform any synchronization or state update
  it needs to do when its parent container changes.</p>
 <p><code>notifyVisiblityChange()</code></p>
@@ -568,13 +569,79 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
         <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/pane.html.html">pane.html</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
         <li><a href="..&#x2F;../modules/view/ViewStateManager.html">ViewStateManager</a></li>
         <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        FIRST_PANE     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-FIRST_PANE" id="-FIRST_PANE"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Internal pane id</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var FIRST_PANE          = &quot;first-pane&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        SECOND_PANE     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-SECOND_PANE" id="-SECOND_PANE"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Internal pane id</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var SECOND_PANE         = &quot;second-pane&quot;;
+
+    &#x2F;&#x2F; Define showPaneHeaderButtons, which controls when to show close and flip-view buttons
+    &#x2F;&#x2F; on the header.
+    PreferencesManager.definePreference(&quot;pane.showPaneHeaderButtons&quot;, &quot;string&quot;, &quot;hover&quot;, {
+        description: Strings.DESCRIPTION_SHOW_PANE_HEADER_BUTTONS,
+        values: [&quot;hover&quot;, &quot;always&quot;, &quot;never&quot;]
+    });
+
+    &#x2F;&#x2F; Define mergePanesWhenLastFileClosed, which controls if a split view pane should be
+    &#x2F;&#x2F; closed when the last file is closed, skipping the &quot;Open a file while this pane has focus&quot;
+    &#x2F;&#x2F; step completely.
+    PreferencesManager.definePreference(&quot;pane.mergePanesWhenLastFileClosed&quot;, &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_MERGE_PANES_WHEN_LAST_FILE_CLOSED
+    });</code></pre></div>
 </section>
 
 <section id="functions">
@@ -650,19 +717,84 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function Pane(id, $container) {
         this._initialize();
-        
+
         &#x2F;&#x2F; Setup the container and the element we&#39;re inserting
         var self = this,
+            showPaneHeaderButtonsPref = PreferencesManager.get(&quot;pane.showPaneHeaderButtons&quot;),
             $el = $container.append(Mustache.render(paneTemplate, {id: id})).find(&quot;#&quot; + id),
             $header  = $el.find(&quot;.pane-header&quot;),
+            $headerText = $header.find(&quot;.pane-header-text&quot;),
+            $headerFlipViewBtn = $header.find(&quot;.pane-header-flipview-btn&quot;),
+            $headerCloseBtn = $header.find(&quot;.pane-header-close-btn&quot;),
             $content = $el.find(&quot;.pane-content&quot;);
-        
+
         $el.on(&quot;focusin.pane&quot;, function (e) {
             self._lastFocusedElement = e.target;
         });
 
+        &#x2F;&#x2F; Flips the current file to the other pane when clicked
+        $headerFlipViewBtn.on(&quot;click.pane&quot;, function (e) {
+            var currentFile = self.getCurrentlyViewedFile();
+            var otherPaneId = self.id === FIRST_PANE ? SECOND_PANE : FIRST_PANE;
+            var otherPane = MainViewManager._getPane(otherPaneId);
+            
+            &#x2F;&#x2F; If the same doc view is present in the destination pane prevent flip
+            if (otherPane.getViewForPath(currentFile.fullPath)) {
+                return;
+            }
+
+            &#x2F;&#x2F; Currently active pane is not necessarily self.id as just clicking the button does not
+            &#x2F;&#x2F; give focus to the pane. This way it is possible to flip multiple panes to the active one
+            &#x2F;&#x2F; without losing focus.
+            var activePaneIdBeforeFlip = MainViewManager.getActivePaneId();
+            var currentFileOnOtherPaneIndex = otherPane.findInViewList(currentFile.fullPath);
+
+            &#x2F;&#x2F; if the currentFile is already on other pane just close the current pane
+            if (currentFileOnOtherPaneIndex  !== -1) {
+                CommandManager.execute(Commands.FILE_CLOSE, {File: currentFile, paneId: self.id});
+            }
+            
+            MainViewManager._moveView(self.id, otherPaneId, currentFile).always(function () {
+                CommandManager.execute(Commands.FILE_OPEN, {fullPath: currentFile.fullPath,
+                                                            paneId: otherPaneId}).always(function () {
+
+                    var activePaneBeforeFlip = MainViewManager._getPane(activePaneIdBeforeFlip);
+
+                    &#x2F;&#x2F; Trigger view list changes for both panes
+                    self.trigger(&quot;viewListChange&quot;);
+                    otherPane.trigger(&quot;viewListChange&quot;);
+
+                    &#x2F;&#x2F; Defer the focusing until other focus events have occurred.
+                    setTimeout(function () {
+                        &#x2F;&#x2F; Focus has most likely changed: give it back to the original pane.
+                        activePaneBeforeFlip.focus();
+                        self._lastFocusedElement = activePaneBeforeFlip.$el[0];
+                        MainViewManager.setActivePaneId(activePaneIdBeforeFlip);
+                    }, 1);
+                });
+            });
+        });
+
+        &#x2F;&#x2F; Closes the current view on the pane when clicked. If pane has no files, merge
+        &#x2F;&#x2F; panes.
+        $headerCloseBtn.on(&quot;click.pane&quot;, function () {
+            &#x2F;&#x2F;set clicked pane as active to ensure that this._currentView is updated before closing
+            MainViewManager.setActivePaneId(self.id);
+            var file = self.getCurrentlyViewedFile();
+
+            if (file) {
+                CommandManager.execute(Commands.FILE_CLOSE, {File: file, paneId: self.id});
+
+                if (!self.getCurrentlyViewedFile() &amp;&amp; PreferencesManager.get(&quot;pane.mergePanesWhenLastFileClosed&quot;)) {
+                    MainViewManager.setLayoutScheme(1, 1);
+                }
+            } else {
+                MainViewManager.setLayoutScheme(1, 1);
+            }
+        });
+
         this._lastFocusedElement = $el[0];
-        
+
         &#x2F;&#x2F; Make these properties read only
         Object.defineProperty(this,  &quot;id&quot;, {
             get: function () {
@@ -691,6 +823,33 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
             }
         });
 
+        Object.defineProperty(this,  &quot;$headerText&quot;, {
+            get: function () {
+                return $headerText;
+            },
+            set: function () {
+                console.error(&quot;cannot change the DOM node of a working pane&quot;);
+            }
+        });
+
+        Object.defineProperty(this,  &quot;$headerFlipViewBtn&quot;, {
+            get: function () {
+                return $headerFlipViewBtn;
+            },
+            set: function () {
+                console.error(&quot;cannot change the DOM node of a working pane&quot;);
+            }
+        });
+
+        Object.defineProperty(this,  &quot;$headerCloseBtn&quot;, {
+            get: function () {
+                return $headerCloseBtn;
+            },
+            set: function () {
+                console.error(&quot;cannot change the DOM node of a working pane&quot;);
+            }
+        });
+
         Object.defineProperty(this,  &quot;$content&quot;, {
             get: function () {
                 return $content;
@@ -711,6 +870,16 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
 
         this.updateHeaderText();
 
+        switch (showPaneHeaderButtonsPref) {
+        case &quot;always&quot;:
+            this.$header.addClass(&quot;always-show-header-buttons&quot;);
+            break;
+        case &quot;never&quot;:
+            this.$headerFlipViewBtn.css(&quot;display&quot;, &quot;none&quot;);
+            this.$headerCloseBtn.css(&quot;display&quot;, &quot;none&quot;);
+            break;
+        }
+
         &#x2F;&#x2F; Listen to document events so we can update ourself
         DocumentManager.on(this._makeEventName(&quot;fileNameChange&quot;),  _.bind(this._handleFileNameChange, this));
         DocumentManager.on(this._makeEventName(&quot;pathDeleted&quot;), _.bind(this._handleFileDeleted, this));
@@ -719,6 +888,7 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
         MainViewManager.on(this._makeEventName(&quot;workingSetRemove&quot;), _.bind(this.updateHeaderText, this));
         MainViewManager.on(this._makeEventName(&quot;workingSetAddList&quot;), _.bind(this.updateHeaderText, this));
         MainViewManager.on(this._makeEventName(&quot;workingSetRemoveList&quot;), _.bind(this.updateHeaderText, this));
+        MainViewManager.on(this._makeEventName(&quot;paneLayoutChange&quot;), _.bind(this.updateFlipViewIcon, this));
     }
     EventDispatcher.makeEventDispatcher(Pane.prototype);</code></pre>
         </div>
@@ -808,7 +978,7 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
     </h4>
 
     
-    <div class="description"><p>the wrapped DOM node that contains name of current view, or informational string if there is no view</p>
+    <div class="description"><p>the wrapped DOM node container that contains name of current view and the switch view button, or informational string if there is no view</p>
 </div>
     
 <dl>
@@ -825,13 +995,79 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
     
 </span>
     <h4>
+        $headerCloseBtn 
+        <a class="anchor" href="#Pane-$headerCloseBtn" id="Pane-$headerCloseBtn"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>close button of the pane</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>JQuery</dd>
+</dl><dl>
+        <dt>readonly</dt>
+        <dd></dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.$headerCloseBtn = null;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $headerFlipViewBtn 
+        <a class="anchor" href="#Pane-$headerFlipViewBtn" id="Pane-$headerFlipViewBtn"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>the wrapped DOM node that is used to flip the view to another pane</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>JQuery</dd>
+</dl><dl>
+        <dt>readonly</dt>
+        <dd></dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.$headerFlipViewBtn = null;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        $headerText 
+        <a class="anchor" href="#Pane-$headerText" id="Pane-$headerText"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>the wrapped DOM node that contains name of current view, or informational string if there is no view</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>JQuery</dd>
+</dl><dl>
+        <dt>readonly</dt>
+        <dd></dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.$headerText = null;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         ITEM_FOUND_NEEDS_SORT     <span class="label label-info">Constant</span>
 
         <a class="anchor" href="#Pane-ITEM_FOUND_NEEDS_SORT" id="Pane-ITEM_FOUND_NEEDS_SORT"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Return value from reorderItem when the Item was found and reindexed 
+    <div class="description"><p>Return value from reorderItem when the Item was found and reindexed
 and the workingset needs to be resorted</p>
 </div>
     
@@ -853,7 +1089,7 @@ and the workingset needs to be resorted</p>
     </h4>
 
     
-    <div class="description"><p>Return value from reorderItem when the Item was found at its natural index 
+    <div class="description"><p>Return value from reorderItem when the Item was found at its natural index
 and the workingset does not need to be resorted</p>
 </div>
     
@@ -875,7 +1111,7 @@ and the workingset does not need to be resorted</p>
     </h4>
 
     
-    <div class="description"><p>Return value from reorderItem when the Item was not found </p>
+    <div class="description"><p>Return value from reorderItem when the Item was not found</p>
 </div>
     
 <dl>
@@ -1081,7 +1317,7 @@ and the workingset does not need to be resorted</p>
             &#x2F;&#x2F; If no index is specified, just add the file to the end of the workingset.
             this._viewList.push(file);
         }
-        
+
         &#x2F;&#x2F; Add to MRU order: either first or last, depending on whether it&#39;s already the current doc or not
         var currentPath = this.getCurrentlyViewedPath();
         if (currentPath &amp;&amp; currentPath === file.fullPath) {
@@ -1089,7 +1325,7 @@ and the workingset does not need to be resorted</p>
         } else {
             this._viewListMRUOrder.push(file);
         }
-        
+
         &#x2F;&#x2F; Add first to Added order
         this._viewListAddedOrder.unshift(file);
     };</code></pre></div><div class="member private">
@@ -1123,7 +1359,7 @@ and the workingset does not need to be resorted</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._canAddFile = function (file) {
         return ((this._views.hasOwnProperty(file.fullPath) &amp;&amp; this.findInViewList(file.fullPath) === -1) ||
-                    (!MainViewManager._getPaneIdForPath(file.fullPath)));
+                    (MainViewManager._getPaneIdForPath(file.fullPath) !== this.id));
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1136,7 +1372,7 @@ and the workingset does not need to be resorted</p>
     </h4>
 
     
-    <div class="description"><p>Destroys a view and removes it from the view map. If it is the current view then the view 
+    <div class="description"><p>Destroys a view and removes it from the view map. If it is the current view then the view
 is first hidden and the interstitial page is displayed</p>
 </div>
     
@@ -1196,17 +1432,17 @@ is first hidden and the interstitial page is displayed</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._doRemove = function (file, preventViewChange) {
-        
-        &#x2F;&#x2F; If it&#39;s in the view list then we need to remove it 
+
+        &#x2F;&#x2F; If it&#39;s in the view list then we need to remove it
         var index = this.findInViewList(file.fullPath);
-        
+
         if (index &gt; -1) {
             &#x2F;&#x2F; Remove it from all 3 view lists
             this._viewList.splice(index, 1);
             this._viewListMRUOrder.splice(this.findInViewListMRUOrder(file.fullPath), 1);
             this._viewListAddedOrder.splice(this.findInViewListAddedOrder(file.fullPath), 1);
         }
-        
+
         &#x2F;&#x2F; Destroy the view
         var view = this._views[file.fullPath];
 
@@ -1215,7 +1451,7 @@ is first hidden and the interstitial page is displayed</p>
                 this._doDestroyView(view);
             }
         }
-        
+
         return ((index &gt; -1) || Boolean(view));
     };</code></pre></div><div class="member private">
 
@@ -1357,22 +1593,22 @@ is first hidden and the interstitial page is displayed</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._handleFileNameChange = function (e, oldname, newname) {
         &#x2F;&#x2F; Check to see if we need to dispatch a viewListChange event
-        &#x2F;&#x2F; The list contains references to file objects and, for a rename event, 
+        &#x2F;&#x2F; The list contains references to file objects and, for a rename event,
         &#x2F;&#x2F; the File object&#39;s name has changed by the time we&#39;ve gotten the event.
         &#x2F;&#x2F; So, we need to look for the file by its new name to determine if
         &#x2F;&#x2F; if we need to dispatch the event which may look funny
         var dispatchEvent = (this.findInViewList(newname) &gt;= 0);
-        
-        &#x2F;&#x2F; rename the view 
+
+        &#x2F;&#x2F; rename the view
         if (this._views.hasOwnProperty(oldname)) {
             var view = this._views[oldname];
 
             this._views[newname] = view;
             delete this._views[oldname];
         }
-        
+
         this.updateHeaderText();
-        
+
         &#x2F;&#x2F; dispatch the change event
         if (dispatchEvent) {
             this.trigger(&quot;viewListChange&quot;);
@@ -1389,7 +1625,7 @@ is first hidden and the interstitial page is displayed</p>
     </h4>
 
     
-    <div class="description"><p>Hides the current view if there is one, shows the 
+    <div class="description"><p>Hides the current view if there is one, shows the
  interstitial screen and notifies that the view changed</p>
 </div>
     
@@ -1465,7 +1701,7 @@ is first hidden and the interstitial page is displayed</p>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._isViewNeeded = function (view) {
         var path = view.getFile().fullPath,
             currentPath = this.getCurrentlyViewedPath();
-        
+
         return ((this._currentView &amp;&amp; currentPath === path) || (this.findInViewList(path) !== -1));
     };</code></pre></div><div class="member private">
 
@@ -1489,7 +1725,7 @@ is first hidden and the interstitial page is displayed</p>
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>- the name of the event to namespace </dd>
+    <dd>- the name of the event to namespace</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">string</span>
 </dt>
@@ -1533,7 +1769,7 @@ is first hidden and the interstitial page is displayed</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._notifyCurrentViewChange = function (newView, oldView) {
         this.updateHeaderText();
-        
+
         this.trigger(&quot;currentViewChange&quot;, newView, oldView);
     };</code></pre></div><div class="member private">
 
@@ -1595,17 +1831,17 @@ is first hidden and the interstitial page is displayed</p>
         _.forEach(this._views, function (_view) {
             views.push(_view);
         });
-        
+
         &#x2F;&#x2F; If the current view is a temporary view,
         &#x2F;&#x2F;  add it to the destroy list to dispose of
         if (this._currentView &amp;&amp; views.indexOf(this._currentView) === -1) {
             views.push(this._currentView);
         }
-        
-        &#x2F;&#x2F; This will reinitialize the object back to 
+
+        &#x2F;&#x2F; This will reinitialize the object back to
         &#x2F;&#x2F;  the default state
         this._initialize();
-        
+
         if (view) {
             this._notifyCurrentViewChange(null, view);
         }
@@ -1673,7 +1909,7 @@ is first hidden and the interstitial page is displayed</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype._updateHeaderHeight = function () {
         var paneContentHeight = this.$el.height();
-        
+
         &#x2F;&#x2F; Adjust pane content height for header
         if (MainViewManager.getPaneCount() &gt; 1) {
             this.$header.show();
@@ -1681,7 +1917,7 @@ is first hidden and the interstitial page is displayed</p>
         } else {
             this.$header.hide();
         }
-        
+
         this.$content.height(paneContentHeight);
     };</code></pre></div><div class="member">
 
@@ -1695,7 +1931,7 @@ is first hidden and the interstitial page is displayed</p>
     </h4>
 
     
-    <div class="description"><p>Adds the given file list to the end of the workingset. </p>
+    <div class="description"><p>Adds the given file list to the end of the workingset.</p>
 </div>
     
 <dl>
@@ -1763,13 +1999,12 @@ Does not change which document is currently open in the editor. Completes synchr
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.addToViewList = function (file, index) {
         var indexRequested = (index !== undefined &amp;&amp; index !== null &amp;&amp; index &gt;= 0 &amp;&amp; index &lt; this._viewList.length);
-
         this._addToViewList(file, _makeIndexRequestObject(indexRequested, index));
-        
+
         if (!indexRequested) {
             index = this._viewList.length - 1;
         }
-        
+
         return index;
     };</code></pre></div><div class="member">
 
@@ -1792,7 +2027,7 @@ Does not change which document is currently open in the editor. Completes synchr
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">View</span>
     </dt>
-    <dd>- the View object to add </dd>
+    <dd>- the View object to add</dd>
     <dt>
         show
         <span class="label label-info">boolean</span>
@@ -1805,19 +2040,23 @@ Does not change which document is currently open in the editor. Completes synchr
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.addView = function (view, show) {
         var file = view.getFile(),
             path = file &amp;&amp; file.fullPath;
-        
+
         if (!path) {
             console.error(&quot;cannot add a view that does not have a fullPath&quot;);
             return;
         }
-        
+
         if (view.$el.parent() !== this.$content) {
             this._reparent(view);
         } else {
             this._views[path] = view;
         }
 
-        
+        &#x2F;&#x2F; Ensure that we don&#39;t endup marking the custom views
+        if (view.markPaneId) {
+            view.markPaneId(this.id);
+        }
+
         if (show) {
             this.showView(view);
         }
@@ -1833,7 +2072,7 @@ Does not change which document is currently open in the editor. Completes synchr
     </h4>
 
     
-    <div class="description"><p>Removes the DOM node for the Pane, removes all 
+    <div class="description"><p>Removes the DOM node for the Pane, removes all
  event handlers and _resets all internal data structures</p>
 </div>
     
@@ -1850,7 +2089,7 @@ Does not change which document is currently open in the editor. Completes synchr
         }
 
         this._reset();
-        
+
         DocumentManager.off(this._makeEventName(&quot;&quot;));
         MainViewManager.off(this._makeEventName(&quot;&quot;));
 
@@ -1901,7 +2140,7 @@ Does not change which document is currently open in the editor. Completes synchr
     </h4>
 
     
-    <div class="description"><p>Returns the index of the item in the view file list </p>
+    <div class="description"><p>Returns the index of the item in the view file list</p>
 </div>
     
 <dl>
@@ -1910,7 +2149,7 @@ Does not change which document is currently open in the editor. Completes synchr
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>the full path of the item to look for </dd>
+    <dd>the full path of the item to look for</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">number</span>
 </dt>
@@ -1943,7 +2182,7 @@ Does not change which document is currently open in the editor. Completes synchr
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>the full path of the item to look for </dd>
+    <dd>the full path of the item to look for</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">number</span>
 </dt>
@@ -1976,7 +2215,7 @@ Does not change which document is currently open in the editor. Completes synchr
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>the full path of the item to look for </dd>
+    <dd>the full path of the item to look for</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">number</span>
 </dt>
@@ -2031,12 +2270,12 @@ Does not change which document is currently open in the editor. Completes synchr
                 self.$el.focus();
             }
         }
-        
+
         &#x2F;&#x2F; short-circuit for performance
         if (this._lastFocusedElement === current) {
             return;
         }
-            
+
         &#x2F;&#x2F; If the focus was in a &lt;textarea&gt; (assumed to be CodeMirror) and currentView is
         &#x2F;&#x2F; anything other than an Editor, blur the textarea explicitly, in case the new
         &#x2F;&#x2F; _currentView&#39;s $el isn&#39;t focusable. E.g.:
@@ -2052,12 +2291,12 @@ Does not change which document is currently open in the editor. Completes synchr
         var $lfe = $(this._lastFocusedElement);
 
         if ($lfe.length &amp;&amp; !$lfe.is(&quot;.view-pane&quot;) &amp;&amp; $lfe.is(&quot;:visible&quot;)) {
-            &#x2F;&#x2F; if we had a last focused element 
-            &#x2F;&#x2F;  and it wasn&#39;t a pane element 
+            &#x2F;&#x2F; if we had a last focused element
+            &#x2F;&#x2F;  and it wasn&#39;t a pane element
             &#x2F;&#x2F;  and it&#39;s still visible, focus it
             $lfe.focus();
         } else {
-            &#x2F;&#x2F; otherwise, just try to give focus 
+            &#x2F;&#x2F; otherwise, just try to give focus
             &#x2F;&#x2F;  to the currently active view
             tryFocusingCurrentView();
         }
@@ -2241,7 +2480,7 @@ Does not change which document is currently open in the editor. Completes synchr
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">Object</span>
     </dt>
-    <dd>- the state to load </dd>
+    <dd>- the state to load</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">jQuery.Promise</span>
 </dt>
@@ -2255,7 +2494,7 @@ Does not change which document is currently open in the editor. Completes synchr
             activeFile,
             data,
             self = this;
-        
+
         var getInitialViewFilePath = function () {
             return (self._viewList.length &gt; 0) ? self._viewList[0].fullPath : null;
         };
@@ -2269,17 +2508,17 @@ Does not change which document is currently open in the editor. Completes synchr
                 viewStates[entry.file] = entry.viewState;
             }
         });
-        
+
         this.addListToViewList(filesToAdd);
-        
+
         ViewStateManager.addViewStates(viewStates);
-        
+
         activeFile = activeFile || getInitialViewFilePath();
-       
+
         if (activeFile) {
             data = {paneId: self.id, fullPath: activeFile};
         }
-        
+
         return new $.Deferred().resolve(data);
     };</code></pre></div><div class="member">
 
@@ -2325,7 +2564,7 @@ Does not change which document is currently open in the editor. Completes synchr
     </h4>
 
     
-    <div class="description"><p>Merges the another Pane object&#39;s contents into this Pane </p>
+    <div class="description"><p>Merges the another Pane object&#39;s contents into this Pane</p>
 </div>
     
 <dl>
@@ -2343,16 +2582,16 @@ Does not change which document is currently open in the editor. Completes synchr
         &#x2F;&#x2F; save this because we&#39;re setting it to null and we
         &#x2F;&#x2F;  may need to destroy it if it&#39;s a temporary view
         var otherCurrentView = other._currentView;
-        
-        &#x2F;&#x2F; Hide the current view while we 
+
+        &#x2F;&#x2F; Hide the current view while we
         &#x2F;&#x2F;  merge the 2 panes together
         other._hideCurrentView();
-        
+
         &#x2F;&#x2F; Copy the File lists
         this._viewList = _.union(this._viewList, other._viewList);
         this._viewListMRUOrder = _.union(this._viewListMRUOrder, other._viewListMRUOrder);
         this._viewListAddedOrder = _.union(this._viewListAddedOrder, other._viewListAddedOrder);
-        
+
         var self = this,
             viewsToDestroy = [];
 
@@ -2369,11 +2608,11 @@ Does not change which document is currently open in the editor. Completes synchr
             }
         });
 
-        &#x2F;&#x2F; 1-off views 
+        &#x2F;&#x2F; 1-off views
         if (otherCurrentView &amp;&amp; !other._isViewNeeded(otherCurrentView) &amp;&amp; viewsToDestroy.indexOf(otherCurrentView) === -1) {
             viewsToDestroy.push(otherCurrentView);
         }
-        
+
         &#x2F;&#x2F; Destroy temporary views
         _.forEach(viewsToDestroy, function (view) {
             self.trigger(&quot;viewDestroy&quot;, view);
@@ -2381,7 +2620,7 @@ Does not change which document is currently open in the editor. Completes synchr
         });
 
         &#x2F;&#x2F; this _reset all internal data structures
-        &#x2F;&#x2F;  and will set the current view to null 
+        &#x2F;&#x2F;  and will set the current view to null
         other._initialize();
     };</code></pre></div><div class="member private">
 
@@ -2409,7 +2648,7 @@ Does not change which document is currently open in the editor. Completes synchr
         destinationPane
         <span class="label label-info">Pane</span>
     </dt>
-    <dd>- the destination pane </dd>
+    <dd>- the destination pane</dd>
     <dt>
         destinationIndex
         <span class="label label-info">Number</span>
@@ -2426,8 +2665,8 @@ Does not change which document is currently open in the editor. Completes synchr
         var self = this,
             openNextPromise = new $.Deferred(),
             result = new $.Deferred();
-        
-        &#x2F;&#x2F; if we&#39;re moving the currently viewed file we 
+
+        &#x2F;&#x2F; if we&#39;re moving the currently viewed file we
         &#x2F;&#x2F;  need to open another file so wait for that operation
         &#x2F;&#x2F;  to finish before we move the view
         if ((this.getCurrentlyViewedPath() === file.fullPath)) {
@@ -2448,36 +2687,47 @@ Does not change which document is currently open in the editor. Completes synchr
         } else {
             openNextPromise.resolve();
         }
-        
+
         &#x2F;&#x2F; Once the next file has opened, we can
-        &#x2F;&#x2F;  move the item in the working set and 
+        &#x2F;&#x2F;  move the item in the working set and
         &#x2F;&#x2F;  open it in the destination pane
         openNextPromise.done(function () {
+            var viewListIndex = self.findInViewList(file.fullPath);
+            var shouldAddView = viewListIndex !== -1;
+            var view = self._views[file.fullPath];
+
+            &#x2F;&#x2F; If the file isn&#39;t in working set, destroy the view and delete it from
+            &#x2F;&#x2F; source pane&#39;s view map and return as solved
+            if (!shouldAddView) {
+                if (view) {
+                    self._doDestroyView(view);
+                }
+                return result.resolve();
+            }
+
             &#x2F;&#x2F; Remove file from all 3 view lists
-            self._viewList.splice(self.findInViewList(file.fullPath), 1);
+            self._viewList.splice(viewListIndex, 1);
             self._viewListMRUOrder.splice(self.findInViewListMRUOrder(file.fullPath), 1);
             self._viewListAddedOrder.splice(self.findInViewListAddedOrder(file.fullPath), 1);
 
             &#x2F;&#x2F; insert the view into the working set
             destinationPane._addToViewList(file,  _makeIndexRequestObject(true, destinationIndex));
 
-            &#x2F;&#x2F;move the view,
-            var view = self._views[file.fullPath];
-
             &#x2F;&#x2F; if we had a view, it had previously been opened
-            &#x2F;&#x2F;  otherwise, the file was in the working set unopened
+            &#x2F;&#x2F; otherwise, the file was in the working set unopened
             if (view) {
                 &#x2F;&#x2F; delete it from the source pane&#39;s view map and add it to the destination pane&#39;s view map
                 delete self._views[file.fullPath];
                 destinationPane.addView(view, !destinationPane.getCurrentlyViewedFile());
+
                 &#x2F;&#x2F; we&#39;re done
                 result.resolve();
             } else if (!destinationPane.getCurrentlyViewedFile()) {
-                &#x2F;&#x2F; The view has not have been created and the pane was 
+                &#x2F;&#x2F; The view has not have been created and the pane was
                 &#x2F;&#x2F;  not showing anything so open the file moved in to the pane
                 destinationPane._execOpenFile(file.fullPath).always(function () {
                     &#x2F;&#x2F; wait until the file has been opened before
-                    &#x2F;&#x2F;  we resolve the promise so the working set 
+                    &#x2F;&#x2F;  we resolve the promise so the working set
                     &#x2F;&#x2F;  view can sync appropriately
                     result.resolve();
                 });
@@ -2552,7 +2802,7 @@ after in the working set up and reinserting it at the desired location</p>
         preventViewChange
         <span class="label label-info">boolean</span>
     </dt>
-    <dd>- if suppressOpenNextFile is truthy, this flag can be used to prevent the current view from being destroyed. Ignored if suppressOpenNextFile is falsy </dd>
+    <dd>- if suppressOpenNextFile is truthy, this flag can be used to prevent the current view from being destroyed. Ignored if suppressOpenNextFile is falsy</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">boolean</span>
 </dt>
@@ -2566,7 +2816,7 @@ after in the working set up and reinserting it at the desired location</p>
             var self = this,
                 fullPath = nextFile.fullPath,
                 needOpenNextFile = this.findInViewList(fullPath) !== -1;
-            
+
             if (this._doRemove(file, needOpenNextFile)) {
                 if (needOpenNextFile) {
                     &#x2F;&#x2F; this will destroy the current view
@@ -2597,7 +2847,7 @@ after in the working set up and reinserting it at the desired location</p>
 
     
     <div class="description"><p>Removes the specifed file from all internal lists, destroys the view of the file (if there is one)
- and shows the interstitial page if the current view is destroyed. </p>
+ and shows the interstitial page if the current view is destroyed.</p>
 </div>
     
 <dl>
@@ -2624,20 +2874,20 @@ after in the working set up and reinserting it at the desired location</p>
             return file.fullPath === self.getCurrentlyViewedPath();
         }) !== -1;
 
-        &#x2F;&#x2F; destroy the views in the list 
+        &#x2F;&#x2F; destroy the views in the list
         result = list.filter(function (file) {
             return (self.removeView(file, true, true));
         });
 
         &#x2F;&#x2F; we may have been passed a list of files that did not include the current view
         if (needsDestroyCurrentView) {
-            &#x2F;&#x2F; _doRemove will have whittled the MRU list down to just the remaining views 
+            &#x2F;&#x2F; _doRemove will have whittled the MRU list down to just the remaining views
             var nextFile = this.traverseViewListByMRU(1, this.getCurrentlyViewedPath()),
                 fullPath = nextFile &amp;&amp; nextFile.fullPath,
                 needOpenNextFile = fullPath &amp;&amp; (this.findInViewList(fullPath) !== -1);
-            
+
             if (needOpenNextFile) {
-                &#x2F;&#x2F; A successful open will destroy the current view 
+                &#x2F;&#x2F; A successful open will destroy the current view
                 this._execOpenFile(fullPath)
                     .fail(function () {
                         &#x2F;&#x2F; the FILE_OPEN op failed so destroy the current view
@@ -2648,7 +2898,7 @@ after in the working set up and reinserting it at the desired location</p>
                 this._doDestroyView(this._currentView);
             }
         }
-        
+
         &#x2F;&#x2F; return the result
         return result;
     };</code></pre></div><div class="member">
@@ -2694,7 +2944,7 @@ after in the working set up and reinserting it at the desired location</p>
 <pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.reorderItem = function (file, index, force) {
         var indexRequested = (index !== undefined &amp;&amp; index !== null &amp;&amp; index &gt;= 0),
             curIndex = this.findInViewList(file.fullPath);
-        
+
         if (curIndex !== -1) {
             &#x2F;&#x2F; File is in view list, but not at the specifically requested index - only need to reorder
             if (force || (indexRequested &amp;&amp; curIndex !== index)) {
@@ -2704,7 +2954,7 @@ after in the working set up and reinserting it at the desired location</p>
             }
             return this.ITEM_FOUND_NO_SORT;
         }
-        
+
         return this.ITEM_NOT_FOUND;
     };</code></pre></div><div class="member">
 
@@ -2743,7 +2993,7 @@ after in the working set up and reinserting it at the desired location</p>
             this._currentView.adjustScrollPos(state.scrollPos, heightDelta);
         }
     };
-    
+
     exports.Pane = Pane;
 });</code></pre></div><div class="member">
 
@@ -2774,14 +3024,14 @@ after in the working set up and reinserting it at the desired location</p>
 
         &#x2F;&#x2F; Save the current view state first
         if (this._currentView &amp;&amp; this._currentView.getFile()) {
-            &#x2F;&#x2F; We save the view state of the current view before 
+            &#x2F;&#x2F; We save the view state of the current view before
             &#x2F;&#x2F;  hiding the view and showing to a different file
             &#x2F;&#x2F; But the current view&#39;s view state may not be
             &#x2F;&#x2F;  up to date in the view state cache so update it
             &#x2F;&#x2F;  before we save so we don&#39;t JSON-ify stale data.
             ViewStateManager.updateViewState(this._currentView);
         }
-        
+
         &#x2F;&#x2F; walk the list of views and save
         this._viewList.forEach(function (file) {
             &#x2F;&#x2F; Do not persist untitled document paths
@@ -2793,7 +3043,7 @@ after in the working set up and reinserting it at the desired location</p>
                 });
             }
         });
-        
+
         return result;
     };</code></pre></div><div class="member">
 
@@ -2836,8 +3086,8 @@ after in the working set up and reinserting it at the desired location</p>
     </h4>
 
     
-    <div class="description"><p>Swaps the current view with the requested view. 
-If the interstitial page is shown, it is hidden. 
+    <div class="description"><p>Swaps the current view with the requested view.
+If the interstitial page is shown, it is hidden.
 If the currentView is a temporary view, it is destroyed.</p>
 </div>
     
@@ -2858,11 +3108,11 @@ If the currentView is a temporary view, it is destroyed.</p>
             this.updateLayout(true);
             return;
         }
-        
+
         var file = view.getFile(),
             newPath = file &amp;&amp; file.fullPath,
             oldView = this._currentView;
-        
+
         if (this._currentView) {
             if (this._currentView.getFile()) {
                 ViewStateManager.updateViewState(this._currentView);
@@ -2871,17 +3121,17 @@ If the currentView is a temporary view, it is destroyed.</p>
         } else {
             this.showInterstitial(false);
         }
-        
+
         this._currentView = view;
         this._setViewVisibility(this._currentView, true);
         this.updateLayout();
-        
+
         this._notifyCurrentViewChange(view, oldView);
-        
+
         if (oldView) {
             this.destroyViewIfNotNeeded(oldView);
         }
-        
+
         if (!this._views.hasOwnProperty(newPath)) {
             console.error(newPath + &quot; found in pane working set but pane.addView() has not been called for the view created for it&quot;);
         }
@@ -2897,7 +3147,7 @@ If the currentView is a temporary view, it is destroyed.</p>
     </h4>
 
     
-    <div class="description"><p>invokes Array.sort method on the internal view list. </p>
+    <div class="description"><p>invokes Array.sort method on the internal view list.</p>
 </div>
     
 <dl>
@@ -2990,9 +3240,47 @@ If the currentView is a temporary view, it is destroyed.</p>
             var file = this._currentView.getFile();
             current = file &amp;&amp; file.fullPath;
         }
-        
+
         var index = current ? this.findInViewListMRUOrder(current) : -1;
         return ViewUtils.traverseViewArray(this._viewListMRUOrder, index, direction);
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        updateFlipViewIcon 
+        <a class="anchor" href="#Pane-updateFlipViewIcon" id="Pane-updateFlipViewIcon"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Updates flipview icon in pane header</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Pane.prototype.updateFlipViewIcon = function () {
+        var paneID = this.id,
+            directionIndex = 0,
+            ICON_CLASSES = [&quot;flipview-icon-none&quot;, &quot;flipview-icon-top&quot;, &quot;flipview-icon-right&quot;, &quot;flipview-icon-bottom&quot;, &quot;flipview-icon-left&quot;],
+            DIRECTION_STRINGS = [&quot;&quot;, Strings.TOP, Strings.RIGHT, Strings.BOTTOM, Strings.LEFT],
+            layoutScheme = MainViewManager.getLayoutScheme(),
+            hasFile = this.getCurrentlyViewedFile();
+
+        if (layoutScheme.columns &gt; 1 &amp;&amp; hasFile) {
+            directionIndex = paneID === FIRST_PANE ? 2 : 4;
+        } else if (layoutScheme.rows &gt; 1 &amp;&amp; hasFile) {
+            directionIndex = paneID === FIRST_PANE ? 3 : 1;
+        }
+
+        this.$headerFlipViewBtn.removeClass(ICON_CLASSES.join(&quot; &quot;))
+                      .addClass(ICON_CLASSES[directionIndex]);
+
+        this.$headerFlipViewBtn.attr(&quot;title&quot;, StringUtils.format(Strings.FLIPVIEW_BTN_TOOLTIP,  DIRECTION_STRINGS[directionIndex].toLowerCase()));
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -3017,20 +3305,22 @@ If the currentView is a temporary view, it is destroyed.</p>
         var file = this.getCurrentlyViewedFile(),
             files,
             displayName;
-        
+
         if (file) {
             files = MainViewManager.getAllOpenFiles().filter(function (item) {
                 return (item.name === file.name);
             });
             if (files.length &lt; 2) {
-                this.$header.text(file.name);
+                this.$headerText.text(file.name);
             } else {
                 displayName = ProjectManager.makeProjectRelativeIfPossible(file.fullPath);
-                this.$header.text(displayName);
+                this.$headerText.text(displayName);
             }
         } else {
-            this.$header.html(Strings.EMPTY_VIEW_HEADER);
+            this.$headerText.html(Strings.EMPTY_VIEW_HEADER);
         }
+
+        this.updateFlipViewIcon();
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">

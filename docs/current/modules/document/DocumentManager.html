@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -464,7 +462,7 @@
 <section class="description">
     <h3>Description</h3>
     
-    <div><p>DocumentManager maintains a list of currently &#39;open&#39; Documents. The DocumentManager is responsible 
+    <div><p>DocumentManager maintains a list of currently &#39;open&#39; Documents. The DocumentManager is responsible
 for coordinating document operations and dispatching certain document events.</p>
 <p>Document is the model for a file&#39;s contents; it dispatches events whenever those contents change.
 To transiently inspect a file&#39;s content, simply get a Document and call getText() on it. However,
@@ -498,8 +496,8 @@ not just full-sized editors) or MainViewManager currentFileChange (which covers 
 only, but is also triggered for non-editor views e.g. image files).</p>
 </li>
 <li><p>fileNameChange -- When the name of a file or folder has changed. The 2nd arg is the old name.
-The 3rd arg is the new name.  Generally, however, file objects have already been changed by the 
-time this event is dispatched so code that relies on matching the filename to a file object 
+The 3rd arg is the new name.  Generally, however, file objects have already been changed by the
+time this event is dispatched so code that relies on matching the filename to a file object
 will need to compare the newname.</p>
 </li>
 <li><p>pathDeleted -- When a file or folder has been deleted. The 2nd arg is the path that was deleted.</p>
@@ -626,17 +624,17 @@ will need to compare the newname.</p>
             var projectPath = key.substr(pathPrefix.length);
             return &quot;user project.files &quot; + projectPath;
         }
-        
+
         return null;
     }
-    
-    
+
+
     &#x2F;&#x2F; Set up event dispatch
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; This deprecated event is dispatched manually from &quot;currentFileChange&quot; below
     EventDispatcher.markDeprecated(exports, &quot;currentDocumentChange&quot;, &quot;MainViewManager.currentFileChange&quot;);
-    
+
     &#x2F;&#x2F; These deprecated events are automatically dispatched by DeprecationWarning, set up in AppInit.extensionsLoaded()
     EventDispatcher.markDeprecated(exports, &quot;workingSetAdd&quot;,        &quot;MainViewManager.workingSetAdd&quot;);
     EventDispatcher.markDeprecated(exports, &quot;workingSetAddList&quot;,    &quot;MainViewManager.workingSetAddList&quot;);
@@ -729,7 +727,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
             }
         });
     }
-    
+
     &#x2F;&#x2F; For compatibility
     DocumentModule
         .on(&quot;_afterDocumentCreate&quot;, function (event, doc) {
@@ -754,23 +752,26 @@ inline editor makes no-op edits or does a read-only operation.</p>
             exports.trigger(&quot;documentRefreshed&quot;, doc);
         })
         .on(&quot;_dirtyFlagChange&quot;, function (event, doc) {
+            &#x2F;&#x2F; Modules listening on the doc instance notified about dirtyflag change
+            &#x2F;&#x2F; To be used internally by Editor
+            doc.trigger(&quot;_dirtyFlagChange&quot;, doc);
             exports.trigger(&quot;dirtyFlagChange&quot;, doc);
             if (doc.isDirty) {
                 MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, doc.file);
-                
+
                 &#x2F;&#x2F; We just dirtied a doc and added it to the active working set
                 &#x2F;&#x2F;  this may have come from an internal dirtying so if it was
                 &#x2F;&#x2F;  added to a working set that had no active document then
-                &#x2F;&#x2F;  open the document 
+                &#x2F;&#x2F;  open the document
                 &#x2F;&#x2F;
-                &#x2F;&#x2F; See: https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;9569 
+                &#x2F;&#x2F; See: https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;9569
                 &#x2F;&#x2F;
                 &#x2F;&#x2F; NOTE: Adding a file to the active working set may not actually add
-                &#x2F;&#x2F;       it to the active working set (e.g. the document was already 
+                &#x2F;&#x2F;       it to the active working set (e.g. the document was already
                 &#x2F;&#x2F;       opened to the inactive working set.)
                 &#x2F;&#x2F;
                 &#x2F;&#x2F;       Check that it was actually added to the active working set
-                
+
                 if (!MainViewManager.getCurrentlyViewedFile() &amp;&amp;
                         MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, doc.file.fullPath) !== -1) {
                     CommandManager.execute(Commands.FILE_OPEN, {fullPath: doc.file.fullPath});
@@ -863,7 +864,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
     </h4>
 
     
-    <div class="description"><p>freezes the Working Set MRU list </p>
+    <div class="description"><p>freezes the Working Set MRU list</p>
 </div>
     
 <dl>
@@ -911,7 +912,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
     </h4>
 
     
-    <div class="description"><p>closes the specified file file </p>
+    <div class="description"><p>closes the specified file file</p>
 </div>
     
 <dl>
@@ -967,7 +968,7 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
             fullPath = _untitledDocumentPath + &quot;&#x2F;&quot; + filename,
             now = new Date(),
             file = new InMemoryFile(fullPath, FileSystem);
-        
+
         FileSystem.addEntryForPathIfRequired(file, fullPath);
 
         return new DocumentModule.Document(file, now, &quot;&quot;);
@@ -1087,11 +1088,11 @@ these Documents are synced with external changes on disk.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCurrentDocument() {
         var file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
-        
+
         if (file) {
             return getOpenDocumentForPath(file.fullPath);
         }
-        
+
         return null;
     }</code></pre></div><div class="member public">
 
@@ -1137,35 +1138,35 @@ refs and listeners for that Editor UI).</p>
             &#x2F;&#x2F; use existing document
             return new $.Deferred().resolve(doc).promise();
         } else {
-            
+
             &#x2F;&#x2F; Should never get here if the fullPath refers to an Untitled document
             if (fullPath.indexOf(_untitledDocumentPath) === 0) {
                 console.error(&quot;getDocumentForPath called for non-open untitled document: &quot; + fullPath);
                 return new $.Deferred().reject().promise();
             }
-            
+
             var file            = FileSystem.getFileForPath(fullPath),
                 pendingPromise  = getDocumentForPath._pendingDocumentPromises[file.id];
-            
+
             if (pendingPromise) {
                 &#x2F;&#x2F; wait for the result of a previous request
                 return pendingPromise;
             } else {
                 var result = new $.Deferred(),
                     promise = result.promise();
-                
+
                 &#x2F;&#x2F; log this document&#39;s Promise as pending
                 getDocumentForPath._pendingDocumentPromises[file.id] = promise;
-    
+
                 &#x2F;&#x2F; create a new document
                 var perfTimerName = PerfUtils.markStart(&quot;getDocumentForPath:\t&quot; + fullPath);
-    
+
                 result.done(function () {
                     PerfUtils.addMeasurement(perfTimerName);
                 }).fail(function () {
                     PerfUtils.finalizeMeasurement(perfTimerName);
                 });
-    
+
                 FileUtils.readAsText(file)
                     .always(function () {
                         &#x2F;&#x2F; document is no longer pending
@@ -1173,16 +1174,16 @@ refs and listeners for that Editor UI).</p>
                     })
                     .done(function (rawText, readTimestamp) {
                         doc = new DocumentModule.Document(file, readTimestamp, rawText);
-                                
+
                         &#x2F;&#x2F; This is a good point to clean up any old dangling Documents
                         _gcDocuments();
-                        
+
                         result.resolve(doc);
                     })
                     .fail(function (fileError) {
                         result.reject(fileError);
                     });
-                
+
                 return promise;
             }
         }
@@ -1308,7 +1309,7 @@ it; see {@link #getDocumentForPath} for details.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getOpenDocumentForPath(fullPath) {
         var id;
-        
+
         &#x2F;&#x2F; Need to walk all open documents and check for matching path. We can&#39;t
         &#x2F;&#x2F; use getFileForPath(fullPath).id since the file it returns won&#39;t match
         &#x2F;&#x2F; an Untitled document&#39;s InMemoryFile.
@@ -1388,13 +1389,13 @@ sort of &quot;project file model,&quot; making this just a private event handler
 <pre class="code language-javascript"><code class="language-javascript">    function notifyFileDeleted(file) {
         &#x2F;&#x2F; Notify all editors to close as well
         exports.trigger(&quot;pathDeleted&quot;, file.fullPath);
-        
+
         var doc = getOpenDocumentForPath(file.fullPath);
-        
+
         if (doc) {
             doc.trigger(&quot;deleted&quot;);
         }
-        
+
         &#x2F;&#x2F; At this point, all those other views SHOULD have released the Doc
         if (doc &amp;&amp; doc._refCount &gt; 0) {
             console.warn(&quot;Deleted &quot; + file.fullPath + &quot; Document still has &quot; + doc._refCount + &quot; references. Did someone addRef() without listening for &#39;deleted&#39;?&quot;);
@@ -1426,15 +1427,15 @@ for updating underlying model data and notifying all views of the change.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function notifyPathDeleted(fullPath) {
-        &#x2F;&#x2F; FileSyncManager.syncOpenDocuments() does all the work prompting 
+        &#x2F;&#x2F; FileSyncManager.syncOpenDocuments() does all the work prompting
         &#x2F;&#x2F;  the user to save any unsaved changes and then calls us back
         &#x2F;&#x2F;  via notifyFileDeleted
         FileSyncManager.syncOpenDocuments(Strings.FILE_DELETED_TITLE);
-        
+
         if (!getOpenDocumentForPath(fullPath) &amp;&amp;
                 !MainViewManager.findInAllWorkingSets(fullPath).length) {
             &#x2F;&#x2F; For images not open in the workingset,
-            &#x2F;&#x2F; FileSyncManager.syncOpenDocuments() will 
+            &#x2F;&#x2F; FileSyncManager.syncOpenDocuments() will
             &#x2F;&#x2F;  not tell us to close those views
             exports.trigger(&quot;pathDeleted&quot;, fullPath);
         }
@@ -1470,14 +1471,14 @@ for updating underlying model data and notifying all views of the change.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function notifyPathNameChanged(oldName, newName) {
-        &#x2F;&#x2F; Notify all open documents 
+        &#x2F;&#x2F; Notify all open documents
         _.forEach(_openDocuments, function (doc) {
-            &#x2F;&#x2F; TODO: Only notify affected documents? For now _notifyFilePathChange 
+            &#x2F;&#x2F; TODO: Only notify affected documents? For now _notifyFilePathChange
             &#x2F;&#x2F; just updates the language if the extension changed, so it&#39;s fine
             &#x2F;&#x2F; to call for all open docs.
             doc._notifyFilePathChanged();
         });
-        
+
         &#x2F;&#x2F; Send a &quot;fileNameChange&quot; event. This will trigger the views to update.
         exports.trigger(&quot;fileNameChange&quot;, oldName, newName);
     }</code></pre></div><div class="member public deprecated">
@@ -1493,7 +1494,7 @@ for updating underlying model data and notifying all views of the change.</p>
     </h4>
 
     
-    <div class="description"><p>closes a list of files </p>
+    <div class="description"><p>closes a list of files</p>
 </div>
     
 <dl>

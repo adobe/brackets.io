@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>NativeFileSystem - Brackets API</title>
+    <title>QuickOpenHelper - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -458,12 +456,8 @@
           </div>
         </div>
         <div class="module span9">
-<h1>NativeFileSystem</h1>
+<h1>QuickOpenHelper</h1>
 
-    <div class="alert alert-error">
-        <span class="label label-warn pull-right">deprecated</span>
-        <div>This is a compatibility shim for legacy Brackets APIs that will be removed soon. Use APIs in the FileSystem module instead.</div>
-    </div>
 
 <section class="description">
     <h3>Description</h3>
@@ -476,14 +470,139 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/filesystem/Directory.html">Directory</a></li>
-        <li><a href="..&#x2F;../modules/filesystem/File.html">File</a></li>
-        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-        <li><a href="..&#x2F;../modules/file/NativeFileError.html">NativeFileError</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/search/QuickOpen.html">QuickOpen</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringMatch.html">StringMatch</a></li>
     </ul>
 
 </section>
 
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        itemFocus 
+        <a class="anchor" href="#-itemFocus" id="-itemFocus"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)</p>
+</div>
+    
+<dl>
+    <dt>
+        selectedItem
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">SearchResult</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        explicit
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>False if this is only highlighted due to being at top of list after search()</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function itemFocus(selectedItem, query, explicit) {
+        if (!selectedItem || (query.length &lt; 2 &amp;&amp; !explicit)) {
+            return;
+        }
+        var fileLocation = selectedItem.fileLocation;
+
+        var from = {line: fileLocation.line, ch: fileLocation.chFrom};
+        var to = {line: fileLocation.line, ch: fileLocation.chTo};
+        EditorManager.getCurrentFullEditor().setSelection(from, to, true);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        itemSelect 
+        <a class="anchor" href="#-itemSelect" id="-itemSelect"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Scroll to the selected item in the current document (unless no query string entered yet,
+in which case the topmost list item is irrelevant)</p>
+</div>
+    
+<dl>
+    <dt>
+        selectedItem
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">SearchResult</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function itemSelect(selectedItem, query) {
+        itemFocus(selectedItem, query, true);
+    }
+    
+    exports.match      = match;
+    exports.itemFocus  = itemFocus;
+    exports.itemSelect = itemSelect;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        match 
+        <a class="anchor" href="#-match" id="-match"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        query
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>what the user is searching for</dd>
+    <dt>
+        returns
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>true if this plug-in wants to provide results for this query</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function match(query) {
+        return (query[0] === &quot;@&quot;);
+    }</code></pre></div>
+</section>
 
         </div>
       </div>

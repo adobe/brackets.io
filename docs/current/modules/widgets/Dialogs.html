@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -477,6 +475,7 @@
         <li><a href="..&#x2F;../modules/utils/Global.html">Global</a></li>
         <li><a href="..&#x2F;../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
     </ul>
 
@@ -725,7 +724,7 @@
             buttonId        = null,
             which           = String.fromCharCode(e.which),
             $focusedElement = this.find(&quot;.dialog-button:focus, a:focus&quot;);
-        
+
         function stopEvent() {
             e.preventDefault();
             e.stopPropagation();
@@ -734,7 +733,7 @@
         &#x2F;&#x2F; There might be a textfield in the dialog&#39;s UI; don&#39;t want to mistake normal typing for dialog dismissal
         var inTextArea    = (e.target.tagName === &quot;TEXTAREA&quot;),
             inTypingField = inTextArea || ($(e.target).filter(&quot;:text, :password&quot;).length &gt; 0);
-        
+
         if (e.which === KeyEvent.DOM_VK_TAB) {
             &#x2F;&#x2F; We don&#39;t want to stopEvent() in this case since we might want the default behavior.
             &#x2F;&#x2F; _handleTab takes care of stopping&#x2F;preventing default as necessary.
@@ -774,12 +773,12 @@
                 }
             }
         }
-        
+
         if (buttonId) {
             stopEvent();
             _processButton(this, buttonId, autoDismiss);
         }
-        
+
         &#x2F;&#x2F; Stop any other global hooks from processing the event (but
         &#x2F;&#x2F; allow it to continue bubbling if we haven&#39;t otherwise stopped it).
         return true;
@@ -864,20 +863,20 @@
             }
         });
     }
-    
+
     window.addEventListener(&quot;resize&quot;, setDialogMaxSize);
-    
+
     exports.DIALOG_BTN_CANCEL            = DIALOG_BTN_CANCEL;
     exports.DIALOG_BTN_OK                = DIALOG_BTN_OK;
     exports.DIALOG_BTN_DONTSAVE          = DIALOG_BTN_DONTSAVE;
     exports.DIALOG_BTN_SAVE_AS           = DIALOG_BTN_SAVE_AS;
     exports.DIALOG_CANCELED              = DIALOG_CANCELED;
     exports.DIALOG_BTN_DOWNLOAD          = DIALOG_BTN_DOWNLOAD;
-    
+
     exports.DIALOG_BTN_CLASS_PRIMARY     = DIALOG_BTN_CLASS_PRIMARY;
     exports.DIALOG_BTN_CLASS_NORMAL      = DIALOG_BTN_CLASS_NORMAL;
     exports.DIALOG_BTN_CLASS_LEFT        = DIALOG_BTN_CLASS_LEFT;
-    
+
     exports.showModalDialog              = showModalDialog;
     exports.showModalDialogUsingTemplate = showModalDialogUsingTemplate;
     exports.cancelModalDialogIfOpen      = cancelModalDialogIfOpen;
@@ -1016,7 +1015,7 @@ as parameters as described.</p>
             buttons:  buttons || [{ className: DIALOG_BTN_CLASS_PRIMARY, id: DIALOG_BTN_OK, text: Strings.OK }]
         };
         var template = Mustache.render(DialogTemplate, templateVars);
-        
+
         return showModalDialogUsingTemplate(template, autoDismiss);
     }</code></pre></div><div class="member public">
 
@@ -1057,7 +1056,7 @@ The template can either be a string or a jQuery object representing a DOM node t
         if (autoDismiss === undefined) {
             autoDismiss = true;
         }
-        
+
         $(&quot;body&quot;).append(&quot;&lt;div class=&#39;modal-wrapper&#39;&gt;&lt;div class=&#39;modal-inner-wrapper&#39;&gt;&lt;&#x2F;div&gt;&lt;&#x2F;div&gt;&quot;);
 
         var result  = new $.Deferred(),
@@ -1068,7 +1067,7 @@ The template can either be a string or a jQuery object representing a DOM node t
 
         &#x2F;&#x2F; Don&#39;t allow dialog to exceed viewport size
         setDialogMaxSize();
-        
+
         &#x2F;&#x2F; Save the dialog promise for unit tests
         $dlg.data(&quot;promise&quot;, promise);
 
@@ -1082,26 +1081,26 @@ The template can either be a string or a jQuery object representing a DOM node t
             if (!buttonId) {    &#x2F;&#x2F; buttonId will be undefined if closed via Bootstrap&#39;s &quot;x&quot; button
                 buttonId = DIALOG_BTN_CANCEL;
             }
-            
+
             &#x2F;&#x2F; Let call stack return before notifying that dialog has closed; this avoids issue #191
             &#x2F;&#x2F; if the handler we&#39;re triggering might show another dialog (as long as there&#39;s no
             &#x2F;&#x2F; fade-out animation)
             window.setTimeout(function () {
                 result.resolve(buttonId);
             }, 0);
-            
+
             &#x2F;&#x2F; Remove the dialog instance from the DOM.
             $dlg.remove();
 
             &#x2F;&#x2F; Remove our global keydown handler.
             KeyBindingManager.removeGlobalKeydownHook(keydownHook);
-            
+
             &#x2F;&#x2F;Remove wrapper
             $(&quot;.modal-wrapper:last&quot;).remove();
         }).one(&quot;shown&quot;, function () {
             var $primaryBtn = $dlg.find(&quot;.primary:enabled&quot;),
                 $otherBtn   = $dlg.find(&quot;.modal-footer .dialog-button:enabled:eq(0)&quot;);
-            
+
             &#x2F;&#x2F; Set focus to the primary button, to any other button, or to the dialog depending
             &#x2F;&#x2F; if there are buttons
             if ($primaryBtn.length) {
@@ -1115,12 +1114,12 @@ The template can either be a string or a jQuery object representing a DOM node t
             &#x2F;&#x2F; Push our global keydown handler onto the global stack of handlers.
             KeyBindingManager.addGlobalKeydownHook(keydownHook);
         });
-        
+
         &#x2F;&#x2F; Click handler for buttons
         $dlg.one(&quot;click&quot;, &quot;.dialog-button&quot;, function (e) {
             _processButton($dlg, $(this).attr(&quot;data-button-id&quot;), autoDismiss);
         });
-                
+
         &#x2F;&#x2F; Run the dialog
         $dlg
             .modal({
@@ -1133,9 +1132,9 @@ The template can either be a string or a jQuery object representing a DOM node t
             .css(&quot;z-index&quot;, zIndex + 1)
             .next()
             .css(&quot;z-index&quot;, zIndex);
-        
+
         zIndex += 2;
-        
+
         return (new Dialog($dlg, promise));
     }</code></pre></div>
 </section>

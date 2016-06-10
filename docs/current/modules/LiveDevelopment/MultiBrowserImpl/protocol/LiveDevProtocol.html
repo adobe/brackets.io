@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -726,7 +724,7 @@
 <pre class="code language-javascript"><code class="language-javascript">    function _send(msg, clients) {
         var id = _nextMsgId++,
             result = new $.Deferred();
-        
+
         &#x2F;&#x2F; broadcast if there are no specific clients
         clients = clients || getConnectionIds();
         msg.id = id;
@@ -761,16 +759,16 @@
 <pre class="code language-javascript"><code class="language-javascript">    function close(clientId) {
         _transport.close(clientId);
     }
-    
+
     function closeAllConnections() {
         getConnectionIds().forEach(function (clientId) {
             close(clientId);
         });
         _connections = {};
     }
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; public API
     exports.setTransport = setTransport;
     exports.getRemoteScript = getRemoteScript;
@@ -864,7 +862,7 @@ that will be fulfilled with the result of the script, if any.</p>
 
     
     <div class="description"><p>Returns a script that should be injected into the HTML that&#39;s launched in the
-browser in order to implement remote commands that handle protocol requests. 
+browser in order to implement remote commands that handle protocol requests.
 Includes the &lt;script&gt; tags.</p>
 </div>
     
@@ -969,7 +967,7 @@ This script will also include the script required by the transport, if any.</p>
     </h4>
 
     
-    <div class="description"><p>Protocol method. Navigates current page to the given URL. </p>
+    <div class="description"><p>Protocol method. Navigates current page to the given URL.</p>
 </div>
     
 <dl>
@@ -1122,7 +1120,7 @@ for more detail on the transport.</p>
             _transport.off(&quot;.livedev&quot;);
         }
         _transport = transport;
-       
+
         _transport
             .on(&quot;connect.livedev&quot;, function (event, msg) {
                 _connect(msg[0], msg[1]);

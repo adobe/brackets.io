@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -602,8 +600,8 @@ a chance to start calling on().</p>
         }
         obj._deprecatedEvents[eventName] = insteadStr || true;
     }
-    
-    
+
+
     exports.makeEventDispatcher = makeEventDispatcher;
     exports.triggerWithArray    = triggerWithArray;
     exports.on_duringInit       = on_duringInit;
@@ -646,17 +644,17 @@ only handlers exactly equal to &#39;fn&#39; are removed (there may still be &gt;
         if (!this._eventHandlers) {
             return this;
         }
-        
+
         var eventsList = events.split(&#x2F;\s+&#x2F;).map(splitNs),
             i;
-        
+
         var removeAllMatches = function (eventRec, eventName) {
             var handlerList = this._eventHandlers[eventName],
                 k;
             if (!handlerList) {
                 return;
             }
-            
+
             &#x2F;&#x2F; Walk backwards so it&#39;s easy to remove items
             for (k = handlerList.length - 1; k &gt;= 0; k--) {
                 &#x2F;&#x2F; Look at ns &amp; fn only - doRemove() has already taken care of eventName
@@ -671,7 +669,7 @@ only handlers exactly equal to &#39;fn&#39; are removed (there may still be &gt;
                 delete this._eventHandlers[eventName];
             }
         }.bind(this);
-        
+
         var doRemove = function (eventRec) {
             if (eventRec.eventName) {
                 &#x2F;&#x2F; If arg calls out an event name, look at that handler list only
@@ -683,13 +681,13 @@ only handlers exactly equal to &#39;fn&#39; are removed (there may still be &gt;
                 });
             }
         }.bind(this);
-        
+
         &#x2F;&#x2F; Detach listener for each event clause
         &#x2F;&#x2F; Each clause may be: bare eventname, bare .namespace, full eventname.namespace
         for (i = 0; i &lt; eventsList.length; i++) {
             doRemove(eventsList[i]);
         }
-        
+
         return this;  &#x2F;&#x2F; for chaining
     };</code></pre></div><div class="member">
 
@@ -727,7 +725,11 @@ event, a duplicate copy is added.</p>
 <pre class="code language-javascript"><code class="language-javascript">    var on = function (events, fn) {
         var eventsList = events.split(&#x2F;\s+&#x2F;).map(splitNs),
             i;
-        
+
+        if (!fn) {
+            throw new Error(&quot;EventListener.on() called with no listener fn for event &#39;&quot; + events + &quot;&#39;&quot;);
+        }
+
         &#x2F;&#x2F; Check for deprecation warnings
         if (this._deprecatedEvents) {
             for (i = 0; i &lt; eventsList.length; i++) {
@@ -741,7 +743,7 @@ event, a duplicate copy is added.</p>
                 }
             }
         }
-        
+
         &#x2F;&#x2F; Attach listener for each event clause
         for (i = 0; i &lt; eventsList.length; i++) {
             var eventName = eventsList[i].eventName;
@@ -753,8 +755,13 @@ event, a duplicate copy is added.</p>
             }
             eventsList[i].handler = fn;
             this._eventHandlers[eventName].push(eventsList[i]);
+
+            &#x2F;&#x2F; Check for suspicious number of listeners being added to one object-event pair
+            if (this._eventHandlers[eventName].length &gt; LEAK_WARNING_THRESHOLD) {
+                console.error(&quot;Possible memory leak: &quot; + this._eventHandlers[eventName].length + &quot; &#39;&quot; + eventName + &quot;&#39; listeners attached to&quot;, this);
+            }
         }
-        
+
         return this;  &#x2F;&#x2F; for chaining
     };</code></pre></div><div class="member public">
 
@@ -879,8 +886,8 @@ starts calling trigger().</p>
             return { eventName: eventStr.substring(0, dot), ns: eventStr.substring(dot) };
         }
     }
-    
-    
+
+
     &#x2F;&#x2F; These functions are added as mixins to any object by makeEventDispatcher()</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -915,11 +922,11 @@ starts calling trigger().</p>
         var event = { type: eventName, target: this },
             handlerList = this._eventHandlers &amp;&amp; this._eventHandlers[eventName],
             i;
-        
+
         if (!handlerList) {
             return;
         }
-        
+
         &#x2F;&#x2F; Use a clone of the list in case handlers call on()&#x2F;off() while we&#39;re still in the loop
         handlerList = handlerList.slice();
 

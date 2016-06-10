@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -653,14 +651,14 @@
         if (replaceText === null) {
             return;
         }
-        
+
         &#x2F;&#x2F; Clone the search results so that they don&#39;t get updated in the middle of the replacement.
         var resultsClone = _.cloneDeep(model.results),
             replacedFiles = Object.keys(resultsClone).filter(function (path) {
                 return FindUtils.hasCheckedMatches(resultsClone[path]);
             }),
             isRegexp = model.queryInfo.isRegexp;
-        
+
         function processReplace(forceFilesOpen) {
             StatusBar.showBusyIndicator(true);
             FindInFiles.doReplace(resultsClone, replaceText, { forceFilesOpen: forceFilesOpen, isRegexp: isRegexp })
@@ -670,7 +668,7 @@
                                 return ProjectManager.makeProjectRelativeIfPossible(errorInfo.item);
                             })
                         );
-                    
+
                     Dialogs.showModalDialog(
                         DefaultDialogs.DIALOG_ID_ERROR,
                         Strings.REPLACE_IN_FILES_ERRORS_TITLE,
@@ -688,7 +686,7 @@
                     StatusBar.hideBusyIndicator();
                 });
         }
-                
+
         if (replacedFiles.length &lt;= MAX_IN_MEMORY) {
             &#x2F;&#x2F; Just do the replacements in memory.
             _resultsView.close();
@@ -773,17 +771,17 @@ might not have been updated yet.</p>
                 });
             });
     });
-    
+
     &#x2F;&#x2F; Initialize: register listeners
     ProjectManager.on(&quot;beforeProjectClose&quot;, function () { _resultsView.close(); });
-    
+
     &#x2F;&#x2F; Initialize: command handlers
     CommandManager.register(Strings.CMD_FIND_IN_FILES,       Commands.CMD_FIND_IN_FILES,       _showFindBar);
     CommandManager.register(Strings.CMD_FIND_IN_SUBTREE,     Commands.CMD_FIND_IN_SUBTREE,     _showFindBarForSubtree);
-    
+
     CommandManager.register(Strings.CMD_REPLACE_IN_FILES,    Commands.CMD_REPLACE_IN_FILES,    _showReplaceBar);
     CommandManager.register(Strings.CMD_REPLACE_IN_SUBTREE,  Commands.CMD_REPLACE_IN_SUBTREE,  _showReplaceBarForSubtree);
-    
+
     FindUtils.on(FindUtils.SEARCH_INDEXING_STARTED, _searchIndexingStarted);
     FindUtils.on(FindUtils.SEARCH_INDEXING_FINISHED, _searchIndexingFinished);
     FindUtils.on(FindUtils.SEARCH_FILE_FILTERS_CHANGED, _searchIfRequired);
@@ -791,7 +789,7 @@ might not have been updated yet.</p>
 
     &#x2F;&#x2F; Public exports
     exports.searchAndShowResults = searchAndShowResults;
-    
+
     &#x2F;&#x2F; For unit testing
     exports._showFindBar  = _showFindBar;
     exports._closeFindBar = _closeFindBar;
@@ -881,14 +879,14 @@ might not have been updated yet.</p>
         if (scope &amp;&amp; !EditorManager.canOpenPath(scope.fullPath)) {
             return;
         }
-        
+
         if (scope instanceof InMemoryFile) {
             CommandManager.execute(Commands.FILE_OPEN, { fullPath: scope.fullPath }).done(function () {
                 CommandManager.execute(Commands.CMD_FIND);
             });
             return;
         }
-        
+
         &#x2F;&#x2F; Get initial query&#x2F;replace text
         var currentEditor = EditorManager.getActiveEditor(),
             initialQuery = FindBar.getInitialQuery(_findBar, currentEditor);
@@ -917,10 +915,10 @@ might not have been updated yet.</p>
             &#x2F;&#x2F; TODO: should have API on filterPicker to figure out if dialog is open
             return !_findBar.isEnabled() || $(&quot;.modal.instance .exclusions-editor&quot;).length &gt; 0;
         };
-        
+
         var candidateFilesPromise = FindInFiles.getCandidateFiles(scope),  &#x2F;&#x2F; used for eventual search, and in exclusions editor UI
             filterPicker;
-        
+
         function handleQueryChange() {
             &#x2F;&#x2F; Check the query expression on every input event. This way the user is alerted
             &#x2F;&#x2F; to any RegEx syntax errors immediately.
@@ -938,7 +936,7 @@ might not have been updated yet.</p>
                 _findBar.showError(queryResult.error);
             }
         }
-        
+
         function startSearch(replaceText) {
             var queryInfo = _findBar.getQueryInfo(),
                 disableFindBar = FindUtils.isNodeSearchDisabled() || (replaceText ? true : false);
@@ -963,11 +961,11 @@ might not have been updated yet.</p>
             }
             return null;
         }
-        
+
         function startReplace() {
             startSearch(_findBar.getReplaceText());
         }
-        
+
         _findBar
             .on(&quot;doFind.FindInFiles&quot;, function () {
                 &#x2F;&#x2F; Subtle issue: we can&#39;t just pass startSearch directly as the handler, because
@@ -979,15 +977,15 @@ might not have been updated yet.</p>
                 _findBar.off(&quot;.FindInFiles&quot;);
                 _findBar = null;
             });
-        
+
         if (showReplace) {
             &#x2F;&#x2F; We shouldn&#39;t get a &quot;doReplace&quot; in this case, since the Replace button
             &#x2F;&#x2F; is hidden when we set options.multifile.
             _findBar.on(&quot;doReplaceAll.FindInFiles&quot;, startReplace);
         }
-        
+
         var oldModalBarHeight = _findBar._modalBar.height();
-        
+
         &#x2F;&#x2F; Show file-exclusion UI *unless* search scope is just a single file
         if (!scope || scope.isDirectory) {
             var exclusionsContext = {
@@ -999,9 +997,9 @@ might not have been updated yet.</p>
             &#x2F;&#x2F; TODO: include in FindBar? (and disable it when FindBar is disabled)
             _findBar._modalBar.getRoot().find(&quot;.scope-group&quot;).append(filterPicker);
         }
-        
+
         handleQueryChange();
-        
+
         &#x2F;&#x2F; Appending FilterPicker and query text can change height of modal bar, so resize editor.
         &#x2F;&#x2F; Preserve scroll position of the current full editor across the editor refresh, adjusting
         &#x2F;&#x2F; for the height of the modal bar so the code doesn&#39;t appear to shift if possible.

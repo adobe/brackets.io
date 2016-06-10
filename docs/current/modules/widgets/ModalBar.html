@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -525,10 +523,10 @@ appears at the top of the editor area for operations like Find and Quick Open.</
         if (animate === undefined) {
             animate = true;
         }
-        
+
         this._handleKeydown = this._handleKeydown.bind(this);
         this._handleFocusChange = this._handleFocusChange.bind(this);
-        
+
         this._$root = $(&quot;&lt;div class=&#39;modal-bar&#39;&#x2F;&gt;&quot;)
             .html(template)
             .insertBefore(&quot;#editor-holder&quot;);
@@ -540,18 +538,18 @@ appears at the top of the editor area for operations like Find and Quick Open.</
             window.getComputedStyle(this._$root.get(0)).getPropertyValue(&quot;top&quot;);
             this._$root.removeClass(&quot;popout offscreen&quot;);
         }
-        
-        &#x2F;&#x2F; If something *other* than an editor (like another modal bar) has focus, set the focus 
+
+        &#x2F;&#x2F; If something *other* than an editor (like another modal bar) has focus, set the focus
         &#x2F;&#x2F; to the editor here, before opening up the new modal bar. This ensures that the old
         &#x2F;&#x2F; focused item has time to react and close before the new modal bar is opened.
         &#x2F;&#x2F; See bugs #4287 and #3424
         MainViewManager.focusActivePane();
-        
+
         if (autoClose) {
             this._autoClose = true;
             this._$root.on(&quot;keydown&quot;, this._handleKeydown);
             window.document.body.addEventListener(&quot;focusin&quot;, this._handleFocusChange, true);
-                
+
             &#x2F;&#x2F; Set focus to the first input field, or the first button if there is no input field.
             &#x2F;&#x2F; TODO: remove this logic?
             var $firstInput = $(&quot;input[type=&#39;text&#39;]&quot;, this._$root).first();
@@ -561,8 +559,8 @@ appears at the top of the editor area for operations like Find and Quick Open.</
                 $(&quot;button&quot;, this._$root).first().focus();
             }
         }
-        
-        &#x2F;&#x2F; Preserve scroll position of the current full editor across the editor refresh, adjusting for the 
+
+        &#x2F;&#x2F; Preserve scroll position of the current full editor across the editor refresh, adjusting for the
         &#x2F;&#x2F; height of the modal bar so the code doesn&#39;t appear to shift if possible.
         MainViewManager.cacheScrollState(MainViewManager.ALL_PANES);
         WorkspaceManager.recomputeLayout();  &#x2F;&#x2F; changes available ht for editor area
@@ -639,7 +637,7 @@ calling close() will still close the bar, however.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ModalBar.prototype.isLockedOpen = null;
-    
+
     ModalBar.CLOSE_ESCAPE = &quot;escape&quot;;
     ModalBar.CLOSE_BLUR = &quot;blur&quot;;
     ModalBar.CLOSE_API = &quot;api&quot;;</code></pre></div>
@@ -678,9 +676,9 @@ within the ModalBar are allowed to take focus without closing it.</p>
         if (this.isLockedOpen &amp;&amp; this.isLockedOpen()) {
             return;
         }
-        
+
         var effectiveElem = $(e.target).data(&quot;attached-to&quot;) || e.target;
-        
+
         if (!$.contains(this._$root.get(0), effectiveElem)) {
             this.close(undefined, undefined, ModalBar.CLOSE_BLUR);
         }
@@ -762,7 +760,7 @@ resolved when the bar is fully closed and the container is removed from the DOM.
         if (animate === undefined) {
             animate = true;
         }
-        
+
         &#x2F;&#x2F; If someone hasn&#39;t already called `prepareClose()` to pop the ModalBar out of the flow
         &#x2F;&#x2F; and resize the editor, then do that here.
         if (!this._$root.hasClass(&quot;popout&quot;)) {
@@ -774,19 +772,19 @@ resolved when the bar is fully closed and the container is removed from the DOM.
         }
 
         this.trigger(&quot;close&quot;, _reason, result);
-        
+
         function doRemove() {
             self._$root.remove();
             result.resolve();
         }
-        
+
         if (animate) {
             AnimationUtils.animateUsingClass(this._$root.get(0), &quot;offscreen&quot;)
                 .done(doRemove);
         } else {
             doRemove();
         }
-        
+
         MainViewManager.focusActivePane();
 
         return result.promise();
@@ -815,7 +813,7 @@ resolved when the bar is fully closed and the container is removed from the DOM.
 <pre class="code language-javascript"><code class="language-javascript">    ModalBar.prototype.getRoot = function () {
         return this._$root;
     };
-    
+
     exports.ModalBar = ModalBar;
 });</code></pre></div><div class="member">
 
@@ -875,16 +873,16 @@ If you don&#39;t call this explicitly, it will get called at the beginning of <c
         if (restoreScrollPos === undefined) {
             restoreScrollPos = true;
         }
-        
+
         this._$root.addClass(&quot;popout&quot;);
-        
+
         &#x2F;&#x2F; Since the modal bar has now an absolute position relative to the editor holder,
         &#x2F;&#x2F; when there are html menus we need to adjust the top position
         if (!brackets.nativeMenus) {
             var top = $(&quot;#titlebar&quot;).outerHeight();
             this._$root.css(&quot;top&quot;, top + &quot;px&quot;);
         }
-        
+
         &#x2F;&#x2F; Preserve scroll position of all visible views
         &#x2F;&#x2F;  adjusting for the height of the modal bar so the code doesn&#39;t appear to shift if possible.
         var barHeight = this.height();

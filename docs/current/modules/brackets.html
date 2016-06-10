@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../modules/search/SearchModel.html">SearchModel</a></li>
@@ -518,7 +516,6 @@ a global object, window.brackets.</p>
         <li><a href="../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
         <li><a href="../modules/filesystem/File.html">File</a></li>
         <li><a href="../modules/search/FileFilters.html">FileFilters</a></li>
-        <li><a href="../modules/project/FileIndexManager.html">FileIndexManager</a></li>
         <li><a href="../modules/project/FileSyncManager.html">FileSyncManager</a></li>
         <li><a href="../modules/project/FileSyncManager.html">FileSyncManager</a></li>
         <li><a href="../modules/filesystem/FileSystem.html">FileSystem</a></li>
@@ -559,15 +556,14 @@ a global object, window.brackets.</p>
         <li><a href="../modules/command/Menus.html">Menus</a></li>
         <li><a href="../modules/thirdparty/CodeMirror/addon/mode/multiplex.html">multiplex</a></li>
         <li><a href="../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
+        <li><a href="../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="../modules/utils/NativeApp.html">NativeApp</a></li>
         <li><a href="../modules/utils/NativeApp.html">NativeApp</a></li>
-        <li><a href="../modules/file/NativeFileError.html">NativeFileError</a></li>
-        <li><a href="../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
         <li><a href="../modules/utils/NodeConnection.html">NodeConnection</a></li>
         <li><a href="../modules/utils/NodeDomain.html">NodeDomain</a></li>
         <li><a href="../modules/thirdparty/CodeMirror/addon/mode/overlay.html">overlay</a></li>
         <li><a href="../modules/view/PanelManager.html">PanelManager</a></li>
-        <li><a href="../modules/thirdparty/path-utils/path-utils.min.html">path-utils.min</a></li>
+        <li><a href="../modules/thirdparty/path-utils/path-utils.html">path-utils</a></li>
         <li><a href="../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
@@ -575,6 +571,7 @@ a global object, window.brackets.</p>
         <li><a href="../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="../modules/search/QuickOpen.html">QuickOpen</a></li>
+        <li><a href="../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
         <li><a href="../modules/LiveDevelopment/Agents/RemoteAgent.html">RemoteAgent</a></li>
         <li><a href="../modules/utils/Resizer.html">Resizer</a></li>
         <li><a href="../modules/thirdparty/CodeMirror/addon/scroll/scrollpastend.html">scrollpastend</a></li>
@@ -627,7 +624,7 @@ a global object, window.brackets.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _beforeHTMLReady() {
         &#x2F;&#x2F; Add the platform (mac, win or linux) to the body tag so we can have platform-specific CSS rules
         $(&quot;body&quot;).addClass(&quot;platform-&quot; + brackets.platform);
-        
+
         &#x2F;&#x2F; Browser-hosted version may also have different CSS (e.g. since &#39;#titlebar&#39; is shown)
         if (brackets.inBrowser) {
             $(&quot;body&quot;).addClass(&quot;in-browser&quot;);
@@ -650,24 +647,24 @@ a global object, window.brackets.</p>
                 };
             }());
         }
-        
+
         &#x2F;&#x2F; Localize MainViewHTML and inject into &lt;BODY&gt; tag
         $(&quot;body&quot;).html(Mustache.render(MainViewHTML, { shouldAddAA: (brackets.platform === &quot;mac&quot;), Strings: Strings }));
 
         &#x2F;&#x2F; Update title
         $(&quot;title&quot;).text(brackets.config.app_title);
-        
+
         &#x2F;&#x2F; Respond to dragging &amp; dropping files&#x2F;folders onto the window by opening them. If we don&#39;t respond
         &#x2F;&#x2F; to these events, the file would load in place of the Brackets UI
         DragAndDrop.attachHandlers();
-        
+
         &#x2F;&#x2F; TODO: (issue 269) to support IE, need to listen to document instead (and even then it may not work when focus is in an input field?)
         $(window).focus(function () {
             &#x2F;&#x2F; This call to syncOpenDocuments() *should* be a no-op now that we have
             &#x2F;&#x2F; file watchers, but is still here as a safety net.
             FileSyncManager.syncOpenDocuments();
         });
-        
+
         &#x2F;&#x2F; Prevent unhandled middle button clicks from triggering native behavior
         &#x2F;&#x2F; Example: activating AutoScroll (see #510)
         $(&quot;html&quot;).on(&quot;mousedown&quot;, &quot;.inline-widget&quot;, function (e) {
@@ -675,7 +672,7 @@ a global object, window.brackets.</p>
                 e.preventDefault();
             }
         });
-        
+
         &#x2F;&#x2F; The .no-focus style is added to clickable elements that should
         &#x2F;&#x2F; not steal focus. Calling preventDefault() on mousedown prevents
         &#x2F;&#x2F; focus from going to the click target.
@@ -691,7 +688,7 @@ a global object, window.brackets.</p>
                 e.preventDefault();
             }
         });
-        
+
         &#x2F;&#x2F; Prevent clicks on any link from navigating to a different page (which could lose unsaved
         &#x2F;&#x2F; changes). We can&#39;t use a simple .on(&quot;click&quot;, &quot;a&quot;) because of http:&#x2F;&#x2F;bugs.jquery.com&#x2F;ticket&#x2F;3861:
         &#x2F;&#x2F; jQuery hides non-left clicks from such event handlers, yet middle-clicks still cause CEF to
@@ -712,32 +709,6 @@ a global object, window.brackets.</p>
             }
         }, true);
 
-        &#x2F;&#x2F; on Windows, cancel every other scroll event (#10214)
-        &#x2F;&#x2F; TODO: remove this hack when we upgrade CEF to a build with this bug fixed:
-        &#x2F;&#x2F; https:&#x2F;&#x2F;bitbucket.org&#x2F;chromiumembedded&#x2F;cef&#x2F;issue&#x2F;1481
-        var winCancelWheelEvent = true;
-        function windowsScrollFix(e) {
-            winCancelWheelEvent = !winCancelWheelEvent;
-            if (winCancelWheelEvent) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-            }
-        }
-
-        function enableOrDisableWinScrollFix() {
-            window.document.body.removeEventListener(&quot;wheel&quot;, windowsScrollFix, true);
-            if (PreferencesManager.get(&quot;_windowsScrollFix&quot;)) {
-                window.document.body.addEventListener(&quot;wheel&quot;, windowsScrollFix, true);
-            }
-        }
-
-        if (brackets.platform === &quot;win&quot; &amp;&amp; !brackets.inBrowser) {
-            PreferencesManager.definePreference(&quot;_windowsScrollFix&quot;, &quot;boolean&quot;, true, {
-                excludeFromHints: true
-            }).on(&quot;change&quot;, enableOrDisableWinScrollFix);
-            enableOrDisableWinScrollFix();
-        }
-
         &#x2F;&#x2F; Prevent extensions from using window.open() to insecurely load untrusted web content
         var real_windowOpen = window.open;
         window.open = function (url) {
@@ -747,7 +718,7 @@ a global object, window.brackets.</p>
             }
             return real_windowOpen.apply(window, arguments);
         };
-        
+
         &#x2F;&#x2F; jQuery patch to shim deprecated usage of $() on EventDispatchers
         var DefaultCtor = jQuery.fn.init;
         jQuery.fn.init = function (firstArg, secondArg) {
@@ -769,7 +740,7 @@ a global object, window.brackets.</p>
             return jQObject;
         };
     }
-    
+
     &#x2F;&#x2F; Wait for view state to load.
     var viewStateTimer = PerfUtils.markStart(&quot;User viewstate loading&quot;);
     PreferencesManager._smUserScopeLoading.always(function () {
@@ -890,16 +861,16 @@ a global object, window.brackets.</p>
 
         &#x2F;&#x2F; Use quiet scrollbars if we aren&#39;t on Lion. If we&#39;re on Lion, only
         &#x2F;&#x2F; use native scroll bars when the mouse is not plugged in or when
-        &#x2F;&#x2F; using the &quot;Always&quot; scroll bar setting. 
+        &#x2F;&#x2F; using the &quot;Always&quot; scroll bar setting.
         var osxMatch = &#x2F;Mac OS X 10\D([\d+])\D&#x2F;.exec(navigator.userAgent);
         if (osxMatch &amp;&amp; osxMatch[1] &amp;&amp; Number(osxMatch[1]) &gt;= 7) {
             &#x2F;&#x2F; test a scrolling div for scrollbars
             var $testDiv = $(&quot;&lt;div style=&#39;position:fixed;left:-50px;width:50px;height:50px;overflow:auto;&#39;&gt;&lt;div style=&#39;width:100px;height:100px;&#39;&#x2F;&gt;&lt;&#x2F;div&gt;&quot;).appendTo(window.document.body);
-            
+
             if ($testDiv.outerWidth() === $testDiv.get(0).clientWidth) {
                 $(&quot;.sidebar&quot;).removeClass(&quot;quiet-scrollbars&quot;);
             }
-            
+
             $testDiv.remove();
         }
 
@@ -909,7 +880,7 @@ a global object, window.brackets.</p>
             &#x2F;&#x2F; extensions fail to load.
             var extensionPathOverride = params.get(&quot;extensions&quot;);  &#x2F;&#x2F; used by unit tests
             var extensionLoaderPromise = ExtensionLoader.init(extensionPathOverride ? extensionPathOverride.split(&quot;,&quot;) : null);
-            
+
             &#x2F;&#x2F; Load the initial project after extensions have loaded
             extensionLoaderPromise.always(function () {
                &#x2F;&#x2F; Signal that extensions are loaded
@@ -920,13 +891,13 @@ a global object, window.brackets.</p>
                 var initialProjectPath = ProjectManager.getInitialProjectPath();
                 ProjectManager.openProject(initialProjectPath).always(function () {
                     _initTest();
-                    
+
                     &#x2F;&#x2F; If this is the first launch, and we have an index.html file in the project folder (which should be
                     &#x2F;&#x2F; the samples folder on first launch), open it automatically. (We explicitly check for the
                     &#x2F;&#x2F; samples folder in case this is the first time we&#39;re launching Brackets after upgrading from
                     &#x2F;&#x2F; an old version that might not have set the &quot;afterFirstLaunch&quot; pref.)
                     var deferred = new $.Deferred();
-                    
+
                     if (!params.get(&quot;skipSampleProjectLoad&quot;) &amp;&amp; !PreferencesManager.getViewState(&quot;afterFirstLaunch&quot;)) {
                         PreferencesManager.setViewState(&quot;afterFirstLaunch&quot;, &quot;true&quot;);
                         if (ProjectManager.isWelcomeProjectPath(initialProjectPath)) {
@@ -944,13 +915,13 @@ a global object, window.brackets.</p>
                     } else {
                         deferred.resolve();
                     }
-                    
+
                     deferred.always(function () {
                         &#x2F;&#x2F; Signal that Brackets is loaded
                         AppInit._dispatchReady(AppInit.APP_READY);
-                        
+
                         PerfUtils.addMeasurement(&quot;Application Startup&quot;);
-                        
+
                         if (PreferencesManager._isUserScopeCorrupt()) {
                             var userPrefFullPath = PreferencesManager.getUserPrefFile();
                             &#x2F;&#x2F; user scope can get corrupt only if the file exists, is readable,
@@ -972,9 +943,9 @@ a global object, window.brackets.</p>
                                     });
                                 });
                         }
-                        
+
                     });
-                    
+
                     &#x2F;&#x2F; See if any startup files were passed to the application
                     if (brackets.app.getPendingFilesToOpen) {
                         brackets.app.getPendingFilesToOpen(function (err, paths) {
@@ -986,7 +957,7 @@ a global object, window.brackets.</p>
         });
 
         &#x2F;&#x2F; Check for updates
-        if (!params.get(&quot;skipUpdateCheck&quot;) &amp;&amp; !brackets.inBrowser) {
+        if (!brackets.inBrowser &amp;&amp; !params.get(&quot;skipUpdateCheck&quot;)) {
             AppInit.appReady(function () {
                 &#x2F;&#x2F; launches periodic checks for updates cca every 24 hours
                 UpdateNotification.launchAutomaticUpdate();

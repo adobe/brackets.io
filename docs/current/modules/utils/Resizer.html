@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -489,6 +487,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
     </ul>
 
 </section>
@@ -531,14 +530,14 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         if (key) {
             return &quot;user&quot;;
         }
-        
+
         return null;
     }
-    
+
     PreferencesManager.convertPreferences(module, {&quot;panelState&quot;: &quot;user&quot;}, true, _isPanelPreferences);
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     exports.makeResizable   = makeResizable;
     exports.removeSizable   = removeSizable;
     exports.resyncSizer     = resyncSizer;
@@ -546,7 +545,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     exports.show            = show;
     exports.hide            = hide;
     exports.isVisible       = isVisible;
-    
+
     &#x2F;&#x2F;Resizer Constants
     exports.DIRECTION_VERTICAL   = DIRECTION_VERTICAL;
     exports.DIRECTION_HORIZONTAL = DIRECTION_HORIZONTAL;
@@ -721,7 +720,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             directionProperty   = direction === DIRECTION_HORIZONTAL ? &quot;clientX&quot; : &quot;clientY&quot;,
             directionIncrement  = (position === POSITION_TOP || position === POSITION_LEFT) ? 1 : -1,
             parentSizeFunction  = direction === DIRECTION_HORIZONTAL ? $parent.innerWidth : $parent.innerHeight,
-            
+
             elementSizeFunction = function (newSize) {
                 if (!newSize) {
                     &#x2F;&#x2F; calling the function as a getter
@@ -749,13 +748,18 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     }
                     percentage = newSize &#x2F; parentSize;
                     this.css(prop, (percentage * 100) + &quot;%&quot;);
-                    
+
                     return this; &#x2F;&#x2F; chainable
                 }
             },
-            
+
             resizerCSSPosition  = direction === DIRECTION_HORIZONTAL ? &quot;left&quot; : &quot;top&quot;,
             contentSizeFunction = direction === DIRECTION_HORIZONTAL ? $resizableElement.width : $resizableElement.height;
+
+        if (PreferencesManager.get(PREFS_PURE_CODE) &amp;&amp;
+                ($element.hasClass(&quot;bottom-panel&quot;) || $element.hasClass(&quot;sidebar&quot;))) {
+            elementPrefs.visible = false;
+        }
 
         if (!elementID) {
             console.error(&quot;Resizable panels must have a DOM id to use as a preferences key:&quot;, element);
@@ -766,13 +770,13 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
             console.error(&quot;Resizable panels within the editor area should be created via WorkspaceManager.createBottomPanel(). \nElement:&quot;, element);
             return;
         }
-        
+
         if (minSize === undefined) {
             minSize = DEFAULT_MIN_SIZE;
         }
 
         collapsible = collapsible || false;
-        
+
         if (_attachToParent) {
             $parent.prepend($resizer);
         } else {
@@ -780,21 +784,21 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         }
         &#x2F;&#x2F; Important so min&#x2F;max sizes behave predictably
         $element.css(&quot;box-sizing&quot;, &quot;border-box&quot;);
-        
+
         function adjustSibling(size) {
             if (forceLeft !== undefined) {
                 $(forceLeft, $parent).css(&quot;left&quot;, size);
             }
         }
-        
+
         function resizeElement(elementSize, contentSize) {
             elementSizeFunction.apply($element, [elementSize]);
-            
+
             if ($resizableElement.length) {
                 contentSizeFunction.apply($resizableElement, [contentSize]);
             }
         }
-        
+
         &#x2F;&#x2F; If the resizer is positioned right or bottom of the panel, we need to listen to
         &#x2F;&#x2F; reposition it if the element size changes externally
         function repositionResizer(elementSize) {
@@ -803,34 +807,34 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                 $resizer.css(resizerCSSPosition, resizerPosition);
             }
         }
-            
+
         $element.data(&quot;removeSizable&quot;, function () {
             $resizer.off(&quot;.resizer&quot;);
-            
+
             $element.removeData(&quot;show&quot;);
             $element.removeData(&quot;hide&quot;);
             $element.removeData(&quot;resyncSizer&quot;);
             $element.removeData(&quot;removeSizable&quot;);
-            
+
             $resizer.remove();
         });
-        
+
         $element.data(&quot;resyncSizer&quot;, function () {
             repositionResizer(elementSizeFunction.apply($element));
         });
-        
+
         $element.data(&quot;show&quot;, function () {
             var elementOffset   = $element.offset(),
                 elementSize     = elementSizeFunction.apply($element) || elementPrefs.size,
                 contentSize     = contentSizeFunction.apply($resizableElement) || elementPrefs.contentSize;
-            
+
             &#x2F;&#x2F; Resize the element before showing it again. If the panel was collapsed by dragging
             &#x2F;&#x2F; the resizer, the size of the element should be 0, so we restore size in preferences
             resizeElement(elementSize, contentSize);
-            
+
             $element.show();
             elementPrefs.visible = true;
-            
+
             if (collapsible) {
                 if (_attachToParent) {
                     $parent.prepend($resizer);
@@ -843,18 +847,18 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     $resizer.css(resizerCSSPosition, elementOffset[resizerCSSPosition] + elementSize);
                 }
             }
-            
+
             adjustSibling(elementSize);
-            
+
             $element.trigger(&quot;panelExpanded&quot;, [elementSize]);
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
-                      
+
         $element.data(&quot;hide&quot;, function () {
             var elementOffset   = $element.offset(),
                 elementSize     = elementSizeFunction.apply($element),
                 resizerSize     = elementSizeFunction.apply($resizer);
-            
+
             $element.hide();
             elementPrefs.visible = false;
             if (collapsible) {
@@ -865,13 +869,13 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     $resizer.css(resizerCSSPosition, elementOffset[resizerCSSPosition] + elementSize - resizerSize);
                 }
             }
-            
+
             adjustSibling(0);
-            
+
             $element.trigger(&quot;panelCollapsed&quot;, [elementSize]);
             PreferencesManager.setViewState(elementID, elementPrefs, null, isResizing);
         });
-        
+
 
         $resizer.on(&quot;mousedown.resizer&quot;, function (e) {
             var $resizeShield   = $(&quot;&lt;div class=&#39;resizing-container &quot; + direction + &quot;-resizing&#39; &#x2F;&gt;&quot;),
@@ -881,10 +885,10 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                 previousSize    = startSize,
                 baseSize        = 0,
                 resizeStarted   = false;
-            
+
             isResizing = true;
             $body.append($resizeShield);
-                        
+
             if ($resizableElement.length) {
                 $element.children().not(&quot;.horz-resizer, .vert-resizer, .resizable-content&quot;).each(function (index, child) {
                     if (direction === DIRECTION_HORIZONTAL) {
@@ -894,18 +898,18 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     }
                 });
             }
-                        
+
             function doRedraw() {
                 &#x2F;&#x2F; only run this if the mouse is down so we don&#39;t constantly loop even
                 &#x2F;&#x2F; after we&#39;re done resizing.
                 if (!isResizing) {
                     return;
                 }
-                
+
                 &#x2F;&#x2F; Check for real size changes to avoid unnecessary resizing and events
                 if (newSize !== previousSize) {
                     previousSize = newSize;
-                    
+
                     if ($element.is(&quot;:visible&quot;)) {
                         if (newSize &lt; 10) {
                             toggle($element);
@@ -916,18 +920,18 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                                 resizeStarted = true;
                                 $element.trigger(&quot;panelResizeStart&quot;, newSize);
                             }
-                            
+
                             &#x2F;&#x2F; Resize the main element to the new size. If there is a content element,
                             &#x2F;&#x2F; its size is the new size minus the size of the non-resizable elements
                             resizeElement(newSize, (newSize - baseSize));
                             adjustSibling(newSize);
-                            
+
                             $element.trigger(&quot;panelResizeUpdate&quot;, [newSize]);
                         }
                     } else if (newSize &gt; 10) {
                         elementSizeFunction.apply($element, [newSize]);
                         toggle($element);
-                        
+
                         &#x2F;&#x2F; Trigger resizeStarted after expanding the element if it was previously collapsed
                         if (!resizeStarted) {
                             resizeStarted = true;
@@ -935,30 +939,30 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                         }
                     }
                 }
-                
+
                 animationRequest = window.requestAnimationFrame(doRedraw);
             }
-            
+
             function onMouseMove(e) {
                 &#x2F;&#x2F; calculate newSize adding to startSize the difference
                 &#x2F;&#x2F; between starting and current position, capped at minSize
                 newSize = Math.max(startSize + directionIncrement * (startPosition - e[directionProperty]), minSize);
-                
+
                 &#x2F;&#x2F; respect max size if one provided (e.g. by WorkspaceManager)
                 var maxSize = $element.data(&quot;maxsize&quot;);
                 if (maxSize !== undefined) {
                     newSize = Math.min(newSize, maxSize);
                 }
-                                   
+
                 e.preventDefault();
-                
+
                 if (animationRequest === null) {
                     animationRequest = window.requestAnimationFrame(doRedraw);
                 }
             }
-            
+
             $(window.document).on(&quot;mousemove&quot;, onMouseMove);
-            
+
             &#x2F;&#x2F; If the element is marked as collapsible, check for double click
             &#x2F;&#x2F; to toggle the element visibility
             if (collapsible) {
@@ -970,10 +974,10 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     toggle($element);
                 });
             }
-            
+
             function endResize(e) {
                 if (isResizing) {
-                    
+
                     var elementSize	= elementSizeFunction.apply($element);
                     if ($element.is(&quot;:visible&quot;)) {
                         elementPrefs.size = elementSize;
@@ -985,11 +989,11 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     }
 
                     isResizing = false;
-                    
+
                     if (resizeStarted) {
                         $element.trigger(&quot;panelResizeEnd&quot;, [elementSize]);
                     }
-                    
+
                     &#x2F;&#x2F; We wait 300ms to remove the resizer container to capture a mousedown
                     &#x2F;&#x2F; on the container that would account for double click
                     window.setTimeout(function () {
@@ -1000,23 +1004,23 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                     }, 300);
                 }
             }
-            
+
             $(window.document).one(&quot;mouseup&quot;, endResize);
-            
+
             e.preventDefault();
         });
-		
+
         &#x2F;&#x2F; Panel preferences initialization
         if (elementPrefs) {
-            
+
             if (elementPrefs.size !== undefined) {
                 elementSizeFunction.apply($element, [elementPrefs.size]);
             }
-            
+
             if (elementPrefs.contentSize !== undefined) {
                 contentSizeFunction.apply($resizableElement, [elementPrefs.contentSize]);
             }
-            
+
             if (elementPrefs.visible !== undefined &amp;&amp; !elementPrefs.visible) {
                 hide($element);
             } else {
@@ -1029,30 +1033,30 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     &#x2F;&#x2F; Scan DOM for horz-resizable and vert-resizable classes and make them resizable
     AppInit.htmlReady(function () {
         var minSize = DEFAULT_MIN_SIZE;
-		
+
         $mainView = $(&quot;.main-view&quot;);
-        
+
         $(&quot;.vert-resizable&quot;).each(function (index, element) {
-            
+
             if ($(element).data().minsize !== undefined) {
                 minSize = $(element).data().minsize;
             }
-			
+
             if ($(element).hasClass(&quot;top-resizer&quot;)) {
                 makeResizable(element, DIRECTION_VERTICAL, POSITION_TOP, minSize, $(element).hasClass(&quot;collapsible&quot;));
             }
-            
+
             &#x2F;&#x2F;if ($(element).hasClass(&quot;bottom-resizer&quot;)) {
             &#x2F;&#x2F;    makeResizable(element, DIRECTION_VERTICAL, POSITION_BOTTOM, DEFAULT_MIN_SIZE);
             &#x2F;&#x2F;}
         });
-        
+
         $(&quot;.horz-resizable&quot;).each(function (index, element) {
-            
+
             if ($(element).data().minsize !== undefined) {
                 minSize = $(element).data().minsize;
             }
-            
+
             &#x2F;&#x2F;if ($(element).hasClass(&quot;left-resizer&quot;)) {
             &#x2F;&#x2F;    makeResizable(element, DIRECTION_HORIZONTAL, POSITION_LEFT, DEFAULT_MIN_SIZE);
             &#x2F;&#x2F;}
@@ -1061,6 +1065,11 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                 makeResizable(element, DIRECTION_HORIZONTAL, POSITION_RIGHT, minSize, $(element).hasClass(&quot;collapsible&quot;), $(element).data().forceleft);
             }
         });
+
+        &#x2F;&#x2F; The main toolbar is only collapsible.
+        if ($(&quot;#main-toolbar&quot;).hasClass(&quot;collapsible&quot;) &amp;&amp; PreferencesManager.get(PREFS_PURE_CODE)) {
+            ViewUtils.hideMainToolBar();
+        }
     });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

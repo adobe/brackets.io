@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -485,7 +483,7 @@
     name: &quot;Literate CoffeeScript&quot;,
     mode: &quot;coffeescript&quot;,
     fileExtensions: [&quot;litcoffee&quot;, &quot;coffee.md&quot;]
-}); 
+});
 </code></pre><p>You can also specify file names:</p>
 <pre><code>LanguageManager.defineLanguage(&quot;makefile&quot;, {
     name: &quot;Make&quot;,
@@ -524,7 +522,7 @@ LanguageManager.defineLanguage(&quot;html&quot;, {
 });
 </code></pre><p>If a mode is not shipped with our CodeMirror distribution, you need to first load it yourself.
 If the mode is part of our CodeMirror distribution, it gets loaded automatically.</p>
-<p>You can also defines binary file types, i.e. Brackets supports image files by default, 
+<p>You can also defines binary file types, i.e. Brackets supports image files by default,
 such as <em>.jpg, </em>.png etc.
 Binary files do not require mode because modes are specific to CodeMirror, which
 only handles text based file types.
@@ -532,8 +530,8 @@ To register a binary language the isBinary flag must be set, i.e.</p>
 <pre><code>LanguageManager.defineLanguage(&quot;audio&quot;, {
     name: &quot;Audio&quot;,
     fileExtensions: [&quot;mp3&quot;, &quot;wav&quot;, &quot;aif&quot;, &quot;aiff&quot;, &quot;ogg&quot;],
-    isBinary: true    
-}); 
+    isBinary: true
+});
 </code></pre><p>LanguageManager dispatches two events:</p>
 <ul>
 <li>languageAdded -- When any new Language is added. 2nd arg is the new Language.</li>
@@ -600,7 +598,7 @@ To register a binary language the isBinary flag must be set, i.e.</p>
         if (language) {
             return language;
         }
-        
+
         &#x2F;&#x2F; In case of unsupported languages
         console.log(&quot;Called LanguageManager._getLanguageForMode with a mode for which no language has been registered:&quot;, mode);
         return _fallbackLanguage;
@@ -813,7 +811,7 @@ We may rely on the tokens provided by some of these modes.</p>
             state = _prefState[pref],
             last = state.last,
             overridden = state.overridden;
-        
+
         &#x2F;&#x2F; Look for added and changed names (extensions or filenames)
         newNames.forEach(function (name) {
             var language;
@@ -822,17 +820,17 @@ We may rely on the tokens provided by some of these modes.</p>
                     language = getLanguage(last[name]);
                     if (language) {
                         language[state.remove](name);
-                        
+
                         &#x2F;&#x2F; If this name that was previously mapped was overriding a default
                         &#x2F;&#x2F; restore it now.
                         _restoreOverriddenDefault(name, state);
                     }
                 }
-                
+
                 language = exports[state.get](name);
                 if (language) {
                     language[state.remove](name);
-                    
+
                     &#x2F;&#x2F; We&#39;re removing a name that was defined in Brackets or an extension,
                     &#x2F;&#x2F; so keep track of how it used to be mapped.
                     if (!overridden[name]) {
@@ -845,7 +843,7 @@ We may rely on the tokens provided by some of these modes.</p>
                 }
             }
         });
-        
+
         &#x2F;&#x2F; Look for removed names (extensions or filenames)
         _.difference(Object.keys(last), newNames).forEach(function (name) {
             var language = getLanguage(last[name]);
@@ -856,45 +854,53 @@ We may rely on the tokens provided by some of these modes.</p>
         });
         state.last = newMapping;
     }
-    
-   
+
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; Prevent modes from being overwritten by extensions
     _patchCodeMirror();
-    
+
     &#x2F;&#x2F; Define a custom MIME mode here instead of putting it directly into languages.json
     &#x2F;&#x2F; because JSON files can&#39;t contain regular expressions. Also, all other modes so
     &#x2F;&#x2F; far were strings, so we spare us the trouble of allowing more complex mode values.
     CodeMirror.defineMIME(&quot;text&#x2F;x-brackets-html&quot;, {
         &quot;name&quot;: &quot;htmlmixed&quot;,
-        &quot;scriptTypes&quot;: [{&quot;matches&quot;: &#x2F;\&#x2F;x-handlebars|\&#x2F;x-mustache|\&#x2F;ng-template$|^text\&#x2F;html$&#x2F;i,
-                       &quot;mode&quot;: null}]
+        &quot;scriptTypes&quot;: [
+            {
+                &quot;matches&quot;: &#x2F;\&#x2F;x-handlebars|\&#x2F;x-mustache|\&#x2F;ng-template$|^text\&#x2F;html$&#x2F;i,
+                &quot;mode&quot;: &quot;htmlmixed&quot;
+            },
+            {
+                &quot;matches&quot;: &#x2F;^text\&#x2F;(babel|jsx)$&#x2F;i,
+                &quot;mode&quot;: &quot;jsx&quot;
+            }
+        ]
     });
 
     &#x2F;&#x2F; Define SVG MIME type so an SVG language can be defined for SVG-specific code hints.
     &#x2F;&#x2F; Currently, SVG uses XML mode so it has generic XML syntax highlighting. This can
     &#x2F;&#x2F; be removed when SVG gets its own CodeMirror mode with SVG syntax highlighting.
     CodeMirror.defineMIME(&quot;image&#x2F;svg+xml&quot;, &quot;xml&quot;);
-    
+
     &#x2F;&#x2F; Load the default languages
     _defaultLanguagesJSON = JSON.parse(_defaultLanguagesJSON);
     _ready = Async.doInParallel(Object.keys(_defaultLanguagesJSON), function (key) {
         return defineLanguage(key, _defaultLanguagesJSON[key]);
     }, false);
-    
+
     &#x2F;&#x2F; Get the object for HTML
     _ready.always(function () {
         var html = getLanguage(&quot;html&quot;);
-        
+
         &#x2F;&#x2F; The htmlmixed mode uses the xml mode internally for the HTML parts, so we map it to HTML
         html._setLanguageForMode(&quot;xml&quot;, html);
-        
+
         &#x2F;&#x2F; Currently we override the above mentioned &quot;xml&quot; in TokenUtils.getModeAt, instead returning &quot;html&quot;.
         &#x2F;&#x2F; When the CSSInlineEditor and the hint providers are no longer based on modes, this can be changed.
         &#x2F;&#x2F; But for now, we need to associate this madeup &quot;html&quot; mode with our HTML language object.
         _setLanguageForMode(&quot;html&quot;, html);
-        
+
         &#x2F;&#x2F; Similarly, the php mode uses clike internally for the PHP parts
         var php = getLanguage(&quot;php&quot;);
         php._setLanguageForMode(&quot;clike&quot;, php);
@@ -902,10 +908,10 @@ We may rely on the tokens provided by some of these modes.</p>
         &#x2F;&#x2F; Similar hack to the above for dealing with SCSS&#x2F;CSS.
         var scss = getLanguage(&quot;scss&quot;);
         scss._setLanguageForMode(&quot;css&quot;, scss);
-        
+
         &#x2F;&#x2F; The fallback language for unknown modes and file extensions
         _fallbackLanguage = getLanguage(&quot;unknown&quot;);
-        
+
         &#x2F;&#x2F; There is a circular dependency between FileUtils and LanguageManager which
         &#x2F;&#x2F; was introduced in 254b01e2f2eebea4416026d0f40d017b8ca6dbc9
         &#x2F;&#x2F; and may be preventing us from importing PreferencesManager (which also
@@ -926,12 +932,12 @@ We may rely on the tokens provided by some of these modes.</p>
             _updateFromPrefs(_NAME_MAP_PREF);
         });
     });
-    
+
     &#x2F;&#x2F; Private for unit tests
     exports._EXTENSION_MAP_PREF         = _EXTENSION_MAP_PREF;
     exports._NAME_MAP_PREF              = _NAME_MAP_PREF;
     exports._resetPathLanguageOverrides = _resetPathLanguageOverrides;
-    
+
     &#x2F;&#x2F; Public methods
     exports.ready                       = _ready;
     exports.defineLanguage              = defineLanguage;
@@ -985,7 +991,7 @@ Otherwise the deferred is rejected with the error message.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _validateNonEmptyString(value, description, deferred) {
         var reportError = deferred ? deferred.reject : console.error;
-        
+
         &#x2F;&#x2F; http:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;1303646&#x2F;check-whether-variable-is-number-or-string-in-javascript
         if (Object.prototype.toString.call(value) !== &quot;[object String]&quot;) {
             reportError(description + &quot; must be a string&quot;);
@@ -1064,7 +1070,7 @@ Otherwise the deferred is rejected with the error message.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function defineLanguage(id, definition) {
         var result = new $.Deferred();
-        
+
         if (_pendingLanguages[id]) {
             result.reject(&quot;Language \&quot;&quot; + id + &quot;\&quot; is waiting to be resolved.&quot;);
             return result.promise();
@@ -1082,7 +1088,7 @@ Otherwise the deferred is rejected with the error message.</p>
             lineComment    = definition.lineComment,
             i,
             l;
-        
+
         function _finishRegisteringLanguage() {
             if (fileExtensions) {
                 for (i = 0, l = fileExtensions.length; i &lt; l; i++) {
@@ -1095,13 +1101,13 @@ Otherwise the deferred is rejected with the error message.</p>
                     language.addFileName(fileNames[i]);
                 }
             }
-            
+
             language._setBinary(!!definition.isBinary);
-            
+
             &#x2F;&#x2F; store language to language map
             _languages[language.getId()] = language;
         }
-        
+
         if (!language._setId(id) || !language._setName(name) ||
                 (blockComment &amp;&amp; !language.setBlockCommentSyntax(blockComment[0], blockComment[1])) ||
                 (lineComment &amp;&amp; !language.setLineCommentSyntax(lineComment))) {
@@ -1109,29 +1115,29 @@ Otherwise the deferred is rejected with the error message.</p>
             return result.promise();
         }
 
-        
+
         if (definition.isBinary) {
             &#x2F;&#x2F; add file extensions and store language to language map
             _finishRegisteringLanguage();
-            
+
             result.resolve(language);
             &#x2F;&#x2F; Not notifying DocumentManager via event LanguageAdded, because DocumentManager
             &#x2F;&#x2F; does not care about binary files.
         } else {
             &#x2F;&#x2F; track languages that are currently loading
             _pendingLanguages[id] = language;
-            
+
             language._loadAndSetMode(definition.mode).done(function () {
-  
+
                 &#x2F;&#x2F; globally associate mode to language
                 _setLanguageForMode(language.getMode(), language);
-                
+
                 &#x2F;&#x2F; add file extensions and store language to language map
                 _finishRegisteringLanguage();
-                
+
                 &#x2F;&#x2F; fire an event to notify DocumentManager of the new language
                 _triggerLanguageAdded(language);
-                
+
                 result.resolve(language);
             }).fail(function (error) {
                 console.error(error);
@@ -1141,7 +1147,7 @@ Otherwise the deferred is rejected with the error message.</p>
                 delete _pendingLanguages[id];
             });
         }
-        
+
         return result.promise();
     }</code></pre></div><div class="member public">
 
@@ -1209,7 +1215,7 @@ This method considers known extensions which include <code>.</code> in them.</p>
 
     
     <div class="description"><p>Resolves a language ID to a Language object.
-File names have a higher priority than file extensions. </p>
+File names have a higher priority than file extensions.</p>
 </div>
     
 <dl>
@@ -1301,15 +1307,15 @@ on file name and even full path. Use this API only if no relevant file/path exis
             language = _filePathToLanguageMap[path],
             extension,
             parts;
-        
+
         &#x2F;&#x2F; if there&#39;s an override, return it
         if (!ignoreOverride &amp;&amp; language) {
             return language;
         }
-        
+
         fileName = FileUtils.getBaseName(path).toLowerCase();
         language = _fileNameToLanguageMap[fileName];
-        
+
         &#x2F;&#x2F; If no language was found for the file name, use the file extension instead
         if (!language) {
             &#x2F;&#x2F; Split the file name into parts:
@@ -1317,19 +1323,19 @@ on file name and even full path. Use this API only if no relevant file/path exis
             &#x2F;&#x2F;   &quot;.profile.bak&quot;    =&gt; [&quot;&quot;, &quot;profile&quot;, &quot;bak&quot;]
             &#x2F;&#x2F;   &quot;1. Vacation.txt&quot; =&gt; [&quot;1&quot;, &quot; Vacation&quot;, &quot;txt&quot;]
             parts = fileName.split(&quot;.&quot;);
-            
+
             &#x2F;&#x2F; A leading dot does not indicate a file extension, but marks the file as hidden =&gt; remove it
             if (parts[0] === &quot;&quot;) {
                 &#x2F;&#x2F; [&quot;&quot;, &quot;profile&quot;, &quot;bak&quot;] =&gt; [&quot;profile&quot;, &quot;bak&quot;]
                 parts.shift();
             }
-            
+
             &#x2F;&#x2F; The first part is assumed to be the title, not the extension =&gt; remove it
             &#x2F;&#x2F;   [&quot;foo&quot;, &quot;coffee&quot;, &quot;md&quot;]   =&gt; [&quot;coffee&quot;, &quot;md&quot;]
             &#x2F;&#x2F;   [&quot;profile&quot;, &quot;bak&quot;]        =&gt; [&quot;bak&quot;]
             &#x2F;&#x2F;   [&quot;1&quot;, &quot; Vacation&quot;, &quot;txt&quot;] =&gt; [&quot; Vacation&quot;, &quot;txt&quot;]
             parts.shift();
-            
+
             &#x2F;&#x2F; Join the remaining parts into a file extension until none are left or a language was found
             while (!language &amp;&amp; parts.length) {
                 &#x2F;&#x2F; First iteration:
@@ -1352,7 +1358,7 @@ on file name and even full path. Use this API only if no relevant file/path exis
                 parts.shift();
             }
         }
-        
+
         return language || _fallbackLanguage;
     }</code></pre></div><div class="member public">
 
@@ -1421,7 +1427,7 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
             _filePathToLanguageMap[fullPath] = language;
         }
         var newLang = getLanguageForPath(fullPath);
-        
+
         &#x2F;&#x2F; Old language changed since this path is no longer mapped to it
         _triggerLanguageModified(oldLang);
         &#x2F;&#x2F; New language changed since a path is now mapped to it that wasn&#39;t before
@@ -1697,7 +1703,7 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
         var result      = new $.Deferred(),
             self        = this,
             mimeMode; &#x2F;&#x2F; Mode can be an array specifying a mode plus a MIME mode defined by that mode [&quot;clike&quot;, &quot;text&#x2F;x-c++src&quot;]
-        
+
         if (Array.isArray(mode)) {
             if (mode.length !== 2) {
                 result.reject(&quot;Mode must either be a string or an array containing two strings&quot;);
@@ -1706,42 +1712,42 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
             mimeMode = mode[1];
             mode = mode[0];
         }
-        
+
         &#x2F;&#x2F; mode must not be empty. Use &quot;null&quot; (the string &quot;null&quot;) mode for plain text
         if (!_validateNonEmptyString(mode, &quot;mode&quot;, result)) {
             result.reject();
             return result.promise();
         }
-        
+
         var finish = function () {
             if (!CodeMirror.modes[mode]) {
                 result.reject(&quot;CodeMirror mode \&quot;&quot; + mode + &quot;\&quot; is not loaded&quot;);
                 return;
             }
-            
+
             if (mimeMode) {
                 var modeConfig = CodeMirror.mimeModes[mimeMode];
-                
+
                 if (!modeConfig) {
                     result.reject(&quot;CodeMirror MIME mode \&quot;&quot; + mimeMode + &quot;\&quot; not found&quot;);
                     return;
                 }
             }
-            
+
             &#x2F;&#x2F; This mode is now only about what to tell CodeMirror
             &#x2F;&#x2F; The base mode was only necessary to load the proper mode file
             self._mode = mimeMode || mode;
             self._wasModified();
-            
+
             result.resolve(self);
         };
-        
+
         if (CodeMirror.modes[mode]) {
             finish();
         } else {
             require([&quot;thirdparty&#x2F;CodeMirror&#x2F;mode&#x2F;&quot; + mode + &quot;&#x2F;&quot; + mode], finish);
         }
-        
+
         return result.promise();
     };</code></pre></div><div class="member private">
 
@@ -1810,7 +1816,7 @@ is removed. The override is NOT persisted across Brackets sessions.</p>
             console.error(&quot;Invalid language ID \&quot;&quot; + id + &quot;\&quot;: Only groups of lower case letters and numbers are allowed, separated by underscores.&quot;);
             return false;
         }
-        
+
         this._id = id;
         return true;
     };</code></pre></div><div class="member private">
@@ -1854,10 +1860,10 @@ Used to disambiguate modes used by multiple languages.</p>
             console.error(&quot;A language must always map its mode to itself&quot;);
             return false;
         }
-        
+
         this._modeToLanguageMap[mode] = language;
         this._wasModified();
-        
+
         return true;
     };</code></pre></div><div class="member private">
 
@@ -1892,7 +1898,7 @@ Used to disambiguate modes used by multiple languages.</p>
         if (!_validateNonEmptyString(name, &quot;name&quot;)) {
             return false;
         }
-        
+
         this._name = name;
         return true;
     };</code></pre></div><div class="member private">
@@ -1957,20 +1963,20 @@ Used to disambiguate modes used by multiple languages.</p>
         if (extension.charAt(0) === &quot;.&quot;) {
             extension = extension.substr(1);
         }
-        
+
         &#x2F;&#x2F; Make checks below case-INsensitive
         extension = extension.toLowerCase();
-        
+
         if (this._fileExtensions.indexOf(extension) === -1) {
             this._fileExtensions.push(extension);
-            
+
             var language = _fileExtensionToLanguageMap[extension];
             if (language) {
                 console.warn(&quot;Cannot register file extension \&quot;&quot; + extension + &quot;\&quot; for &quot; + this._name + &quot;, it already belongs to &quot; + language._name);
             } else {
                 _fileExtensionToLanguageMap[extension] = this;
             }
-            
+
             this._wasModified();
         }
     };</code></pre></div><div class="member">
@@ -2009,17 +2015,17 @@ Used to disambiguate modes used by multiple languages.</p>
     Language.prototype._addFileName = function (name) {
         &#x2F;&#x2F; Make checks below case-INsensitive
         name = name.toLowerCase();
-        
+
         if (this._fileNames.indexOf(name) === -1) {
             this._fileNames.push(name);
-            
+
             var language = _fileNameToLanguageMap[name];
             if (language) {
                 console.warn(&quot;Cannot register file name \&quot;&quot; + name + &quot;\&quot; for &quot; + this._name + &quot;, it already belongs to &quot; + language._name);
             } else {
                 _fileNameToLanguageMap[name] = this;
             }
-            
+
             this._wasModified();
         }
     };</code></pre></div><div class="member">
@@ -2397,16 +2403,16 @@ Used to disambiguate modes used by multiple languages.</p>
         if (extension.charAt(0) === &quot;.&quot;) {
             extension = extension.substr(1);
         }
-        
+
         &#x2F;&#x2F; Make checks below case-INsensitive
         extension = extension.toLowerCase();
-        
+
         var index = this._fileExtensions.indexOf(extension);
         if (index !== -1) {
             this._fileExtensions.splice(index, 1);
-            
+
             delete _fileExtensionToLanguageMap[extension];
-            
+
             this._wasModified();
         }
     };</code></pre></div><div class="member">
@@ -2445,13 +2451,13 @@ Used to disambiguate modes used by multiple languages.</p>
     Language.prototype._removeFileName = function (name) {
         &#x2F;&#x2F; Make checks below case-INsensitive
         name = name.toLowerCase();
-        
+
         var index = this._fileNames.indexOf(name);
         if (index !== -1) {
             this._fileNames.splice(index, 1);
-            
+
             delete _fileNameToLanguageMap[name];
-            
+
             this._wasModified();
         }
     };</code></pre></div><div class="member">
@@ -2493,10 +2499,10 @@ Used to disambiguate modes used by multiple languages.</p>
         if (!_validateNonEmptyString(prefix, &quot;prefix&quot;) || !_validateNonEmptyString(suffix, &quot;suffix&quot;)) {
             return false;
         }
-        
+
         this._blockCommentSyntax = { prefix: prefix, suffix: suffix };
         this._wasModified();
-        
+
         return true;
     };</code></pre></div><div class="member">
 
@@ -2530,19 +2536,19 @@ Used to disambiguate modes used by multiple languages.</p>
 <pre class="code language-javascript"><code class="language-javascript">    Language.prototype.setLineCommentSyntax = function (prefix) {
         var prefixes = Array.isArray(prefix) ? prefix : [prefix];
         var i;
-        
+
         if (prefixes.length) {
             this._lineCommentSyntax = [];
             for (i = 0; i &lt; prefixes.length; i++) {
                 _validateNonEmptyString(String(prefixes[i]), Array.isArray(prefix) ? &quot;prefix[&quot; + i + &quot;]&quot; : &quot;prefix&quot;);
-                
+
                 this._lineCommentSyntax.push(prefixes[i]);
             }
             this._wasModified();
         } else {
             console.error(&quot;The prefix array should not be empty&quot;);
         }
-        
+
         return true;
     };</code></pre></div>
         </section>

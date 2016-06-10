@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -517,7 +515,7 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var CLIENT_ID_PREFIX = &quot;com.adobe.brackets.&quot;;
-    
+
     &#x2F;&#x2F; Private Properties
     var preferencesKey,
         prefStorage,
@@ -665,13 +663,13 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _adjustScopeOrderForProject(scopeOrder, includeProject) {
         var hasProject = scopeOrder.indexOf(&quot;project&quot;) &gt; -1;
-        
+
         if (hasProject === includeProject) {
             return scopeOrder;
         }
-        
+
         var newScopeOrder;
-        
+
         if (includeProject) {
             var before = scopeOrder.indexOf(&quot;user&quot;);
             if (before === -1) {
@@ -761,7 +759,7 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
 <pre class="code language-javascript"><code class="language-javascript">    function _getExtensionPaths() {
         if (!extensionPaths) {
             var dirPath = FileUtils.getNativeBracketsDirectoryPath();
-            
+
             extensionPaths = [
                 dirPath + &quot;&#x2F;extensions&#x2F;default&#x2F;&quot;,
                 dirPath + &quot;&#x2F;extensions&#x2F;dev&#x2F;&quot;,
@@ -801,9 +799,9 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
                     });
             }
         });
-        
+
     }
-    
+
     CommandManager.register(Strings.CMD_OPEN_PREFERENCES, Commands.FILE_OPEN_PREFERENCES, _handleOpenPreferences);</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -869,11 +867,11 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
             _reset();
         }
     }
-    
+
     &#x2F;&#x2F; Check localStorage for a preferencesKey. Production and unit test keys
     &#x2F;&#x2F; are used to keep preferences separate within the same storage implementation.
     preferencesKey = localStorage.getItem(&quot;preferencesKey&quot;);
-    
+
     if (!preferencesKey) {
         &#x2F;&#x2F; use default key if none is found
         preferencesKey = PREFERENCES_CLIENT_ID;
@@ -885,8 +883,8 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
 
     &#x2F;&#x2F; Use localStorage by default
     _initStorage(localStorage);
-    
-    
+
+
     &#x2F;&#x2F; Public API
     exports.getPreferenceStorage    = getPreferenceStorage;
     exports.savePreferences         = savePreferences;
@@ -896,10 +894,10 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
     &#x2F;&#x2F; Unit test use only
     exports._reset                  = _reset;
     exports._getExtensionPaths      = _getExtensionPaths;
-    
+
     &#x2F;&#x2F; New code follows. The code above (with the exception of the imports) is
     &#x2F;&#x2F; deprecated.
-    
+
     var currentFilename         = null, &#x2F;&#x2F; the filename currently being edited
         currentLanguageId       = null, &#x2F;&#x2F; the language id of the file currently being edited
         projectDirectory        = null,
@@ -994,7 +992,7 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
         PreferencesImpl.manager.signalContextChanged(_buildContext(currentFilename, oldLanguageId),
                                                      _buildContext(currentFilename, newLanguageId));
     }
-    
+
 
     PreferencesImpl.manager.contextBuilder = _getContext;</code></pre></div><div class="member private public">
 
@@ -1079,9 +1077,9 @@ This is undefined because this is the default behavior of PreferencesSystem.get.
         scopeOrderWithoutProject = _adjustScopeOrderForProject(defaultScopeOrder, false);
         CURRENT_PROJECT.scopeOrder = scopeOrderWithProject;
     }
-    
+
     _updateCurrentProjectContext();
-    
+
     PreferencesImpl.manager.on(&quot;scopeOrderChange&quot;, _updateCurrentProjectContext);</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
@@ -1167,7 +1165,7 @@ The value tells the converter what to do. The following values are available:</p
         });
     }
 
-    
+
     &#x2F;&#x2F; Constants for preference lookup contexts.</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1286,8 +1284,8 @@ preferences files.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getPreferenceStorage(clientID, defaults, _doNotCreate) {
-        &#x2F;&#x2F; No one should be calling this to access the old preference storage except for 
-        &#x2F;&#x2F; migrating the old preferences to the new model. So if this is called without 
+        &#x2F;&#x2F; No one should be calling this to access the old preference storage except for
+        &#x2F;&#x2F; migrating the old preferences to the new model. So if this is called without
         &#x2F;&#x2F; having _doNotCreate set to true, then the caller is using the old preferences model.
         if (!_doNotCreate) {
             var clientString = typeof clientID === &quot;object&quot; ? clientID.uri : clientID;
@@ -1491,18 +1489,18 @@ old behavior a bit more closely.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setViewState(id, value, context, doNotSave) {
-        
+
         PreferencesImpl.stateManager.set(id, value, context);
-        
+
         if (!doNotSave) {
             PreferencesImpl.stateManager.save();
         }
     }
-    
+
     AppInit.appReady(function () {
         PreferencesImpl.manager.resumeChangeEvents();
     });
-    
+
     &#x2F;&#x2F; Private API for unit testing and use elsewhere in Brackets core
     exports._isUserScopeCorrupt     = PreferencesImpl.isUserScopeCorrupt;
     exports._setCurrentFile         = _setCurrentFile;
@@ -1512,13 +1510,13 @@ old behavior a bit more closely.</p>
     exports._stateProjectLayer      = PreferencesImpl.stateProjectLayer;
     exports._reloadUserPrefs        = PreferencesImpl.reloadUserPrefs;
     exports._buildContext           = _buildContext;
-    
+
     &#x2F;&#x2F; Public API
-    
+
     &#x2F;&#x2F; Context names for preference lookups
     exports.CURRENT_FILE        = CURRENT_FILE;
     exports.CURRENT_PROJECT     = CURRENT_PROJECT;
-    
+
     exports.ready               = PreferencesImpl.managerReady;
     exports.getUserPrefFile     = getUserPrefFile;
     exports.get                 = PreferencesImpl.manager.get.bind(PreferencesImpl.manager);

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -540,7 +538,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
                 if (treeData.getIn(childrenPath) === null) {
                     return;
                 }
-                
+
                 treeData = _createPlaceholder(treeData, parentPath, basename, isFolder, {
                     notInCreateMode: true,
                     doNotOpen: true
@@ -600,7 +598,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _closeSubtree(directory) {
         directory = directory.delete(&quot;open&quot;);
-        
+
         var children = directory.get(&quot;children&quot;);
         if (children) {
             children.keySeq().forEach(function (name) {
@@ -611,7 +609,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
                 }
             });
         }
-        
+
         directory = directory.set(&quot;children&quot;, children);
         return directory;
     }</code></pre></div><div class="member private">
@@ -684,7 +682,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
                 } else {
 
                     &#x2F;&#x2F; The directory is there, but the directory hasn&#39;t been loaded.
-                    &#x2F;&#x2F; Update the directory to be a `notFullyLoaded` directory
+                    &#x2F;&#x2F; Update the directory to be a `notFullyLoaded` directory.
                     treeData = treeData.updateIn(objectPath, _createNotFullyLoadedDirectory);
                     objectPath.push(&quot;children&quot;);
                     treePointer = treeData.getIn(objectPath);
@@ -786,7 +784,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
         if (parentPath.length &gt; 0) {
             var childrenPath = _.clone(parentPath);
             childrenPath.push(&quot;children&quot;);
-            
+
             treeData = treeData.updateIn(childrenPath, function (children) {
                 return children.set(name, newFile);
             });
@@ -1458,7 +1456,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
         hasContext: false,
         hasSelection: false
     });
-    
+
     Object.defineProperty(FileTreeViewModel.prototype, &quot;selectionViewInfo&quot;, {
         get: function () {
             return this._selectionViewInfo;
@@ -1484,7 +1482,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileTreeViewModel.prototype._treeData = Immutable.Map();
-    
+
     Object.defineProperty(FileTreeViewModel.prototype, &quot;treeData&quot;, {
         get: function () {
             return this._treeData;
@@ -1555,7 +1553,7 @@ change event when they&#39;re done whereas the functions do not do this.</p>
             this._treeData = treeData;
             changed = true;
         }
-        
+
         if (selectionViewInfo &amp;&amp; selectionViewInfo !== this._selectionViewInfo) {
             this._selectionViewInfo = selectionViewInfo;
             changed = true;
@@ -1646,13 +1644,13 @@ change event when they&#39;re done whereas the functions do not do this.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileTreeViewModel.prototype.closeSubtree = function (path) {
         var treeData = this._treeData,
             subtreePath = _filePathToObjectPath(treeData, path);
-        
+
         if (!subtreePath) {
             return;
         }
-        
+
         var directory = treeData.getIn(subtreePath);
-        
+
         directory = _closeSubtree(directory);
         treeData = _setIn(treeData, subtreePath, directory);
         this._commit(treeData);
@@ -1759,7 +1757,7 @@ know about already.</p>
             parentPath        = FileUtils.getDirectoryPath(pathWithoutSlash),
             name              = pathWithoutSlash.substr(parentPath.length),
             targetPath        = [];
-        
+
         if (parentPath) {
             targetPath = _filePathToObjectPath(treeData, parentPath);
             if (!targetPath) {
@@ -1770,17 +1768,17 @@ know about already.</p>
                 return;
             }
         }
-        
+
         targetPath.push(name);
-        
+
         if (treeData.getIn(targetPath)) {
             return;
         }
-        
+
         treeData = _setIn(treeData, targetPath, Immutable.Map({
             children: null
         }));
-        
+
         this._commit(treeData);
     };</code></pre></div><div class="member">
 
@@ -1950,7 +1948,7 @@ the open state of directories and has a different return value.</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileTreeViewModel.prototype.moveMarker = function (markerName, oldPath, newPath) {
         var newTreeData = _moveMarker(this._treeData, markerName, oldPath, newPath),
             selectionViewInfo = this._selectionViewInfo;
-        
+
         if (markerName === &quot;selected&quot;) {
             selectionViewInfo = selectionViewInfo.set(&quot;hasSelection&quot;, !!newPath);
         } else if (markerName === &quot;context&quot;) {
@@ -2245,17 +2243,17 @@ explicitly set in the rendering process (see ProjectManager._renderTree).</p>
 <pre class="code language-javascript"><code class="language-javascript">    FileTreeViewModel.prototype.setSelectionScrollerInfo = function (scrollWidth, scrollTop, scrollLeft, offsetTop) {
         this._selectionViewInfo = this._selectionViewInfo.set(&quot;scrollWidth&quot;, scrollWidth);
         this._selectionViewInfo = this._selectionViewInfo.set(&quot;scrollTop&quot;, scrollTop);
-        
+
         if (scrollLeft !== undefined) {
             this._selectionViewInfo = this._selectionViewInfo.set(&quot;scrollLeft&quot;, scrollLeft);
         }
-        
+
         if (offsetTop !== undefined) {
             this._selectionViewInfo = this._selectionViewInfo.set(&quot;offsetTop&quot;, offsetTop);
         }
         &#x2F;&#x2F; Does not emit change event. See SPECIAL CASE NOTE in docstring above.
     };
-    
+
     &#x2F;&#x2F; Private API
     exports.EVENT_CHANGE          = EVENT_CHANGE;
     exports._filePathToObjectPath = _filePathToObjectPath;

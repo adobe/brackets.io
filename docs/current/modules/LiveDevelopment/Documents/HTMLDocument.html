@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -529,10 +527,10 @@ editor.</p>
 
         this.editor = editor;
         this._instrumentationEnabled = false;
-        
+
         this._onActiveEditorChange = this._onActiveEditorChange.bind(this);
         EditorManager.on(&quot;activeEditorChange&quot;, this._onActiveEditorChange);
-        
+
         &#x2F;&#x2F; Attach now
         this.attachToEditor(editor);
     };
@@ -573,13 +571,13 @@ editor.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._compareWithBrowser = function (change) {
         var self = this;
-        
+
         RemoteAgent.call(&quot;getSimpleDOM&quot;).done(function (res) {
             var browserSimpleDOM = JSON.parse(res.result.value),
                 edits,
                 node,
                 result;
-            
+
             try {
                 result = HTMLInstrumentation._getBrowserDiff(self.editor, browserSimpleDOM);
             } catch (err) {
@@ -587,21 +585,21 @@ editor.</p>
                 console.error(err.stack);
                 return;
             }
-            
+
             edits = result.diff.filter(function (delta) {
                 &#x2F;&#x2F; ignore textDelete in html root element
                 node = result.browser.nodeMap[delta.parentID];
-                
+
                 if (node &amp;&amp; node.tag === &quot;html&quot; &amp;&amp; delta.type === &quot;textDelete&quot;) {
                     return false;
                 }
-                
+
                 return true;
             });
-            
+
             if (edits.length &gt; 0) {
                 console.warn(&quot;Browser DOM does not match after change: &quot; + JSON.stringify(change));
-                
+
                 edits.forEach(function (delta) {
                     console.log(delta);
                 });
@@ -646,7 +644,7 @@ editor.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype._onActiveEditorChange = function (event, newActive, oldActive) {
         this.detachFromEditor();
-        
+
         if (newActive &amp;&amp; newActive.document === this.doc) {
             this.attachToEditor(newActive);
         }
@@ -700,17 +698,17 @@ editor.</p>
         if (!isNestedTimer) {
             PerfUtils.markStart(perfTimerName);
         }
-        
+
         &#x2F;&#x2F; Only handles attribute changes currently.
         &#x2F;&#x2F; TODO: text changes should be easy to add
         &#x2F;&#x2F; TODO: if new tags are added, need to instrument them
         var self                = this,
             result              = HTMLInstrumentation.getUnappliedEditList(editor, change),
             applyEditsPromise;
-        
+
         if (result.edits) {
             applyEditsPromise = RemoteAgent.call(&quot;applyDOMEdits&quot;, result.edits);
-    
+
             applyEditsPromise.always(function () {
                 if (!isNestedTimer) {
                     PerfUtils.addMeasurement(perfTimerName);
@@ -720,7 +718,7 @@ editor.</p>
 
         this.errors = result.errors || [];
         this.trigger(&quot;statusChanged&quot;, this);
-        
+
         &#x2F;&#x2F; Debug-only: compare in-memory vs. in-browser DOM
         &#x2F;&#x2F; edit this file or set a conditional breakpoint at the top of this function:
         &#x2F;&#x2F;     &quot;this._debug = true, false&quot;
@@ -731,7 +729,7 @@ editor.</p>
                 self._compareWithBrowser(change);
             });
         }
-        
+
 &#x2F;&#x2F;        var marker = HTMLInstrumentation._getMarkerAtDocumentPos(
 &#x2F;&#x2F;            this.editor,
 &#x2F;&#x2F;            editor.getCursorPos()
@@ -934,7 +932,7 @@ editor.</p>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.attachToEditor = function (editor) {
         var self = this;
         this.editor = editor;
-        
+
         &#x2F;&#x2F; Performance optimization to use closures instead of Function.bind()
         &#x2F;&#x2F; to improve responsiveness during cursor movement and keyboard events
         this.editor.on(&quot;cursorActivity.HTMLDocument&quot;, function (event, editor) {
@@ -948,7 +946,7 @@ editor.</p>
         this.editor.on(&quot;beforeDestroy.HTMLDocument&quot;, function (event, editor) {
             self._onDestroy(event, editor);
         });
-        
+
         &#x2F;&#x2F; Experimental code
         if (LiveDevelopment.config.experimental) {
             HighlightAgent.on(&quot;highlight.HTMLDocument&quot;, function (event, node) {
@@ -1056,7 +1054,7 @@ editor.</p>
         if (this._instrumentationEnabled &amp;&amp; this.editor) {
             body = HTMLInstrumentation.generateInstrumentedHTML(this.editor);
         }
-        
+
         return {
             body: body || this.doc.getText()
         };
@@ -1115,7 +1113,7 @@ editor.</p>
             HTMLInstrumentation.scanDocument(this.doc);
             HTMLInstrumentation._markText(this.editor);
         }
-        
+
         this._instrumentationEnabled = enabled;
     };</code></pre></div><div class="member">
 
@@ -1140,7 +1138,7 @@ editor.</p>
 <pre class="code language-javascript"><code class="language-javascript">    HTMLDocument.prototype.updateHighlight = function () {
         var editor = this.editor,
             ids = [];
-        
+
         if (Inspector.config.highlight) {
             if (editor) {
                 _.each(editor.getSelections(), function (sel) {
@@ -1153,7 +1151,7 @@ editor.</p>
                     }
                 });
             }
-            
+
             if (!ids.length) {
                 HighlightAgent.hide();
             } else {

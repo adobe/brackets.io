@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -501,7 +499,7 @@
     </h4>
 
     
-    <div class="description"><p>Tracks whether a &quot;currentFileChange&quot; notification occured due to a call to 
+    <div class="description"><p>Tracks whether a &quot;currentFileChange&quot; notification occured due to a call to
 openAndSelectDocument.</p>
 </div>
     
@@ -534,7 +532,7 @@ openAndSelectDocument.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _fileSelectionFocus = PROJECT_MANAGER;
-    
+
     &#x2F;&#x2F; Due to circular dependencies, not safe to call on() directly</code></pre></div>
 </section>
 
@@ -577,7 +575,7 @@ openAndSelectDocument.</p>
             MainViewManager.focusActivePane();
         }
         &#x2F;&#x2F; If fullPath corresonds to the current doc being viewed then opening the file won&#39;t
-        &#x2F;&#x2F; trigger a currentFileChange event, so we need to trigger a documentSelectionFocusChange 
+        &#x2F;&#x2F; trigger a currentFileChange event, so we need to trigger a documentSelectionFocusChange
         &#x2F;&#x2F; in this case to signify the selection focus has changed even though the current document has not.
         exports.trigger(&quot;documentSelectionFocusChange&quot;);
     }</code></pre></div><div class="member public deprecated">
@@ -617,11 +615,11 @@ and selects it in the WorkingSetView</p>
         openFileAndAddToWorkingSet(fullPath)
             .done(function (file) {
                 var doc;
-                
+
                 if (file) {
                     doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
                 }
-                
+
                 result.resolve(doc);
             })
             .fail(function (err) {
@@ -657,7 +655,7 @@ and selects it in the WorkingSetView</p>
 
 
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; Deprecated
     exports.addToWorkingSetAndSelect = addToWorkingSetAndSelect;
 
@@ -712,6 +710,19 @@ fileSelectionFocus</p>
         var result,
             curDocChangedDueToMe = _curDocChangedDueToMe;
 
+        function _getDerivedPaneContext() {
+
+            function _secondPaneContext() {
+                return (event.ctrlKey || event.metaKey) &amp;&amp; event.altKey ? MainViewManager.SECOND_PANE : null;
+            }
+
+            function _firstPaneContext() {
+                return (event.ctrlKey || event.metaKey) ? MainViewManager.FIRST_PANE : null;
+            }
+
+            return event &amp;&amp; (_secondPaneContext() || _firstPaneContext());
+        }
+
         if (fileSelectionFocus !== PROJECT_MANAGER &amp;&amp; fileSelectionFocus !== WORKING_SET_VIEW) {
             console.error(&quot;Bad parameter passed to FileViewController.openAndSelectDocument&quot;);
             return;
@@ -724,10 +735,11 @@ fileSelectionFocus</p>
 
         _fileSelectionFocus = fileSelectionFocus;
 
-        paneId = (paneId || MainViewManager.ACTIVE_PANE);
-        
+
+        paneId = (paneId || _getDerivedPaneContext() || MainViewManager.ACTIVE_PANE);
+
         &#x2F;&#x2F; If fullPath corresonds to the current doc being viewed then opening the file won&#39;t
-        &#x2F;&#x2F; trigger a currentFileChange event, so we need to trigger a documentSelectionFocusChange 
+        &#x2F;&#x2F; trigger a currentFileChange event, so we need to trigger a documentSelectionFocusChange
         &#x2F;&#x2F; in this case to signify the selection focus has changed even though the current document has not.
         var currentPath = MainViewManager.getCurrentlyViewedPath(paneId);
         if (currentPath === fullPath) {
@@ -737,12 +749,12 @@ fileSelectionFocus</p>
             result = CommandManager.execute(Commands.FILE_OPEN, {fullPath: fullPath,
                                                                  paneId: paneId});
         }
-        
+
         &#x2F;&#x2F; clear after notification is done
         result.always(function () {
             _curDocChangedDueToMe = curDocChangedDueToMe;
         });
-        
+
         return result;
     }</code></pre></div><div class="member public">
 
@@ -772,7 +784,7 @@ and selects it in the WorkingSetView</p>
         <span class="label label-optional">optional</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>- Pane in which to add the view. If omitted, the command default is to use the ACTIVE_PANE </dd>
+    <dd>- Pane in which to add the view. If omitted, the command default is to use the ACTIVE_PANE</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">!$.Promise</span>
 </dt>
@@ -789,14 +801,14 @@ and selects it in the WorkingSetView</p>
         &#x2F;&#x2F; is already the current one. In that case we will want to notify with
         &#x2F;&#x2F; documentSelectionFocusChange so the views change their selection
         promise.done(function (file) {
-            &#x2F;&#x2F; CMD_ADD_TO_WORKINGSET_AND_OPEN command sets the current document. Update the 
+            &#x2F;&#x2F; CMD_ADD_TO_WORKINGSET_AND_OPEN command sets the current document. Update the
             &#x2F;&#x2F; selection focus only if doc is not null. When double-clicking on an
             &#x2F;&#x2F; image file, we get a null doc here but we still want to keep _fileSelectionFocus
             &#x2F;&#x2F; as PROJECT_MANAGER. Regardless of doc is null or not, call _activatePane
             &#x2F;&#x2F; to trigger documentSelectionFocusChange event.
             _fileSelectionFocus = WORKING_SET_VIEW;
             _activatePane(paneId);
-            
+
             result.resolve(file);
         }).fail(function (err) {
             result.reject(err);

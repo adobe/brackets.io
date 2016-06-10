@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -476,12 +474,43 @@
         <li><a href="..&#x2F;../modules/text!htmlContent/extension-manager-view-item.html.html">extension-manager-view-item.html</a></li>
         <li><a href="..&#x2F;../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
         <li><a href="..&#x2F;../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/path-utils/path-utils.html">path-utils</a></li>
         <li><a href="..&#x2F;../modules/extensibility/registry_utils.html">registry_utils</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
 
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _tmpLink 
+        <a class="anchor" href="#-_tmpLink" id="-_tmpLink"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Create a detached link element, so that we can use it later to extract url details like &#39;protocol&#39;</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _tmpLink = document.createElement(&#39;a&#39;);</code></pre></div>
 </section>
 
 
@@ -677,7 +706,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         if (entry &amp;&amp; entry.registryInfo) {
             var compatInfo = ExtensionManager.getCompatibilityInfo(entry.registryInfo, brackets.metadata.apiVersion),
                 url = ExtensionManager.getExtensionURL(id, compatInfo.compatibleVersion);
-            
+
             &#x2F;&#x2F; TODO: this should set .done on the returned promise
             if (_isUpdate) {
                 InstallExtensionDialog.updateUsingDialog(url).done(ExtensionManager.updateFromDownload);
@@ -706,10 +735,10 @@ with initialize(). When the view is closed, dispose() must be called.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerView.prototype._render = function () {
         var self = this;
-        
+
         this._$table.empty();
         this._updateMessage();
-        
+
         this.model.filterSet.forEach(function (id) {
             var $item = self._itemViews[id];
             if (!$item) {
@@ -718,7 +747,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             }
             $item.appendTo(self._$table);
         });
-        
+
         this.trigger(&quot;render&quot;);
     };</code></pre></div><div class="member private">
 
@@ -754,23 +783,23 @@ with initialize(). When the view is closed, dispose() must be called.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerView.prototype._renderItem = function (entry, info) {
         &#x2F;&#x2F; Create a Mustache context object containing the entry data and our helper functions.
-        
+
         &#x2F;&#x2F; Start with the basic info from the given entry, either the installation info or the
         &#x2F;&#x2F; registry info depending on what we&#39;re listing.
         var context = $.extend({}, info);
-        
+
         &#x2F;&#x2F; Normally we would merge the strings into the context we&#39;re passing into the template,
         &#x2F;&#x2F; but since we&#39;re instantiating the template for every item, it seems wrong to take the hit
         &#x2F;&#x2F; of copying all the strings into the context, so we just make it a subfield.
         context.Strings = Strings;
-        
+
         &#x2F;&#x2F; Calculate various bools, since Mustache doesn&#39;t let you use expressions and interprets
         &#x2F;&#x2F; arrays as iteration contexts.
         context.isInstalled = !!entry.installInfo;
         context.failedToStart = (entry.installInfo &amp;&amp; entry.installInfo.status === ExtensionManager.START_FAILED);
         context.disabled = (entry.installInfo &amp;&amp; entry.installInfo.status === ExtensionManager.DISABLED);
         context.hasVersionInfo = !!info.versions;
-                
+
         if (entry.registryInfo) {
             var latestVerCompatInfo = ExtensionManager.getCompatibilityInfo(entry.registryInfo, brackets.metadata.apiVersion);
             context.isCompatible = latestVerCompatInfo.isCompatible;
@@ -810,7 +839,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         context.isMarkedForDisabling = ExtensionManager.isMarkedForDisabling(info.metadata.name);
         context.isMarkedForUpdate = ExtensionManager.isMarkedForUpdate(info.metadata.name);
         var hasPendingAction = context.isMarkedForDisabling || context.isMarkedForRemoval || context.isMarkedForUpdate;
-        
+
         context.showInstallButton = (this.model.source === this.model.SOURCE_REGISTRY || this.model.source === this.model.SOURCE_THEMES) &amp;&amp; !context.updateAvailable;
         context.showUpdateButton = context.updateAvailable &amp;&amp; !context.isMarkedForUpdate &amp;&amp; !context.isMarkedForRemoval;
 
@@ -869,12 +898,30 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             !context.disabled &amp;&amp; !hasPendingAction;
         context.enablingAllowed = this.model.source === &quot;installed&quot; &amp;&amp;
             context.disabled &amp;&amp; !hasPendingAction;
-        
+
         &#x2F;&#x2F; Copy over helper functions that we share with the registry app.
         [&quot;lastVersionDate&quot;, &quot;authorInfo&quot;].forEach(function (helper) {
             context[helper] = registry_utils[helper];
         });
-        
+
+        &#x2F;&#x2F; Do some extra validation on homepage url to make sure we don&#39;t end up executing local binary
+        if (context.metadata.homepage) {
+            var parsed = PathUtils.parseUrl(context.metadata.homepage);
+
+            &#x2F;&#x2F; We can&#39;t rely on path-utils because of known problems with protocol identification
+            &#x2F;&#x2F; Falling back to Browsers protocol identification mechanism
+            _tmpLink.href = context.metadata.homepage;
+
+            &#x2F;&#x2F; Check if the homepage refers to a local resource
+            if (_tmpLink.protocol === &quot;file:&quot;) {
+                var language = LanguageManager.getLanguageForExtension(parsed.filenameExtension.replace(&#x2F;^\.&#x2F;, &#39;&#39;));
+                &#x2F;&#x2F; If identified language for the local resource is binary, don&#39;t list it
+                if (language &amp;&amp; language.isBinary()) {
+                    delete context.metadata.homepage;
+                }
+            }
+        }
+
         return $(this._itemTemplate(context));
     };</code></pre></div><div class="member private">
 
@@ -923,7 +970,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
                     }
                 }
             });
-        
+
         &#x2F;&#x2F; UI event handlers
         this.$el
             .on(&quot;click&quot;, &quot;a&quot;, function (e) {
@@ -1037,13 +1084,13 @@ with initialize(). When the view is closed, dispose() must be called.</p>
             this._$emptyMessage.html(this.model.message);
             this._$infoMessage.css(&quot;display&quot;, &quot;none&quot;);
             this._$table.css(&quot;display&quot;, &quot;none&quot;);
-            
+
             return true;
         } else {
             this._$emptyMessage.css(&quot;display&quot;, &quot;none&quot;);
             this._$infoMessage.css(&quot;display&quot;, this.model.infoMessage ? &quot;block&quot; : &quot;none&quot;);
             this._$table.css(&quot;display&quot;, &quot;&quot;);
-            
+
             return false;
         }
     };</code></pre></div><div class="member">
@@ -1074,7 +1121,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
 <pre class="code language-javascript"><code class="language-javascript">    ExtensionManagerView.prototype.filter = function (query) {
         this.model.filter(query);
     };
-        
+
     exports.ExtensionManagerView = ExtensionManagerView;
 });</code></pre></div><div class="member">
 
@@ -1116,14 +1163,14 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         this._$infoMessage = $(&quot;&lt;div class=&#39;info-message&#39;&#x2F;&gt;&quot;)
             .appendTo(this.$el).html(this.model.infoMessage);
         this._$table = $(&quot;&lt;table class=&#39;table&#39;&#x2F;&gt;&quot;).appendTo(this.$el);
-        
+
         this.model.initialize().done(function () {
             self._setupEventHandlers();
         }).always(function () {
             self._render();
             result.resolve();
         });
-        
+
         return result.promise();
     };</code></pre></div>
         </section>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -499,7 +497,7 @@
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        
+<pre class="code language-javascript"><code class="language-javascript">
         var newIndex = 0,
             oldIndex = 0,
             newChildren = newParent.children,
@@ -551,40 +549,40 @@
             moves.push.apply(moves, delta.moves);
             queue.push.apply(queue, delta.newElements);
         };
-        
+
         &#x2F;&#x2F; Start at the root of the current tree.
         queue.push(newNode);
-        
+
         do {
             newElement = queue.pop();
             oldElement = oldNodeMap[newElement.tagID];
-            
+
             &#x2F;&#x2F; Do we need to compare elements?
             if (oldElement) {
-                
+
                 &#x2F;&#x2F; Are attributes different?
                 if (newElement.attributeSignature !== oldElement.attributeSignature) {
                     &#x2F;&#x2F; generate attribute edits
                     edits.push.apply(edits, generateAttributeEdits(oldElement, newElement));
                 }
-                
+
                 &#x2F;&#x2F; Has there been a change to this node&#39;s immediate children?
                 if (newElement.childSignature !== oldElement.childSignature) {
                     addEdits(generateChildEdits(oldElement, oldNodeMap, newElement, newNodeMap));
                 }
-                
+
                 &#x2F;&#x2F; If there&#39;s a change farther down in the tree, add the children to the queue.
                 &#x2F;&#x2F; If not, we can skip that whole subtree.
                 if (newElement.subtreeSignature !== oldElement.subtreeSignature) {
                     newElement.children.forEach(queuePush);
                 }
-            
+
             &#x2F;&#x2F; This is a new element, so go straight to generating child edits (which will
             &#x2F;&#x2F; create the appropriate Insert edits).
             } else {
                 &#x2F;&#x2F; If this is the root (html) tag, we need to manufacture an insert for it here,
                 &#x2F;&#x2F; because it isn&#39;t the child of any other node. The browser-side code doesn&#39;t
-                &#x2F;&#x2F; care about parentage&#x2F;positioning in this case, and will handle just setting the 
+                &#x2F;&#x2F; care about parentage&#x2F;positioning in this case, and will handle just setting the
                 &#x2F;&#x2F; ID on the existing implied HTML tag in the browser without actually creating it.
                 if (!newElement.parent) {
                     edits.push({
@@ -595,11 +593,11 @@
                         attributes: newElement.attributes
                     });
                 }
-                
+
                 addEdits(generateChildEdits(null, oldNodeMap, newElement, newNodeMap));
             }
         } while (queue.length);
-        
+
         &#x2F;&#x2F; Special handling for moves: add edits to the beginning of the list so that
         &#x2F;&#x2F; moved nodes are set aside to ensure that they remain available at the time of their
         &#x2F;&#x2F; move.
@@ -609,10 +607,10 @@
                 tagIDs: moves
             });
         }
-        
+
         return edits;
     }
-    
+
     &#x2F;&#x2F; Public API
     exports.domdiff = domdiff;
 });</code></pre></div><div class="member">
@@ -647,13 +645,13 @@ has been moved.</p>
                 &#x2F;&#x2F; We can finalize existing edits relative to this node *before* it&#39;s
                 &#x2F;&#x2F; deleted.
                 finalizeNewEdits(oldChild.tagID, true);
-                
+
                 newEdit = {
                     type: &quot;elementDelete&quot;,
                     tagID: oldChild.tagID
                 };
                 newEdits.push(newEdit);
-                
+
                 &#x2F;&#x2F; deleted element means we need to move on to compare the next
                 &#x2F;&#x2F; of the old tree with the one from the current tree that we
                 &#x2F;&#x2F; just compared
@@ -697,17 +695,17 @@ or the element has been moved.</p>
                     parentID: newChild.parent.tagID,
                     attributes: newChild.attributes
                 };
-                
+
                 newEdits.push(newEdit);
-                
+
                 &#x2F;&#x2F; This newly inserted node needs to have edits generated for its
                 &#x2F;&#x2F; children, so we add it to the queue.
                 newElements.push(newChild);
-                
+
                 &#x2F;&#x2F; A textInsert edit that follows this elementInsert should use
                 &#x2F;&#x2F; this element&#39;s ID.
                 textAfterID = newChild.tagID;
-                
+
                 &#x2F;&#x2F; new element means we need to move on to compare the next
                 &#x2F;&#x2F; of the current tree with the one from the old tree that we
                 &#x2F;&#x2F; just compared
@@ -727,8 +725,8 @@ or the element has been moved.</p>
     </h4>
 
     
-    <div class="description"><p>Adds an elementMove edit if the parent has changed between the old and new trees. 
-These are fairly infrequent and generally occur if you make a change across 
+    <div class="description"><p>Adds an elementMove edit if the parent has changed between the old and new trees.
+These are fairly infrequent and generally occur if you make a change across
 tag boundaries.</p>
 </div>
     
@@ -741,12 +739,12 @@ tag boundaries.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        var addElementMove = function () {
-            
+
             &#x2F;&#x2F; This check looks a little strange, but it suits what we&#39;re trying
             &#x2F;&#x2F; to do: as we&#39;re walking through the children, a child node that has moved
             &#x2F;&#x2F; from one parent to another will be found but would look like some kind
             &#x2F;&#x2F; of insert. The check that we&#39;re doing here is looking up the current
-            &#x2F;&#x2F; child&#39;s ID in the *old* map and seeing if this child used to have a 
+            &#x2F;&#x2F; child&#39;s ID in the *old* map and seeing if this child used to have a
             &#x2F;&#x2F; different parent.
             var possiblyMovedElement = oldNodeMap[newChild.tagID];
             if (possiblyMovedElement &amp;&amp;
@@ -758,7 +756,7 @@ tag boundaries.</p>
                 };
                 moves.push(newEdit.tagID);
                 newEdits.push(newEdit);
-                
+
                 &#x2F;&#x2F; this element in the new tree was a move to this spot, so we can move
                 &#x2F;&#x2F; on to the next child in the new tree.
                 newIndex++;
@@ -804,7 +802,7 @@ the maintaining of the old content.</p>
                     type: &quot;textDelete&quot;
                 };
             }
-            
+
             &#x2F;&#x2F; When elements are deleted or moved from the old set of children, you
             &#x2F;&#x2F; can end up with multiple text nodes in a row. A single textReplace edit
             &#x2F;&#x2F; will take care of those (and will contain all of the right content since
@@ -817,9 +815,9 @@ the maintaining of the old content.</p>
                 oldIndex++;
                 return;
             }
-            
+
             newEdit.parentID = oldChild.parent.tagID;
-            
+
             &#x2F;&#x2F; If there was only one child previously, we just pass along
             &#x2F;&#x2F; textDelete&#x2F;textReplace with the parentID and the browser will
             &#x2F;&#x2F; clear all of the children
@@ -831,7 +829,7 @@ the maintaining of the old content.</p>
                 }
                 newEdits.push(newEdit);
             }
-            
+
             &#x2F;&#x2F; This text appeared in the old tree but not the new one, so we
             &#x2F;&#x2F; increment the old children counter.
             oldIndex++;
@@ -861,7 +859,7 @@ the maintaining of the old content.</p>
                 content: newChild.content,
                 parentID: newChild.parent.tagID
             };
-            
+
             &#x2F;&#x2F; text changes will generally have afterID and beforeID, but we make
             &#x2F;&#x2F; special note if it&#39;s the first child.
             if (textAfterID) {
@@ -870,7 +868,7 @@ the maintaining of the old content.</p>
                 newEdit.firstChild = true;
             }
             newEdits.push(newEdit);
-            
+
             &#x2F;&#x2F; The text node is in the new tree, so we move to the next new tree item
             newIndex++;
         };</code></pre></div><div class="member public">
@@ -977,7 +975,7 @@ for text edits that follow.</p>
             });
             edits.push.apply(edits, newEdits);
             newEdits = [];
-            
+
             &#x2F;&#x2F; If the item we made this set of edits relative to
             &#x2F;&#x2F; is being deleted, we can&#39;t use it as the afterID for future
             &#x2F;&#x2F; edits. It&#39;s okay to just keep the previous afterID, since
@@ -1023,7 +1021,7 @@ for text edits that follow.</p>
         var oldAttributes = $.extend({}, oldNode.attributes),
             newAttributes = newNode.attributes,
             edits = [];
-        
+
         Object.keys(newAttributes).forEach(function (attributeName) {
             if (oldAttributes[attributeName] !== newAttributes[attributeName]) {
                 var type = oldAttributes.hasOwnProperty(attributeName) ? &quot;attrChange&quot; : &quot;attrAdd&quot;;
@@ -1036,7 +1034,7 @@ for text edits that follow.</p>
             }
             delete oldAttributes[attributeName];
         });
-        
+
         Object.keys(oldAttributes).forEach(function (attributeName) {
             edits.push({
                 type: &quot;attrDelete&quot;,
@@ -1044,7 +1042,7 @@ for text edits that follow.</p>
                 attribute: attributeName
             });
         });
-        
+
         return edits;
     }</code></pre></div><div class="member private">
 
@@ -1131,51 +1129,51 @@ current and former parents.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">        var hasMoved = function (oldChild) {
             var oldChildInNewTree = newNodeMap[oldChild.tagID];
-            
+
             return oldChild.children &amp;&amp; oldChildInNewTree &amp;&amp; getParentID(oldChild) !== getParentID(oldChildInNewTree);
         };
-        
+
         &#x2F;&#x2F; Loop through the current and old children, comparing them one by one.
         while (newIndex &lt; newChildren.length &amp;&amp; oldIndex &lt; oldChildren.length) {
             newChild = newChildren[newIndex];
-            
-            &#x2F;&#x2F; Check to see if the currentChild has been reparented from somewhere 
+
+            &#x2F;&#x2F; Check to see if the currentChild has been reparented from somewhere
             &#x2F;&#x2F; else in the old tree
             if (newChild.children &amp;&amp; addElementMove()) {
                 continue;
             }
-            
+
             oldChild = oldChildren[oldIndex];
-            
+
             &#x2F;&#x2F; Check to see if the oldChild has been moved to another parent.
             &#x2F;&#x2F; If it has, we deal with it on the other side (see above)
             if (hasMoved(oldChild)) {
                 oldIndex++;
                 continue;
             }
-            
+
             if (newChild.isElement() || oldChild.isElement()) {
-                
+
                 if (newChild.isElement() &amp;&amp; oldChild.isText()) {
                     addTextDelete();
-                    
+
                     &#x2F;&#x2F; If this element is new, add it and move to the next child
                     &#x2F;&#x2F; in the current tree. Otherwise, we&#39;ll compare this same
                     &#x2F;&#x2F; current element with the next old element on the next pass
                     &#x2F;&#x2F; through the loop.
                     addElementInsert();
-                
+
                 } else if (oldChild.isElement() &amp;&amp; newChild.isText()) {
                     &#x2F;&#x2F; If the old child has *not* been deleted, we assume that we&#39;ve
                     &#x2F;&#x2F; inserted some text and will still encounter the old node
                     if (!addElementDelete()) {
                         addTextInsert();
                     }
-                
+
                 &#x2F;&#x2F; both children are elements
                 } else {
                     if (newChild.tagID !== oldChild.tagID) {
-                        
+
                         &#x2F;&#x2F; First, check to see if we&#39;re deleting an element.
                         &#x2F;&#x2F; If we are, get rid of that element and restart our comparison
                         &#x2F;&#x2F; logic with the same element from the new tree and the next one
@@ -1190,7 +1188,7 @@ current and former parents.</p>
                                 oldIndex++;
                             }
                         }
-                    
+
                     &#x2F;&#x2F; There has been no change in the tag we&#39;re looking at.
                     } else {
                         &#x2F;&#x2F; Since this element hasn&#39;t moved, it is a suitable &quot;beforeID&quot;
@@ -1200,7 +1198,7 @@ current and former parents.</p>
                         oldIndex++;
                     }
                 }
-            
+
             &#x2F;&#x2F; We know we&#39;re comparing two texts. Just match up their signatures.
             } else {
                 if (newChild.textSignature !== oldChild.textSignature) {
@@ -1214,14 +1212,14 @@ current and former parents.</p>
                     }
                     newEdits.push(newEdit);
                 }
-                
+
                 &#x2F;&#x2F; Either we&#39;ve done a text replace or both sides matched. In either
                 &#x2F;&#x2F; case we&#39;re ready to move forward among both the old and new children.
                 newIndex++;
                 oldIndex++;
             }
         }
-        
+
         &#x2F;&#x2F; At this point, we&#39;ve used up all of the children in at least one of the
         &#x2F;&#x2F; two sets of children.</code></pre></div><div class="member">
 

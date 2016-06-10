@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -479,6 +477,7 @@
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -530,7 +529,7 @@
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _createImageView(file, pane) {
         var view = pane.getViewForPath(file.fullPath);
-        
+
         if (view) {
             pane.showView(view);
         } else {
@@ -550,7 +549,7 @@
     </h4>
 
     
-    <div class="description"><p>Handles file system change events so we can refresh 
+    <div class="description"><p>Handles file system change events so we can refresh
  image viewers for the files that changed on disk due to external editors</p>
 </div>
     
@@ -583,12 +582,12 @@
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleFileSystemChange(event, entry, added, removed) {
-        &#x2F;&#x2F; this may have been called because files were added 
+        &#x2F;&#x2F; this may have been called because files were added
         &#x2F;&#x2F;  or removed to the file system.  We don&#39;t care about those
         if (!entry || entry.isDirectory) {
             return;
         }
-        
+
         &#x2F;&#x2F; Look for a viewer for the changed file
         var viewer = _viewers[entry.fullPath];
 
@@ -613,7 +612,7 @@
                 
             </h4>
             
-            <em><p>ImageView objects are constructed when an image is opened </p>
+            <em><p>ImageView objects are constructed when an image is opened</p>
 </em>
             
             <dl>
@@ -629,14 +628,14 @@
         this.file = file;
         this.$el = $(Mustache.render(ImageViewTemplate, {fullPath: FileUtils.encodeFilePath(file.fullPath),
                                                          now: new Date().valueOf()}));
-        
+
         $container.append(this.$el);
 
         this._naturalWidth = 0;
         this._naturalHeight = 0;
         this._scale = 100;           &#x2F;&#x2F; 100%
         this._scaleDivInfo = null;   &#x2F;&#x2F; coordinates of hidden scale sticker
-        
+
         this.relPath = ProjectManager.makeProjectRelativeIfPossible(this.file.fullPath);
 
         this.$imagePath = this.$el.find(&quot;.image-path&quot;);
@@ -651,10 +650,10 @@
         this.$y_value = this.$el.find(&quot;.y-value&quot;);
         this.$horzGuide = this.$el.find(&quot;.horz-guide&quot;);
         this.$vertGuide = this.$el.find(&quot;.vert-guide&quot;);
-        
+
         this.$imagePath.text(this.relPath).attr(&quot;title&quot;, this.relPath);
         this.$imagePreview.on(&quot;load&quot;, _.bind(this._onImageLoaded, this));
-        
+
         _viewers[file.fullPath] = this;
     }</code></pre>
         </div>
@@ -679,7 +678,7 @@
     </h4>
 
     
-    <div class="description"><p>Check mouse entering/exiting the scale sticker. 
+    <div class="description"><p>Check mouse entering/exiting the scale sticker.
 Hide it when entering and show it again when exiting.</p>
 </div>
     
@@ -707,28 +706,28 @@ Hide it when entering and show it again when exiting.</p>
             scaleDivTop,
             scaleDivRight,
             scaleDivBottom;
-        
+
         if (this._scaleDivInfo) {
             scaleDivLeft   = this._scaleDivInfo.left;
             scaleDivTop    = this._scaleDivInfo.top;
             scaleDivRight  = this._scaleDivInfo.right;
             scaleDivBottom = this._scaleDivInfo.bottom;
-            
+
             if ((imgWidth + imagePos.left) &lt; scaleDivRight) {
                 scaleDivRight = imgWidth + imagePos.left;
             }
-            
+
             if ((imgHeight + imagePos.top) &lt; scaleDivBottom) {
                 scaleDivBottom = imgHeight + imagePos.top;
             }
-            
+
         } else {
             scaleDivLeft   = scaleDivPos.left;
             scaleDivTop    = scaleDivPos.top;
             scaleDivRight  = this.$imageScale.width() + scaleDivLeft;
             scaleDivBottom = this.$imageScale.height() + scaleDivTop;
         }
-        
+
         if (this._scaleDivInfo) {
             &#x2F;&#x2F; See whether the cursor is no longer inside the hidden scale div.
             &#x2F;&#x2F; If so, show it again.
@@ -794,7 +793,7 @@ Hide it when entering and show it again when exiting.</p>
         e
         <span class="label label-info">Event</span>
     </dt>
-    <dd>- event </dd>
+    <dd>- event</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -807,7 +806,7 @@ Hide it when entering and show it again when exiting.</p>
             bottom    = imagePos.top + this.$imagePreview.height(),
             x         = targetPos.left + e.offsetX,
             y         = targetPos.top + e.offsetY;
-        
+
         &#x2F;&#x2F; Hide image tip and guides only if the cursor is outside of the image.
         if (x &lt; imagePos.left || x &gt;= right ||
                 y &lt; imagePos.top || y &gt;= bottom) {
@@ -829,7 +828,7 @@ Hide it when entering and show it again when exiting.</p>
     </h4>
 
     
-    <div class="description"><p>DocumentManger.fileNameChange handler - when an image is renamed, we must 
+    <div class="description"><p>DocumentManger.fileNameChange handler - when an image is renamed, we must
 update the view</p>
 </div>
     
@@ -844,13 +843,13 @@ update the view</p>
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>- the name of the file that's changing changing </dd>
+    <dd>- the name of the file that's changing changing</dd>
     <dt>
         newPath
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>- the name of the file that's changing changing </dd>
+    <dd>- the name of the file that's changing changing</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -867,8 +866,8 @@ update the view</p>
     </h4>
 
     
-    <div class="description"><p>&lt;img&gt;.on(&quot;load&quot;) handler - updates content of the image view 
-                           initializes computed values 
+    <div class="description"><p>&lt;img&gt;.on(&quot;load&quot;) handler - updates content of the image view
+                           initializes computed values
                            installs event handlers</p>
 </div>
     
@@ -886,17 +885,17 @@ update the view</p>
         &#x2F;&#x2F; add dimensions and size
         this._naturalWidth = e.currentTarget.naturalWidth;
         this._naturalHeight = e.currentTarget.naturalHeight;
-        
+
         var extension = FileUtils.getFileExtension(this.file.fullPath);
         var dimensionString = this._naturalWidth + &quot; &amp;times; &quot; + this._naturalHeight + &quot; &quot; + Strings.UNIT_PIXELS;
-        
+
         if (extension === &quot;ico&quot;) {
             dimensionString += &quot; (&quot; + Strings.IMAGE_VIEWER_LARGEST_ICON + &quot;)&quot;;
         }
-        
+
         &#x2F;&#x2F; get image size
         var self = this;
-        
+
         this.file.stat(function (err, stat) {
             if (err) {
                 self.$imageData.html(dimensionString);
@@ -912,13 +911,13 @@ update the view</p>
                                     .replace(&quot;&amp;mdash;&quot;, &quot;-&quot;));
             }
         });
-        
+
         &#x2F;&#x2F; make sure we always show the right file name
         DocumentManager.on(&quot;fileNameChange.ImageView&quot;, _.bind(this._onFilenameChange, this));
-       
+
         this.$imageTip.hide();
         this.$imageGuides.hide();
-        
+
         this.$image.on(&quot;mousemove.ImageView&quot;, &quot;.image-preview&quot;, _.bind(this._showImageTip, this))
                    .on(&quot;mouseleave.ImageView&quot;, &quot;.image-preview&quot;, _.bind(this._hideImageTip, this));
 
@@ -954,7 +953,7 @@ update the view</p>
         if (Math.floor(this._scale) === 0) {
             return;
         }
-        
+
         var x                   = Math.round(e.offsetX * 100 &#x2F; this._scale),
             y                   = Math.round(e.offsetY * 100 &#x2F; this._scale),
             imagePos            = this.$imagePreview.position(),
@@ -964,37 +963,37 @@ update the view</p>
             height              = this.$imagePreview.height(),
             windowWidth         = $(window).width(),
             fourDigitImageWidth = this._naturalWidth.toString().length === 4,
-            
+
             &#x2F;&#x2F; @todo -- seems a bit strange that we&#39;re computing sizes
             &#x2F;&#x2F;          using magic numbers
-            
+
             infoWidth1          = 112,    &#x2F;&#x2F; info div width 96px + vertical toolbar width 16px
             infoWidth2          = 120,    &#x2F;&#x2F; info div width 104px (for 4-digit image width) + vertical toolbar width 16px
             tipOffsetX          = 10,     &#x2F;&#x2F; adjustment for info div left from x coordinate of cursor
             tipOffsetY          = -54,    &#x2F;&#x2F; adjustment for info div top from y coordinate of cursor
             tipMinusOffsetX1    = -82,    &#x2F;&#x2F; for less than 4-digit image width
-            tipMinusOffsetX2    = -90;    &#x2F;&#x2F; for 4-digit image width 
-        
-        &#x2F;&#x2F; Check whether we&#39;re getting mousemove events beyond the image boundaries due to a browser bug 
+            tipMinusOffsetX2    = -90;    &#x2F;&#x2F; for 4-digit image width
+
+        &#x2F;&#x2F; Check whether we&#39;re getting mousemove events beyond the image boundaries due to a browser bug
         &#x2F;&#x2F; or the rounding calculation above for a scaled image. For example, if an image is 120 px wide,
-        &#x2F;&#x2F; we should get mousemove events in the range of 0 &lt;= x &lt; 120, but not 120 or more. If we get 
+        &#x2F;&#x2F; we should get mousemove events in the range of 0 &lt;= x &lt; 120, but not 120 or more. If we get
         &#x2F;&#x2F; a value beyond the range, then simply handle the event as if it were a mouseleave.
         if (x &lt; 0 || x &gt;= this._naturalWidth || y &lt; 0 || y &gt;= this._naturalHeight) {
             this._hideImageTip(e);
             this.$imagePreview.css(&quot;cursor&quot;, &quot;auto&quot;);
             return;
         }
-        
+
         this.$imagePreview.css(&quot;cursor&quot;, &quot;none&quot;);
-        
+
         this._handleMouseEnterOrExitScaleSticker(left, top);
-        
+
         &#x2F;&#x2F; Check whether to show the image tip on the left.
         if ((e.pageX + infoWidth1) &gt; windowWidth ||
                 (fourDigitImageWidth &amp;&amp; (e.pageX + infoWidth2) &gt; windowWidth)) {
             tipOffsetX = fourDigitImageWidth ? tipMinusOffsetX2 : tipMinusOffsetX1;
         }
-        
+
         this.$x_value.text(x + &quot;px&quot;);
         this.$y_value.text(y + &quot;px&quot;);
 
@@ -1002,13 +1001,13 @@ update the view</p>
             left: left + tipOffsetX,
             top: top + tipOffsetY
         }).show();
-        
+
         this.$horzGuide.css({
             left: imagePos.left,
             top: top,
             width: width - 1
         }).show();
-        
+
         this.$vertGuide.css({
             left: left,
             top: imagePos.top,
@@ -1036,7 +1035,7 @@ update the view</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ImageView.prototype._updateScale = function () {
         var currentWidth = this.$imagePreview.width();
-        
+
         if (currentWidth &amp;&amp; currentWidth &lt; this._naturalWidth) {
             this._scale = currentWidth &#x2F; this._naturalWidth * 100;
             this.$imageScale.text(Math.floor(this._scale) + &quot;%&quot;)
@@ -1122,17 +1121,17 @@ return {!File} the file object for this view</p>
             now = new Date().valueOf(),
             index = noCacheUrl.indexOf(&quot;?&quot;);
 
-        &#x2F;&#x2F; strip the old param off 
+        &#x2F;&#x2F; strip the old param off
         if (index &gt; 0) {
             noCacheUrl = noCacheUrl.slice(0, index);
         }
-        
-        &#x2F;&#x2F; add a new param which will force chrome to 
-        &#x2F;&#x2F;  re-read the image from disk 
-        noCacheUrl = noCacheUrl + &quot;?ver=&quot; + now;
-        
 
-        &#x2F;&#x2F; Update the DOM node with the src URL 
+        &#x2F;&#x2F; add a new param which will force chrome to
+        &#x2F;&#x2F;  re-read the image from disk
+        noCacheUrl = noCacheUrl + &quot;?ver=&quot; + now;
+
+
+        &#x2F;&#x2F; Update the DOM node with the src URL
         this.$imagePreview.attr(&quot;src&quot;, noCacheUrl);
     };</code></pre></div><div class="member">
 
@@ -1156,16 +1155,16 @@ return {!File} the file object for this view</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ImageView.prototype.updateLayout = function () {
         this._hideGuidesAndTip();
-        
+
         var $container = this.$el.parent();
-        
+
         var pos = $container.position(),
             iWidth = $container.innerWidth(),
             iHeight = $container.innerHeight(),
             oWidth = $container.outerWidth(),
             oHeight = $container.outerHeight();
-            
-        &#x2F;&#x2F; $view is &quot;position:absolute&quot; so 
+
+        &#x2F;&#x2F; $view is &quot;position:absolute&quot; so
         &#x2F;&#x2F;  we have to update the height, width and position
         this.$el.css({top: pos.top + ((oHeight - iHeight) &#x2F; 2),
                         left: pos.left + ((oWidth - iWidth) &#x2F; 2),

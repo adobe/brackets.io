@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -527,15 +525,15 @@ And the text field is:
             <pre class="code language-javascript"><code class="language-javascript">    function QuickSearchField($input, options) {
         this.$input = $input;
         this.options = options;
-        
+
         options.maxResults = options.maxResults || 10;
-        
+
         this._handleInput   = this._handleInput.bind(this);
         this._handleKeyDown = this._handleKeyDown.bind(this);
-        
+
         $input.on(&quot;input&quot;, this._handleInput);
         $input.on(&quot;keydown&quot;, this._handleKeyDown);
-        
+
         this._dropdownTop = $input.offset().top + $input.height() + (options.verticalAdjust || 0);
     }</code></pre>
         </div>
@@ -789,7 +787,7 @@ And the text field is:
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._handleInput = function () {
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any previous Promise
-        
+
         var valueAtEvent = this.$input.val();
         var self = this;
         &#x2F;&#x2F; The timeout lets us skip over a backlog of multiple keyboard events when the provider is responding
@@ -843,7 +841,7 @@ And the text field is:
                 this._updateHighlight(true);
             }
             event.preventDefault(); &#x2F;&#x2F; treated as Home key otherwise
-            
+
         } else if (event.keyCode === KeyEvent.DOM_VK_UP) {
             if (this._displayedResults &amp;&amp; this._displayedResults.length) {
                 if (this._highlightIndex === null || this._highlightIndex === 0) {
@@ -938,7 +936,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
         this._displayedResults = results;
         this._highlightIndex = 0;
         &#x2F;&#x2F; TODO: fixup to match prev value&#39;s item if possible?
-        
+
         if (results.error || results.length === 0) {
             this._closeDropdown();
             this.$input.addClass(&quot;no-results&quot;);
@@ -948,7 +946,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
             this.$input.removeClass(&quot;no-results&quot;);
         } else {
             this.$input.removeClass(&quot;no-results&quot;);
-            
+
             var count = Math.min(results.length, this.options.maxResults),
                 html = &quot;&quot;,
                 i;
@@ -956,11 +954,11 @@ If an Enter key commit was pending from earlier, process it now.</p>
                 html += this.options.formatter(results[i], query);
             }
             this._openDropdown(html);
-            
+
             &#x2F;&#x2F; Highlight top item and trigger highlight callback
             this._updateHighlight(false);
         }
-        
+
         &#x2F;&#x2F; If Enter key was pressed earlier, handle it now that we&#39;ve gotten results back
         if (this._commitPending) {
             this._commitPending = false;
@@ -991,7 +989,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
         $items.removeClass(&quot;highlight&quot;);
         if (this._highlightIndex !== null) {
             $items.eq(this._highlightIndex).addClass(&quot;highlight&quot;);
-            
+
             this.options.onHighlight(this._displayedResults[this._highlightIndex], this.$input.val(), explicit);
         }
     };</code></pre></div><div class="member">
@@ -1018,8 +1016,8 @@ If an Enter key commit was pending from earlier, process it now.</p>
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any pending Promise
         this._closeDropdown();
     };
-    
-    
+
+
     exports.QuickSearchField = QuickSearchField;
 });</code></pre></div><div class="member">
 
@@ -1073,7 +1071,7 @@ want to show cached data initially, then update the results with fresher data on
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.updateResults = function () {
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any previous Promise
-        
+
         var query = this.$input.val();
         var results = this.options.resultProvider(query);
         if (results.done &amp;&amp; results.fail) {

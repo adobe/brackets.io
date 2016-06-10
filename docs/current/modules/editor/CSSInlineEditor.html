@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -644,7 +642,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
         var tagInfo = HTMLUtils.getTagInfo(editor, pos),
             selectorName = &quot;&quot;,
             reason;
-        
+
         if (tagInfo.position.tokenType === HTMLUtils.TAG_NAME || tagInfo.position.tokenType === HTMLUtils.CLOSING_TAG) {
             &#x2F;&#x2F; Type selector
             selectorName = tagInfo.tagName;
@@ -653,7 +651,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
             if (tagInfo.attr.name === &quot;class&quot;) {
                 &#x2F;&#x2F; Class selector. We only look for the class name
                 &#x2F;&#x2F; that includes the insertion point. For example, if
-                &#x2F;&#x2F; the attribute is: 
+                &#x2F;&#x2F; the attribute is:
                 &#x2F;&#x2F;   class=&quot;error-dialog modal hide&quot;
                 &#x2F;&#x2F; and the insertion point is inside &quot;modal&quot;, we want &quot;.modal&quot;
                 var attributeValue = tagInfo.attr.value;
@@ -686,7 +684,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                 reason = Strings.ERROR_CSSQUICKEDIT_UNSUPPORTEDATTR;
             }
         }
-        
+
         return {
             selectorName: selectorName,
             reason:       reason
@@ -793,7 +791,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
 <pre class="code language-javascript"><code class="language-javascript">        function _prepFileList(files) {
             &#x2F;&#x2F; First, sort list (the same ordering we use for the results list)
             files.sort(_fileComparator);
-            
+
             &#x2F;&#x2F; Find any files that share the same name (with different path)
             var fileNames = {};
             files.forEach(function (file) {
@@ -802,7 +800,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                 }
                 fileNames[file.name].push(file);
             });
-            
+
             &#x2F;&#x2F; For any duplicate filenames, set subDirStr to a path snippet the helps
             &#x2F;&#x2F; the user distinguish each file in the list.
             _.forEach(fileNames, function (files) {
@@ -816,11 +814,11 @@ surrounding that position, or &quot;&quot; if none is found.</p>
 
             return files;
         }
-        
+
         function _onHostEditorScroll() {
             newRuleButton.closeDropdown();
         }
-        
+
         CSSUtils.findMatchingRules(selectorName, hostEditor.document)
             .done(function (rules) {
                 var inlineEditorDeferred = new $.Deferred();
@@ -845,15 +843,15 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                 newRuleButton.$button.addClass(&quot;btn-mini stylesheet-button&quot;);
                 $header.append(newRuleButton.$button);
                 _newRuleHandlers.push({inlineEditor: cssInlineEditor, handler: _handleNewRuleClick});
-                
+
                 hostEditor.on(&quot;scroll&quot;, _onHostEditorScroll);
-                
+
                 result.resolve(cssInlineEditor);
-                
+
 
                 &#x2F;&#x2F; Now that dialog has been built, collect list of stylesheets
                 var stylesheetsPromise = _getCSSFilesInProject();
-                
+
                 &#x2F;&#x2F; After both the stylesheets are loaded and the inline editor has been added to the DOM,
                 &#x2F;&#x2F; update the UI accordingly. (Those can happen in either order, so we need to wait for both.)
                 &#x2F;&#x2F; Note that the stylesheetsPromise needs to be passed first in order for the fileInfos to be
@@ -862,7 +860,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                 $.when(stylesheetsPromise, inlineEditorDeferred.promise())
                     .done(function (fileInfos) {
                         cssFileInfos = _prepFileList(fileInfos);
-                        
+
                         &#x2F;&#x2F; &quot;New Rule&quot; button is disabled by default and gets enabled
                         &#x2F;&#x2F; here if there are any stylesheets in project
                         if (cssFileInfos.length &gt; 0) {
@@ -871,7 +869,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                                 &#x2F;&#x2F; Force focus to the button so the user can create a new rule from the keyboard.
                                 newRuleButton.$button.focus();
                             }
-                            
+
                             if (cssFileInfos.length === 1) {
                                 &#x2F;&#x2F; Make it look &amp; feel like a plain button in this case
                                 newRuleButton.$button.removeClass(&quot;btn-dropdown&quot;);
@@ -882,7 +880,7 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                                 newRuleButton.on(&quot;select&quot;, _onDropdownSelect);
                             }
                         }
-                        
+
                         _updateCommands();
                     });
             })
@@ -890,12 +888,12 @@ surrounding that position, or &quot;&quot; if none is found.</p>
                 console.warn(&quot;Error in findMatchingRules()&quot;, error);
                 result.reject();
             });
-        
+
         return result.promise();
     }
 
     EditorManager.registerInlineEditProvider(htmlToCSSProvider);
-    
+
     _newRuleCmd = CommandManager.register(Strings.CMD_CSS_QUICK_EDIT_NEW_RULE, Commands.CSS_QUICK_EDIT_NEW_RULE, _handleNewRule);
     _newRuleCmd.setEnabled(false);
 });</code></pre></div><div class="member private">
@@ -989,20 +987,20 @@ CSS rules and show (one/all of them) in an inline editor.</p>
         if (hostEditor.getLanguageForSelection().getId() !== &quot;html&quot;) {
             return null;
         }
-        
+
         &#x2F;&#x2F; Only provide CSS editor if the selection is within a single line
         var sel = hostEditor.getSelection();
         if (sel.start.line !== sel.end.line) {
             return null;
         }
-        
+
         &#x2F;&#x2F; Always use the selection start for determining selector name. The pos
         &#x2F;&#x2F; parameter is usually the selection end.
         var selectorResult = _getSelectorName(hostEditor, sel.start);
         if (selectorResult.selectorName === &quot;&quot;) {
             return selectorResult.reason || null;
         }
-        
+
         var selectorName = selectorResult.selectorName;
 
         var result = new $.Deferred(),

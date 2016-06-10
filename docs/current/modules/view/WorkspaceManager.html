@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -504,7 +502,7 @@ currently available window size.</p>
     </h4>
 
     
-    <div class="description"><p>The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror instance (or the no-editor placeholder) </p>
+    <div class="description"><p>The &quot;#editor-holder&quot;: has only one visible child, the current CodeMirror instance (or the no-editor placeholder)</p>
 </div>
     
 <dl>
@@ -524,7 +522,7 @@ currently available window size.</p>
     </h4>
 
     
-    <div class="description"><p>The &quot;.content&quot; vertical stack (editor + all header/footer panels) </p>
+    <div class="description"><p>The &quot;.content&quot; vertical stack (editor + all header/footer panels)</p>
 </div>
     
 <dl>
@@ -539,12 +537,30 @@ currently available window size.</p>
     
 </span>
     <h4>
+        panelIDMap 
+        <a class="anchor" href="#-panelIDMap" id="-panelIDMap"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>A map from panel ID&#39;s to all reated panels</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var panelIDMap = {};</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         windowResizing 
         <a class="anchor" href="#-windowResizing" id="-windowResizing"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Have we already started listening for the end of the ongoing window resize? </p>
+    <div class="description"><p>Have we already started listening for the end of the ongoing window resize?</p>
 </div>
     
 <dl>
@@ -611,14 +627,14 @@ accounting for the current size of all visible panels, toolbar, &amp; status bar
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function calcAvailableHeight() {
         var availableHt = $windowContent.height();
-        
+
         $editorHolder.siblings().each(function (i, elem) {
             var $elem = $(elem);
             if ($elem.css(&quot;display&quot;) !== &quot;none&quot; &amp;&amp; $elem.css(&quot;position&quot;) !== &quot;absolute&quot;) {
                 availableHt -= $elem.outerHeight();
             }
         });
-        
+
         &#x2F;&#x2F; Clip value to 0 (it could be negative if a panel wants more space than we have)
         return Math.max(availableHt, 0);
     }</code></pre></div><div class="member public">
@@ -667,8 +683,70 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
         $panel.insertBefore(&quot;#status-bar&quot;);
         $panel.hide();
         updateResizeLimits();  &#x2F;&#x2F; initialize panel&#39;s max size
-        
-        return new Panel($panel, minSize);
+
+        panelIDMap[id] = new Panel($panel, minSize);
+        panelIDMap[id].panelID = id;
+
+        return panelIDMap[id];
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getAllPanelIDs 
+        <a class="anchor" href="#-getAllPanelIDs" id="-getAllPanelIDs"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns an array of all panel ID&#39;s</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+        <dt>returns</dt>
+        <dd>{Array} List of ID&#39;s of all bottom panels</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getAllPanelIDs() {
+        var property, panelIDs = [];
+        for (property in panelIDMap) {
+            if (panelIDMap.hasOwnProperty(property)) {
+                panelIDs.push(property);
+            }
+        }
+        return panelIDs;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        getPanelForID 
+        <a class="anchor" href="#-getPanelForID" id="-getPanelForID"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets the Panel interface for the given ID. Can return undefined if no panel with the ID is found.</p>
+</div>
+    
+<dl>
+    <dt>
+        panelID
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+        <dt>returns</dt>
+        <dd>{Object} Panel object for the ID or undefined</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getPanelForID(panelID) {
+        return panelIDMap[panelID];
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -695,13 +773,13 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
         if (!$windowContent || !$editorHolder) {
             return;
         }
-        
+
         &#x2F;&#x2F; FIXME (issue #4564) Workaround https:&#x2F;&#x2F;github.com&#x2F;codemirror&#x2F;CodeMirror&#x2F;issues&#x2F;1787
         triggerUpdateLayout();
-        
+
         if (!windowResizing) {
             windowResizing = true;
-            
+
             &#x2F;&#x2F; We don&#39;t need any fancy debouncing here - we just need to react before the user can start
             &#x2F;&#x2F; resizing any panels at the new window size. So just listen for first mousemove once the
             &#x2F;&#x2F; window resize releases mouse capture.
@@ -722,7 +800,7 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
     </h4>
 
     
-    <div class="description"><p>Trigger editor area resize whenever the given panel is shown/hidden/resized 
+    <div class="description"><p>Trigger editor area resize whenever the given panel is shown/hidden/resized
  @param {!jQueryObject} $panel the jquery object in which to attach event handlers</p>
 </div>
     
@@ -752,7 +830,7 @@ The panel&#39;s size &amp; visibility are automatically saved &amp; restored as 
     </h4>
 
     
-    <div class="description"><p>Called when an external widget has appeared and needs some of the space occupied 
+    <div class="description"><p>Called when an external widget has appeared and needs some of the space occupied
  by the mainview manager</p>
 </div>
     
@@ -799,11 +877,11 @@ event. (The editors within are resized by EditorManager, in response to that eve
 <pre class="code language-javascript"><code class="language-javascript">    function triggerUpdateLayout(refreshHint) {
         &#x2F;&#x2F; Find how much space is left for the editor
         var editorAreaHeight = calcAvailableHeight();
-        
+
         $editorHolder.height(editorAreaHeight);  &#x2F;&#x2F; affects size of &quot;not-editor&quot; placeholder as well
-        
+
         &#x2F;&#x2F; Resize editor to fill the space
-        exports.trigger(&quot;workspaceUpdateLayout&quot;, editorAreaHeight, refreshHint);
+        exports.trigger(EVENT_WORKSPACE_UPDATE_LAYOUT, editorAreaHeight, refreshHint);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -826,7 +904,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function updateResizeLimits() {
         var editorAreaHeight = $editorHolder.height();
-        
+
         $editorHolder.siblings().each(function (i, elem) {
             var $elem = $(elem);
             if ($elem.css(&quot;display&quot;) === &quot;none&quot;) {
@@ -866,7 +944,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function Panel($panel, minSize) {
         this.$panel = $panel;
-        
+
         Resizer.makeResizable($panel[0], Resizer.DIRECTION_VERTICAL, Resizer.POSITION_TOP, minSize, false, undefined, true);
         listenToResize($panel);
     }</code></pre>
@@ -891,7 +969,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
     </h4>
 
     
-    <div class="description"><p>Dom node holding the rendered panel </p>
+    <div class="description"><p>Dom node holding the rendered panel</p>
 </div>
     
 <dl>
@@ -931,6 +1009,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.hide = function () {
         Resizer.hide(this.$panel[0]);
+        exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, this.panelID);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -983,9 +1062,9 @@ event. (The editors within are resized by EditorManager, in response to that eve
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.setVisible = function (visible) {
         if (visible) {
-            Resizer.show(this.$panel[0]);
+            this.show();
         } else {
-            Resizer.hide(this.$panel[0]);
+            this.hide();
         }
     };</code></pre></div><div class="member">
 
@@ -1009,6 +1088,7 @@ event. (The editors within are resized by EditorManager, in response to that eve
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Panel.prototype.show = function () {
         Resizer.show(this.$panel[0]);
+        exports.trigger(EVENT_WORKSPACE_PANEL_SHOWN, this.panelID);
     };</code></pre></div>
         </section>
 

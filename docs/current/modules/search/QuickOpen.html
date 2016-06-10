@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -766,7 +764,7 @@ with the given query text too. Updates text field contents if Quick Open already
             beginSearch(&quot;@&quot;, getCurrentEditorSelectedText());
         }
     }
-    
+
     &#x2F;&#x2F; Listen for a change of project to invalidate our file list
     ProjectManager.on(&quot;projectOpen&quot;, function () {
         fileList = null;
@@ -779,7 +777,7 @@ with the given query text too. Updates text field contents if Quick Open already
     exports.beginSearch             = beginSearch;
     exports.addQuickOpenPlugin      = addQuickOpenPlugin;
     exports.highlightMatch          = highlightMatch;
-    
+
     &#x2F;&#x2F; Convenience exports for functions that most QuickOpen plugins would need.
     exports.stringMatch             = StringMatch.stringMatch;
     exports.SearchResult            = StringMatch.SearchResult;
@@ -816,14 +814,14 @@ is followed by a colon. Callers should explicitly test result with isNaN()</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function extractCursorPos(query) {
         var regInfo = query.match(CURSOR_POS_EXP);
-        
+
         if (query.length &lt;= 1 || !regInfo ||
                 (regInfo[1] &amp;&amp; isNaN(regInfo[1])) ||
                 (regInfo[3] &amp;&amp; isNaN(regInfo[3]))) {
-            
+
             return null;
         }
-    
+
         return {
             query:  regInfo[0],
             local:  query[0] === &quot;:&quot;,
@@ -876,7 +874,7 @@ matched; else formats the label with no highlighting.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function highlightMatch(item, matchClass, rangeFilter) {
         var label = item.label || item;
         matchClass = matchClass || &quot;quicksearch-namematch&quot;;
-        
+
         var stringRanges = item.stringRanges;
         if (!stringRanges) {
             &#x2F;&#x2F; If result didn&#39;t come from stringMatch(), highlight nothing
@@ -886,7 +884,7 @@ matched; else formats the label with no highlighting.</p>
                 includesLastSegment: true
             }];
         }
-        
+
         var displayName = &quot;&quot;;
         if (item.scoreDebug) {
             var sd = item.scoreDebug;
@@ -895,30 +893,30 @@ matched; else formats the label with no highlighting.</p>
                 &#39;, ld:&#39; + sd.lengthDeduction + &#39;, c:&#39; + sd.consecutive + &#39;, nsos: &#39; +
                 sd.notStartingOnSpecial + &#39;, upper: &#39; + sd.upper + &#39;&quot;&gt;(&#39; + item.matchGoodness + &#39;) &lt;&#x2F;span&gt;&#39;;
         }
-        
+
         &#x2F;&#x2F; Put the path pieces together, highlighting the matched parts
         stringRanges.forEach(function (range) {
             if (range.matched) {
                 displayName += &quot;&lt;span class=&#39;&quot; + matchClass + &quot;&#39;&gt;&quot;;
             }
-            
+
             var rangeText = rangeFilter ? rangeFilter(range.includesLastSegment, range.text) : range.text;
             displayName += StringUtils.breakableUrl(rangeText);
-            
+
             if (range.matched) {
                 displayName += &quot;&lt;&#x2F;span&gt;&quot;;
             }
         });
         return displayName;
     }
-    
+
     function defaultResultsFormatter(item, query) {
         query = query.slice(query.indexOf(&quot;@&quot;) + 1, query.length);
 
         var displayName = highlightMatch(item);
         return &quot;&lt;li&gt;&quot; + displayName + &quot;&lt;&#x2F;li&gt;&quot;;
     }
-    
+
     function _filenameResultsFormatter(item, query) {
         &#x2F;&#x2F; For main label, we just want filename: drop most of the string
         function fileNameFilter(includesLastSegment, rangeText) {
@@ -931,7 +929,7 @@ matched; else formats the label with no highlighting.</p>
         }
         var displayName = highlightMatch(item, null, fileNameFilter);
         var displayPath = highlightMatch(item, &quot;quicksearch-pathmatch&quot;);
-        
+
         return &quot;&lt;li&gt;&quot; + displayName + &quot;&lt;br &#x2F;&gt;&lt;span class=&#39;quick-open-path&#39;&gt;&quot; + displayPath + &quot;&lt;&#x2F;span&gt;&lt;&#x2F;li&gt;&quot;;
     }</code></pre></div>
 </section>
@@ -960,16 +958,16 @@ matched; else formats the label with no highlighting.</p>
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function QuickNavigateDialog() {
         this.$searchField = undefined; &#x2F;&#x2F; defined when showDialog() is called
-        
+
         &#x2F;&#x2F; ModalBar event handlers &amp; callbacks
         this._handleCloseBar           = this._handleCloseBar.bind(this);
-        
+
         &#x2F;&#x2F; QuickSearchField callbacks
         this._handleItemSelect         = this._handleItemSelect.bind(this);
         this._handleItemHighlight      = this._handleItemHighlight.bind(this);
         this._filterCallback           = this._filterCallback.bind(this);
         this._resultsFormatterCallback = this._resultsFormatterCallback.bind(this);
-        
+
         &#x2F;&#x2F; StringMatchers that cache in-progress query data.
         this._filenameMatcher           = new StringMatch.StringMatcher({
             segmentedSearch: true
@@ -1180,7 +1178,7 @@ when the bar starts closing; it doesn&#39;t wait for the ModalBar animation to f
 <pre class="code language-javascript"><code class="language-javascript">    QuickNavigateDialog.prototype._filterCallback = function (query) {
         &#x2F;&#x2F; Re-evaluate which plugin is active each time query string changes
         currentPlugin = null;
-        
+
         &#x2F;&#x2F; &quot;Go to line&quot; mode is special-cased
         var cursorPos = extractCursorPos(query);
         if (cursorPos &amp;&amp; cursorPos.local) {
@@ -1201,7 +1199,7 @@ when the bar starts closing; it doesn&#39;t wait for the ModalBar animation to f
         if (query === &quot;:&quot;) {  &#x2F;&#x2F; treat blank &quot;:&quot; query as valid, but no-op
             return { error: null };
         }
-        
+
         &#x2F;&#x2F; Try to invoke a search plugin
         var curDoc = DocumentManager.getCurrentDocument(), languageId;
         if (curDoc) {
@@ -1214,7 +1212,7 @@ when the bar starts closing; it doesn&#39;t wait for the ModalBar animation to f
             var languageIdMatch = plugin.languageIds.length === 0 || plugin.languageIds.indexOf(languageId) !== -1;
             if (languageIdMatch &amp;&amp; plugin.match(query)) {
                 currentPlugin = plugin;
-                
+
                 &#x2F;&#x2F; Look up the StringMatcher for this plugin.
                 var matcher = this._matchers[currentPlugin.name];
                 if (!matcher) {
@@ -1225,10 +1223,10 @@ when the bar starts closing; it doesn&#39;t wait for the ModalBar animation to f
                 return plugin.search(query, matcher);
             }
         }
-        
+
         &#x2F;&#x2F; Reflect current search mode in UI
         this._updateDialogLabel(null, query);
-        
+
         &#x2F;&#x2F; No matching plugin: use default file search mode
         return searchFileList(query, this._filenameMatcher);
     };</code></pre></div><div class="member private">
@@ -1268,7 +1266,7 @@ to the currentPlugin</p>
     </h4>
 
     
-    <div class="description"><p>Navigates to the appropriate file and file location given the selected item 
+    <div class="description"><p>Navigates to the appropriate file and file location given the selected item
 and closes the dialog.</p>
 <p>Note, if selectedItem is null quick search should inspect $searchField for text
 that may have not matched anything in the list, but may have information
@@ -1284,7 +1282,7 @@ for carrying out an action (e.g. go to line).</p>
 
         var doClose = true,
             self = this;
-        
+
         &#x2F;&#x2F; Delegate to current plugin
         if (currentPlugin) {
             currentPlugin.itemSelect(selectedItem, query);
@@ -1397,7 +1395,7 @@ for carrying out an action (e.g. go to line).</p>
             dialogLabel = plugin.label;
         } else {
             var prefix = (query.length &gt; 0 ? query.charAt(0) : &quot;&quot;);
-            
+
             &#x2F;&#x2F; Update the dialog label based on the current prefix.
             switch (prefix) {
             case &quot;:&quot;:
@@ -1440,17 +1438,17 @@ existing close activity.</p>
         if (!this.isOpen) {
             return this.closePromise;
         }
-        
+
         this.modalBar.close();  &#x2F;&#x2F; triggers _handleCloseBar(), setting closePromise
 
         return this.closePromise;
     };
-    
+
     QuickNavigateDialog.prototype._handleCloseBar = function (event, reason, modalBarClosePromise) {
         console.assert(!this.closePromise);
         this.closePromise = modalBarClosePromise;
         this.isOpen = false;
-        
+
         var i;
         for (i = 0; i &lt; plugins.length; i++) {
             var plugin = plugins[i];
@@ -1458,10 +1456,10 @@ existing close activity.</p>
                 plugin.done();
             }
         }
-        
+
         &#x2F;&#x2F; Close popup &amp; ensure we ignore any still-pending result promises
         this.searchField.destroy();
-        
+
         &#x2F;&#x2F; Restore original selection &#x2F; scroll pos if closed via Escape
         if (reason === ModalBar.CLOSE_ESCAPE) {
             &#x2F;&#x2F; We can reset the scroll position synchronously on ModalBar&#39;s &quot;close&quot; event (before close animation
@@ -1476,8 +1474,8 @@ existing close activity.</p>
             }
         }
     };
-    
-    
+
+
     function _doSearchFileList(query, matcher) {
         &#x2F;&#x2F; Strip off line&#x2F;col number suffix so it doesn&#39;t interfere with filename search
         var cursorPos = extractCursorPos(query);
@@ -1491,9 +1489,9 @@ existing close activity.</p>
             &#x2F;&#x2F; Is it a match at all?
             &#x2F;&#x2F; match query against the full path (with gaps between query characters allowed)
             var searchResult;
-            
+
             searchResult = matcher.match(ProjectManager.makeProjectRelativeIfPossible(fileInfo.fullPath), query);
-            
+
             if (searchResult) {
                 searchResult.label = fileInfo.name;
                 searchResult.fullPath = fileInfo.fullPath;
@@ -1501,7 +1499,7 @@ existing close activity.</p>
             }
             return searchResult;
         });
-        
+
         &#x2F;&#x2F; Sort by &quot;match goodness&quot; tier first, then within each tier sort alphabetically - first by filename
         &#x2F;&#x2F; sans extension, (so that &quot;abc.js&quot; comes before &quot;abc-d.js&quot;), then by filename, and finally (for
         &#x2F;&#x2F; identically-named files) by full path
@@ -1509,7 +1507,7 @@ existing close activity.</p>
 
         return filteredList;
     }
-    
+
     function searchFileList(query, matcher) {
         &#x2F;&#x2F; The file index may still be loading asynchronously - if so, can&#39;t return a result yet
         if (!fileList) {
@@ -1519,7 +1517,7 @@ existing close activity.</p>
                 asyncResult.resolve(_doSearchFileList(query, matcher));
             });
             return asyncResult.promise();
-            
+
         } else {
             return _doSearchFileList(query, matcher);
         }
@@ -1558,9 +1556,9 @@ given prefix.</p>
         prefix = prefix || &quot;&quot;;
         initialString = initialString || &quot;&quot;;
         initialString = prefix + initialString;
-        
+
         this.searchField.setText(initialString);
-        
+
         &#x2F;&#x2F; Select just the text after the prefix
         this.$searchField[0].setSelectionRange(prefix.length, initialString.length);
     };</code></pre></div><div class="member">
@@ -1604,11 +1602,11 @@ given prefix.</p>
         &#x2F;&#x2F; Show the search bar
         var searchBarHTML = &quot;&lt;div align=&#39;right&#39;&gt;&lt;input type=&#39;text&#39; autocomplete=&#39;off&#39; id=&#39;quickOpenSearch&#39; placeholder=&#39;&quot; + Strings.CMD_QUICK_OPEN + &quot;\u2026&#39; style=&#39;width: 30em&#39;&gt;&lt;span class=&#39;find-dialog-label&#39;&gt;&lt;&#x2F;span&gt;&lt;&#x2F;div&gt;&quot;;
         this.modalBar = new ModalBar(searchBarHTML, true);
-        
+
         this.modalBar.on(&quot;close&quot;, this._handleCloseBar);
-        
+
         this.$searchField = $(&quot;input#quickOpenSearch&quot;);
-        
+
         this.searchField = new QuickSearchField(this.$searchField, {
             maxResults: 20,
             verticalAdjust: this.modalBar.getRoot().outerHeight(),
@@ -1623,7 +1621,7 @@ given prefix.</p>
             return !LanguageManager.getLanguageForPath(file.fullPath).isBinary() ||
                 MainViewFactory.findSuitableFactoryForPath(file.fullPath);
         }
-        
+
         &#x2F;&#x2F; Start prefetching the file list, which will be needed the first time the user enters an un-prefixed query. If file index
         &#x2F;&#x2F; caches are out of date, this list might take some time to asynchronously build, forcing searchFileList() to wait. In the
         &#x2F;&#x2F; meantime we show our old, stale fileList (unless the user has switched projects and we cleared it).
@@ -1633,7 +1631,7 @@ given prefix.</p>
                 fileListPromise = null;
                 this._filenameMatcher.reset();
             }.bind(this));
-        
+
         &#x2F;&#x2F; Prepopulated query
         this.$searchField.focus();
         this.setSearchFieldValue(prefix, initialString);

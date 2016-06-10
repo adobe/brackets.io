@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -695,12 +693,12 @@ populating the corresponding arrays:
         toClose = [];
         editConflicts = [];
         deleteConflicts = [];
-    
+
         function checkDoc(doc) {
             var result = new $.Deferred();
-            
+
             &#x2F;&#x2F; Check file timestamp &#x2F; existence
-            
+
             if (doc.isUntitled()) {
                 result.resolve();
             } else {
@@ -755,7 +753,7 @@ populating the corresponding arrays:
 
             return result.promise();
         }
-        
+
         &#x2F;&#x2F; Check all docs in parallel
         &#x2F;&#x2F; (fail fast b&#x2F;c we won&#39;t continue syncing if there was any error fetching timestamps)
         return Async.doInParallel(docs, checkDoc, true);
@@ -790,26 +788,26 @@ prompt is not shown until after the reload has completed.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function presentConflicts(title) {
-        
+
         var allConflicts = editConflicts.concat(deleteConflicts);
-        
+
         function presentConflict(docInfo, i) {
             var result = new $.Deferred(),
                 promise = result.promise(),
                 doc = docInfo.doc,
                 fileTime = docInfo.fileTime;
-            
+
             &#x2F;&#x2F; If window has been re-focused, skip all remaining conflicts so the sync can bail &amp; restart
             if (_restartPending) {
                 result.resolve();
                 return promise;
             }
-            
+
             var toClose;
             var dialogId;
             var message;
             var buttons;
-            
+
             &#x2F;&#x2F; Prompt UI varies depending on whether the file on disk was modified vs. deleted
             if (i &lt; editConflicts.length) {
                 toClose = false;
@@ -832,7 +830,7 @@ prompt is not shown until after the reload has completed.</p>
                         text:      Strings.KEEP_CHANGES_IN_EDITOR
                     }
                 ];
-                
+
             } else {
                 toClose = true;
                 dialogId = DefaultDialogs.DIALOG_ID_EXT_DELETED;
@@ -855,7 +853,7 @@ prompt is not shown until after the reload has completed.</p>
                     }
                 ];
             }
-            
+
             Dialogs.showModalDialog(dialogId, title, message, buttons)
                 .done(function (id) {
                     if (id === Dialogs.DIALOG_BTN_DONTSAVE) {
@@ -878,7 +876,7 @@ prompt is not shown until after the reload has completed.</p>
                                         });
                                 });
                         }
-                        
+
                     } else {
                         &#x2F;&#x2F; Cancel - if user doesn&#39;t manually save or close, remember that they
                         &#x2F;&#x2F; chose to keep the changes in the editor and don&#39;t prompt again unless the
@@ -886,19 +884,19 @@ prompt is not shown until after the reload has completed.</p>
                         &#x2F;&#x2F; OR programmatically canceled due to _resetPending - we&#39;ll skip all
                         &#x2F;&#x2F; remaining files in the conflicts list (see above)
 
-                        &#x2F;&#x2F; If this wasn&#39;t programmatically cancelled, remember that the user 
+                        &#x2F;&#x2F; If this wasn&#39;t programmatically cancelled, remember that the user
                         &#x2F;&#x2F; has accepted conflicting changes as of this file version.
                         if (!_restartPending) {
                             doc.keepChangesTime = fileTime;
                         }
-                            
+
                         result.resolve();
                     }
                 });
-            
+
             return promise;
         }
-        
+
         &#x2F;&#x2F; Begin walking through the conflicts, one at a time
         return Async.doSequentially(allConflicts, presentConflict, false);
     }</code></pre></div><div class="member">
@@ -958,9 +956,9 @@ in parallel.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function reloadDoc(doc) {
-        
+
         var promise = FileUtils.readAsText(doc.file);
-        
+
         promise.done(function (text, readTimestamp) {
             doc.refreshText(text, readTimestamp);
         });
@@ -1040,9 +1038,9 @@ the user.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function syncOpenDocuments(title) {
-        
+
         title = title || Strings.EXT_MODIFIED_TITLE;
-        
+
         &#x2F;&#x2F; We can become &quot;re-entrant&quot; if the user leaves &amp; then returns to Brackets before we&#39;re
         &#x2F;&#x2F; done -- easy if a prompt dialog is left open. Since the user may have left Brackets to
         &#x2F;&#x2F; revert some of the disk changes, etc. we want to cancel the current sync and immediately
@@ -1050,18 +1048,18 @@ the user.</p>
         &#x2F;&#x2F; bail; if we&#39;re already there we programmatically close the dialog to bail right away.
         if (_alreadyChecking) {
             _restartPending = true;
-            
+
             &#x2F;&#x2F; Close dialog if it was open. This will &#39;unblock&#39; presentConflict(), which bails back
             &#x2F;&#x2F; to us immediately upon seeing _restartPending. We then restart the sync - see below
             Dialogs.cancelModalDialogIfOpen(DefaultDialogs.DIALOG_ID_EXT_CHANGED);
             Dialogs.cancelModalDialogIfOpen(DefaultDialogs.DIALOG_ID_EXT_DELETED);
-            
+
             return;
         }
-        
+
         _alreadyChecking = true;
-        
-        
+
+
         &#x2F;&#x2F; Syncing proceeds in four phases:
         &#x2F;&#x2F;  1) Check all open files for external modifications
         &#x2F;&#x2F;  2) Check any other working set entries (that are not open) for deletion, and remove
@@ -1070,11 +1068,11 @@ the user.</p>
         &#x2F;&#x2F;  4) Close all Documents that are clean (if file deleted on disk)
         &#x2F;&#x2F;  5) Prompt about any Documents that are dirty (if file changed&#x2F;deleted on disk)
         &#x2F;&#x2F; Each phase fully completes (asynchronously) before the next one begins.
-        
-        
+
+
         &#x2F;&#x2F; 1) Check for external modifications
         var allDocs = DocumentManager.getAllOpenDocuments();
-        
+
         findExternalChanges(allDocs)
             .done(function () {
                 &#x2F;&#x2F; 2) Check un-open working set entries for deletion (&amp; &quot;close&quot; if needed)
@@ -1083,14 +1081,14 @@ the user.</p>
                         &#x2F;&#x2F; If we were unable to check any un-open files for deletion, silently ignore
                         &#x2F;&#x2F; (after logging to console). This doesn&#39;t have any bearing on syncing truly
                         &#x2F;&#x2F; open Documents (which we&#39;ve already successfully checked).
-                        
+
                         &#x2F;&#x2F; 3) Reload clean docs as needed
                         reloadChangedDocs()
                             .always(function () {
                                 &#x2F;&#x2F; 4) Close clean docs as needed
                                 &#x2F;&#x2F; This phase completes synchronously
                                 closeDeletedDocs();
-                                
+
                                 &#x2F;&#x2F; 5) Prompt for dirty editors (conflicts)
                                 presentConflicts(title)
                                     .always(function () {
@@ -1102,12 +1100,12 @@ the user.</p>
                                         } else {
                                             &#x2F;&#x2F; We&#39;re really done!
                                             _alreadyChecking = false;
-                                            
+
                                             &#x2F;&#x2F; If we showed a dialog, restore focus to editor
                                             if (editConflicts.length &gt; 0 || deleteConflicts.length &gt; 0) {
                                                 MainViewManager.focusActivePane();
                                             }
-                                            
+
                                             &#x2F;&#x2F; (Any errors that ocurred during presentConflicts() have already
                                             &#x2F;&#x2F; shown UI &amp; been dismissed, so there&#39;s no fail() handler here)
                                         }
@@ -1122,14 +1120,14 @@ the user.</p>
                 &#x2F;&#x2F; Unable to fetch timestamps for some reason - silently ignore (after logging to console)
                 &#x2F;&#x2F; (We&#39;ll retry next time window is activated... and evenually we&#39;ll also be double
                 &#x2F;&#x2F; checking before each Save).
-                
+
                 &#x2F;&#x2F; We can&#39;t go on without knowing which files are dirty, so bail now
                 _alreadyChecking = false;
             });
-        
+
     }
-    
-    
+
+
     &#x2F;&#x2F; Define public API
     exports.syncOpenDocuments = syncOpenDocuments;
 });</code></pre></div><div class="member">
@@ -1158,10 +1156,10 @@ by findExternalChanges()). If any were deleted on disk, removes them from the wo
         var unopenWorkingSetFiles = MainViewManager.getWorkingSet(MainViewManager.ALL_PANES).filter(function (wsFile) {
             return !DocumentManager.getOpenDocumentForPath(wsFile.fullPath);
         });
-        
+
         function checkWorkingSetFile(file) {
             var result = new $.Deferred();
-            
+
             file.stat(function (err, stat) {
                 if (!err) {
                     &#x2F;&#x2F; File still exists
@@ -1180,7 +1178,7 @@ by findExternalChanges()). If any were deleted on disk, removes them from the wo
             });
             return result.promise();
         }
-        
+
         &#x2F;&#x2F; Check all these files in parallel
         return Async.doInParallel(unopenWorkingSetFiles, checkWorkingSetFile, false);
     }</code></pre></div>

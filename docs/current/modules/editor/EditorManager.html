@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -472,9 +470,9 @@ not a pure headless model. Each Document encapsulates an editor instance, and th
 must have some knowledge about Document&#39;s internal state (we access its _editor property).</p>
 <p>This module dispatches the following events:</p>
 <ul>
-<li><p>activeEditorChange --  Fires after the active editor (full or inline). </p>
+<li><p>activeEditorChange --  Fires after the active editor (full or inline).</p>
 <p>Doesn&#39;t fire when editor temporarily loses focus to a non-editor
-control (e.g. search toolbar or modal dialog, or window deactivation). </p>
+control (e.g. search toolbar or modal dialog, or window deactivation).</p>
 <p>Does fire when focus moves between inline editor and its full-size container.</p>
 <p>This event tracks <code>MainViewManagers&#39;s</code>currentFileChange` event and all editor
 objects &quot;focus&quot; event.</p>
@@ -482,7 +480,7 @@ objects &quot;focus&quot; event.</p>
 </code></pre><p>The 2nd arg to the listener is which Editor became active; the 3rd arg is
 which Editor is deactivated as a result. Either one may be null.
 NOTE (#1257): <code>getFocusedEditor()</code> sometimes lags behind this event. Listeners
-should use the arguments or call <code>getActiveEditor()</code> to reliably see which Editor 
+should use the arguments or call <code>getActiveEditor()</code> to reliably see which Editor
 just gained focus.</p>
 </li>
 </ul>
@@ -574,7 +572,7 @@ just gained focus.</p>
     </h4>
 
     
-    <div class="description"><p>Registered inline-editor widget providers sorted descending by priority. </p>
+    <div class="description"><p>Registered inline-editor widget providers sorted descending by priority.</p>
 </div>
     
 <dl>
@@ -597,7 +595,7 @@ just gained focus.</p>
     </h4>
 
     
-    <div class="description"><p>Registered jump-to-definition providers. </p>
+    <div class="description"><p>Registered jump-to-definition providers.</p>
 </div>
     
 <dl>
@@ -699,13 +697,13 @@ The editor is appended to the given container as a visible child.</p>
         editor.on(&quot;focus&quot;, function () {
             _notifyActiveEditorChanged(editor);
         });
-        
+
         editor.on(&quot;beforeDestroy&quot;, function () {
             if (editor.$el.is(&quot;:visible&quot;)) {
                 _saveEditorViewState(editor);
             }
         });
-        
+
         return editor;
     }</code></pre></div><div class="member private public">
 
@@ -766,10 +764,10 @@ The editor is appended to the given container as a visible child.</p>
     </h4>
 
     
-    <div class="description"><p>Creates a hidden, unattached master editor that is needed when a document is created for the 
+    <div class="description"><p>Creates a hidden, unattached master editor that is needed when a document is created for the
 sole purpose of creating an inline editor so operations that require a master editor can be performed
 Only called from Document._ensureMasterEditor()
-The editor view is placed in a hidden part of the DOM but can later be moved to a visible pane 
+The editor view is placed in a hidden part of the DOM but can later be moved to a visible pane
 when the document is opened using pane.addView()</p>
 </div>
     
@@ -821,14 +819,14 @@ when the document is opened using pane.addView()</p>
         var promise,
             i,
             result = new $.Deferred();
-        
+
         var editor = getActiveEditor();
-        
+
         if (editor) {
             var pos = editor.getCursorPos();
 
             PerfUtils.markStart(PerfUtils.JUMP_TO_DEFINITION);
-            
+
             &#x2F;&#x2F; Run through providers until one responds
             for (i = 0; i &lt; providers.length &amp;&amp; !promise; i++) {
                 var provider = providers[i];
@@ -850,11 +848,11 @@ when the document is opened using pane.addView()</p>
                 PerfUtils.finalizeMeasurement(PerfUtils.JUMP_TO_DEFINITION);
                 result.reject();
             }
-            
+
         } else {
             result.reject();
         }
-        
+
         return result.promise();
     }</code></pre></div><div class="member private">
 
@@ -898,9 +896,9 @@ when the document is opened using pane.addView()</p>
 
     
     <div class="description"><p>Current File Changed handler
-MainViewManager dispatches a &quot;currentFileChange&quot; event whenever the currently viewed 
-file changes.  Which could mean that the previously viewed file has been closed or a 
-non-editor view (image) has been given focus.  _notifyAcitveEditorChanged is also hooked 
+MainViewManager dispatches a &quot;currentFileChange&quot; event whenever the currently viewed
+file changes.  Which could mean that the previously viewed file has been closed or a
+non-editor view (image) has been given focus.  _notifyAcitveEditorChanged is also hooked
 up to editor.focus to handle focus events for editors which handles changing focus between
 two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quot; state, we have to
 &quot;nullify&quot; that state whenever the focus goes to a non-editor or when the current editor is closed</p>
@@ -964,7 +962,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
                 MainViewManager._destroyEditorIfNotNeeded(doc);
             }
         };
-        
+
         &#x2F;&#x2F; when files are removed from a pane then
         &#x2F;&#x2F;    we should destroy any unnecssary views
         if ($.isArray(removedFiles)) {
@@ -976,17 +974,17 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         }
     }
 
-    
+
     &#x2F;&#x2F; Set up event dispatching
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; File-based preferences handling
     exports.on(&quot;activeEditorChange&quot;, function (e, current) {
         if (current &amp;&amp; current.document &amp;&amp; current.document.file) {
             PreferencesManager._setCurrentFile(current.document.file.fullPath);
         }
     });
-    
+
     &#x2F;&#x2F; Initialize: command handlers
     CommandManager.register(Strings.CMD_TOGGLE_QUICK_EDIT, Commands.TOGGLE_QUICK_EDIT, function () {
         return _toggleInlineWidget(_inlineEditProviders, Strings.ERROR_QUICK_EDIT_PROVIDER_NOT_FOUND);
@@ -1002,7 +1000,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
     MainViewManager.on(&quot;currentFileChange&quot;, _handleCurrentFileChange);
     MainViewManager.on(&quot;workingSetRemove workingSetRemoveList&quot;, _handleRemoveFromPaneView);
 
-    
+
     &#x2F;&#x2F; For unit tests and internal use only
     exports._createFullEditorForDocument  = _createFullEditorForDocument;
     exports._notifyActiveEditorChanged    = _notifyActiveEditorChanged;
@@ -1010,7 +1008,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
     &#x2F;&#x2F; Internal Use only
     exports._saveEditorViewState          = _saveEditorViewState;
     exports._createUnattachedMasterEditor = _createUnattachedMasterEditor;
-    
+
     &#x2F;&#x2F; Define public API
     exports.createInlineEditorForDocument = createInlineEditorForDocument;
     exports.getFocusedInlineWidget        = getFocusedInlineWidget;
@@ -1023,12 +1021,12 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
     exports.getActiveEditor               = getActiveEditor;
     exports.getCurrentFullEditor          = getCurrentFullEditor;
     exports.getFocusedEditor              = getFocusedEditor;
-    
-    
+
+
     exports.registerInlineEditProvider    = registerInlineEditProvider;
     exports.registerInlineDocsProvider    = registerInlineDocsProvider;
     exports.registerJumpToDefProvider     = registerJumpToDefProvider;
-    
+
     &#x2F;&#x2F; Deprecated
     exports.registerCustomViewer          = registerCustomViewer;
     exports.resizeEditor                  = resizeEditor;
@@ -1076,13 +1074,13 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
                 priority: priority,
                 provider: provider
             };
-        
+
         for (index = 0; index &lt; array.length; index++) {
             if (array[index].priority &lt; priority) {
                 break;
             }
         }
-        
+
         array.splice(index, 0, prioritizedProvider);
     }</code></pre></div><div class="member private public">
 
@@ -1118,7 +1116,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         }
         var previous = _lastFocusedEditor;
         _lastFocusedEditor = current;
-        
+
         exports.trigger(&quot;activeEditorChange&quot;, current, previous);
     }</code></pre></div><div class="member private">
 
@@ -1161,7 +1159,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _openInlineWidget(editor, providers, defaultErrorMsg) {
         PerfUtils.markStart(PerfUtils.INLINE_WIDGET_OPEN);
-        
+
         &#x2F;&#x2F; Run through inline-editor providers until one responds
         var pos = editor.getCursorPos(),
             inlinePromise,
@@ -1169,7 +1167,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             result = new $.Deferred(),
             errorMsg,
             providerRet;
-        
+
         &#x2F;&#x2F; Query each provider in priority order. Provider may return:
         &#x2F;&#x2F; 1. `null` to indicate it does not apply to current cursor position
         &#x2F;&#x2F; 2. promise that should resolve to an InlineWidget
@@ -1193,7 +1191,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
 
         &#x2F;&#x2F; Use default error message if none other provided
         errorMsg = errorMsg || defaultErrorMsg;
-        
+
         &#x2F;&#x2F; If one of them will provide a widget, show it inline once ready
         if (inlinePromise) {
             inlinePromise.done(function (inlineWidget) {
@@ -1213,7 +1211,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             editor.displayErrorMessageAtCursor(errorMsg);
             result.reject();
         }
-        
+
         return result.promise();
     }</code></pre></div><div class="member private">
 
@@ -1227,7 +1225,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
     </h4>
 
     
-    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state </p>
+    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state</p>
 </div>
     
 <dl>
@@ -1236,7 +1234,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         <span class="label label-non-nullable">non-nullable</span>
         <span class="label label-info">Editor</span>
     </dt>
-    <dd>- editor restore cached data </dd>
+    <dd>- editor restore cached data</dd>
 </dl><dl>
 </dl>
 <dl>
@@ -1259,7 +1257,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
     </h4>
 
     
-    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state </p>
+    <div class="description"><p>Updates _viewStateCache from the given editor&#39;s actual current state</p>
 </div>
     
 <dl>
@@ -1317,19 +1315,27 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
         &#x2F;&#x2F; Ensure a main editor exists for this document to show in the UI
         var createdNewEditor = false,
             editor = document._masterEditor;
-        
+
+        &#x2F;&#x2F; Check if a master editor is not set already or the current master editor doesn&#39;t belong
+        &#x2F;&#x2F; to the pane container requested - to support creation of multiple full editors
+        &#x2F;&#x2F; This check is required as _masterEditor is the active full editor for the document
+        &#x2F;&#x2F; and there can be existing full editor created for other panes
+        if (editor &amp;&amp; editor._paneId &amp;&amp; editor._paneId !== pane.id) {
+            editor = document._checkAssociatedEditorForPane(pane.id);
+        }
+
         if (!editor) {
             &#x2F;&#x2F; Performance (see #4757) Chrome wastes time messing with selection
             &#x2F;&#x2F; that will just be changed at end, so clear it for now
             if (window.getSelection &amp;&amp; window.getSelection().empty) {  &#x2F;&#x2F; Chrome
                 window.getSelection().empty();
             }
-            
+
             &#x2F;&#x2F; Editor doesn&#39;t exist: populate a new Editor with the text
             editor = _createFullEditorForDocument(document, pane, editorOptions);
             createdNewEditor = true;
         } else if (editor.$el.parent()[0] !== pane.$content[0]) {
-            &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the 
+            &#x2F;&#x2F; editor does exist but is not a child of the pane so add it to the
             &#x2F;&#x2F;  pane (which will switch the view&#39;s container as well)
             pane.addView(editor);
         }
@@ -1381,12 +1387,12 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _toggleInlineWidget(providers, errorMsg) {
         var result = new $.Deferred();
-        
+
         var currentEditor = getCurrentFullEditor();
-        
+
         if (currentEditor) {
             var inlineWidget = currentEditor.getFocusedInlineWidget();
-            
+
             if (inlineWidget) {
                 &#x2F;&#x2F; an inline widget&#39;s editor has focus, so close it
                 PerfUtils.markStart(PerfUtils.INLINE_WIDGET_CLOSE);
@@ -1407,7 +1413,7 @@ two editors but, because editormanager maintains  a &quot;_lastFocusedEditor&quo
             &#x2F;&#x2F; Can not open an inline editor without a host editor
             result.reject();
         }
-        
+
         return result.promise();
     }</code></pre></div><div class="member public">
 
@@ -1486,10 +1492,10 @@ is). The widget&#39;s onClosed() callback will be run as a result.</p>
             if (cursorLine !== widgetLine) {
                 hostEditor.setCursorPos({ line: widgetLine, pos: 0 });
             }
-            
+
             hostEditor.focus();
         }
-        
+
         return hostEditor.removeInlineWidget(inlineWidget);
     }</code></pre></div><div class="member public">
 
@@ -1545,8 +1551,9 @@ The editor is not yet visible or attached to a host editor.</p>
         &#x2F;&#x2F; first and showing it after the visible range is set, we avoid that initial render.
         $(inlineContent).hide();
         var inlineEditor = _createEditorForDocument(doc, false, inlineContent, range);
+        inlineEditor._hostEditor = getCurrentFullEditor();
         $(inlineContent).show();
-        
+
         return { content: inlineContent, editor: inlineEditor };
     }</code></pre></div><div class="member public">
 
@@ -1585,8 +1592,8 @@ removed. For example, after a dialog with editable text is closed.</p>
     </h4>
 
     
-    <div class="description"><p>Returns the current active editor (full-sized OR inline editor). This editor may not 
-have focus at the moment, but it is visible and was the last editor that was given 
+    <div class="description"><p>Returns the current active editor (full-sized OR inline editor). This editor may not
+have focus at the moment, but it is visible and was the last editor that was given
 focus. Returns null if no editors are active.</p>
 </div>
     
@@ -1652,20 +1659,20 @@ focus. Returns null if no editors are active.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCurrentlyViewedPath() {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.getCurrentlyViewedFile() instead of EditorManager.getCurrentlyViewedPath().&quot;, true);
-        
+
         &#x2F;&#x2F; We only want to return a path of a document object
         &#x2F;&#x2F; not other things like images, etc...
         var currentPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE),
             doc;
-        
+
         if (currentPath) {
             doc = DocumentManager.getOpenDocumentForPath(currentPath);
         }
-        
+
         if (doc) {
             return currentPath;
         }
-        
+
         return null;
     }</code></pre></div><div class="member public">
 
@@ -1681,7 +1688,7 @@ focus. Returns null if no editors are active.</p>
     
     <div class="description"><p>Returns the currently focused editor instance (full-sized OR inline editor).
 This function is similar to getActiveEditor(), with one main difference: this
-function will only return editors that currently have focus, whereas 
+function will only return editors that currently have focus, whereas
 getActiveEditor() will return the last visible editor that was given focus (but
 may not currently have focus because, for example, a dialog with editable text
 is open).</p>
@@ -1698,7 +1705,7 @@ is open).</p>
 <pre class="code language-javascript"><code class="language-javascript">    function getFocusedEditor() {
         var currentEditor = getCurrentFullEditor();
         if (currentEditor) {
-            
+
             &#x2F;&#x2F; See if any inlines have focus
             var focusedInline = _getFocusedInlineEditor();
             if (focusedInline) {
@@ -1710,7 +1717,7 @@ is open).</p>
                 return currentEditor;
             }
         }
-        
+
         return null;
     }</code></pre></div><div class="member public">
 
@@ -1771,7 +1778,7 @@ is open).</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getInlineEditors(hostEditor) {
         var inlineEditors = [];
-        
+
         if (hostEditor) {
             hostEditor.getInlineWidgets().forEach(function (widget) {
                 if (widget instanceof InlineTextEditor &amp;&amp; widget.editor) {
@@ -1944,7 +1951,7 @@ to provide an inline editor before providers with lower priority.</p>
     
     <div class="description"><p>Registers a new jump-to-definition provider. When jump-to-definition is invoked each
 registered provider is asked if it wants to provide jump-to-definition results, given
-the current editor and cursor location. </p>
+the current editor and cursor location.</p>
 </div>
     
 <dl>

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -556,7 +554,7 @@ but have not yet had addMeasurement() called.</p>
 
     
     <div class="description"><p>Peformance data is stored in this hash object. The key is the name of the
-test (passed to markStart/addMeasurement), and the value is the time, in 
+test (passed to markStart/addMeasurement), and the value is the time, in
 milliseconds, that it took to run the test. If multiple runs of the same test
 are made, the value is an Array with each run stored as an entry in the Array.</p>
 </div>
@@ -706,7 +704,7 @@ from this list using finalizeMeasurement()</p>
         if (activeTests[id.id]) {
             console.error(&quot;Recursive tests with the same id are not supported. Timer id: &quot; + id.id);
         }
-        
+
         activeTests[id.id] = { startTime: time };
     }</code></pre></div><div class="member public">
 
@@ -741,18 +739,18 @@ measured time is relative to app startup.</p>
         if (!enabled) {
             return;
         }
-        
+
         if (!(id instanceof PerfMeasurement)) {
             id = new PerfMeasurement(id, id);
         }
 
         var elapsedTime = brackets.app.getElapsedMilliseconds();
-        
+
         if (activeTests[id.id]) {
             elapsedTime -= activeTests[id.id].startTime;
             delete activeTests[id.id];
         }
-        
+
         if (perfData[id]) {
             &#x2F;&#x2F; We have existing data, add to it
             if (Array.isArray(perfData[id])) {
@@ -764,7 +762,7 @@ measured time is relative to app startup.</p>
         } else {
             perfData[id] = elapsedTime;
         }
-        
+
         if (id.reent !== undefined) {
             if (_reentTests[id] === 0) {
                 delete _reentTests[id];
@@ -799,11 +797,11 @@ measured time is relative to app startup.</p>
         updatableTests = {};
         _reentTests = {};
     }
-    
+
     &#x2F;&#x2F; create performance measurement constants
     createPerfMeasurement(&quot;INLINE_WIDGET_OPEN&quot;, &quot;Open inline editor or docs&quot;);
     createPerfMeasurement(&quot;INLINE_WIDGET_CLOSE&quot;, &quot;Close inline editor or docs&quot;);
-    
+
     &#x2F;&#x2F; extensions may create additional measurement constants during their lifecycle
 
     exports.addMeasurement          = addMeasurement;
@@ -853,7 +851,7 @@ Can be accessed on the module, e.g. PerfUtils.MY_PERF_KEY.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function createPerfMeasurement(id, name) {
         var pm = new PerfMeasurement(id, name);
         exports[id] = pm;
-        
+
         return pm;
     }</code></pre></div><div class="member public">
 
@@ -886,7 +884,7 @@ in either or neither list, but should never be in both.</p>
         if (activeTests[id.id]) {
             delete activeTests[id.id];
         }
-        
+
         if (updatableTests[id.id]) {
             delete updatableTests[id.id];
         }
@@ -919,7 +917,7 @@ in either or neither list, but should never be in both.</p>
         if (!id) {
             return perfData;
         }
-        
+
         return perfData[id];
     }</code></pre></div><div class="member public">
 
@@ -999,13 +997,13 @@ in either or neither list, but should never be in both.</p>
         var keys = Object.keys(perfData).filter(function (key) {
             return regExp.test(key);
         });
-        
+
         var datas = [];
-        
+
         keys.forEach(function (key) {
             datas.push(perfData[key]);
         });
-        
+
         return datas;
     }</code></pre></div><div class="member">
 
@@ -1111,7 +1109,7 @@ with addMeasurement().</p>
 
     
     <div class="description"><p>Start a new named timer. The name should be as descriptive as possible, since
-this name will appear as an entry in the performance report. 
+this name will appear as an entry in the performance report.
 For example: &quot;Open file: /Users/brackets/src/ProjectManager.js&quot;</p>
 <p>Multiple timers can be opened simultaneously.</p>
 <p>Returns an opaque set of timer ids which can be stored and used for calling
@@ -1186,7 +1184,7 @@ not updatable, and it is handled in addMeasurement().</p>
         if (updatableTests[id.id]) {
             &#x2F;&#x2F; update existing measurement
             elapsedTime -= updatableTests[id].startTime;
-            
+
             &#x2F;&#x2F; update
             if (perfData[id] &amp;&amp; Array.isArray(perfData[id])) {
                 &#x2F;&#x2F; We have existing data and it&#39;s an array, so update the last entry
@@ -1195,7 +1193,7 @@ not updatable, and it is handled in addMeasurement().</p>
                 &#x2F;&#x2F; No current data or a single entry, so set&#x2F;update it
                 perfData[id] = elapsedTime;
             }
-            
+
         } else {
             &#x2F;&#x2F; not yet in updatable list
 
@@ -1203,7 +1201,7 @@ not updatable, and it is handled in addMeasurement().</p>
                 &#x2F;&#x2F; save startTime in updatable list before addMeasurement() deletes it
                 updatableTests[id.id] = { startTime: activeTests[id.id].startTime };
             }
-            
+
             &#x2F;&#x2F; let addMeasurement() handle the initial case
             addMeasurement(id);
         }

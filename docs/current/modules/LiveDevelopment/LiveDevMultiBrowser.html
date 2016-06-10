@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -704,11 +702,11 @@ The status codes are:</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _close(doCloseWindow, reason) {
         if (exports.status !== STATUS_INACTIVE) {
-            &#x2F;&#x2F; Close live documents 
+            &#x2F;&#x2F; Close live documents
             _closeDocuments();
             &#x2F;&#x2F; Close all active connections
             _protocol.closeAllConnections();
-            
+
             if (_server) {
                 &#x2F;&#x2F; Stop listening for requests when disconnected
                 _server.stop();
@@ -719,7 +717,7 @@ The status codes are:</p>
         }
     &#x2F;&#x2F;TODO: implement closeWindow together with launchers.
 &#x2F;&#x2F;        if (doCloseWindow) {
-&#x2F;&#x2F;            
+&#x2F;&#x2F;
 &#x2F;&#x2F;        }
         _setStatus(STATUS_INACTIVE, reason || &quot;explicit_close&quot;);
     }</code></pre></div><div class="member private">
@@ -773,12 +771,12 @@ The status codes are:</p>
             _closeDocument(_liveDocument);
             _liveDocument = undefined;
         }
-        
+
         Object.keys(_relatedDocuments).forEach(function (url) {
             _closeDocument(_relatedDocuments[url]);
             delete _relatedDocuments[url];
         });
-        
+
         &#x2F;&#x2F; Clear all documents from request filtering
         if (_server) {
             _server.clear();
@@ -823,11 +821,11 @@ The status codes are:</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _createLiveDocument(doc, editor, roots) {
         var DocClass = _classForDocument(doc),
             liveDocument;
-        
+
         if (!DocClass) {
             return null;
         }
-        
+
         liveDocument = new DocClass(_protocol, _resolveUrl, doc, editor, roots);
 
         liveDocument.on(&quot;errorStatusChanged.livedev&quot;, function (event, hasErrors) {
@@ -978,19 +976,19 @@ do not have &quot;update while editing&quot; support</p>
                 containingFolder,
                 indexFileFound = false,
                 stillInProjectTree = true;
-            
+
             if (refPath) {
                 containingFolder = FileUtils.getDirectoryPath(refPath);
             } else {
                 containingFolder = projectRoot;
             }
-            
+
             var filteredFiltered = allFiles.filter(function (item) {
                 var parent = FileUtils.getParentPath(item.fullPath);
-                
+
                 return (containingFolder.indexOf(parent) === 0);
             });
-            
+
             var filterIndexFile = function (fileInfo) {
                 if (fileInfo.fullPath.indexOf(containingFolder) === 0) {
                     if (FileUtils.getFilenameWithoutExtension(fileInfo.name) === &quot;index&quot;) {
@@ -1028,7 +1026,7 @@ do not have &quot;update while editing&quot; support</p>
                 DocumentManager.getDocumentForPath(filteredFiltered[i].fullPath).then(result.resolve, result.resolve);
                 return;
             }
-            
+
             result.resolve(null);
         });
 
@@ -1065,7 +1063,7 @@ if the related file has been deleted on disk).</p>
         if (liveDoc) {
             delete _relatedDocuments[url];
         }
-            
+
         if (_server) {
             _server.remove(liveDoc);
         }
@@ -1098,7 +1096,7 @@ if the related file has been deleted on disk).</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _launch(url) {
         &#x2F;&#x2F; open default browser
         &#x2F;&#x2F; TODO: fail?
-        &#x2F;&#x2F; 
+        &#x2F;&#x2F;
         _launcher.launch(url);
     }</code></pre></div><div class="member private">
 
@@ -1136,9 +1134,9 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
         if (!isActive() || !_server) {
             return;
         }
-        
+
         var absolutePath = doc.file.fullPath;
-        
+
         if (_liveDocument.isRelated(absolutePath)) {
             &#x2F;&#x2F; Set status to out of sync if dirty. Otherwise, set it to active status.
             _setStatus(_docIsOutOfSync(doc) ? STATUS_OUT_OF_SYNC : STATUS_ACTIVE);
@@ -1178,17 +1176,17 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
         if (!isActive() || !_server) {
             return;
         }
-        
+
         var absolutePath            = doc.file.fullPath,
             liveDocument            = absolutePath &amp;&amp; _server.get(absolutePath),
             liveEditingEnabled      = liveDocument &amp;&amp; liveDocument.isLiveEditingEnabled  &amp;&amp; liveDocument.isLiveEditingEnabled();
-        
+
         &#x2F;&#x2F; Skip reload if the saved document has live editing enabled
         if (liveEditingEnabled) {
             return;
         }
-        
-        &#x2F;&#x2F; reload the page if the given document is a JS file related 
+
+        &#x2F;&#x2F; reload the page if the given document is a JS file related
         &#x2F;&#x2F; to the current live document.
         if (_liveDocument.isRelated(absolutePath)) {
             if (doc.getLanguage().getId() === &quot;javascript&quot;) {
@@ -1220,11 +1218,11 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
         if (!isActive() || !doc) {
             return;
         }
-        
+
         &#x2F;&#x2F; close the current session and begin a new session
         var docUrl = _server &amp;&amp; _server.pathToUrl(doc.file.fullPath),
             isViewable = _server &amp;&amp; _server.canServe(doc.file.fullPath);
-        
+
         if (_liveDocument.doc.url !== docUrl &amp;&amp; isViewable) {
             &#x2F;&#x2F; clear live doc and related docs
             _closeDocuments();
@@ -1345,7 +1343,7 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
 <pre class="code language-javascript"><code class="language-javascript">    function _prepareServer(doc) {
         var deferred = new $.Deferred(),
             showBaseUrlPrompt = false;
-        
+
         _server = LiveDevServerManager.getServer(doc.file.fullPath);
 
         &#x2F;&#x2F; Optionally prompt for a base URL if no server was found but the
@@ -1379,7 +1377,7 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
             &#x2F;&#x2F; No server found
             deferred.reject();
         }
-        
+
         return deferred.promise();
     }</code></pre></div><div class="member private">
 
@@ -1446,9 +1444,9 @@ have unsaved changes, so the user knows s/he needs to save in order to have the 
         if (status === exports.status) {
             return;
         }
-        
+
         exports.status = status;
-        
+
         var reason = status === STATUS_INACTIVE ? closeReason : null;
         exports.trigger(&quot;statusChange&quot;, status, reason);
     }</code></pre></div><div class="member private">
@@ -1652,7 +1650,7 @@ Returns a resolved promise for API compatibility.</p>
         if (!_server) {
             return null;
         }
-        
+
         return _server.get(path);
     }</code></pre></div><div class="member private public">
 
@@ -1679,14 +1677,14 @@ Returns a resolved promise for API compatibility.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function getServerBaseUrl() {
         return _server &amp;&amp; _server.getBaseUrl();
     }
-    
+
     &#x2F;&#x2F; for unit testing only
     function _getCurrentLiveDoc() {
         return _liveDocument;
     }
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; For unit testing
     exports._server                   = _server;
     exports._getCurrentLiveDoc        = _getCurrentLiveDoc;
@@ -1759,10 +1757,10 @@ Returns a resolved promise for API compatibility.</p>
             .on(&quot;dirtyFlagChange&quot;, _onDirtyFlagChange);
         ProjectManager
             .on(&quot;beforeProjectClose beforeAppClose&quot;, close);
-        
+
         &#x2F;&#x2F; Default transport for live connection messages - can be changed
         setTransport(NodeSocketTransport);
-        
+
         &#x2F;&#x2F; Default launcher for preview browser - can be changed
         setLauncher(DefaultLauncher);
 
@@ -1835,7 +1833,7 @@ Returns a resolved promise for API compatibility.</p>
                     CommandManager.execute(Commands.CMD_OPEN, { fullPath: doc.file.fullPath });
                 }
             }
-            
+
             &#x2F;&#x2F; wait for server (StaticServer, Base URL or file:)
             prepareServerPromise
                 .done(function () {
@@ -1980,7 +1978,7 @@ of the transport. Should include the &quot;&lt;script&gt;&quot; tags. Should ret
 </ul>
 <p>It must also dispatch the following jQuery events:</p>
 <ul>
-<li>&quot;connect&quot;: When a target browser connects back to the transport. Must provide two parameters: <ul>
+<li>&quot;connect&quot;: When a target browser connects back to the transport. Must provide two parameters:<ul>
 <li>clientID - a unique number representing this connection</li>
 <li>url - the URL of the page in the target browser that&#39;s connecting to us</li>
 </ul>
@@ -2031,7 +2029,7 @@ of the transport. Should include the &quot;&lt;script&gt;&quot; tags. Should ret
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function showHighlight() {
         var doc = getLiveDocForEditor(EditorManager.getActiveEditor());
-        
+
         if (doc &amp;&amp; doc.updateHighlight) {
             doc.updateHighlight();
         }

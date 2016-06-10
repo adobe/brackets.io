@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (179)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -129,8 +129,6 @@
             </ul>
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../../../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="../../../../modules/file/NativeFileError.html">NativeFileError</a></li>
-              <li><a href="../../../../modules/file/NativeFileSystem.html">NativeFileSystem</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -343,7 +341,6 @@
               </li>
             </ul>
             <ul id="package_project" class="nav nav-list">
-              <li><a href="../../../../modules/project/FileIndexManager.html">FileIndexManager</a></li>
               <li><a href="../../../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
               <li><a href="../../../../modules/project/FileTreeView.html">FileTreeView</a></li>
               <li><a href="../../../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
@@ -367,6 +364,7 @@
               <li><a href="../../../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -518,10 +516,10 @@
     }
 
     &#x2F;&#x2F; Events
-    
+
     &#x2F;&#x2F; We can simply retrigger the events we receive from the node domain directly, since they&#39;re in
     &#x2F;&#x2F; the same format expected by clients of the transport.
-    
+
     [&quot;connect&quot;, &quot;message&quot;, &quot;close&quot;].forEach(function (type) {
         NodeSocketTransportDomain.on(type, function () {
             console.log(&quot;NodeSocketTransport - event - &quot; + type + &quot; - &quot; + JSON.stringify(Array.prototype.slice.call(arguments, 1)));
@@ -529,12 +527,12 @@
             exports.trigger(type, Array.prototype.slice.call(arguments, 1));
         });
     });
-    
+
     EventDispatcher.makeEventDispatcher(exports);
-    
+
     &#x2F;&#x2F; Exports
     exports.getRemoteScript = getRemoteScript;
-    
+
     &#x2F;&#x2F; Proxy the node domain methods directly through, since they have exactly the same
     &#x2F;&#x2F; signatures as the ones we&#39;re supposed to provide.
     [&quot;start&quot;, &quot;send&quot;, &quot;close&quot;].forEach(function (method) {
