@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -364,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -599,7 +600,9 @@ Documents, not Editors.</p>
         TAB_SIZE            = &quot;tabSize&quot;,
         UPPERCASE_COLORS    = &quot;uppercaseColors&quot;,
         USE_TAB_CHAR        = &quot;useTabChar&quot;,
-        WORD_WRAP           = &quot;wordWrap&quot;;
+        WORD_WRAP           = &quot;wordWrap&quot;,
+        INDENT_LINE_COMMENT   = &quot;indentLineComment&quot;;
+    
 
     var cmOptions         = {};</code></pre></div><div class="member">
 
@@ -722,7 +725,12 @@ Documents, not Editors.</p>
     PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true, {
         description: Strings.DESCRIPTION_WORD_WRAP
     });
-
+    
+    PreferencesManager.definePreference(INDENT_LINE_COMMENT,  &quot;boolean&quot;, false, {
+        description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
+    });
+    
+    
     var editorOptions = Object.keys(cmOptions);</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1116,6 +1124,15 @@ Document modifiable.</p>
         this.on(&quot;change&quot;, function (event, editor, changeList) {
             self._handleEditorChange(changeList);
         });
+        this.on(&quot;focus&quot;, function (event, editor) {
+            if (self._hostEditor) {
+                &#x2F;&#x2F; Mark the host editor as the master editor for the hosting document
+                self._hostEditor.document._toggleMasterEditor(self._hostEditor);
+            } else {
+                &#x2F;&#x2F; Set this full editor as master editor for the document
+                self.document._toggleMasterEditor(self);
+            }
+        });
 
         &#x2F;&#x2F; Set code-coloring mode BEFORE populating with text, to avoid a flash of uncolored text
         this._codeMirror.setOption(&quot;mode&quot;, mode);
@@ -1156,6 +1173,10 @@ Document modifiable.</p>
 
     Editor.prototype.markPaneId = function (paneId) {
         this._paneId = paneId;
+
+        &#x2F;&#x2F; Also add this to the pool of full editors
+        this.document._associateEditor(this);
+
         &#x2F;&#x2F; In case this Editor is initialized not as the first full editor for the document
         &#x2F;&#x2F; and the document is already dirty and present in another working set, make sure
         &#x2F;&#x2F; to add this documents to the new panes working set.
@@ -2145,14 +2166,6 @@ jQuery events on the Editor instance.</p>
 
         &#x2F;&#x2F; Convert CodeMirror onFocus events to EditorManager activeEditorChanged
         this._codeMirror.on(&quot;focus&quot;, function () {
-            if (self._hostEditor) {
-                &#x2F;&#x2F; Mark the host editor as the master editor for the hosting document
-                self._hostEditor.document._toggleMasterEditor(self._hostEditor);
-            } else {
-                &#x2F;&#x2F; Set this full editor as master editor for the document
-                self.document._toggleMasterEditor(self);
-            }
-            
             self._focused = true;
             self.trigger(&quot;focus&quot;, self);
             
@@ -3238,6 +3251,38 @@ This is a required Pane-View interface method</p>
         });
 
         return result;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getIndentLineComment     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#Editor-getIndentLineComment" id="Editor-getIndentLineComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns true if word wrap is enabled for the specified or current file</p>
+</div>
+    
+<dl>
+    <dt>
+        fullPath
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Path to file to get preference for</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.getIndentLineComment = function (fullPath) {
+        return PreferencesManager.get(INDENT_LINE_COMMENT, _buildPreferencesContext(fullPath));
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -4613,6 +4658,44 @@ Affects any editors that share the same preference location.</p>
         if (center) {
             this.centerOnCursor();
         }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setIndentLineComment     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#Editor-setIndentLineComment" id="Editor-setIndentLineComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets lineCommentIndent option.</p>
+</div>
+    
+<dl>
+    <dt>
+        value
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        fullPath
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Path to file to get preference for</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span>
+</dt>
+    <dd>true if value was valid</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.setIndentLineComment = function (value, fullPath) {
+        var options = fullPath &amp;&amp; {context: fullPath};
+        return PreferencesManager.set(INDENT_LINE_COMMENT, value, options);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">

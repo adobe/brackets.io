@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -364,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -480,6 +481,7 @@ The UI allows the user to see what files are open/dirty and allows them to close
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/ViewUtils.html">ViewUtils</a></li>
         <li><a href="..&#x2F;../modules/text!htmlContent/working-set.html.html">working-set.html</a></li>
@@ -1572,16 +1574,7 @@ to update an existing item, all previously applied classes have been cleared.</p
 
     AppInit.htmlReady(function () {
         $workingFilesContainer =  $(&quot;#working-set-list-container&quot;);
-    });
-
-
-    &#x2F;&#x2F; Public API
-    exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
-    exports.refresh                       = refresh;
-    exports.addIconProvider               = addIconProvider;
-    exports.addClassProvider              = addClassProvider;
-    exports.syncSelectionIndicator        = syncSelectionIndicator;
-});</code></pre></div><div class="member public">
+    });</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -1707,6 +1700,93 @@ return content to prepend to the item.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function syncSelectionIndicator() {
         _.forEach(_views, function (view) {
             view.$openFilesContainer.triggerHandler(&quot;scroll&quot;);
+        });
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        useClassProviders 
+        <a class="anchor" href="#-useClassProviders" id="-useClassProviders"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>To be used by other modules/default-extensions which needs to borrow working set entry custom classes</p>
+</div>
+    
+<dl>
+    <dt>
+        data
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>- contains file info {fullPath, name, isFile}</dd>
+    <dt>
+        $element
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery</span>
+    </dt>
+    <dd>- jquery fn wrap for the list item</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function useClassProviders(data, $element) {
+        _classProviders.forEach(function (provider) {
+            $element.addClass(provider(data));
+        });
+    }
+    
+    &#x2F;&#x2F; Public API
+    exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
+    exports.refresh                       = refresh;
+    exports.addIconProvider               = addIconProvider;
+    exports.addClassProvider              = addClassProvider;
+    exports.syncSelectionIndicator        = syncSelectionIndicator;
+    
+    &#x2F;&#x2F; API to be used only by default extensions
+    exports.useIconProviders              = useIconProviders;
+    exports.useClassProviders               = useClassProviders;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        useIconProviders 
+        <a class="anchor" href="#-useIconProviders" id="-useIconProviders"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>To be used by other modules/deafult-extensions which needs to borrow working set entry icons</p>
+</div>
+    
+<dl>
+    <dt>
+        data
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>- contains file info {fullPath, name, isFile}</dd>
+    <dt>
+        $element
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">jQuery</span>
+    </dt>
+    <dd>- jquery fn wrap for the list item</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function useIconProviders(data, $element) {
+        _iconProviders.forEach(function (provider) {
+            var icon = provider(data);
+            if (icon) {
+                $element.prepend($(icon));
+            }
         });
     }</code></pre></div>
 </section>

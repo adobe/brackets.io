@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -364,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -1243,7 +1244,7 @@ internal change event.</p>
             var oldStat = entry._stat;
             if (entry.isFile) {
                 &#x2F;&#x2F; Update stat and clear contents, but only if out of date
-                if (!(stat &amp;&amp; oldStat &amp;&amp; stat.mtime.getTime() === oldStat.mtime.getTime())) {
+                if (!(stat &amp;&amp; oldStat &amp;&amp; stat.mtime.getTime() &lt;= oldStat.mtime.getTime())) {
                     entry._clearCachedData();
                     entry._stat = stat;
                     this._fireChangeEvent(entry);

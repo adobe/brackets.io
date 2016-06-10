@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (176)</h2>
+            <h2 class="number-of-modules">Modules (177)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -364,6 +364,7 @@
               <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
               <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
               <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
               <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
               <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
@@ -1012,7 +1013,7 @@ or for incremental-search style document preview like Quick Open will eventually
 <pre class="code language-javascript"><code class="language-javascript">    function _close(paneId, file, optionsIn) {
         var options = optionsIn || {};
         _forEachPaneOrPanes(paneId, function (pane) {
-            if (pane.removeView(file, options.noOpenNextFile) &amp;&amp; pane.id === paneId) {
+            if (pane.removeView(file, options.noOpenNextFile) &amp;&amp; (paneId === ACTIVE_PANE || pane.id === paneId)) {
                 _removeFileFromMRU(pane.id, file);
                 exports.trigger(&quot;workingSetRemove&quot;, file, false, pane.id);
                 return false;
