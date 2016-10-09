@@ -327,13 +327,15 @@
 <script src="js/foundation.min.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/youtube-modal.js"></script>
+<script src="js/load.i18next.js"></script>
+
 <script>
     $(document).foundation();
 </script>
 
 <script>
-    var ext = "";
-    var OS = "UNKNOWN";
+    var ext = "",
+        OS  = "UNKNOWN";
     if (/Windows|Win32|WOW64|Win64/.test(navigator.userAgent)) {
         OS = "WIN";
         ext = ".msi";
@@ -357,8 +359,6 @@
     }
 </script>
 
-<script src="js/load.i18next.js"></script>
-
 <script>
     // Detect unsupported Operating Systems
     function updateAlertContent(unsupported) {
@@ -368,33 +368,45 @@
             .show();
     }
 
-    var unsupported = {
-        i18nKey: "general",
-        url: "https://github.com/adobe/brackets/wiki/Troubleshooting#requirements"
-    },
-        osMatch;
-    if (/NT ?5\.\d/.test(navigator.userAgent)) { // Windows XP
+    var osMatch,
+        unsupported = {
+            i18nKey: "general",
+            url: "https://github.com/adobe/brackets/wiki/Troubleshooting#requirements"
+        };
+
+    // Windows XP
+    if (/NT ?5\.\d/.test(navigator.userAgent)) {
         unsupported.os = "Windows XP";
         unsupported.i18nKey = "win-xp";
         unsupported.url = "http://blog.brackets.io/2014/04/18/windows-xp-support/";
         unsupported.default = "Unfortunately, we don't support Windows XP any longer. <a href='" + unsupported.url + "'>Read our blog post</a> for further information.";
-    } else if (osMatch = navigator.userAgent.match(/Mac OS X 10[._](\d+)([._](\d+))?\D/i)) { // Mac OS X 10.*
+
+    // Mac OS X 10.*
+    } else if (osMatch = navigator.userAgent.match(/Mac OS X 10[._](\d+)([._](\d+))?\D/i)) {
         osMatch = parseFloat(osMatch[1] + "." + (osMatch[3] || 0));
-        if (osMatch < 6.8 && osMatch !== 6.0) { // Firefox reports only the OS X major version (10.6), so we have to check for 6.0
+
+        // Firefox reports only the OS X major version (10.6), so we have to check for 6.0
+        if (osMatch < 6.8 && osMatch !== 6.0) {
             // Mac OS X pre 10.6.8 is not supported
             unsupported.os = "Mac OS X 10." + osMatch;
         }
-    } else if (/Debian[ -_]7/i.test(navigator.userAgent)) { // Debian 7
+
+    // Debian 7
+    } else if (/Debian[ -_]7/i.test(navigator.userAgent)) {
         unsupported.os = "Debian 7";
         unsupported.i18nKey = "debian-7";
         unsupported.url = "https://github.com/adobe/brackets/issues/4816";
         unsupported.default = "Unfortunately, we currently don't support Debian 7. <a href='" + unsupported.url + "'>Take a look at the GitHub issue</a> for further information.";
-    } else if (osMatch = navigator.userAgent.match(/Ubuntu[ -_\/]?(\d+)[._](\d+)\D/i)) { // Ubuntu
-        if (parseInt(osMatch[1], 10) < 12) { // pre Ubuntu 12.04
+
+    // Ubuntu
+    } else if (osMatch = navigator.userAgent.match(/Ubuntu[ -_\/]?(\d+)[._](\d+)\D/i)) {
+        // Pre-Ubuntu 12.04
+        if (parseInt(osMatch[1], 10) < 12) {
             unsupported.os = "Ubuntu " + osMatch[1] + "." + osMatch[2];
         }
     }
 
+    // The user is running an unsupported OS
     if (unsupported.os) {
         if (!unsupported.default) {
             unsupported.default = "Unfortunately, we don't support " + unsupported.os + " any longer. <a href='" + unsupported.url + "'>Take a look at the Requirements.</a>";
@@ -434,10 +446,10 @@
             url: versionInfoUrl,
             cache: false
         });
+
         $.when(ajaxRequest, i18nLoaded).done(function (data) {
-            data = data[0]; // get actual data
-            var build = data[0];
-            var buildName = build.versionString;
+            var build = data[0][0],
+                buildName = build.versionString;
 
             if (buildName) {
                 var buildNum = buildName.match(/([\d.]+)/);
@@ -446,20 +458,15 @@
                 }
 
                 // update button
-                if (OS != "OTHER" && buildNum) {
+                if (OS !== "OTHER" && buildNum) {
                     var tag = buildName.toLowerCase().split(" ").join("-"),
                         url = "https://github.com/adobe/brackets/releases/" + tag;
+
                     if (ext) {
                         url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
                     }
 
-                    ///if(OS=="WIN") url = "http://bit.ly/QrVHNc"; // (Temporary) TRACKING WIN
-                    ///else if(OS=="OSX") url = "http://bit.ly/1hQGEsh"; // (Temporary) TRACKING OSX
-
-                    var version_label = buildName.match(/(\d+.*$)/)[1];
-                    //if (OS != "UNKNOWN") version_label += " (" + OS + ")";
-                    $("#download-brackets-version").text(version_label);
-
+                    $("#download-brackets-version").text(buildNum);
                     logAndGo("download-plain-brackets", url, ['_trackEvent', 'Downloads', buildNum, OS]);
                 }
 
@@ -489,7 +496,7 @@
                 downloadStarted = true;
                 setTimeout(function () { window.location.href = _url; }, 1000); // short delay just in case it doesn't get logged
             });
-        }
+        };
     }
 </script>
 
@@ -551,7 +558,5 @@
         s.parentNode.insertBefore(ga, s);
     })();
 </script>
-
 </body>
-
 </html>
