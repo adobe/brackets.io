@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1117,7 +1120,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
             line = doc.getLine(startLine);
             var originalCursorPosition = line.search(&#x2F;\S|$&#x2F;);
             
-            var firstCharPosition,cursorPosition = originalCursorPosition;
+            var firstCharPosition, cursorPosition = originalCursorPosition;
             
             for (i = startLine; i &lt;= endLine; i++) {
                 &#x2F;&#x2F;check if preference for indent line comment is available otherwise go back to default indentation
@@ -1134,7 +1137,7 @@ indicate to the caller that it needs to handle this selection as a line comment.
                         cursorPosition = originalCursorPosition;
                     }
                     
-                    editGroup.push({text: prefixes[0], start: {line: i, ch: cursorPosition}}); 
+                    editGroup.push({text: prefixes[0], start: {line: i, ch: cursorPosition}});
                 } else {
                     editGroup.push({text: prefixes[0], start: {line: i, ch: 0}});
                 }
@@ -1445,7 +1448,58 @@ commented in a block-comment.</p>
 
     function handleRedo() {
         return handleUndoRedo(&quot;redo&quot;);
-    }</code></pre></div><div class="member private">
+    }
+
+    function _handleSelectAll() {
+        var result = new $.Deferred(),
+            editor = EditorManager.getFocusedEditor();
+
+        if (editor) {
+            editor.selectAllNoScroll();
+            result.resolve();
+        } else {
+            result.reject();    &#x2F;&#x2F; command not handled
+        }
+
+        return result.promise();
+    }
+
+    function _execCommand(cmd) {
+        window.document.execCommand(cmd);
+    }
+    function _execCommandCut() {
+        _execCommand(&quot;cut&quot;);
+    }
+    function _execCommandCopy() {
+        _execCommand(&quot;copy&quot;);
+    }
+    function _execCommandPaste() {
+        _execCommand(&quot;paste&quot;);
+    }
+
+    &#x2F;&#x2F; Register commands
+    CommandManager.register(Strings.CMD_INDENT,                 Commands.EDIT_INDENT,                 indentText);
+    CommandManager.register(Strings.CMD_UNINDENT,               Commands.EDIT_UNINDENT,               unindentText);
+    CommandManager.register(Strings.CMD_COMMENT,                Commands.EDIT_LINE_COMMENT,           lineComment);
+    CommandManager.register(Strings.CMD_BLOCK_COMMENT,          Commands.EDIT_BLOCK_COMMENT,          blockComment);
+    CommandManager.register(Strings.CMD_DUPLICATE,              Commands.EDIT_DUPLICATE,              duplicateText);
+    CommandManager.register(Strings.CMD_DELETE_LINES,           Commands.EDIT_DELETE_LINES,           deleteCurrentLines);
+    CommandManager.register(Strings.CMD_LINE_UP,                Commands.EDIT_LINE_UP,                moveLineUp);
+    CommandManager.register(Strings.CMD_LINE_DOWN,              Commands.EDIT_LINE_DOWN,              moveLineDown);
+    CommandManager.register(Strings.CMD_OPEN_LINE_ABOVE,        Commands.EDIT_OPEN_LINE_ABOVE,        openLineAbove);
+    CommandManager.register(Strings.CMD_OPEN_LINE_BELOW,        Commands.EDIT_OPEN_LINE_BELOW,        openLineBelow);
+    CommandManager.register(Strings.CMD_SELECT_LINE,            Commands.EDIT_SELECT_LINE,            selectLine);
+    CommandManager.register(Strings.CMD_SPLIT_SEL_INTO_LINES,   Commands.EDIT_SPLIT_SEL_INTO_LINES,   splitSelIntoLines);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_NEXT_LINE,   Commands.EDIT_ADD_CUR_TO_NEXT_LINE,   addCursorToNextLine);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_PREV_LINE,   Commands.EDIT_ADD_CUR_TO_PREV_LINE,   addCursorToPrevLine);
+
+    CommandManager.register(Strings.CMD_UNDO,                   Commands.EDIT_UNDO,                   handleUndo);
+    CommandManager.register(Strings.CMD_REDO,                   Commands.EDIT_REDO,                   handleRedo);
+    CommandManager.register(Strings.CMD_CUT,                    Commands.EDIT_CUT,                    _execCommandCut);
+    CommandManager.register(Strings.CMD_COPY,                   Commands.EDIT_COPY,                   _execCommandCopy);
+    CommandManager.register(Strings.CMD_PASTE,                  Commands.EDIT_PASTE,                  _execCommandPaste);
+    CommandManager.register(Strings.CMD_SELECT_ALL,             Commands.EDIT_SELECT_ALL,             _handleSelectAll);
+});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1714,69 +1768,6 @@ on the second copy.</p>
 
         doc.doMultipleEdits(edits);
     }</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        ignoreCommand 
-        <a class="anchor" href="#-ignoreCommand" id="-ignoreCommand"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Special command handler that just ignores the command. This is used for Cut, Copy, and Paste.
-These menu items are handled natively, but need to be registered in our JavaScript code so the
-menu items can be created.</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function ignoreCommand() {
-        &#x2F;&#x2F; Do nothing. The shell will call the native handler for the command.
-        return (new $.Deferred()).reject().promise();
-    }
-
-	function _handleSelectAll() {
-        var result = new $.Deferred(),
-            editor = EditorManager.getFocusedEditor();
-
-        if (editor) {
-            editor.selectAllNoScroll();
-            result.resolve();
-        } else {
-            result.reject();    &#x2F;&#x2F; command not handled
-        }
-
-        return result.promise();
-    }
-
-    &#x2F;&#x2F; Register commands
-    CommandManager.register(Strings.CMD_INDENT,                 Commands.EDIT_INDENT,                 indentText);
-    CommandManager.register(Strings.CMD_UNINDENT,               Commands.EDIT_UNINDENT,               unindentText);
-    CommandManager.register(Strings.CMD_COMMENT,                Commands.EDIT_LINE_COMMENT,           lineComment);
-    CommandManager.register(Strings.CMD_BLOCK_COMMENT,          Commands.EDIT_BLOCK_COMMENT,          blockComment);
-    CommandManager.register(Strings.CMD_DUPLICATE,              Commands.EDIT_DUPLICATE,              duplicateText);
-    CommandManager.register(Strings.CMD_DELETE_LINES,           Commands.EDIT_DELETE_LINES,           deleteCurrentLines);
-    CommandManager.register(Strings.CMD_LINE_UP,                Commands.EDIT_LINE_UP,                moveLineUp);
-    CommandManager.register(Strings.CMD_LINE_DOWN,              Commands.EDIT_LINE_DOWN,              moveLineDown);
-    CommandManager.register(Strings.CMD_OPEN_LINE_ABOVE,        Commands.EDIT_OPEN_LINE_ABOVE,        openLineAbove);
-    CommandManager.register(Strings.CMD_OPEN_LINE_BELOW,        Commands.EDIT_OPEN_LINE_BELOW,        openLineBelow);
-    CommandManager.register(Strings.CMD_SELECT_LINE,            Commands.EDIT_SELECT_LINE,            selectLine);
-    CommandManager.register(Strings.CMD_SPLIT_SEL_INTO_LINES,   Commands.EDIT_SPLIT_SEL_INTO_LINES,   splitSelIntoLines);
-    CommandManager.register(Strings.CMD_ADD_CUR_TO_NEXT_LINE,   Commands.EDIT_ADD_CUR_TO_NEXT_LINE,   addCursorToNextLine);
-    CommandManager.register(Strings.CMD_ADD_CUR_TO_PREV_LINE,   Commands.EDIT_ADD_CUR_TO_PREV_LINE,   addCursorToPrevLine);
-
-    CommandManager.register(Strings.CMD_UNDO,                   Commands.EDIT_UNDO,                   handleUndo);
-    CommandManager.register(Strings.CMD_REDO,                   Commands.EDIT_REDO,                   handleRedo);
-    CommandManager.register(Strings.CMD_CUT,                    Commands.EDIT_CUT,                    ignoreCommand);
-    CommandManager.register(Strings.CMD_COPY,                   Commands.EDIT_COPY,                   ignoreCommand);
-    CommandManager.register(Strings.CMD_PASTE,                  Commands.EDIT_PASTE,                  ignoreCommand);
-    CommandManager.register(Strings.CMD_SELECT_ALL,             Commands.EDIT_SELECT_ALL,             _handleSelectAll);
-});</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     

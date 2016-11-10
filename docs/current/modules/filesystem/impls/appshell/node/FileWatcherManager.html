@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FileWatcherDomain - Brackets API</title>
+    <title>FileWatcherManager - Brackets API</title>
     <link rel="stylesheet" href="../../../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../../../assets/css/font-awesome.css">
@@ -459,7 +459,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>FileWatcherDomain</h1>
+<h1>FileWatcherManager</h1>
 
 
 <section class="description">
@@ -472,13 +472,8 @@
 <section id="dependencies">
     <h3>Dependencies</h3>
 
-    <ul class="nav nav-list">
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./ChokidarWatcher.html">ChokidarWatcher</a></li>
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./CSharpWatcher.html">CSharpWatcher</a></li>
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./FileWatcherManager.html">FileWatcherManager</a></li>
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/os.html">os</a></li>
-    </ul>
 
+    <span class="alert alert-info">This module has no dependencies</span>
 </section>
 
 <section id="functions">
@@ -488,20 +483,101 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member public">
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _unwatchPath 
+        <a class="anchor" href="#-_unwatchPath" id="-_unwatchPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Un-watch a file or directory.</p>
+</div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>File or directory to unwatch.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">function _unwatchPath(path) {
+    var watcher = _watcherMap[path];
+
+    if (watcher) {
+        try {
+            watcher.close();
+        } catch (err) {
+            console.warn(&quot;Failed to unwatch file &quot; + path + &quot;: &quot; + (err &amp;&amp; err.message));
+        } finally {
+            delete _watcherMap[path];
+        }
+    }
+}</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        normalizeStats 
+        <a class="anchor" href="#-normalizeStats" id="-normalizeStats"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Transform Node&#39;s native fs.stats to a format that can be sent through domain</p>
+</div>
+    
+<dl>
+    <dt>
+        nodeFsStats
+        <span class="label label-info">stats</span>
+    </dt>
+    <dd>Node's fs.stats result</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">object</span>
+</dt>
+    <dd>Can be consumed by new FileSystemStats(object); in Brackets</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">function normalizeStats(nodeFsStats) {
+    &#x2F;&#x2F; current shell&#39;s stat method floors the mtime to the nearest thousand
+    &#x2F;&#x2F; which causes problems when comparing timestamps
+    &#x2F;&#x2F; so we have to round mtime to the nearest thousand too
+    var mtime = Math.floor(nodeFsStats.mtime.getTime() &#x2F; 1000) * 1000;
+
+    &#x2F;&#x2F; from shell: If &quot;filename&quot; is a symlink,
+    &#x2F;&#x2F; realPath should be the actual path to the linked object
+    &#x2F;&#x2F; not implemented in shell yet
+    return {
+        isFile: nodeFsStats.isFile(),
+        isDirectory: nodeFsStats.isDirectory(),
+        mtime: mtime,
+        size: nodeFsStats.size,
+        realPath: null,
+        hash: mtime
+    };
+}</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
     Public API
 </span>
     <h4>
-        init 
-        <a class="anchor" href="#-init" id="-init"><span class="icon-link"></span></a>
+        unwatchAll 
+        <a class="anchor" href="#-unwatchAll" id="-unwatchAll"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Initialize the &quot;fileWatcher&quot; domain.
-The fileWatcher domain handles watching and un-watching directories.</p>
+    <div class="description"><p>Un-watch all files and directories.</p>
 </div>
     
 <dl>
@@ -509,63 +585,94 @@ The fileWatcher domain handles watching and un-watching directories.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">function init(domainManager) {
-    if (!domainManager.hasDomain(&quot;fileWatcher&quot;)) {
-        domainManager.registerDomain(&quot;fileWatcher&quot;, {major: 0, minor: 1});
+<pre class="code language-javascript"><code class="language-javascript">function unwatchAll() {
+    var path;
+
+    for (path in _watcherMap) {
+        if (_watcherMap.hasOwnProperty(path)) {
+            unwatchPath(path);
+        }
     }
-
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;watchPath&quot;,
-        watcherManager.watchPath,
-        false,
-        &quot;Start watching a file or directory&quot;,
-        [{
-            name: &quot;path&quot;,
-            type: &quot;string&quot;,
-            description: &quot;absolute filesystem path of the file or directory to watch&quot;
-        }, {
-            name: &quot;ignored&quot;,
-            type: &quot;array&quot;,
-            description: &quot;list of path to ignore&quot;
-        }]
-    );
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;unwatchPath&quot;,
-        watcherManager.unwatchPath,
-        false,
-        &quot;Stop watching a single file or a directory and it&#39;s descendants&quot;,
-        [{
-            name: &quot;path&quot;,
-            type: &quot;string&quot;,
-            description: &quot;absolute filesystem path of the file or directory to unwatch&quot;
-        }]
-    );
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;unwatchAll&quot;,
-        watcherManager.unwatchAll,
-        false,
-        &quot;Stop watching all files and directories&quot;
-    );
-    domainManager.registerEvent(
-        &quot;fileWatcher&quot;,
-        &quot;change&quot;,
-        [
-            {name: &quot;event&quot;, type: &quot;string&quot;},
-            {name: &quot;parentDirPath&quot;, type: &quot;string&quot;},
-            {name: &quot;entryName&quot;, type: &quot;string&quot;},
-            {name: &quot;statsObj&quot;, type: &quot;object&quot;}
-        ]
-    );
-
-    watcherManager.setDomainManager(domainManager);
-    watcherManager.setWatcherImpl(watcherImpl);
-
 }
 
-exports.init = init;</code></pre></div>
+function emitChange(event, parentDirPath, entryName, nodeFsStats) {
+    &#x2F;&#x2F; make sure stats are normalized for domain transfer
+    var statsObj = nodeFsStats ? normalizeStats(nodeFsStats) : null;
+    _domainManager.emitEvent(&quot;fileWatcher&quot;, &quot;change&quot;, [event, parentDirPath, entryName, statsObj]);
+}
+
+exports.setDomainManager = setDomainManager;
+exports.setWatcherImpl = setWatcherImpl;
+exports.unwatchPath = unwatchPath;
+exports.watchPath = watchPath;
+exports.unwatchAll = unwatchAll;
+exports.emitChange = emitChange;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        unwatchPath 
+        <a class="anchor" href="#-unwatchPath" id="-unwatchPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Un-watch a file or directory. For directories, unwatch all descendants.</p>
+</div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>File or directory to unwatch.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">function unwatchPath(path) {
+    Object.keys(_watcherMap).forEach(function (keyPath) {
+        if (keyPath.indexOf(path) === 0) {
+            _unwatchPath(keyPath);
+        }
+    });
+}</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        watchPath 
+        <a class="anchor" href="#-watchPath" id="-watchPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Watch a file or directory.</p>
+</div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>File or directory to watch.</dd>
+    <dt>
+        ignored
+        <span class="label label-info">Array&lt;string&gt;</span>
+    </dt>
+    <dd>List of entries to ignore during watching.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">function watchPath(path, ignored) {
+    if (_watcherMap.hasOwnProperty(path)) {
+        return;
+    }
+    return _watcherImpl.watchPath(path, ignored, _watcherMap, _domainManager);
+}</code></pre></div>
 </section>
 
         </div>

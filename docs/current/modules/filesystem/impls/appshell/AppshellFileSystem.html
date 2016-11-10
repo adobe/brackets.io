@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -633,34 +636,21 @@ to _changeCallback() for this path.</p>
     </dt>
     <dd>The path that was changed</dd>
     <dt>
-        needsStats
-        <span class="label label-info">boolean</span>
+        stats
+        <span class="label label-info">object</span>
     </dt>
-    <dd>Whether or not the eventual change event should include stats</dd>
+    <dd>Stats coming from the underlying watcher, if available</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _enqueueChange(changedPath, needsStats) {
-        _pendingChanges[changedPath] = _pendingChanges[changedPath] || needsStats;
-
+<pre class="code language-javascript"><code class="language-javascript">    function _enqueueChange(changedPath, stats) {
+        _pendingChanges[changedPath] = stats;
         if (!_changeTimeout) {
             _changeTimeout = window.setTimeout(function () {
                 if (_changeCallback) {
                     Object.keys(_pendingChanges).forEach(function (path) {
-                        var needsStats = _pendingChanges[path];
-                        if (needsStats) {
-                            exports.stat(path, function (err, stats) {
-                                if (err) {
-                                    &#x2F;&#x2F; warning has been removed due to spamming the console - see #7332
-                                    &#x2F;&#x2F; console.warn(&quot;Unable to stat changed path: &quot;, path, err);
-                                    return;
-                                }
-                                _changeCallback(path, stats);
-                            });
-                        } else {
-                            _changeCallback(path);
-                        }
+                        _changeCallback(path, _pendingChanges[path]);
                     });
                 }
 
@@ -690,39 +680,50 @@ to _changeCallback() for this path.</p>
     </dt>
     <dd>underlying change event</dd>
     <dt>
-        path
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The path that is reported to have changed</dd>
-    <dt>
         event
         <span class="label label-info">string</span>
     </dt>
-    <dd>The type of the event: either "change" or "rename"</dd>
+    <dd>The type of the event: "changed", "created" or "deleted"</dd>
     <dt>
-        filename
+        parentDirPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The path to the directory holding entry that has changed</dd>
+    <dt>
+        entryName
         <span class="label label-optional">optional</span>
         <span class="label label-info">string</span>
     </dt>
-    <dd>The name of the file that changed.</dd>
+    <dd>The name of the file/directory that has changed</dd>
+    <dt>
+        statsObj
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>Object that can be used to construct FileSystemStats</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _fileWatcherChange(evt, path, event, filename) {
+<pre class="code language-javascript"><code class="language-javascript">    function _fileWatcherChange(evt, event, parentDirPath, entryName, statsObj) {
         var change;
-
-        if (event === &quot;change&quot;) {
-            &#x2F;&#x2F; Only register change events if filename is passed
-            if (filename) {
-                &#x2F;&#x2F; an existing file was modified; stats are needed
-                change = path + filename;
-                _enqueueChange(change, true);
+        switch (event) {
+        case &quot;changed&quot;:
+            &#x2F;&#x2F; an existing file&#x2F;directory was modified; stats are passed if available
+            var fsStats;
+            if (statsObj) {
+                fsStats = new FileSystemStats(statsObj);
+            } else {
+                console.warn(&quot;FileWatcherDomain was expected to deliver stats for changed event!&quot;);
             }
-        } else if (event === &quot;rename&quot;) {
-            &#x2F;&#x2F; a new file was created; no stats are needed
-            change = path;
-            _enqueueChange(change, false);
+            _enqueueChange(parentDirPath + entryName, fsStats);
+            break;
+        case &quot;created&quot;:
+        case &quot;deleted&quot;:
+            &#x2F;&#x2F; file&#x2F;directory was created&#x2F;deleted; fire change on parent to reload contents
+            _enqueueChange(parentDirPath, null);
+            break;
+        default:
+            console.error(&quot;Unexpected &#39;change&#39; event:&quot;, event);
         }
     }
 
@@ -1419,13 +1420,20 @@ FileSystemError string when the operation is complete.</p>
     
     <div class="description"><p>Stop providing change notifications for the file or directory at the
 given path, calling back asynchronously with a possibly null FileSystemError
-string when the operation is complete.</p>
+string when the operation is complete.
+This function needs to mirror the signature of watchPath
+because of FileSystem.prototype._watchOrUnwatchEntry implementation.</p>
 </div>
     
 <dl>
     <dt>
         path
         <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        ignored
+        <span class="label label-info">Array&lt;string&gt;</span>
     </dt>
     <dd></dd>
     <dt>
@@ -1438,7 +1446,7 @@ string when the operation is complete.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function unwatchPath(path, callback) {
+<pre class="code language-javascript"><code class="language-javascript">    function unwatchPath(path, ignored, callback) {
         _nodeDomain.exec(&quot;unwatchPath&quot;, path)
             .then(callback, callback);
     }</code></pre></div><div class="member public">
@@ -1468,6 +1476,11 @@ when the recursiveWatch property of this module is true.</p>
     </dt>
     <dd></dd>
     <dt>
+        ignored
+        <span class="label label-info">Array&lt;string&gt;</span>
+    </dt>
+    <dd></dd>
+    <dt>
         callback
         <span class="label label-optional">optional</span>
         <span class="label label-info">function(?string)</span>
@@ -1477,7 +1490,7 @@ when the recursiveWatch property of this module is true.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function watchPath(path, callback) {
+<pre class="code language-javascript"><code class="language-javascript">    function watchPath(path, ignored, callback) {
         if (_isRunningOnWindowsXP) {
             callback(FileSystemError.NOT_SUPPORTED);
             return;
@@ -1491,7 +1504,7 @@ when the recursiveWatch property of this module is true.</p>
                 }
                 return;
             }
-            _nodeDomain.exec(&quot;watchPath&quot;, path)
+            _nodeDomain.exec(&quot;watchPath&quot;, path, ignored)
                 .then(callback, callback);
         });
     }</code></pre></div><div class="member public">

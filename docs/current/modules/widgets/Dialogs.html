@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -746,7 +749,9 @@
             stopEvent();
             if (e.target.tagName === &quot;BUTTON&quot;) {
                 this.find(e.target).click();
-            } else {
+            } else if (e.target.tagName !== &quot;INPUT&quot;) {
+                &#x2F;&#x2F; If the target element is not BUTTON or INPUT, click the primary button
+                &#x2F;&#x2F; We&#39;re making an exception for INPUT element because of this issue: GH-11416
                 $primaryBtn.click();
             }
         } else if (e.which === KeyEvent.DOM_VK_SPACE) {
@@ -1075,6 +1080,9 @@ The template can either be a string or a jQuery object representing a DOM node t
             return _keydownHook.call($dlg, e, autoDismiss);
         };
 
+        &#x2F;&#x2F; Store current focus
+        var lastFocus = window.document.activeElement;
+
         &#x2F;&#x2F; Pipe dialog-closing notification back to client code
         $dlg.one(&quot;hidden&quot;, function () {
             var buttonId = $dlg.data(&quot;buttonId&quot;);
@@ -1095,6 +1103,11 @@ The template can either be a string or a jQuery object representing a DOM node t
             &#x2F;&#x2F; Remove our global keydown handler.
             KeyBindingManager.removeGlobalKeydownHook(keydownHook);
 
+            &#x2F;&#x2F; Restore previous focus
+            if (lastFocus) {
+                lastFocus.focus();    
+            }
+
             &#x2F;&#x2F;Remove wrapper
             $(&quot;.modal-wrapper:last&quot;).remove();
         }).one(&quot;shown&quot;, function () {
@@ -1108,7 +1121,7 @@ The template can either be a string or a jQuery object representing a DOM node t
             } else if ($otherBtn.length) {
                 $otherBtn.focus();
             } else {
-                document.activeElement.blur();
+                window.document.activeElement.blur();
             }
 
             &#x2F;&#x2F; Push our global keydown handler onto the global stack of handlers.

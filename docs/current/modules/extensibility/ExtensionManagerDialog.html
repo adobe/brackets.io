@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -562,7 +565,7 @@
                     &#x2F;&#x2F; new install or an update.
                     Package.validate(path, { requirePackageJSON: true }).done(function (info) {
                         if (info.errors.length) {
-                            result.reject(Package.formatError(info.errors));
+                            result.reject(info.errors.map(Package.formatError).join(&quot; &quot;));
                             return;
                         }
 
@@ -797,6 +800,7 @@
             views   = [],
             $search,
             $searchClear,
+            $modalDlg,
             context = { Strings: Strings, showRegistry: !!brackets.config.extension_registry },
             models  = [];
 
@@ -823,6 +827,7 @@
             $search.val(&quot;&quot;);
             views.forEach(function (view, index) {
                 view.filter(&quot;&quot;);
+                $modalDlg.scrollTop(0);
             });
 
             if (!updateSearchDisabled()) {
@@ -848,14 +853,15 @@
         $dlg = dialog.getElement();
         $search = $(&quot;.search&quot;, $dlg);
         $searchClear = $(&quot;.search-clear&quot;, $dlg);
+        $modalDlg = $(&quot;.modal-body&quot;, $dlg);
 
         function setActiveTab($tab) {
             if (models[_activeTabIndex]) {
-                models[_activeTabIndex].scrollPos = $(&quot;.modal-body&quot;, $dlg).scrollTop();
+                models[_activeTabIndex].scrollPos = $modalDlg.scrollTop();
             }
             $tab.tab(&quot;show&quot;);
             if (models[_activeTabIndex]) {
-                $(&quot;.modal-body&quot;, $dlg).scrollTop(models[_activeTabIndex].scrollPos || 0);
+                $modalDlg.scrollTop(models[_activeTabIndex].scrollPos || 0);
                 clearSearch();
             }
         }
@@ -922,7 +928,7 @@
             $(&quot;.spinner&quot;, $dlg).remove();
 
             views.forEach(function (view) {
-                view.$el.appendTo($(&quot;.modal-body&quot;, $dlg));
+                view.$el.appendTo($modalDlg);
             });
 
             &#x2F;&#x2F; Update search UI before new tab is shown
@@ -942,6 +948,7 @@
                 var query = $(this).val();
                 views.forEach(function (view) {
                     view.filter(query);
+                    $modalDlg.scrollTop(0);
                 });
             }).on(&quot;click&quot;, &quot;.search-clear&quot;, clearSearch);
 

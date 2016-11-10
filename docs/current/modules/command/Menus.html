@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1239,6 +1242,38 @@ Commands, which control a MenuItem&#39;s name, enabled state, and checked state.
         }
 
         delete menuMap[id];
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        removeMenuItemEventListeners 
+        <a class="anchor" href="#-removeMenuItemEventListeners" id="-removeMenuItemEventListeners"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Removes the attached event listeners from the corresponding object.</p>
+</div>
+    
+<dl>
+    <dt>
+        menuItem
+        <span class="label label-info">ManuItem</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function removeMenuItemEventListeners(menuItem) {
+        menuItem._command
+            .off(&quot;enabledStateChange&quot;, menuItem._enabledChanged)
+            .off(&quot;checkedStateChange&quot;, menuItem._checkedChanged)
+            .off(&quot;nameChange&quot;, menuItem._nameChanged)
+            .off(&quot;keyBindingAdded&quot;, menuItem._keyBindingAdded)
+            .off(&quot;keyBindingRemoved&quot;, menuItem._keyBindingRemoved);
     }</code></pre></div>
 </section>
 
@@ -2030,12 +2065,14 @@ directly to remove key bindings if desired.</p>
                 console.error(&quot;removeMenuItem(): command not found: &quot; + command);
                 return;
             }
-
             commandID = command;
         } else {
             commandID = command.getID();
         }
         menuItemID = this._getMenuItemId(commandID);
+
+        var menuItem = getMenuItem(menuItemID);
+        removeMenuItemEventListeners(menuItem);
 
         if (_isHTMLMenu(this.id)) {
             &#x2F;&#x2F; Targeting parent to get the menu item &lt;a&gt; and the &lt;li&gt; that contains it

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -590,6 +593,7 @@ Documents, not Editors.</p>
         CLOSE_TAGS          = &quot;closeTags&quot;,
         DRAG_DROP           = &quot;dragDropText&quot;,
         HIGHLIGHT_MATCHES   = &quot;highlightMatches&quot;,
+        LINEWISE_COPY_CUT   = &quot;lineWiseCopyCut&quot;,
         SCROLL_PAST_END     = &quot;scrollPastEnd&quot;,
         SHOW_CURSOR_SELECT  = &quot;showCursorWhenSelecting&quot;,
         SHOW_LINE_NUMBERS   = &quot;showLineNumbers&quot;,
@@ -636,6 +640,7 @@ Documents, not Editors.</p>
     cmOptions[CLOSE_TAGS]         = &quot;autoCloseTags&quot;;
     cmOptions[DRAG_DROP]          = &quot;dragDrop&quot;;
     cmOptions[HIGHLIGHT_MATCHES]  = &quot;highlightSelectionMatches&quot;;
+    cmOptions[LINEWISE_COPY_CUT]  = &quot;lineWiseCopyCut&quot;;
     cmOptions[SCROLL_PAST_END]    = &quot;scrollPastEnd&quot;;
     cmOptions[SHOW_CURSOR_SELECT] = &quot;showCursorWhenSelecting&quot;;
     cmOptions[SHOW_LINE_NUMBERS]  = &quot;lineNumbers&quot;;
@@ -689,6 +694,9 @@ Documents, not Editors.</p>
                 initial: false
             }
         }
+    });
+    PreferencesManager.definePreference(LINEWISE_COPY_CUT,  &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_LINEWISE_COPY_CUT
     });
     PreferencesManager.definePreference(SCROLL_PAST_END,    &quot;boolean&quot;, false, {
         description: Strings.DESCRIPTION_SCROLL_PAST_END
@@ -1097,6 +1105,7 @@ Document modifiable.</p>
             indentWithTabs              : currentOptions[USE_TAB_CHAR],
             inputStyle                  : &quot;textarea&quot;, &#x2F;&#x2F; the &quot;contenteditable&quot; mode used on mobiles could cause issues
             lineNumbers                 : currentOptions[SHOW_LINE_NUMBERS],
+            lineWiseCopyCut             : currentOptions[LINEWISE_COPY_CUT],
             lineWrapping                : currentOptions[WORD_WRAP],
             matchBrackets               : { maxScanLineLength: 50000, maxScanLines: 1000 },
             matchTags                   : { bothTags: true },
@@ -2192,10 +2201,10 @@ jQuery events on the Editor instance.</p>
         });
         &#x2F;&#x2F; For word wrap. Code adapted from https:&#x2F;&#x2F;codemirror.net&#x2F;demo&#x2F;indentwrap.html#
         this._codeMirror.on(&quot;renderLine&quot;, function (cm, line, elt) {
-            var charWidth = self._codeMirror.defaultCharWidth(), basePadding = 4;
+            var charWidth = self._codeMirror.defaultCharWidth();
             var off = CodeMirror.countColumn(line.text, null, cm.getOption(&quot;tabSize&quot;)) * charWidth;
             elt.style.textIndent = &quot;-&quot; + off + &quot;px&quot;;
-            elt.style.paddingLeft = (basePadding + off) + &quot;px&quot;;
+            elt.style.paddingLeft = off + &quot;px&quot;;
         });
     };</code></pre></div><div class="member private">
 
@@ -2292,6 +2301,16 @@ Semi-private: only Document should call this.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Editor.prototype._resetText = function (text) {
+        var currentText = this._codeMirror.getValue();
+
+        &#x2F;&#x2F; compare with ignoring line-endings, issue #11826
+        var textLF = text ? text.replace(&#x2F;(\r\n|\r|\n)&#x2F;g, &quot;\n&quot;) : null;
+        var currentTextLF = currentText ? currentText.replace(&#x2F;(\r\n|\r|\n)&#x2F;g, &quot;\n&quot;) : null;
+        if (textLF === currentTextLF) {
+            &#x2F;&#x2F; there&#39;s nothing to reset
+            return;
+        }
+
         var perfTimerName = PerfUtils.markStart(&quot;Editor._resetText()\t&quot; + (!this.document || this.document.file.fullPath));
 
         var cursorPos = this.getCursorPos(),

@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -510,7 +513,7 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _exclusionListRegEx = &#x2F;\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$&#x2F;;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    var _exclusionListRegEx = &#x2F;\.pyc$|^\.git$|^\.gitmodules$|^\.svn$|^\.DS_Store$|^Icon\r|^Thumbs\.db$|^\.hg$|^CVS$|^\.hgtags$|^\.idea$|^\.c9revisions$|^\.SyncArchive$|^\.SyncID$|^\.SyncIgnore$|\~$&#x2F;;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -547,7 +550,30 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _invalidChars;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _invalidChars;</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        defaultIgnoreGlobs 
+        <a class="anchor" href="#-defaultIgnoreGlobs" id="-defaultIgnoreGlobs"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Glob definition of files and folders that should be excluded directly
+inside node domain watching with chokidar</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var defaultIgnoreGlobs = [
+        &quot;**&#x2F;(.pyc|.git|.gitmodules|.svn|.DS_Store|Thumbs.db|.hg|CVS|.hgtags|.idea|.c9revisions|.SyncArchive|.SyncID|.SyncIgnore)&quot;,
+        &quot;**&#x2F;bower_components&quot;,
+        &quot;**&#x2F;node_modules&quot;
+    ];</code></pre></div>
 </section>
 
 <section id="functions">
@@ -793,7 +819,7 @@ or the one for the current build.</p>
 
     &#x2F;&#x2F; Init invalid characters string
     if (brackets.platform === &quot;mac&quot;) {
-        _invalidChars = &quot;?*|:&quot;;
+        _invalidChars = &quot;?*|:&#x2F;&quot;;
     } else if (brackets.platform === &quot;linux&quot;) {
         _invalidChars = &quot;?*|&#x2F;&quot;;
     } else {
@@ -808,6 +834,7 @@ or the one for the current build.</p>
     exports._invalidChars           = _invalidChars;
 
     exports.shouldShow              = shouldShow;
+    exports.defaultIgnoreGlobs      = defaultIgnoreGlobs;
     exports.isValidFilename         = isValidFilename;
     exports.EVENT_CHANGE            = EVENT_CHANGE;
     exports.EVENT_SHOULD_SELECT     = EVENT_SHOULD_SELECT;
@@ -864,15 +891,20 @@ and send notifications about the rename.</p>
     
 <dl>
     <dt>
-        oldName
+        oldPath
         <span class="label label-info">string</span>
     </dt>
-    <dd>Old item name</dd>
+    <dd>Old name of the item with the path</dd>
+    <dt>
+        newPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>New name of the item with the path</dd>
     <dt>
         newName
         <span class="label label-info">string</span>
     </dt>
-    <dd>New item name</dd>
+    <dd>New name of the item</dd>
     <dt>
         isFolder
         <span class="label label-info">boolean</span>
@@ -885,16 +917,16 @@ and send notifications about the rename.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _renameItem(oldName, newName, isFolder) {
+<pre class="code language-javascript"><code class="language-javascript">    function _renameItem(oldPath, newPath, newName, isFolder) {
         var result = new $.Deferred();
 
-        if (oldName === newName) {
+        if (oldPath === newPath) {
             result.resolve();
-        } else if (!isValidFilename(FileUtils.getBaseName(newName), _invalidChars)) {
+        } else if (!isValidFilename(newName, _invalidChars)) {
             result.reject(ERROR_INVALID_FILENAME);
         } else {
-            var entry = isFolder ? FileSystem.getDirectoryForPath(oldName) : FileSystem.getFileForPath(oldName);
-            entry.rename(newName, function (err) {
+            var entry = isFolder ? FileSystem.getDirectoryForPath(oldPath) : FileSystem.getFileForPath(oldPath);
+            entry.rename(newPath, function (err) {
                 if (err) {
                     result.reject(err);
                 } else {
@@ -924,7 +956,7 @@ and send notifications about the rename.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _shouldShowName(name) {
-        return !name.match(_exclusionListRegEx);
+        return !_exclusionListRegEx.test(name);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1032,8 +1064,10 @@ is invalid, the new path already exists or some other filesystem error comes up.
         &#x2F;&#x2F; Validate file name
         &#x2F;&#x2F; Checks for valid Windows filenames:
         &#x2F;&#x2F; See http:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;library&#x2F;windows&#x2F;desktop&#x2F;aa365247(v=vs.85).aspx
-        return !((filename.search(new RegExp(&quot;[&quot; + invalidChars + &quot;]+&quot;)) !== -1) ||
-                 filename.match(_illegalFilenamesRegEx));
+        return !(
+            new RegExp(&quot;[&quot; + invalidChars + &quot;]+&quot;).test(filename) ||
+            _illegalFilenamesRegEx.test(filename)
+        );
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -1420,6 +1454,11 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
     </dt>
     <dd>full path to the current location of file or directory (should include trailing slash for directory)</dd>
     <dt>
+        newPath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>full path to the new location of the file or directory</dd>
+    <dt>
         newName
         <span class="label label-info">string</span>
     </dt>
@@ -1428,8 +1467,8 @@ RENAME_CANCELLED value. The temporary entry added to the file tree will be delet
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype._renameItem = function (oldPath, newName) {
-        return _renameItem(oldPath, newName, !_pathIsFile(oldPath));
+<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype._renameItem = function (oldPath, newPath, newName) {
+        return _renameItem(oldPath, newPath, newName, !_pathIsFile(oldPath));
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -2033,7 +2072,7 @@ Does not support paths containing &quot;..&quot;</p>
                 renameInfo.deferred.reject(error);
             });
         } else {
-            this._renameItem(oldPath, newPath).then(function () {
+            this._renameItem(oldPath, newPath, newName).then(function () {
                 finalizeRename();
                 renameInfo.deferred.resolve({
                     newPath: newPath

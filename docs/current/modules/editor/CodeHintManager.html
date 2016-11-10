@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -687,6 +690,7 @@ insertHintOnTab Preference.</p>
         }
         hintList.close();
         hintList = null;
+        codeHintOpened = false;
         keyDownEditor = null;
         sessionProvider = null;
         sessionEditor = null;
@@ -740,12 +744,16 @@ insertHintOnTab Preference.</p>
     activeEditorChangeHandler(null, EditorManager.getActiveEditor(), null);
 
     EditorManager.on(&quot;activeEditorChange&quot;, activeEditorChangeHandler);
-
-    &#x2F;&#x2F; Dismiss code hints before executing any command since the command
+ 
+    &#x2F;&#x2F; Dismiss code hints before executing any command other than showing code hints since the command
     &#x2F;&#x2F; may make the current hinting session irrevalent after execution.
     &#x2F;&#x2F; For example, when the user hits Ctrl+K to open Quick Doc, it is
-    &#x2F;&#x2F; pointless to keep the hint list since the user wants to view the Quick Doc.
-    CommandManager.on(&quot;beforeExecuteCommand&quot;, _endSession);
+    &#x2F;&#x2F; pointless to keep the hint list since the user wants to view the Quick Doc
+    CommandManager.on(&quot;beforeExecuteCommand&quot;, function (event, commandId) {
+        if (commandId !== Commands.SHOW_CODE_HINTS) {
+            _endSession();
+        }
+    });
 
     CommandManager.register(Strings.CMD_SHOW_CODE_HINTS, Commands.SHOW_CODE_HINTS, _startNewSession);
 
@@ -969,7 +977,8 @@ combined. Doing this well requires changing CodeMirror.</p>
     function _handleKeyupEvent(jqEvent, editor, event) {
         keyDownEditor = editor;
         if (_inSession(editor)) {
-            if (event.keyCode === KeyEvent.DOM_VK_HOME || event.keyCode === KeyEvent.DOM_VK_END) {
+          if (event.keyCode === KeyEvent.DOM_VK_HOME || 
+                  event.keyCode === KeyEvent.DOM_VK_END) {
                 _endSession();
             } else if (event.keyCode === KeyEvent.DOM_VK_LEFT ||
                        event.keyCode === KeyEvent.DOM_VK_RIGHT ||
@@ -978,6 +987,8 @@ combined. Doing this well requires changing CodeMirror.</p>
                 &#x2F;&#x2F; We do this in &quot;keyup&quot; because we want the cursor position to be updated before
                 &#x2F;&#x2F; we redraw the list.
                 _updateHintList();
+            } else if (event.ctrlKey &amp;&amp; event.keyCode === KeyEvent.DOM_VK_SPACE) {
+                _updateHintList(event);
             }
         }
     }</code></pre></div><div class="member private">
@@ -1125,15 +1136,19 @@ then close the current one and restart a new one.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _startNewSession(editor) {
+        if (isOpen()) {
+            return;
+        }
+
         if (!editor) {
             editor = EditorManager.getFocusedEditor();
         }
-
         if (editor) {
             lastChar = null;
             if (_inSession(editor)) {
                 _endSession();
             }
+
             &#x2F;&#x2F; Begin a new explicit session
             _beginSession(editor);
         }
@@ -1159,10 +1174,17 @@ render the hint list window.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _updateHintList() {
+<pre class="code language-javascript"><code class="language-javascript">    function _updateHintList(callMoveUpEvent) {
+
+        callMoveUpEvent = typeof callMoveUpEvent === &quot;undefined&quot; ? false : callMoveUpEvent;
+
         if (deferredHints) {
             deferredHints.reject();
             deferredHints = null;
+        }
+
+        if (callMoveUpEvent) {
+            return hintList.callMoveUp(callMoveUpEvent);
         }
 
         var response = sessionProvider.getHints(lastChar);
@@ -1175,6 +1197,7 @@ render the hint list window.</p>
             &#x2F;&#x2F; if the response is true, end the session and begin another
             if (response === true) {
                 var previousEditor = sessionEditor;
+
                 _endSession();
                 _beginSession(previousEditor);
             } else if (response.hasOwnProperty(&quot;hints&quot;)) { &#x2F;&#x2F; a synchronous response

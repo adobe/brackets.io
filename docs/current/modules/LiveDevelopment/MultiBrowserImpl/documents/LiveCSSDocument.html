@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -484,6 +487,7 @@ which immediately updates the appearance of the rendered document.</p>
         <li><a href="..&#x2F;..&#x2F;..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;..&#x2F;..&#x2F;../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
         <li><a href="..&#x2F;..&#x2F;..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;..&#x2F;..&#x2F;../modules/thirdparty/path-utils/path-utils.html">path-utils</a></li>
     </ul>
 
 </section>
@@ -528,6 +532,9 @@ which immediately updates the appearance of the rendered document.</p>
 
         this.doc.on(&quot;change.LiveCSSDocument&quot;, this.onChange);
         this.doc.on(&quot;deleted.LiveCSSDocument&quot;, this.onDeleted);
+        if (editor) {
+            this._attachToEditor(editor);
+        }
     };
 
     LiveCSSDocument.prototype = Object.create(LiveDocument.prototype);
@@ -566,14 +573,31 @@ which immediately updates the appearance of the rendered document.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype._updateBrowser = function () {
-        var i;
+        var i,
+            docUrl = this.doc.url;
+
+        &#x2F;&#x2F; Determines whether an url() line contains a relative or absolute URL, and makes
+        &#x2F;&#x2F; the URL absolute to the CSS file if it is relative
+        function makeUrlsRelativeToCss(match, quotationMark, url) {
+            if (PathUtils.isRelativeUrl(url)) {
+                var absUrl = PathUtils.makeUrlAbsolute(url, docUrl);
+                return &quot;url(&quot; + quotationMark + absUrl + quotationMark + &quot;)&quot;;
+            }
+            return match;
+        }
+
         for (i = 0; i &lt; this.roots.length; i++) {
-            if (this.doc.url !== this.roots[i].toString()) {
+            if (docUrl !== this.roots[i].toString()) {
                 &#x2F;&#x2F; if it&#39;s not directly included through &lt;link&gt;,
                 &#x2F;&#x2F; reload the original doc
                 this.trigger(&quot;updateDoc&quot;, this.roots[i]);
             } else {
-                this.protocol.setStylesheetText(this.doc.url, this.doc.getText());
+                var docText = this.doc.getText();
+
+                &#x2F;&#x2F; Replace all occurrences of url() where the URL is relative to the CSS file with
+                &#x2F;&#x2F; an absolute URL so it is relative to the CSS file, not the HTML file (see #11936)
+                docText = docText.replace(&#x2F;\burl\(\s*([&quot;&#39;]?)([^)\n]+)\1\s*\)&#x2F;ig, makeUrlsRelativeToCss);
+                this.protocol.setStylesheetText(docUrl, docText);
             }
         }
         this.redrawHighlights();

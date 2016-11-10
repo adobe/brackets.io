@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -506,7 +509,7 @@
 
     &#x2F;&#x2F; determine whether an event should be processed for Live Development
     function _validEvent(event) {
-        if (navigator.platform.substr(0, 3) === &quot;Mac&quot;) {
+        if (window.navigator.platform.substr(0, 3) === &quot;Mac&quot;) {
             &#x2F;&#x2F; Mac
             return event.metaKey;
         } else {
@@ -586,7 +589,7 @@
                 y = offset.top + this.element.offsetHeight;
 
             &#x2F;&#x2F; create the container
-            this.body = document.createElement(&quot;div&quot;);
+            this.body = window.document.createElement(&quot;div&quot;);
             this.body.style.setProperty(&quot;z-index&quot;, 2147483647);
             this.body.style.setProperty(&quot;position&quot;, &quot;absolute&quot;);
             this.body.style.setProperty(&quot;left&quot;, x + &quot;px&quot;);
@@ -602,7 +605,7 @@
         },
 
         addItem: function (target) {
-            var item = document.createElement(&quot;div&quot;);
+            var item = window.document.createElement(&quot;div&quot;);
             item.style.setProperty(&quot;padding&quot;, &quot;2px 6px&quot;);
             if (this.body.childNodes.length &gt; 0) {
                 item.style.setProperty(&quot;border-top&quot;, &quot;1px solid #ccc&quot;);
@@ -613,7 +616,7 @@
             item.addEventListener(&quot;click&quot;, this.onClick.bind(this, target.url));
 
             if (target.file) {
-                var file = document.createElement(&quot;i&quot;);
+                var file = window.document.createElement(&quot;i&quot;);
                 file.style.setProperty(&quot;float&quot;, &quot;right&quot;);
                 file.style.setProperty(&quot;margin-left&quot;, &quot;12px&quot;);
                 file.innerHTML = &quot; &quot; + target.file;
@@ -627,16 +630,16 @@
                 this.body = this.createBody();
             }
             if (!this.body.parentNode) {
-                document.body.appendChild(this.body);
+                window.document.body.appendChild(this.body);
             }
-            document.addEventListener(&quot;click&quot;, this.remove);
+            window.document.addEventListener(&quot;click&quot;, this.remove);
         },
 
         remove: function () {
             if (this.body &amp;&amp; this.body.parentNode) {
-                document.body.removeChild(this.body);
+                window.document.body.removeChild(this.body);
             }
-            document.removeEventListener(&quot;click&quot;, this.remove);
+            window.document.removeEventListener(&quot;click&quot;, this.remove);
         }
 
     };
@@ -774,7 +777,7 @@
         },
 
         add: function (element, doAnimation) {
-            if (this._elementExists(element) || element === document) {
+            if (this._elementExists(element) || element === window.document) {
                 return;
             }
             if (this.trigger) {
@@ -953,7 +956,7 @@ exported functions.</p>
     }
 
     function getSimpleDOM() {
-        return JSON.stringify(_domElementToJSON(document.documentElement));
+        return JSON.stringify(_domElementToJSON(window.document.documentElement));
     }
 
     &#x2F;&#x2F; init
@@ -1038,7 +1041,7 @@ exported functions.</p>
 
     function onMouseMove(event) {
         onMouseOver(event);
-        document.removeEventListener(&quot;mousemove&quot;, onMouseMove);
+        window.document.removeEventListener(&quot;mousemove&quot;, onMouseMove);
     }
 
     function onClick(event) {
@@ -1055,11 +1058,11 @@ exported functions.</p>
 
     function onKeyUp(event) {
         if (_setup &amp;&amp; !_validEvent(event)) {
-            document.removeEventListener(&quot;keyup&quot;, onKeyUp);
-            document.removeEventListener(&quot;mouseover&quot;, onMouseOver);
-            document.removeEventListener(&quot;mouseout&quot;, onMouseOut);
-            document.removeEventListener(&quot;mousemove&quot;, onMouseMove);
-            document.removeEventListener(&quot;click&quot;, onClick);
+            window.document.removeEventListener(&quot;keyup&quot;, onKeyUp);
+            window.document.removeEventListener(&quot;mouseover&quot;, onMouseOver);
+            window.document.removeEventListener(&quot;mouseout&quot;, onMouseOut);
+            window.document.removeEventListener(&quot;mousemove&quot;, onMouseMove);
+            window.document.removeEventListener(&quot;click&quot;, onClick);
             _localHighlight.clear();
             _localHighlight = undefined;
             _setup = false;
@@ -1068,11 +1071,11 @@ exported functions.</p>
 
     function onKeyDown(event) {
         if (!_setup &amp;&amp; _validEvent(event)) {
-            document.addEventListener(&quot;keyup&quot;, onKeyUp);
-            document.addEventListener(&quot;mouseover&quot;, onMouseOver);
-            document.addEventListener(&quot;mouseout&quot;, onMouseOut);
-            document.addEventListener(&quot;mousemove&quot;, onMouseMove);
-            document.addEventListener(&quot;click&quot;, onClick);
+            window.document.addEventListener(&quot;keyup&quot;, onKeyUp);
+            window.document.addEventListener(&quot;mouseover&quot;, onMouseOver);
+            window.document.addEventListener(&quot;mouseout&quot;, onMouseOut);
+            window.document.addEventListener(&quot;mousemove&quot;, onMouseMove);
+            window.document.addEventListener(&quot;click&quot;, onClick);
             _localHighlight = new Highlight(&quot;#ecc&quot;, true);
             _setup = true;
         }
