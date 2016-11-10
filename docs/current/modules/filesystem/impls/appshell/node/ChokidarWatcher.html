@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FileWatcherDomain - Brackets API</title>
+    <title>ChokidarWatcher - Brackets API</title>
     <link rel="stylesheet" href="../../../../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../../../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../../../../assets/css/font-awesome.css">
@@ -459,7 +459,7 @@
           </div>
         </div>
         <div class="module span9">
-<h1>FileWatcherDomain</h1>
+<h1>ChokidarWatcher</h1>
 
 
 <section class="description">
@@ -473,100 +473,13 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./ChokidarWatcher.html">ChokidarWatcher</a></li>
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./CSharpWatcher.html">CSharpWatcher</a></li>
+        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/chokidar.html">chokidar</a></li>
         <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/./FileWatcherManager.html">FileWatcherManager</a></li>
-        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/os.html">os</a></li>
+        <li><a href="..&#x2F;..&#x2F;..&#x2F;..&#x2F;../modules/path.html">path</a></li>
     </ul>
 
 </section>
 
-<section id="functions">
-
-    <h3>Functions 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member public">
-
-<span class="pull-right scope">
-    
-    Public API
-</span>
-    <h4>
-        init 
-        <a class="anchor" href="#-init" id="-init"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Initialize the &quot;fileWatcher&quot; domain.
-The fileWatcher domain handles watching and un-watching directories.</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">function init(domainManager) {
-    if (!domainManager.hasDomain(&quot;fileWatcher&quot;)) {
-        domainManager.registerDomain(&quot;fileWatcher&quot;, {major: 0, minor: 1});
-    }
-
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;watchPath&quot;,
-        watcherManager.watchPath,
-        false,
-        &quot;Start watching a file or directory&quot;,
-        [{
-            name: &quot;path&quot;,
-            type: &quot;string&quot;,
-            description: &quot;absolute filesystem path of the file or directory to watch&quot;
-        }, {
-            name: &quot;ignored&quot;,
-            type: &quot;array&quot;,
-            description: &quot;list of path to ignore&quot;
-        }]
-    );
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;unwatchPath&quot;,
-        watcherManager.unwatchPath,
-        false,
-        &quot;Stop watching a single file or a directory and it&#39;s descendants&quot;,
-        [{
-            name: &quot;path&quot;,
-            type: &quot;string&quot;,
-            description: &quot;absolute filesystem path of the file or directory to unwatch&quot;
-        }]
-    );
-    domainManager.registerCommand(
-        &quot;fileWatcher&quot;,
-        &quot;unwatchAll&quot;,
-        watcherManager.unwatchAll,
-        false,
-        &quot;Stop watching all files and directories&quot;
-    );
-    domainManager.registerEvent(
-        &quot;fileWatcher&quot;,
-        &quot;change&quot;,
-        [
-            {name: &quot;event&quot;, type: &quot;string&quot;},
-            {name: &quot;parentDirPath&quot;, type: &quot;string&quot;},
-            {name: &quot;entryName&quot;, type: &quot;string&quot;},
-            {name: &quot;statsObj&quot;, type: &quot;object&quot;}
-        ]
-    );
-
-    watcherManager.setDomainManager(domainManager);
-    watcherManager.setWatcherImpl(watcherImpl);
-
-}
-
-exports.init = init;</code></pre></div>
-</section>
 
         </div>
       </div>

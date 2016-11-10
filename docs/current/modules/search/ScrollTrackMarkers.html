@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -505,13 +508,7 @@ It is assumed that markers are always clear()ed when switching editors.</p>
     <dd>?jQueryObject</dd>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var $markedTickmark;
-
-
-    function _getScrollbar(editor) {
-        &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
-        return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
-    }</code></pre></div><div class="member">
+<pre class="code language-javascript"><code class="language-javascript">    var $markedTickmark;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -552,6 +549,38 @@ It is assumed that markers are always clear()ed when switching editors.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var marks = [];</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        scrollbarTrackOffset 
+        <a class="anchor" href="#-scrollbarTrackOffset" id="-scrollbarTrackOffset"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Vertical space above and below the scrollbar</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var scrollbarTrackOffset;
+
+    switch (brackets.platform) {
+    case &quot;win&quot;: &#x2F;&#x2F; Custom scrollbar CSS has no gap around the track
+        scrollbarTrackOffset = 0;
+        break;
+    case &quot;mac&quot;: &#x2F;&#x2F; Native scrollbar has padding around the track
+        scrollbarTrackOffset = 4;
+        break;
+    case &quot;linux&quot;: &#x2F;&#x2F; Custom scrollbar CSS has assymmetrical gap; this approximates it
+        scrollbarTrackOffset = 2;
+        break;
+    }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -627,16 +656,8 @@ It is assumed that markers are always clear()ed when switching editors.</p>
         trackHt = $sb[0].offsetHeight;
 
         if (trackHt &gt; 0) {
-            &#x2F;&#x2F; Scrollbar visible: determine offset of track from top of scrollbar
-            if (brackets.platform === &quot;win&quot;) {
-                trackOffset = 0;  &#x2F;&#x2F; Custom scrollbar CSS has no gap around the track
-            } else if (brackets.platform === &quot;mac&quot;) {
-                trackOffset = 4;  &#x2F;&#x2F; Native scrollbar has padding around the track
-            } else { &#x2F;&#x2F;(Linux)
-                trackOffset = 2;  &#x2F;&#x2F; Custom scrollbar CSS has assymmetrical gap; this approximates it
-            }
+            trackOffset = getScrollbarTrackOffset();
             trackHt -= trackOffset * 2;
-
         } else {
             &#x2F;&#x2F; No scrollbar: use the height of the entire code content
             var codeContainer = $(editor.getRootElement()).find(&quot;&gt; .CodeMirror-scroll &gt; .CodeMirror-sizer &gt; div &gt; .CodeMirror-lines &gt; div&quot;)[0];
@@ -664,9 +685,31 @@ It is assumed that markers are always clear()ed when switching editors.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _renderMarks(posArray) {
-        var html = &quot;&quot;;
+        var html = &quot;&quot;,
+            cm = editor._codeMirror,
+            editorHt = cm.getScrollerElement().scrollHeight;
+
+        &#x2F;&#x2F; We&#39;ve pretty much taken these vars and the getY function from CodeMirror&#39;s annotatescrollbar addon
+        &#x2F;&#x2F; https:&#x2F;&#x2F;github.com&#x2F;codemirror&#x2F;CodeMirror&#x2F;blob&#x2F;master&#x2F;addon&#x2F;scroll&#x2F;annotatescrollbar.js
+        var wrapping = cm.getOption(&quot;lineWrapping&quot;),
+            singleLineH = wrapping &amp;&amp; cm.defaultTextHeight() * 1.5,
+            curLine = null,
+            curLineObj = null;
+
+        function getY(cm, pos) {
+            if (curLine !== pos.line) {
+                curLine = pos.line;
+                curLineObj = cm.getLineHandle(curLine);
+            }
+            if (wrapping &amp;&amp; curLineObj.height &gt; singleLineH) {
+                return cm.charCoords(pos, &quot;local&quot;).top;
+            }
+            return cm.heightAtLine(curLineObj, &quot;local&quot;);
+        }
+
         posArray.forEach(function (pos) {
-            var top = Math.round(pos.line &#x2F; editor.lineCount() * trackHt) + trackOffset;
+            var cursorTop = getY(cm, pos),
+                top = Math.round(cursorTop &#x2F; editorHt * trackHt) + trackOffset;
             top--;  &#x2F;&#x2F; subtract ~1&#x2F;2 the ht of a tickmark to center it on ideal pos
 
             html += &quot;&lt;div class=&#39;tickmark&#39; style=&#39;top:&quot; + top + &quot;px&#39;&gt;&lt;&#x2F;div&gt;&quot;;
@@ -741,6 +784,31 @@ tickmark track is not visible also.</p>
     Public API
 </span>
     <h4>
+        getScrollbarTrackOffset 
+        <a class="anchor" href="#-getScrollbarTrackOffset" id="-getScrollbarTrackOffset"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Vertical space above and below the scrollbar.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span>
+</dt>
+    <dd>amount Value in pixels</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getScrollbarTrackOffset() {
+        return scrollbarTrackOffset;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         markCurrent 
         <a class="anchor" href="#-markCurrent" id="-markCurrent"><span class="icon-link"></span></a>
     </h4>
@@ -782,7 +850,44 @@ tickmark track is not visible also.</p>
     exports.setVisible      = setVisible;
     exports.addTickmarks    = addTickmarks;
     exports.markCurrent     = markCurrent;
+    
+    exports.getScrollbarTrackOffset = getScrollbarTrackOffset;
+    exports.setScrollbarTrackOffset = setScrollbarTrackOffset;
 });</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        setScrollbarTrackOffset 
+        <a class="anchor" href="#-setScrollbarTrackOffset" id="-setScrollbarTrackOffset"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets how much vertical space there&#39;s above and below the scrollbar, which depends
+on the OS and may also be affected by extensions</p>
+</div>
+    
+<dl>
+    <dt>
+        offset
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>Value in pixels</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function setScrollbarTrackOffset(offset) {
+        scrollbarTrackOffset = offset;
+    }
+    
+    
+    function _getScrollbar(editor) {
+        &#x2F;&#x2F; Be sure to select only the direct descendant, not also elements within nested inline editors
+        return $(editor.getRootElement()).children(&quot;.CodeMirror-vscrollbar&quot;);
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -817,8 +922,8 @@ tickmark track is not visible also.</p>
                 return;
             }
 
-            var $sb = _getScrollbar(editor);
-            var $overlay = $(&quot;&lt;div class=&#39;tickmark-track&#39;&gt;&lt;&#x2F;div&gt;&quot;);
+            var $sb = _getScrollbar(editor),
+                $overlay = $(&quot;&lt;div class=&#39;tickmark-track&#39;&gt;&lt;&#x2F;div&gt;&quot;);
             $sb.parent().append($overlay);
 
             _calcScaling();

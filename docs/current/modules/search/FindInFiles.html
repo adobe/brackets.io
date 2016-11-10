@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (177)</h2>
+            <h2 class="number-of-modules">Modules (180)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -159,7 +159,10 @@
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -617,7 +620,19 @@
     }
 
     function nodeFileCacheComplete(event, numFiles, cacheSize) {
-        var projectName = ProjectManager.getProjectRoot().name || &quot;noName00&quot;;
+        if (&#x2F;\&#x2F;test\&#x2F;SpecRunner\.html$&#x2F;.test(window.location.pathname)) {
+            &#x2F;&#x2F; Ignore the event in the SpecRunner window
+            return;
+        }
+
+        var projectRoot = ProjectManager.getProjectRoot(),
+            projectName = projectRoot ? projectRoot.name : null;
+
+        if (!projectName) {
+            console.error(&quot;&#39;File cache complete&#39; event received, but no project root found&quot;);
+            projectName = &quot;noName00&quot;;
+        }
+
         FindUtils.setInstantSearchDisabled(false);
         &#x2F;&#x2F; Node search could be disabled if some error has happened in node. But upon
         &#x2F;&#x2F; project change, if we get this message, then it means that node search is working,
@@ -704,7 +719,7 @@
 
         var addPromise;
         if (entry.isDirectory) {
-            if (!added || !removed) {
+            if (!added || !removed || (added.length === 0 &amp;&amp; removed.length === 0)) {
                 &#x2F;&#x2F; If the added or removed sets are null, must redo the search for the entire subtree - we
                 &#x2F;&#x2F; don&#39;t know which child files&#x2F;folders may have been added or removed.
                 _removeSearchResultsForEntry(entry);
@@ -1556,7 +1571,7 @@ programmatically.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function filesChanged(fileList) {
-        if (FindUtils.isNodeSearchDisabled()) {
+        if (FindUtils.isNodeSearchDisabled() || fileList.length === 0) {
             return;
         }
         var updateObject = {
