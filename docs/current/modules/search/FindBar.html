@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -597,7 +612,6 @@
 
     PreferencesManager.stateManager.definePreference(&quot;caseSensitive&quot;, &quot;boolean&quot;, false);
     PreferencesManager.stateManager.definePreference(&quot;regexp&quot;, &quot;boolean&quot;, false);
-    PreferencesManager.convertPreferences(module, {&quot;caseSensitive&quot;: &quot;user&quot;, &quot;regexp&quot;: &quot;user&quot;}, true);
 
     exports.FindBar = FindBar;
 });</code></pre></div>
@@ -1102,7 +1116,7 @@ will need to refresh their enable state after calling this.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.prototype.enableReplace = function (enable) {
         if (this.isEnabled) {
-            this.$(&quot;#replace-yes, #replace-all&quot;).prop(&quot;disabled&quot;, !enable);
+            this.$(&quot;#replace-yes, #replace-batch, #replace-all&quot;).prop(&quot;disabled&quot;, !enable);
         }
     };</code></pre></div><div class="member">
 
@@ -1373,7 +1387,8 @@ will need to refresh their enable state after calling this.</p>
 
         var templateVars = _.clone(this._options);
         templateVars.Strings = Strings;
-        templateVars.replaceAllLabel = (templateVars.multifile ? Strings.BUTTON_REPLACE_ALL_IN_FILES : Strings.BUTTON_REPLACE_ALL);
+        templateVars.replaceBatchLabel = (templateVars.multifile ? Strings.BUTTON_REPLACE_ALL_IN_FILES : Strings.BUTTON_REPLACE_BATCH);
+        templateVars.replaceAllLabel = Strings.BUTTON_REPLACE_ALL;
 
         this._modalBar = new ModalBar(Mustache.render(_searchBarTemplate, templateVars), true);  &#x2F;&#x2F; 2nd arg = auto-close on Esc&#x2F;blur
 
@@ -1453,7 +1468,7 @@ will need to refresh their enable state after calling this.</p>
                             }
                         } else {
                             HealthLogger.searchDone(HealthLogger.SEARCH_REPLACE_ALL);
-                            self.trigger(&quot;doReplaceAll&quot;);
+                            self.trigger(&quot;doReplaceBatch&quot;);
                         }
                     } else {
                         &#x2F;&#x2F; In the single file case, we just want to trigger a Find Next (or Find Previous
@@ -1480,6 +1495,9 @@ will need to refresh their enable state after calling this.</p>
             $root
                 .on(&quot;click&quot;, &quot;#replace-yes&quot;, function (e) {
                     self.trigger(&quot;doReplace&quot;);
+                })
+                .on(&quot;click&quot;, &quot;#replace-batch&quot;, function (e) {
+                    self.trigger(&quot;doReplaceBatch&quot;);
                 })
                 .on(&quot;click&quot;, &quot;#replace-all&quot;, function (e) {
                     self.trigger(&quot;doReplaceAll&quot;);

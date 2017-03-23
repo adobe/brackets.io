@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -589,6 +604,7 @@
 
         result.fontFamily = ViewCommandHandlers.getFontFamily();
         result.fontSize   = ViewCommandHandlers.getFontSize();
+        result.validFontSizeRegExp = ViewCommandHandlers.validFontSizeRegExp;
         return result;
     }</code></pre></div><div class="member public">
 
@@ -698,10 +714,25 @@
                 var attr = $target.attr(&quot;data-target&quot;);
                 newSettings[attr] = $target.is(&quot;:checked&quot;);
             })
-            .on(&quot;input&quot;, &quot;[data-target]:text&quot;, function () {
-                var $target = $(this);
-                var attr = $target.attr(&quot;data-target&quot;);
-                newSettings[attr] = $target.val();
+            .on(&quot;input&quot;, &quot;[data-target=&#39;fontSize&#39;]&quot;, function () {
+                var target = this;
+                var targetValue = $(this).val();
+                var $btn = $(&quot;#theme-settings-done-btn&quot;)[0];
+
+                &#x2F;&#x2F; Make sure that the font size is expressed in terms
+                &#x2F;&#x2F; we can handle (px or em). If not, &#39;done&#39; button is
+                &#x2F;&#x2F; disabled until input has been corrected.
+
+                if (target.checkValidity() === true) {
+                    $btn.disabled = false;
+                    newSettings[&quot;fontSize&quot;] = targetValue;
+                } else {
+                    $btn.disabled = true;
+                }
+            })
+            .on(&quot;input&quot;, &quot;[data-target=&#39;fontFamily&#39;]&quot;, function () {
+                var targetValue = $(this).val();
+                newSettings[&quot;fontFamily&quot;] = targetValue;
             })
             .on(&quot;change&quot;, &quot;select&quot;, function () {
                 var $target = $(&quot;:selected&quot;, this);
@@ -724,7 +755,7 @@
                         &#x2F;&#x2F; Figure out if the setting is in the ViewCommandHandlers, which means it is
                         &#x2F;&#x2F; a font setting
                         setterFn = &quot;set&quot; + setting[0].toLocaleUpperCase() + setting.substr(1);
-                        if (typeof ViewCommandHandlers[setterFn] === &#39;function&#39;) {
+                        if (typeof ViewCommandHandlers[setterFn] === &quot;function&quot;) {
                             ViewCommandHandlers[setterFn](newSettings[setting]);
                         }
                     }

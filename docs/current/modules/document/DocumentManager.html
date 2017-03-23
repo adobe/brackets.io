@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -600,56 +615,6 @@ will need to compare the newname.</p>
     
 </span>
     <h4>
-        _checkPreferencePrefix 
-        <a class="anchor" href="#-_checkPreferencePrefix" id="-_checkPreferencePrefix"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        key
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The key of the preference to be examined for migration of working set files.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">?string</span>
-</dt>
-    <dd>- the scope to which the preference is to be migrated</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
-        var pathPrefix = &quot;files_&quot;;
-        if (key.indexOf(pathPrefix) === 0) {
-            &#x2F;&#x2F; Get the project path from the old preference key by stripping &quot;files_&quot;.
-            var projectPath = key.substr(pathPrefix.length);
-            return &quot;user project.files &quot; + projectPath;
-        }
-
-        return null;
-    }
-
-
-    &#x2F;&#x2F; Set up event dispatch
-    EventDispatcher.makeEventDispatcher(exports);
-
-    &#x2F;&#x2F; This deprecated event is dispatched manually from &quot;currentFileChange&quot; below
-    EventDispatcher.markDeprecated(exports, &quot;currentDocumentChange&quot;, &quot;MainViewManager.currentFileChange&quot;);
-
-    &#x2F;&#x2F; These deprecated events are automatically dispatched by DeprecationWarning, set up in AppInit.extensionsLoaded()
-    EventDispatcher.markDeprecated(exports, &quot;workingSetAdd&quot;,        &quot;MainViewManager.workingSetAdd&quot;);
-    EventDispatcher.markDeprecated(exports, &quot;workingSetAddList&quot;,    &quot;MainViewManager.workingSetAddList&quot;);
-    EventDispatcher.markDeprecated(exports, &quot;workingSetRemove&quot;,     &quot;MainViewManager.workingSetRemove&quot;);
-    EventDispatcher.markDeprecated(exports, &quot;workingSetRemoveList&quot;, &quot;MainViewManager.workingSetRemoveList&quot;);
-    EventDispatcher.markDeprecated(exports, &quot;workingSetSort&quot;,       &quot;MainViewManager.workingSetSort&quot;);</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
         _gcDocuments 
         <a class="anchor" href="#-_gcDocuments" id="-_gcDocuments"><span class="icon-link"></span></a>
     </h4>
@@ -783,7 +748,20 @@ inline editor makes no-op edits or does a read-only operation.</p>
         })
         .on(&quot;_documentSaved&quot;, function (event, doc) {
             exports.trigger(&quot;documentSaved&quot;, doc);
-        });</code></pre></div><div class="member public deprecated">
+        });
+
+    &#x2F;&#x2F; Set up event dispatch
+    EventDispatcher.makeEventDispatcher(exports);
+
+    &#x2F;&#x2F; This deprecated event is dispatched manually from &quot;currentFileChange&quot; below
+    EventDispatcher.markDeprecated(exports, &quot;currentDocumentChange&quot;, &quot;MainViewManager.currentFileChange&quot;);
+
+    &#x2F;&#x2F; These deprecated events are automatically dispatched by DeprecationWarning, set up in AppInit.extensionsLoaded()
+    EventDispatcher.markDeprecated(exports, &quot;workingSetAdd&quot;,        &quot;MainViewManager.workingSetAdd&quot;);
+    EventDispatcher.markDeprecated(exports, &quot;workingSetAddList&quot;,    &quot;MainViewManager.workingSetAddList&quot;);
+    EventDispatcher.markDeprecated(exports, &quot;workingSetRemove&quot;,     &quot;MainViewManager.workingSetRemove&quot;);
+    EventDispatcher.markDeprecated(exports, &quot;workingSetRemoveList&quot;, &quot;MainViewManager.workingSetRemoveList&quot;);
+    EventDispatcher.markDeprecated(exports, &quot;workingSetSort&quot;,       &quot;MainViewManager.workingSetSort&quot;);</code></pre></div><div class="member public deprecated">
 
 <span class="pull-right scope">
     
@@ -1141,11 +1119,13 @@ refs and listeners for that Editor UI).</p>
             &#x2F;&#x2F; use existing document
             return new $.Deferred().resolve(doc).promise();
         } else {
+            var result = new $.Deferred(),
+                promise = result.promise();
 
-            &#x2F;&#x2F; Should never get here if the fullPath refers to an Untitled document
+            &#x2F;&#x2F; return null in case of untitled documents
             if (fullPath.indexOf(_untitledDocumentPath) === 0) {
-                console.error(&quot;getDocumentForPath called for non-open untitled document: &quot; + fullPath);
-                return new $.Deferred().reject().promise();
+                result.resolve(null);
+                return promise;
             }
 
             var file            = FileSystem.getFileForPath(fullPath),
@@ -1155,9 +1135,6 @@ refs and listeners for that Editor UI).</p>
                 &#x2F;&#x2F; wait for the result of a previous request
                 return pendingPromise;
             } else {
-                var result = new $.Deferred(),
-                    promise = result.promise();
-
                 &#x2F;&#x2F; log this document&#39;s Promise as pending
                 getDocumentForPath._pendingDocumentPromises[file.id] = promise;
 

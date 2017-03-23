@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -522,6 +537,9 @@ protects the Brackets app from being replaced by the browser trying to load the 
             event = event.originalEvent || event;
 
             var files = event.dataTransfer.files;
+
+            stopURIListPropagation(files, event);
+
             if (files &amp;&amp; files.length) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -540,6 +558,9 @@ protects the Brackets app from being replaced by the browser trying to load the 
             event = event.originalEvent || event;
 
             var files = event.dataTransfer.files;
+
+            stopURIListPropagation(files, event);
+
             if (files &amp;&amp; files.length) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -730,6 +751,54 @@ protects the Brackets app from being replaced by the browser trying to load the 
                     );
                 }
             });
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        stopURIListPropagation 
+        <a class="anchor" href="#-stopURIListPropagation" id="-stopURIListPropagation"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Determines if the event contains a type list that has a URI-list.
+If it does and contains an empty file list, then what is being dropped is a URL.
+If that is true then we stop the event propagation and default behavior to save Brackets editor from the browser taking over.</p>
+</div>
+    
+<dl>
+    <dt>
+        files
+        <span class="label label-info">Array.&lt;File&gt;</span>
+    </dt>
+    <dd>Array of File objects from the event datastructure. URLs are the only drop item that would contain a URI-list.</dd>
+    <dt>
+        event
+        <span class="label label-info">event</span>
+    </dt>
+    <dd>The event datastucture containing datatransfer information about the drag/drop event. Contains a type list which may or may not hold a URI-list depending on what was dragged/dropped. Interested if it does.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function stopURIListPropagation(files, event) {
+        var types = event.dataTransfer.types;
+            
+        if ((!files || !files.length) &amp;&amp; types) { &#x2F;&#x2F; We only want to check if a string of text was dragged into the editor
+            types.forEach(function (value) {
+                &#x2F;&#x2F;Draging text externally (dragging text from another file): types has &quot;text&#x2F;plain&quot; and &quot;text&#x2F;html&quot;
+                &#x2F;&#x2F;Draging text internally (dragging text to another line): types has just &quot;text&#x2F;plain&quot;
+                &#x2F;&#x2F;Draging a file: types has &quot;Files&quot;
+                &#x2F;&#x2F;Draging a url: types has &quot;text&#x2F;plain&quot; and &quot;text&#x2F;uri-list&quot; &lt;-what we are interested in
+                if (value === &quot;text&#x2F;uri-list&quot;) { 
+                    event.stopPropagation();
+                    event.preventDefault();
+                    return;
+                }
+            });
+        }
     }</code></pre></div>
 </section>
 

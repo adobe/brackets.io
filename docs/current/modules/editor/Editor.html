@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -605,10 +620,7 @@ Documents, not Editors.</p>
         UPPERCASE_COLORS    = &quot;uppercaseColors&quot;,
         USE_TAB_CHAR        = &quot;useTabChar&quot;,
         WORD_WRAP           = &quot;wordWrap&quot;,
-        INDENT_LINE_COMMENT   = &quot;indentLineComment&quot;;
-    
-
-    var cmOptions         = {};</code></pre></div><div class="member">
+        INDENT_LINE_COMMENT   = &quot;indentLineComment&quot;;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -635,6 +647,10 @@ Documents, not Editors.</p>
         MAX_SPACE_UNITS         = 10,
         MAX_TAB_SIZE            = 10;
 
+    var LINE_NUMBER_GUTTER = &quot;CodeMirror-linenumbers&quot;,
+        LINE_NUMBER_GUTTER_PRIORITY     = 100,
+        CODE_FOLDING_GUTTER_PRIORITY    = 1000;
+
     &#x2F;&#x2F; Mappings from Brackets preferences to CodeMirror options
     cmOptions[CLOSE_BRACKETS]     = &quot;autoCloseBrackets&quot;;
     cmOptions[CLOSE_TAGS]         = &quot;autoCloseTags&quot;;
@@ -654,6 +670,9 @@ Documents, not Editors.</p>
     PreferencesManager.definePreference(CLOSE_BRACKETS,     &quot;boolean&quot;, true, {
         description: Strings.DESCRIPTION_CLOSE_BRACKETS
     });
+
+    &#x2F;&#x2F; CodeMirror, html mode, set some tags do not close automatically.
+    &#x2F;&#x2F; We do not initialize &quot;dontCloseTags&quot; because otherwise we would overwrite the default behavior of CodeMirror.
     PreferencesManager.definePreference(CLOSE_TAGS,         &quot;object&quot;, { whenOpening: true, whenClosing: true, indentTags: [] }, {
         description: Strings.DESCRIPTION_CLOSE_TAGS,
         keys: {
@@ -733,12 +752,11 @@ Documents, not Editors.</p>
     PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true, {
         description: Strings.DESCRIPTION_WORD_WRAP
     });
-    
+
     PreferencesManager.definePreference(INDENT_LINE_COMMENT,  &quot;boolean&quot;, false, {
         description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
     });
-    
-    
+
     var editorOptions = Object.keys(cmOptions);</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -782,7 +800,30 @@ that affect all editors, e.g. tabbing or color scheme settings.</p>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _instances = [];</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var _instances = [];</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        registeredGutters 
+        <a class="anchor" href="#-registeredGutters" id="-registeredGutters"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>A list of gutter name and priorities currently registered for editors.
+The line number gutter is defined as { name: LINE_NUMBER_GUTTER, priority: 100 }</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Array.&lt;{name: string, priority: number, languageIds: Array}</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var registeredGutters = [];
+
+    var cmOptions         = {};</code></pre></div>
 </section>
 
 <section id="functions">
@@ -852,42 +893,10 @@ the file.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _checkTopBoundary(options) {
         return (options !== BOUNDARY_IGNORE_TOP);
     }
+
     function _checkBottomBoundary(options) {
         return true;
     }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _convertPreferences 
-        <a class="anchor" href="#-_convertPreferences" id="-_convertPreferences"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _convertPreferences() {
-        var rules = {};
-        editorOptions.forEach(function (setting) {
-            rules[setting] = &quot;user&quot;;
-        });
-        PreferencesManager.convertPreferences(module, rules);
-    }
-
-    _convertPreferences();
-
-    &#x2F;&#x2F; Define public API
-    exports.Editor                  = Editor;
-    exports.BOUNDARY_CHECK_NORMAL   = BOUNDARY_CHECK_NORMAL;
-    exports.BOUNDARY_IGNORE_TOP     = BOUNDARY_IGNORE_TOP;
-});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1042,7 +1051,7 @@ Document modifiable.</p>
 
         &#x2F;&#x2F; To track which pane the editor is being attached to if it&#39;s a full editor
         this._paneId = null;
-        
+
         &#x2F;&#x2F; To track the parent editor ( host editor at that time of creation) of an inline editor
         this._hostEditor = null;
 
@@ -1123,6 +1132,8 @@ Document modifiable.</p>
         this._focused = false;
 
         this._installEditorListeners();
+
+        this._renderGutters();
 
         this.on(&quot;cursorActivity&quot;, function (event, editor) {
             self._handleCursorActivity(event);
@@ -2280,6 +2291,63 @@ the widget has already been removed.</p>
     
 </span>
     <h4>
+        _renderGutters 
+        <a class="anchor" href="#Editor-_renderGutters" id="Editor-_renderGutters"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Renders all registered gutters</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype._renderGutters = function () {
+        var languageId = this.document.getLanguage().getId();
+
+        function _filterByLanguages(gutter) {
+            return !gutter.languages || gutter.languages.indexOf(languageId) &gt; -1;
+        }
+
+        function _sortByPriority(a, b) {
+            return a.priority - b.priority;
+        }
+
+        function _getName(gutter) {
+            return gutter.name;
+        }
+
+        var gutters = registeredGutters.map(_getName),
+            rootElement = this.getRootElement();
+
+        &#x2F;&#x2F; If the line numbers gutter has not been explicitly registered and the CodeMirror lineNumbes option is
+        &#x2F;&#x2F; set to true, we explicitly add the line numbers gutter. This case occurs the first time the editor loads
+        &#x2F;&#x2F; and showLineNumbers is set to true in preferences
+        if (gutters.indexOf(LINE_NUMBER_GUTTER) &lt; 0 &amp;&amp; this._codeMirror.getOption(cmOptions[SHOW_LINE_NUMBERS])) {
+            registeredGutters.push({name: LINE_NUMBER_GUTTER, priority: LINE_NUMBER_GUTTER_PRIORITY});
+        }
+
+        gutters = registeredGutters.sort(_sortByPriority)
+            .filter(_filterByLanguages)
+            .map(_getName);
+
+        this._codeMirror.setOption(&quot;gutters&quot;, gutters);
+        this._codeMirror.refresh();
+
+        if (gutters.indexOf(LINE_NUMBER_GUTTER) &lt; 0) {
+            $(rootElement).addClass(&quot;linenumber-disabled&quot;);
+        } else {
+            $(rootElement).removeClass(&quot;linenumber-disabled&quot;);
+        }
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _resetText 
         <a class="anchor" href="#Editor-_resetText" id="Editor-_resetText"><span class="icon-link"></span></a>
     </h4>
@@ -2369,7 +2437,10 @@ Semi-private: only Document should call this.</p>
             $holder.toggleClass(&quot;show-line-padding&quot;, Boolean(showLinePadding));
         });
     };
-
+    
+    Editor.LINE_NUMBER_GUTTER_PRIORITY = LINE_NUMBER_GUTTER_PRIORITY;
+    Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
+    
     &#x2F;&#x2F; Set up listeners for preference changes
     editorOptions.forEach(function (prefName) {
         PreferencesManager.on(&quot;change&quot;, prefName, function () {
@@ -2377,7 +2448,13 @@ Semi-private: only Document should call this.</p>
                 editor._updateOption(prefName);
             });
         });
-    });</code></pre></div><div class="member private">
+    });
+
+    &#x2F;&#x2F; Define public API
+    exports.Editor                  = Editor;
+    exports.BOUNDARY_CHECK_NORMAL   = BOUNDARY_CHECK_NORMAL;
+    exports.BOUNDARY_IGNORE_TOP     = BOUNDARY_IGNORE_TOP;
+});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -2491,6 +2568,11 @@ the desired visible range.</p>
             } else if (prefName === SHOW_LINE_NUMBERS) {
                 Editor._toggleLinePadding(!newValue);
                 this._codeMirror.setOption(cmOptions[SHOW_LINE_NUMBERS], newValue);
+                if (newValue) {
+                    Editor.registerGutter(LINE_NUMBER_GUTTER, LINE_NUMBER_GUTTER_PRIORITY);
+                } else {
+                    Editor.unregisterGutter(LINE_NUMBER_GUTTER);
+                }
                 this.refreshAll();
             } else {
                 this._codeMirror.setOption(cmOptions[prefName], newValue);
@@ -2668,6 +2750,33 @@ entirely outside the viewport.</p>
             pos = Math.min(Math.max(pos, 0), (info.height - info.clientHeight));
             this.setScrollPos(null, pos);
         }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        clearGutter 
+        <a class="anchor" href="#Editor-clearGutter" id="Editor-clearGutter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Clears all marks from the gutter with the specified name.</p>
+</div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The name of the gutter to clear.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.clearGutter = function (name) {
+        this._codeMirror.clearGutter(name);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -3531,6 +3640,32 @@ consistent and resolve to the same mode.</p>
     
 </span>
     <h4>
+        getRegisteredGutters     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#Editor-getRegisteredGutters" id="Editor-getRegisteredGutters"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the list of gutters current registered on all editors.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">!Array.&lt;{name: string,priority: number}&gt;</span>
+</dt>
+    <dd></dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.getRegisteredGutters = function () {
+        return registeredGutters;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         getRootElement 
         <a class="anchor" href="#Editor-getRootElement" id="Editor-getRootElement"><span class="icon-link"></span></a>
     </h4>
@@ -4358,6 +4493,66 @@ but overridable via the endInclusive flag).</p>
     
 </span>
     <h4>
+        registerGutter     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#Editor-registerGutter" id="Editor-registerGutter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Registers the gutter with the specified name at the given priority.</p>
+</div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The name of the gutter.</dd>
+    <dt>
+        priority
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>A number denoting the priority of the gutter. Priorities higher than LINE_NUMBER_GUTTER_PRIORITY appear after the line numbers. Priority less than LINE_NUMBER_GUTTER_PRIORITY appear before.</dd>
+    <dt>
+        languageIds
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Array&lt;string&gt;</span>
+    </dt>
+    <dd>A list of language ids that this gutter is valid for. If no language ids are passed, then the gutter is valid in all languages.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.registerGutter = function (name, priority, languageIds) {
+        if (isNaN(priority)) {
+            console.warn(&quot;A non-numeric priority value was passed to registerGutter. The value will default to 0.&quot;);
+            priority = 0;
+        }
+
+        if (!name || typeof name !== &quot;string&quot;) {
+            console.error(&quot;The name of the registered gutter must be a string.&quot;);
+            return;
+        }
+
+        var gutter = {name: name, priority: priority, languages: languageIds},
+            gutterExists = registeredGutters.some(function (gutter) {
+                return gutter.name === name;
+            });
+
+        if (!gutterExists) {
+            registeredGutters.push(gutter);
+        }
+
+        Editor.forEveryEditor(function (editor) {
+            editor._renderGutters();
+        });
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         removeAllInlineWidgets 
         <a class="anchor" href="#Editor-removeAllInlineWidgets" id="Editor-removeAllInlineWidgets"><span class="icon-link"></span></a>
     </h4>
@@ -4677,6 +4872,52 @@ Affects any editors that share the same preference location.</p>
         if (center) {
             this.centerOnCursor();
         }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        setGutterMarker 
+        <a class="anchor" href="#Editor-setGutterMarker" id="Editor-setGutterMarker"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Sets the marker for the specified gutter on the specified line number</p>
+</div>
+    
+<dl>
+    <dt>
+        lineNumber
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The line number for the inserted gutter marker</dd>
+    <dt>
+        gutterName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The name of the gutter</dd>
+    <dt>
+        marker
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>The dom element representing the marker to the inserted in the gutter</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.prototype.setGutterMarker = function (lineNumber, gutterName, marker) {
+        var gutterNameRegistered = registeredGutters.some(function (gutter) {
+            return gutter.name === gutterName;
+        });
+
+        if (!gutterNameRegistered) {
+            console.warn(&quot;Gutter name must be registered before calling editor.setGutterMarker&quot;);
+            return;
+        }
+
+        this._codeMirror.setGutterMarker(lineNumber, gutterName, marker);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -5329,6 +5570,43 @@ Affects any editors that share the same preference location.</p>
     
 </span>
     <h4>
+        unregisterGutter     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#Editor-unregisterGutter" id="Editor-unregisterGutter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Unregisters the gutter with the specified name and removes it from the UI.</p>
+</div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The name of the gutter to be unregistered.</dd>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Editor.unregisterGutter = function (name) {
+        var i, gutter;
+        registeredGutters = registeredGutters.filter(function (gutter) {
+            return gutter.name !== name;
+        });
+
+        Editor.forEveryEditor(function (editor) {
+            editor._renderGutters();
+        });
+    };
+
+    &#x2F;&#x2F; Global settings that affect Editor instances that share the same preference locations</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         updateLayout 
         <a class="anchor" href="#Editor-updateLayout" id="Editor-updateLayout"><span class="icon-link"></span></a>
     </h4>
@@ -5372,10 +5650,7 @@ should not be used on inline editors</p>
         if (forceRefresh) {
             this.refreshAll(forceRefresh);
         }
-    };
-
-
-    &#x2F;&#x2F; Global settings that affect Editor instances that share the same preference locations</code></pre></div>
+    };</code></pre></div>
         </section>
 
     </div>

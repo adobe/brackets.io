@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -1708,6 +1723,10 @@ This also sets css properties that aid in the layout when _updateLayout is calle
         &#x2F;&#x2F;  get an event handler for workspace events and we don&#39;t listen
         &#x2F;&#x2F;  to the event before we&#39;ve been initialized
         WorkspaceManager.on(&quot;workspaceUpdateLayout&quot;, _updateLayout);
+
+        &#x2F;&#x2F; Listen to key Alt-W to toggle between panes
+        CommandManager.register(Strings.CMD_SWITCH_PANE_FOCUS, Commands.CMD_SWITCH_PANE_FOCUS, switchPaneFocus);
+        KeyBindingManager.addBinding(Commands.CMD_SWITCH_PANE_FOCUS, {key: &#39;Alt-W&#39;});
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -2298,11 +2317,15 @@ or a document for editing.  If it&#39;s a document for editing, edit is called o
         } else {
             DocumentManager.getDocumentForPath(file.fullPath)
                 .done(function (doc) {
-                    _edit(paneId, doc, $.extend({}, options, {
-                        noPaneActivate: true
-                    }));
-                    doPostOpenActivation();
-                    result.resolve(doc.file);
+                    if (doc) {
+                        _edit(paneId, doc, $.extend({}, options, {
+                            noPaneActivate: true
+                        }));
+                        doPostOpenActivation();
+                        result.resolve(doc.file);
+                    } else {
+                        result.resolve(null);
+                    }
                 })
                 .fail(function (fileError) {
                     result.reject(fileError);
@@ -3622,6 +3645,34 @@ call does nothing).</p>
             _doSplit(VERTICAL);
         }
         return true;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        switchPaneFocus 
+        <a class="anchor" href="#-switchPaneFocus" id="-switchPaneFocus"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Switch between panes</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function switchPaneFocus() {
+        var $firstPane = $(&#39;#first-pane&#39;), $secondPane = $(&#39;#second-pane&#39;);
+        if($firstPane.hasClass(&#39;active-pane&#39;)) {
+            $secondPane.click();
+        }
+        else {
+            $firstPane.click();
+        }
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

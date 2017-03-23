@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -661,6 +676,38 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
     
 </span>
     <h4>
+        _ensurePaneIsFocused 
+        <a class="anchor" href="#-_ensurePaneIsFocused" id="-_ensurePaneIsFocused"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Ensures that the given pane is focused after other focus related events occur</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl>
+<dl>
+        <dt>params</dt>
+        <dd>{string} paneId - paneId of the pane to focus</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _ensurePaneIsFocused(paneId) {
+        var pane = MainViewManager._getPane(paneId);
+
+        &#x2F;&#x2F; Defer the focusing until other focus events have occurred.
+        setTimeout(function () {
+            &#x2F;&#x2F; Focus has most likely changed: give it back to the given pane.
+            pane.focus();
+            this._lastFocusedElement = pane.$el[0];
+            MainViewManager.setActivePaneId(paneId);
+        }, 1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _makeIndexRequestObject 
         <a class="anchor" href="#-_makeIndexRequestObject" id="-_makeIndexRequestObject"><span class="icon-link"></span></a>
     </h4>
@@ -740,9 +787,14 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
             var currentFile = self.getCurrentlyViewedFile();
             var otherPaneId = self.id === FIRST_PANE ? SECOND_PANE : FIRST_PANE;
             var otherPane = MainViewManager._getPane(otherPaneId);
+            var sameDocInOtherView = otherPane.getViewForPath(currentFile.fullPath);
             
-            &#x2F;&#x2F; If the same doc view is present in the destination pane prevent flip
-            if (otherPane.getViewForPath(currentFile.fullPath)) {
+            &#x2F;&#x2F; If the same doc view is present in the destination, show the file instead of flipping it
+            if (sameDocInOtherView) {
+                CommandManager.execute(Commands.FILE_OPEN, {fullPath: currentFile.fullPath,
+                                                            paneId: otherPaneId}).always(function () {
+                    _ensurePaneIsFocused(otherPaneId);
+                });
                 return;
             }
 
@@ -750,30 +802,14 @@ Hidden views can be later shown by calling <code>pane.showView(view)</code></p>
             &#x2F;&#x2F; give focus to the pane. This way it is possible to flip multiple panes to the active one
             &#x2F;&#x2F; without losing focus.
             var activePaneIdBeforeFlip = MainViewManager.getActivePaneId();
-            var currentFileOnOtherPaneIndex = otherPane.findInViewList(currentFile.fullPath);
 
-            &#x2F;&#x2F; if the currentFile is already on other pane just close the current pane
-            if (currentFileOnOtherPaneIndex  !== -1) {
-                CommandManager.execute(Commands.FILE_CLOSE, {File: currentFile, paneId: self.id});
-            }
-            
             MainViewManager._moveView(self.id, otherPaneId, currentFile).always(function () {
                 CommandManager.execute(Commands.FILE_OPEN, {fullPath: currentFile.fullPath,
                                                             paneId: otherPaneId}).always(function () {
-
-                    var activePaneBeforeFlip = MainViewManager._getPane(activePaneIdBeforeFlip);
-
                     &#x2F;&#x2F; Trigger view list changes for both panes
                     self.trigger(&quot;viewListChange&quot;);
                     otherPane.trigger(&quot;viewListChange&quot;);
-
-                    &#x2F;&#x2F; Defer the focusing until other focus events have occurred.
-                    setTimeout(function () {
-                        &#x2F;&#x2F; Focus has most likely changed: give it back to the original pane.
-                        activePaneBeforeFlip.focus();
-                        self._lastFocusedElement = activePaneBeforeFlip.$el[0];
-                        MainViewManager.setActivePaneId(activePaneIdBeforeFlip);
-                    }, 1);
+                    _ensurePaneIsFocused(activePaneIdBeforeFlip);
                 });
             });
         });

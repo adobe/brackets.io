@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -486,6 +501,7 @@ is a string containing the new font size after applying the change.</li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
+        <li><a href="..&#x2F;../modules/text!view/fontrules/font-based-rules.less.html">font-based-rules.less</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
@@ -666,7 +682,26 @@ is a string containing the new font size after applying the change.</li>
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var currFontSize;</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var currFontSize;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        validFontSizeRegExpStr 
+        <a class="anchor" href="#-validFontSizeRegExpStr" id="-validFontSizeRegExpStr"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Font sizes should be validated by this regexp</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var validFontSizeRegExpStr = &quot;^([0-9]+)?(\\.)?([0-9]+)(px|em)$&quot;;
+    &#x2F;&#x2F; Need RegExp as a string to be exported for use with HTML5 pattern attribute</code></pre></div>
 </section>
 
 <section id="functions">
@@ -701,7 +736,10 @@ is a string containing the new font size after applying the change.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addDynamicFontFamily(fontFamily) {
-        _addDynamicProperty(DYNAMIC_FONT_FAMILY_ID, &quot;font-family&quot;, fontFamily);
+        _addDynamicProperty(DYNAMIC_FONT_STYLE_ID, {
+            propName: &quot;font-family&quot;,
+            propValue: fontFamily
+        });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -727,7 +765,16 @@ is a string containing the new font size after applying the change.</li>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addDynamicFontSize(fontSize) {
-        _addDynamicProperty(DYNAMIC_FONT_STYLE_ID, &quot;font-size&quot;, fontSize, true);
+        var template = FontRuleTemplate.split(&quot;{font-size-param}&quot;).join(fontSize);
+        less.render(template, null, function onParse(err, tree) {
+            if (err) {
+                console.error(err);
+            } else {
+                _addDynamicProperty(DYNAMIC_FONT_STYLE_ID, {
+                    ruleText: tree.css
+                });
+            }
+        });
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -749,29 +796,48 @@ is a string containing the new font size after applying the change.</li>
     </dt>
     <dd>Is the property ID to be added</dd>
     <dt>
-        name
+        ruleCfg
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>Is the CSS Rule configuration object</dd>
+    <dt>
+        ruleCfg.propName
         <span class="label label-info">string</span>
     </dt>
     <dd>Is the name of the style property</dd>
     <dt>
-        value
+        ruleCfg.propValue
         <span class="label label-info">string</span>
     </dt>
-    <dd>Is the value of the style</dd>
+    <dd>Is the value of the style property</dd>
     <dt>
-        important
+        ruleCfg.priorityFlag
         <span class="label label-info">boolean</span>
     </dt>
     <dd>Is a flag to make the style property !important</dd>
+    <dt>
+        ruleCfg.ruleName
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Optional Selctor name to be used for the rule</dd>
+    <dt>
+        ruleCfg.ruleText
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>Optional selector definition text</dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _addDynamicProperty(propertyID, name, value, important, cssRule) {
-        cssRule = cssRule || &quot;.CodeMirror&quot;;
+<pre class="code language-javascript"><code class="language-javascript">    function _addDynamicProperty(propertyID, ruleCfg) {
         var $style   = $(&quot;&lt;style type=&#39;text&#x2F;css&#39;&gt;&lt;&#x2F;style&gt;&quot;).attr(&quot;id&quot;, propertyID);
-        var styleStr = StringUtils.format(&quot;{0}: {1}{2}&quot;, name, value, important ? &quot; !important&quot; : &quot;&quot;);
-        $style.html(cssRule + &quot;{ &quot; + styleStr + &quot; }&quot;);
+        if (ruleCfg.ruleText) {
+            $style.html(ruleCfg.ruleText);
+        } else {
+            var cssRule = ruleCfg.ruleName || &quot;.CodeMirror&quot;;
+            var styleStr = ruleCfg.ruleText || StringUtils.format(&quot;{0}: {1} {2}&quot;, ruleCfg.propName, ruleCfg.propValue, ruleCfg.priorityFlag ? &quot;!important&quot; : &quot;&quot;);
+            $style.html(cssRule + &quot;{ &quot; + styleStr + &quot; }&quot;);
+        }
 
         &#x2F;&#x2F; Let&#39;s make sure we remove the already existing item from the DOM.
         _removeDynamicProperty(propertyID);
@@ -803,16 +869,18 @@ is a string containing the new font size after applying the change.</li>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _adjustFontSize(adjustment) {
-        var fsStyle   = prefs.get(&quot;fontSize&quot;),
-            validFont = &#x2F;^[\d\.]+(px|em)$&#x2F;;
-
-        &#x2F;&#x2F; Make sure that the font size is expressed in terms we can handle (px or em). If not, simply bail.
-        if (fsStyle.search(validFont) === -1) {
+<pre class="code language-javascript"><code class="language-javascript">     function _adjustFontSize(adjustment) {
+        var fsStyle    = prefs.get(&quot;fontSize&quot;);
+        var validFontSizeRegExp = new RegExp(validFontSizeRegExpStr);
+        
+        &#x2F;&#x2F; Make sure that the font size is expressed in terms we can
+        &#x2F;&#x2F; handle (px or em). If not, simply bail.
+        
+         if (fsStyle.search(validFontSizeRegExp) === -1) {
             return false;
         }
 
-        &#x2F;&#x2F; Guaranteed to work by the validation above.
+        &#x2F;&#x2F; Guaranteed to work by validation above.
         var fsUnits = fsStyle.substring(fsStyle.length - 2, fsStyle.length),
             delta   = fsUnits === &quot;px&quot; ? 1 : 0.1,
             fsOld   = parseFloat(fsStyle.substring(0, fsStyle.length - 2)),
@@ -828,92 +896,6 @@ is a string containing the new font size after applying the change.</li>
         setFontSize(fsStr);
         return true;
     }</code></pre></div><div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _convertToNewViewState 
-        <a class="anchor" href="#-_convertToNewViewState" id="-_convertToNewViewState"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        key
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The key of the preference to be examined for migration of old preferences. Not used since we only have one in this module.</dd>
-    <dt>
-        value
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The value of "fontSizeAdjustment" preference</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">Object</span>
-</dt>
-    <dd>JSON object for the new view state equivalent to the old "fontSizeAdjustment" preference.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _convertToNewViewState(key, value) {
-        return { &quot;fontSizeStyle&quot;: (DEFAULT_FONT_SIZE + value) + &quot;px&quot; };
-    }
-
-    &#x2F;&#x2F; Register command handlers
-    CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
-    CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
-    CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
-    CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
-    CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);
-    CommandManager.register(Strings.CMD_THEMES,             Commands.CMD_THEMES_OPEN_SETTINGS, _handleThemeSettings);
-
-    PreferencesManager.convertPreferences(module, {&quot;fontSizeAdjustment&quot;: &quot;user&quot;}, true, _convertToNewViewState);
-
-    prefs.definePreference(&quot;fontSize&quot;,   &quot;string&quot;, DEFAULT_FONT_SIZE + &quot;px&quot;, {
-        description: Strings.DESCRIPTION_FONT_SIZE
-    }).on(&quot;change&quot;, function () {
-        setFontSize(prefs.get(&quot;fontSize&quot;));
-    });
-    prefs.definePreference(&quot;fontFamily&quot;, &quot;string&quot;, DEFAULT_FONT_FAMILY, {
-        description: Strings.DESCRIPTION_FONT_FAMILY
-    }).on(&quot;change&quot;, function () {
-        setFontFamily(prefs.get(&quot;fontFamily&quot;));
-    });
-
-    &#x2F;&#x2F; Define a preference for font smoothing mode on Mac.
-    &#x2F;&#x2F; By default fontSmoothing is set to &quot;subpixel-antialiased&quot;
-    &#x2F;&#x2F; for the text inside code editor. It can be overridden
-    &#x2F;&#x2F; to &quot;antialiased&quot;, that would set text rendering AA to use
-    &#x2F;&#x2F; gray scale antialiasing.
-    if (brackets.platform === &quot;mac&quot;) {
-        prefs.definePreference(&quot;fontSmoothing&quot;, &quot;string&quot;, &quot;subpixel-antialiased&quot;, {
-            description: Strings.DESCRIPTION_FONT_SMOOTHING,
-            values: [&quot;subpixel-antialiased&quot;, &quot;antialiased&quot;]
-        }).on(&quot;change&quot;, function () {
-            setMacFontSmoothingType(prefs.get(&quot;fontSmoothing&quot;));
-        });
-    }
-
-    &#x2F;&#x2F; Update UI when opening or closing a document
-    MainViewManager.on(&quot;currentFileChange&quot;, _updateUI);
-
-    &#x2F;&#x2F; Update UI when Brackets finishes loading
-    AppInit.appReady(init);
-
-
-    EventDispatcher.makeEventDispatcher(exports);
-
-    exports.restoreFontSize = restoreFontSize;
-    exports.restoreFonts    = restoreFonts;
-    exports.getFontSize     = getFontSize;
-    exports.setFontSize     = setFontSize;
-    exports.getFontFamily   = getFontFamily;
-    exports.setFontFamily   = setFontFamily;
-});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1091,7 +1073,57 @@ is a string containing the new font size after applying the change.</li>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleThemeSettings() {
         ThemeSettings.showDialog();
-    }</code></pre></div><div class="member private">
+    }
+
+    &#x2F;&#x2F; Register command handlers
+    CommandManager.register(Strings.CMD_INCREASE_FONT_SIZE, Commands.VIEW_INCREASE_FONT_SIZE,  _handleIncreaseFontSize);
+    CommandManager.register(Strings.CMD_DECREASE_FONT_SIZE, Commands.VIEW_DECREASE_FONT_SIZE,  _handleDecreaseFontSize);
+    CommandManager.register(Strings.CMD_RESTORE_FONT_SIZE,  Commands.VIEW_RESTORE_FONT_SIZE,   _handleRestoreFontSize);
+    CommandManager.register(Strings.CMD_SCROLL_LINE_UP,     Commands.VIEW_SCROLL_LINE_UP,      _handleScrollLineUp);
+    CommandManager.register(Strings.CMD_SCROLL_LINE_DOWN,   Commands.VIEW_SCROLL_LINE_DOWN,    _handleScrollLineDown);
+    CommandManager.register(Strings.CMD_THEMES,             Commands.CMD_THEMES_OPEN_SETTINGS, _handleThemeSettings);
+
+    prefs.definePreference(&quot;fontSize&quot;,   &quot;string&quot;, DEFAULT_FONT_SIZE + &quot;px&quot;, {
+        description: Strings.DESCRIPTION_FONT_SIZE
+    }).on(&quot;change&quot;, function () {
+        setFontSize(prefs.get(&quot;fontSize&quot;));
+    });
+    prefs.definePreference(&quot;fontFamily&quot;, &quot;string&quot;, DEFAULT_FONT_FAMILY, {
+        description: Strings.DESCRIPTION_FONT_FAMILY
+    }).on(&quot;change&quot;, function () {
+        setFontFamily(prefs.get(&quot;fontFamily&quot;));
+    });
+
+    &#x2F;&#x2F; Define a preference for font smoothing mode on Mac.
+    &#x2F;&#x2F; By default fontSmoothing is set to &quot;subpixel-antialiased&quot;
+    &#x2F;&#x2F; for the text inside code editor. It can be overridden
+    &#x2F;&#x2F; to &quot;antialiased&quot;, that would set text rendering AA to use
+    &#x2F;&#x2F; gray scale antialiasing.
+    if (brackets.platform === &quot;mac&quot;) {
+        prefs.definePreference(&quot;fontSmoothing&quot;, &quot;string&quot;, &quot;subpixel-antialiased&quot;, {
+            description: Strings.DESCRIPTION_FONT_SMOOTHING,
+            values: [&quot;subpixel-antialiased&quot;, &quot;antialiased&quot;]
+        }).on(&quot;change&quot;, function () {
+            setMacFontSmoothingType(prefs.get(&quot;fontSmoothing&quot;));
+        });
+    }
+
+    &#x2F;&#x2F; Update UI when opening or closing a document
+    MainViewManager.on(&quot;currentFileChange&quot;, _updateUI);
+
+    &#x2F;&#x2F; Update UI when Brackets finishes loading
+    AppInit.appReady(init);
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    exports.restoreFontSize = restoreFontSize;
+    exports.restoreFonts    = restoreFonts;
+    exports.getFontSize     = getFontSize;
+    exports.setFontSize     = setFontSize;
+    exports.getFontFamily   = getFontFamily;
+    exports.setFontFamily   = setFontFamily;
+    exports.validFontSizeRegExp = validFontSizeRegExpStr;
+});</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private

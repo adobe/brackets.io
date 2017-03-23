@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -490,6 +505,7 @@
         <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
@@ -1446,6 +1462,16 @@ When saving to the original document the document is saved as if save was called
                 saveAsDefaultPath = FileUtils.getDirectoryPath(origPath);
             }
             defaultName = FileUtils.getBaseName(origPath);
+            var file = FileSystem.getFileForPath(origPath);
+            if (file instanceof InMemoryFile) {
+                var language = LanguageManager.getLanguageForPath(origPath);
+                if (language) {
+                    var fileExtensions = language.getFileExtensions();
+                    if (fileExtensions &amp;&amp; fileExtensions.length &gt; 0) {
+                        defaultName += &quot;.&quot; + fileExtensions[0];
+                    }
+                }
+            }
             FileSystem.showSaveDialog(Strings.SAVE_FILE_AS, saveAsDefaultPath, defaultName, function (err, selectedPath) {
                 if (!err) {
                     if (selectedPath) {
@@ -1633,8 +1659,6 @@ When saving to the original document the document is saved as if save was called
                 } catch (ex) {
                     console.error(ex);
                 }
-
-                PreferencesManager.savePreferences();
 
                 postCloseHandler();
             })
@@ -2807,7 +2831,7 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
 
         _doOpenWithOptionalPath(fileInfo.path, silent, paneId, commandData &amp;&amp; commandData.options)
             .done(function (file) {
-                HealthLogger.fileOpened(fileInfo.path);
+                HealthLogger.fileOpened(file._path);
                 if (!commandData || !commandData.options || !commandData.options.noPaneActivate) {
                     MainViewManager.setActivePaneId(paneId);
                 }
