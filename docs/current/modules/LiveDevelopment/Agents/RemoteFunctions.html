@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -562,6 +577,23 @@
             element.removeAttribute(key);
         }
     }
+    
+    &#x2F;&#x2F; Checks if the element is in Viewport in the client browser
+    function isInViewport(element) {
+        var rect = element.getBoundingClientRect();
+        var html = window.document.documentElement;
+        return (
+            rect.top &gt;= 0 &amp;&amp;
+            rect.left &gt;= 0 &amp;&amp;
+            rect.bottom &lt;= (window.innerHeight || html.clientHeight) &amp;&amp;
+            rect.right &lt;= (window.innerWidth || html.clientWidth)
+        );
+    }
+    
+    &#x2F;&#x2F; returns the distance from the top of the closest relatively positioned parent element
+    function getDocumentOffsetTop(element) {
+        return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
+    }
 
     &#x2F;&#x2F; construct the info menu
     function Menu(element) {
@@ -783,6 +815,14 @@
             if (this.trigger) {
                 _trigger(element, &quot;highlight&quot;, 1);
             }
+            
+            if ((!window.event || window.event instanceof MessageEvent) &amp;&amp; !isInViewport(element)) {
+                var top = getDocumentOffsetTop(element);
+                if (top) {
+                    top -= (window.innerHeight &#x2F; 2);
+                    window.scrollTo(0, top);
+                }
+            }
             this.elements.push(element);
 
             this._makeHighlightDiv(element, doAnimation);
@@ -899,7 +939,7 @@ exported functions.</p>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">function RemoteFunctions(experimental) {
+<pre class="code language-javascript"><code class="language-javascript">function RemoteFunctions(experimental, remoteWSPort) {
     &quot;use strict&quot;;
 
     var lastKeepAliveTime = Date.now();</code></pre></div><div class="member private">
@@ -965,7 +1005,42 @@ exported functions.</p>
     if (experimental) {
         window.document.addEventListener(&quot;keydown&quot;, onKeyDown);
     }
+    
+    var _ws = null;
 
+    function onDocumentClick(event) {
+        var element = event.target,
+            currentDataId,
+            newDataId;
+        
+        if (_ws &amp;&amp; element &amp;&amp; element.hasAttribute(&#39;data-brackets-id&#39;)) {
+            _ws.send(JSON.stringify({
+                type: &quot;message&quot;,
+                message: element.getAttribute(&#39;data-brackets-id&#39;)
+            }));
+        }
+    }
+    
+    
+    function createWebSocket() {
+        _ws = new WebSocket(&quot;ws:&#x2F;&#x2F;localhost:&quot; + remoteWSPort);
+        _ws.onopen = function () {
+            window.document.addEventListener(&quot;click&quot;, onDocumentClick);
+        };
+				
+        _ws.onmessage = function (evt) {
+        };
+				
+        _ws.onclose = function () {
+            &#x2F;&#x2F; websocket is closed
+            window.document.removeEventListener(&quot;click&quot;, onDocumentClick);
+        };
+    }
+    
+    if (remoteWSPort) {
+        createWebSocket();
+    }
+    
     return {
         &quot;DOMEditHandler&quot;        : DOMEditHandler,
         &quot;keepAlive&quot;             : keepAlive,

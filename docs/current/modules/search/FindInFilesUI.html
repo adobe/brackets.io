@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -555,6 +570,26 @@
     
 </span>
     <h4>
+        _finishReplaceBatch 
+        <a class="anchor" href="#-_finishReplaceBatch" id="-_finishReplaceBatch"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>Function</dd>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _finishReplaceBatch;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _resultsView 
         <a class="anchor" href="#-_resultsView" id="-_resultsView"><span class="icon-link"></span></a>
     </h4>
@@ -632,8 +667,8 @@
     
 </span>
     <h4>
-        _finishReplaceAll 
-        <a class="anchor" href="#-_finishReplaceAll" id="-_finishReplaceAll"><span class="icon-link"></span></a>
+        _finishReplaceBatch 
+        <a class="anchor" href="#-_finishReplaceBatch" id="-_finishReplaceBatch"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -649,7 +684,7 @@
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _finishReplaceAll(model) {
+<pre class="code language-javascript"><code class="language-javascript">    function _finishReplaceBatch(model) {
         var replaceText = model.replaceText;
         if (replaceText === null) {
             return;
@@ -753,8 +788,8 @@ might not have been updated yet.</p>
         var model = FindInFiles.searchModel;
         _resultsView = new SearchResultsView(model, &quot;find-in-files-results&quot;, &quot;find-in-files.results&quot;);
         _resultsView
-            .on(&quot;replaceAll&quot;, function () {
-                _finishReplaceAll(model);
+            .on(&quot;replaceBatch&quot;, function () {
+                _finishReplaceBatch(model);
             })
             .on(&quot;close&quot;, function () {
                 FindInFiles.clearSearch();
@@ -792,6 +827,7 @@ might not have been updated yet.</p>
 
     &#x2F;&#x2F; Public exports
     exports.searchAndShowResults = searchAndShowResults;
+    exports.searchAndReplaceResults = searchAndReplaceResults;
 
     &#x2F;&#x2F; For unit testing
     exports._showFindBar  = _showFindBar;
@@ -984,7 +1020,7 @@ might not have been updated yet.</p>
         if (showReplace) {
             &#x2F;&#x2F; We shouldn&#39;t get a &quot;doReplace&quot; in this case, since the Replace button
             &#x2F;&#x2F; is hidden when we set options.multifile.
-            _findBar.on(&quot;doReplaceAll.FindInFiles&quot;, startReplace);
+            _findBar.on(&quot;doReplaceBatch.FindInFiles&quot;, startReplace);
         }
 
         var oldModalBarHeight = _findBar._modalBar.height();
@@ -1084,6 +1120,77 @@ might not have been updated yet.</p>
         FindUtils.notifySearchScopeChanged();
         var selectedEntry = ProjectManager.getSelectedItem();
         _showFindBar(selectedEntry, true);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        searchAndReplaceResults 
+        <a class="anchor" href="#-searchAndReplaceResults" id="-searchAndReplaceResults"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Does a search in the given scope with the given filter. Replace the result list once the search is complete.</p>
+</div>
+    
+<dl>
+    <dt>
+        queryInfo
+        <span class="label label-info">{query: string,caseSensitive: boolean,isRegexp: boolean}</span>
+    </dt>
+    <dd>Query info object</dd>
+    <dt>
+        scope
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Entry</span>
+    </dt>
+    <dd>Project file/subfolder to search within; else searches whole project.</dd>
+    <dt>
+        filter
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>A "compiled" filter as returned by FileFilters.compile(), or null for no filter</dd>
+    <dt>
+        replaceText
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>If this is a replacement, the text to replace matches with.</dd>
+    <dt>
+        candidateFilesPromise
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">$.Promise</span>
+    </dt>
+    <dd>If specified, a promise that should resolve with the same set of files that getCandidateFiles(scope) would return.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">$.Promise</span>
+</dt>
+    <dd>A promise that's resolved with the search results or rejected when the find competes.</dd>
+</dl>
+<dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function searchAndReplaceResults(queryInfo, scope, filter, replaceText, candidateFilesPromise) {
+        return FindInFiles.doSearchInScope(queryInfo, scope, filter, replaceText, candidateFilesPromise)
+            .done(function (zeroFilesToken) {
+                &#x2F;&#x2F; Done searching all files: replace all
+                if (FindInFiles.searchModel.hasResults()) {
+                    _finishReplaceBatch(FindInFiles.searchModel);
+
+                    if (_findBar) {
+                        _findBar.enable(true);
+                        _findBar.focus();
+                    }
+
+                }
+                StatusBar.hideBusyIndicator();
+            })
+            .fail(function (err) {
+                console.log(&quot;replace all failed: &quot;, err);
+                StatusBar.hideBusyIndicator();
+            });
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

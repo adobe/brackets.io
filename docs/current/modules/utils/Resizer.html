@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -502,61 +517,7 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _isPanelPreferences 
-        <a class="anchor" href="#-_isPanelPreferences" id="-_isPanelPreferences"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        key
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The key of the preference to be examined for migration of panel states.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">?string</span>
-</dt>
-    <dd>- the scope to which the preference is to be migrated</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _isPanelPreferences(key) {
-        if (key) {
-            return &quot;user&quot;;
-        }
-
-        return null;
-    }
-
-    PreferencesManager.convertPreferences(module, {&quot;panelState&quot;: &quot;user&quot;}, true, _isPanelPreferences);
-
-    EventDispatcher.makeEventDispatcher(exports);
-
-    exports.makeResizable   = makeResizable;
-    exports.removeSizable   = removeSizable;
-    exports.resyncSizer     = resyncSizer;
-    exports.toggle          = toggle;
-    exports.show            = show;
-    exports.hide            = hide;
-    exports.isVisible       = isVisible;
-
-    &#x2F;&#x2F;Resizer Constants
-    exports.DIRECTION_VERTICAL   = DIRECTION_VERTICAL;
-    exports.DIRECTION_HORIZONTAL = DIRECTION_HORIZONTAL;
-    exports.POSITION_TOP         = POSITION_TOP;
-    exports.POSITION_RIGHT       = POSITION_RIGHT;
-    exports.POSITION_BOTTOM      = POSITION_BOTTOM;
-    exports.POSITION_LEFT        = POSITION_LEFT;
-});</code></pre></div><div class="member public">
+<div class="member public">
 
 <span class="pull-right scope">
     
@@ -616,6 +577,25 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function isVisible(element) {
         return $(element).is(&quot;:visible&quot;);
+    }
+
+    function _isPercentage(value) {
+        return !$.isNumeric(value) &amp;&amp; value.indexOf(&#39;%&#39;) &gt; -1;
+    }
+
+    function _percentageToPixels(value, total) {
+        return parseFloat(value.replace(&#39;%&#39;, &#39;&#39;)) * (total &#x2F; 100);
+    }
+
+    function _sideBarMaxSize() {
+        var siblingsWidth = 0;
+        $sideBar.siblings().not(&quot;.content&quot;).each(function (i, elem) {
+            var $elem = $(elem);
+            if ($elem.css(&quot;display&quot;) !== &quot;none&quot;) {
+                siblingsWidth += $elem.outerWidth();
+            }
+        });
+        return $(&quot;.main-view&quot;).width() - siblingsWidth - 1;
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -954,6 +934,10 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
                 &#x2F;&#x2F; respect max size if one provided (e.g. by WorkspaceManager)
                 var maxSize = $element.data(&quot;maxsize&quot;);
                 if (maxSize !== undefined) {
+                    &#x2F;&#x2F; if provided as percentage size convert it to a pixel size
+                    if (_isPercentage(maxSize)) {
+                        maxSize = _percentageToPixels(maxSize, _sideBarMaxSize());
+                    }
                     newSize = Math.min(newSize, maxSize);
                 }
 
@@ -1033,11 +1017,52 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         }
     }
 
+    function updateResizeLimits() {
+        var sideBarMaxSize = _sideBarMaxSize(),
+            maxSize = $sideBar.data(&quot;maxsize&quot;),
+            width = false;
+
+        if (maxSize !== undefined &amp;&amp; _isPercentage(maxSize)) {
+            sideBarMaxSize = _percentageToPixels(maxSize, sideBarMaxSize);
+        }
+
+        if ($sideBar.width() &gt; sideBarMaxSize) {
+            &#x2F;&#x2F; Adjust the sideBar&#39;s width in case it exceeds the window&#39;s width when resizing the window.
+            $sideBar.width(sideBarMaxSize);
+            resyncSizer($sideBar);
+            $(&quot;.content&quot;).css(&quot;left&quot;, $sideBar.width());
+            $sideBar.trigger(&quot;panelResizeStart&quot;, $sideBar.width());
+            $sideBar.trigger(&quot;panelResizeUpdate&quot;, [$sideBar.width()]);
+            $sideBar.trigger(&quot;panelResizeEnd&quot;, [$sideBar.width()]);
+        }
+    }
+
+    function onWindowResize(e) {
+        if ($sideBar.css(&quot;display&quot;) === &quot;none&quot;) {
+            return;
+        }
+
+        if (!isWindowResizing) {
+            isWindowResizing = true;
+
+            &#x2F;&#x2F; We don&#39;t need any fancy debouncing here - we just need to react before the user can start
+            &#x2F;&#x2F; resizing any panels at the new window size. So just listen for first mousemove once the
+            &#x2F;&#x2F; window resize releases mouse capture.
+            $(window.document).one(&quot;mousemove&quot;, function () {
+                isWindowResizing = false;
+                updateResizeLimits();
+            });
+        }
+    }
+
+    window.addEventListener(&quot;resize&quot;, onWindowResize, true);
+
     &#x2F;&#x2F; Scan DOM for horz-resizable and vert-resizable classes and make them resizable
     AppInit.htmlReady(function () {
         var minSize = DEFAULT_MIN_SIZE;
 
         $mainView = $(&quot;.main-view&quot;);
+        $sideBar = $(&quot;#sidebar&quot;);
 
         $(&quot;.vert-resizable&quot;).each(function (index, element) {
 
@@ -1073,7 +1098,26 @@ via user action. This triggers panelCollapsed/panelExpanded events - see makeRes
         if ($(&quot;#main-toolbar&quot;).hasClass(&quot;collapsible&quot;) &amp;&amp; PreferencesManager.get(PREFS_PURE_CODE)) {
             ViewUtils.hideMainToolBar();
         }
-    });</code></pre></div><div class="member public">
+    });
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    exports.makeResizable   = makeResizable;
+    exports.removeSizable   = removeSizable;
+    exports.resyncSizer     = resyncSizer;
+    exports.toggle          = toggle;
+    exports.show            = show;
+    exports.hide            = hide;
+    exports.isVisible       = isVisible;
+
+    &#x2F;&#x2F;Resizer Constants
+    exports.DIRECTION_VERTICAL   = DIRECTION_VERTICAL;
+    exports.DIRECTION_HORIZONTAL = DIRECTION_HORIZONTAL;
+    exports.POSITION_TOP         = POSITION_TOP;
+    exports.POSITION_RIGHT       = POSITION_RIGHT;
+    exports.POSITION_BOTTOM      = POSITION_BOTTOM;
+    exports.POSITION_LEFT        = POSITION_LEFT;
+});</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     

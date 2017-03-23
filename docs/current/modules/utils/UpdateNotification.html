@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -750,6 +765,9 @@ _versionInfoUrl is used for unit testing.</p>
         var $dlg        = $(&quot;.update-dialog.instance&quot;),
             $updateList = $dlg.find(&quot;.update-info&quot;);
 
+        &#x2F;&#x2F; Make the update notification icon clickable again
+        _addedClickHandler = false;
+
         updates.Strings = Strings;
         $updateList.html(Mustache.render(UpdateListTemplate, updates));
     }</code></pre></div><div class="member private">
@@ -929,12 +947,14 @@ displayed for newly available updates.</p>
                     var $updateNotification = $(&quot;#update-notification&quot;);
 
                     $updateNotification.css(&quot;display&quot;, &quot;block&quot;);
-                    if (!_addedClickHandler) {
-                        _addedClickHandler = true;
-                        $updateNotification.on(&quot;click&quot;, function () {
+
+                    $updateNotification.on(&quot;click&quot;, function () {
+                        &#x2F;&#x2F; Block the click until the Notification Dialog opens
+                        if (!_addedClickHandler) {
+                            _addedClickHandler = true;
                             checkForUpdate(true);
-                        });
-                    }
+                        }
+                    });
 
                     &#x2F;&#x2F; Only show the update dialog if force = true, or if the user hasn&#39;t been
                     &#x2F;&#x2F; alerted of this update

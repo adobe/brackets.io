@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -508,6 +523,26 @@
     
 </span>
     <h4>
+        FILE_SYSTEM_EVENT_DEBOUNCE_TIME     <span class="label label-info">Constant</span>
+
+        <a class="anchor" href="#-FILE_SYSTEM_EVENT_DEBOUNCE_TIME" id="-FILE_SYSTEM_EVENT_DEBOUNCE_TIME"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Waits for FS changes to stack up until processing them
+(scripts like npm install can do a lot of movements on the disk)</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var FILE_SYSTEM_EVENT_DEBOUNCE_TIME = 100;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         MAX_DISPLAY_LENGTH     <span class="label label-info">Constant</span>
 
         <a class="anchor" href="#-MAX_DISPLAY_LENGTH" id="-MAX_DISPLAY_LENGTH"><span class="icon-link"></span></a>
@@ -541,7 +576,26 @@
     <dd>@type !Object</dd>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var ZERO_FILES_TO_SEARCH = {};</code></pre></div><div class="member private public">
+<pre class="code language-javascript"><code class="language-javascript">    var ZERO_FILES_TO_SEARCH = {};</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _cachedFileSystemEvents 
+        <a class="anchor" href="#-_cachedFileSystemEvents" id="-_cachedFileSystemEvents"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>This stores file system events emitted by watchers that were not yet processed</p>
+</div>
+    
+<dl>
+    <dt>Private</dt>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _cachedFileSystemEvents = [];</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
@@ -560,7 +614,12 @@
     <dt>Private</dt>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _documentChangeHandler, _fileSystemChangeHandler, _fileNameChangeHandler, clearSearch;</code></pre></div><div class="member public">
+<pre class="code language-javascript"><code class="language-javascript">    var _documentChangeHandler,
+        _fileSystemChangeHandler,
+        _processCachedFileSystemEvents,
+        _debouncedFileSystemChangeHandler,
+        _fileNameChangeHandler,
+        clearSearch;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -615,7 +674,7 @@
         _removeListeners();
 
         DocumentModule.on(&quot;documentChange&quot;, _documentChangeHandler);
-        FileSystem.on(&quot;change&quot;, _fileSystemChangeHandler);
+        FileSystem.on(&quot;change&quot;, _debouncedFileSystemChangeHandler);
         DocumentManager.on(&quot;fileNameChange&quot;,  _fileNameChangeHandler);
     }
 
@@ -647,18 +706,18 @@
     
 </span>
     <h4>
-        _addSearchResultsForEntry 
-        <a class="anchor" href="#-_addSearchResultsForEntry" id="-_addSearchResultsForEntry"><span class="icon-link"></span></a>
+        _addSearchResultsForEntries 
+        <a class="anchor" href="#-_addSearchResultsForEntries" id="-_addSearchResultsForEntries"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Add new search results for this entry and all of its children</p>
+    <div class="description"><p>Add new search results for these entries and all of its children</p>
 </div>
     
 <dl>
     <dt>
-        entry
-        <span class="label label-info">(File,Directory)</span>
+        entries
+        <span class="label label-info">Array.&lt;(File,Directory)&gt;</span>
     </dt>
     <dd></dd>
 </dl><dl>
@@ -668,48 +727,57 @@
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function _addSearchResultsForEntry(entry) {
-            var addedFiles = [],
-                addedFilePaths = [],
-                deferred = new $.Deferred();
+<pre class="code language-javascript"><code class="language-javascript">        function _addSearchResultsForEntries(entries) {
+            var fullPaths = [];
+            return Async.doInParallel(entries, function (entry) {
+                var addedFiles = [],
+                    addedFilePaths = [],
+                    deferred = new $.Deferred();
 
-            &#x2F;&#x2F; gather up added files
-            var visitor = function (child) {
-                &#x2F;&#x2F; Replicate filtering that getAllFiles() does
-                if (ProjectManager.shouldShow(child)) {
-                    if (child.isFile &amp;&amp; _isReadableText(child.name)) {
-                        &#x2F;&#x2F; Re-check the filtering that the initial search applied
-                        if (_inSearchScope(child)) {
-                            addedFiles.push(child);
-                            addedFilePaths.push(child.fullPath);
+                &#x2F;&#x2F; gather up added files
+                var visitor = function (child) {
+                    &#x2F;&#x2F; Replicate filtering that getAllFiles() does
+                    if (ProjectManager.shouldShow(child)) {
+                        if (child.isFile &amp;&amp; _isReadableText(child.name)) {
+                            &#x2F;&#x2F; Re-check the filtering that the initial search applied
+                            if (_inSearchScope(child)) {
+                                addedFiles.push(child);
+                                addedFilePaths.push(child.fullPath);
+                            }
                         }
+                        return true;
                     }
-                    return true;
-                }
-                return false;
-            };
+                    return false;
+                };
 
-            entry.visit(visitor, function (err) {
-                if (err) {
-                    deferred.reject(err);
-                    return;
-                }
+                entry.visit(visitor, function (err) {
+                    if (err) {
+                        deferred.reject(err);
+                        return;
+                    }
 
-                &#x2F;&#x2F;node Search : inform node about the file changes
-                filesChanged(addedFilePaths);
+                    &#x2F;&#x2F;node Search : inform node about the file changes
+                    &#x2F;&#x2F;filesChanged(addedFilePaths);
+                    fullPaths = fullPaths.concat(addedFilePaths);
 
-                if (findOrReplaceInProgress) {
-                    &#x2F;&#x2F; find additional matches in all added files
-                    Async.doInParallel(addedFiles, function (file) {
-                        return _doSearchInOneFile(file)
-                            .done(function (foundMatches) {
-                                resultsChanged = resultsChanged || foundMatches;
-                            });
-                    }).always(deferred.resolve);
-                }
+                    if (findOrReplaceInProgress) {
+                        &#x2F;&#x2F; find additional matches in all added files
+                        Async.doInParallel(addedFiles, function (file) {
+                            return _doSearchInOneFile(file)
+                                .done(function (foundMatches) {
+                                    resultsChanged = resultsChanged || foundMatches;
+                                });
+                        }).always(deferred.resolve);
+                    } else {
+                        deferred.resolve();
+                    }
+                });
+
+                return deferred.promise();
+            }).always(function () {
+                &#x2F;&#x2F; this should be called once with a large array instead of numerous calls with single items
+                filesChanged(fullPaths);
             });
-
-            return deferred.promise();
         }
 
         if (!entry) {
@@ -719,23 +787,23 @@
 
         var addPromise;
         if (entry.isDirectory) {
-            if (!added || !removed || (added.length === 0 &amp;&amp; removed.length === 0)) {
+            if (added.length === 0 &amp;&amp; removed.length === 0) {
                 &#x2F;&#x2F; If the added or removed sets are null, must redo the search for the entire subtree - we
                 &#x2F;&#x2F; don&#39;t know which child files&#x2F;folders may have been added or removed.
-                _removeSearchResultsForEntry(entry);
+                _removeSearchResultsForEntries([ entry ]);
 
                 var deferred = $.Deferred();
                 addPromise = deferred.promise();
                 entry.getContents(function (err, entries) {
-                    Async.doInParallel(entries, _addSearchResultsForEntry).always(deferred.resolve);
+                    _addSearchResultsForEntries(entries).always(deferred.resolve);
                 });
             } else {
-                removed.forEach(_removeSearchResultsForEntry);
-                addPromise = Async.doInParallel(added, _addSearchResultsForEntry);
+                _removeSearchResultsForEntries(removed);
+                addPromise = _addSearchResultsForEntries(added);
             }
         } else { &#x2F;&#x2F; entry.isFile
-            _removeSearchResultsForEntry(entry);
-            addPromise = _addSearchResultsForEntry(entry);
+            _removeSearchResultsForEntries([ entry ]);
+            addPromise = _addSearchResultsForEntries([ entry ]);
         }
 
         addPromise.always(function () {
@@ -1129,7 +1197,7 @@ Instant search is also disabled for the time being till the crawl is complete in
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeListeners() {
         DocumentModule.off(&quot;documentChange&quot;, _documentChangeHandler);
-        FileSystem.off(&quot;change&quot;, _fileSystemChangeHandler);
+        FileSystem.off(&quot;change&quot;, _debouncedFileSystemChangeHandler);
         DocumentManager.off(&quot;fileNameChange&quot;, _fileNameChangeHandler);
     }</code></pre></div><div class="member private">
 
@@ -1138,8 +1206,8 @@ Instant search is also disabled for the time being till the crawl is complete in
     
 </span>
     <h4>
-        _removeSearchResultsForEntry 
-        <a class="anchor" href="#-_removeSearchResultsForEntry" id="-_removeSearchResultsForEntry"><span class="icon-link"></span></a>
+        _removeSearchResultsForEntries 
+        <a class="anchor" href="#-_removeSearchResultsForEntries" id="-_removeSearchResultsForEntries"><span class="icon-link"></span></a>
     </h4>
 
     
@@ -1148,26 +1216,31 @@ Instant search is also disabled for the time being till the crawl is complete in
     
 <dl>
     <dt>
-        entry
-        <span class="label label-info">(File,Directory)</span>
+        entries
+        <span class="label label-info">Array.&lt;(File,Directory)&gt;</span>
     </dt>
     <dd></dd>
 </dl><dl>
 </dl>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function _removeSearchResultsForEntry(entry) {
-            Object.keys(searchModel.results).forEach(function (fullPath) {
-                if (fullPath === entry.fullPath ||
-                        (entry.isDirectory &amp;&amp; fullPath.indexOf(entry.fullPath) === 0)) {
-                    &#x2F;&#x2F; node search : inform node that the file is removed
-                    filesRemoved([fullPath]);
-                    if (findOrReplaceInProgress) {
-                        searchModel.removeResults(fullPath);
-                        resultsChanged = true;
+<pre class="code language-javascript"><code class="language-javascript">        function _removeSearchResultsForEntries(entries) {
+            var fullPaths = [];
+            entries.forEach(function (entry) {
+                Object.keys(searchModel.results).forEach(function (fullPath) {
+                    if (fullPath === entry.fullPath ||
+                            (entry.isDirectory &amp;&amp; fullPath.indexOf(entry.fullPath) === 0)) {
+                        &#x2F;&#x2F; node search : inform node that the file is removed
+                        fullPaths.push(fullPath);
+                        if (findOrReplaceInProgress) {
+                            searchModel.removeResults(fullPath);
+                            resultsChanged = true;
+                        }
                     }
-                }
+                });
             });
+            &#x2F;&#x2F; this should be called once with a large array instead of numerous calls with single items
+            filesRemoved(fullPaths);
         }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1313,11 +1386,13 @@ should be in the search set, use _inSearchScope() instead - a supserset of this.
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateDocumentInNode(docPath) {
         DocumentManager.getDocumentForPath(docPath).done(function (doc) {
-            var updateObject = {
+            if (doc) {
+                var updateObject = {
                     &quot;filePath&quot;: docPath,
                     &quot;docContents&quot;: doc.getText()
                 };
-            searchDomain.exec(&quot;documentChanged&quot;, updateObject);
+                searchDomain.exec(&quot;documentChanged&quot;, updateObject);
+            }
         });
     }</code></pre></div><div class="member private">
 
@@ -1571,7 +1646,7 @@ programmatically.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function filesChanged(fileList) {
-        if (FindUtils.isNodeSearchDisabled() || fileList.length === 0) {
+        if (FindUtils.isNodeSearchDisabled() || !fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {
@@ -1608,7 +1683,7 @@ programmatically.</p>
 <dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function filesRemoved(fileList) {
-        if (FindUtils.isNodeSearchDisabled()) {
+        if (FindUtils.isNodeSearchDisabled() || !fileList || fileList.length === 0) {
             return;
         }
         var updateObject = {

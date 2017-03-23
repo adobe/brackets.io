@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -481,6 +496,7 @@
         <li><a href="..&#x2F;../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/mustache/mustache.html">mustache</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/path-utils/path-utils.html">path-utils</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/extensibility/registry_utils.html">registry_utils</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
@@ -812,6 +828,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
                 var installWarningBase = context.requiresNewer ? Strings.EXTENSION_LATEST_INCOMPATIBLE_NEWER : Strings.EXTENSION_LATEST_INCOMPATIBLE_OLDER;
                 context.installWarning = StringUtils.format(installWarningBase, entry.registryInfo.versions[entry.registryInfo.versions.length - 1].version, latestVerCompatInfo.compatibleVersion);
             }
+            context.downloadCount = entry.registryInfo.totalDownloads;
         } else {
             &#x2F;&#x2F; We should only get here when viewing the Installed tab and some extensions don&#39;t exist in the registry
             &#x2F;&#x2F; (or registry is offline). These flags *should* always be ignored in that scenario, but just in case...
@@ -1166,6 +1183,7 @@ with initialize(). When the view is closed, dispose() must be called.</p>
         this._$infoMessage = $(&quot;&lt;div class=&#39;info-message&#39;&#x2F;&gt;&quot;)
             .appendTo(this.$el).html(this.model.infoMessage);
         this._$table = $(&quot;&lt;table class=&#39;table&#39;&#x2F;&gt;&quot;).appendTo(this.$el);
+        $(&quot;.sort-extensions&quot;).val(PreferencesManager.get(&quot;extensions.sort&quot;));
 
         this.model.initialize().done(function () {
             self._setupEventHandlers();

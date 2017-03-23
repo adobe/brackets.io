@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -753,89 +768,6 @@ a project being opened (e.g. from the Refresh command)</li>
 </label>    </h3>
 
 <div class="member private">
-
-<span class="pull-right scope">
-    Private
-    
-</span>
-    <h4>
-        _checkPreferencePrefix 
-        <a class="anchor" href="#-_checkPreferencePrefix" id="-_checkPreferencePrefix"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"></div>
-    
-<dl>
-    <dt>
-        key
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>The key of the preference to be examined for migration of project tree states.</dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">?string</span>
-</dt>
-    <dd>- the scope to which the preference is to be migrated</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _checkPreferencePrefix(key) {
-        var pathPrefix = &quot;projectTreeState_&quot;,
-            projectPath;
-        if (key.indexOf(pathPrefix) === 0) {
-            &#x2F;&#x2F; Get the project path from the old preference key by stripping &quot;projectTreeState_&quot;.
-            projectPath = key.substr(pathPrefix.length);
-            return &quot;user project.treeState &quot; + projectPath;
-        }
-
-        pathPrefix = &quot;projectBaseUrl_&quot;;
-        if (key.indexOf(pathPrefix) === 0) {
-            &#x2F;&#x2F; Get the project path from the old preference key by stripping &quot;projectBaseUrl_[Directory &quot;
-            &#x2F;&#x2F; and &quot;]&quot;.
-            projectPath = key.substr(key.indexOf(&quot; &quot;) + 1);
-            projectPath = projectPath.substr(0, projectPath.length - 1);
-            return &quot;user project.baseUrl &quot; + projectPath;
-        }
-
-        return null;
-    }
-
-
-    EventDispatcher.makeEventDispatcher(exports);
-
-    &#x2F;&#x2F; Init default project path to welcome project
-    PreferencesManager.stateManager.definePreference(&quot;projectPath&quot;, &quot;string&quot;, _getWelcomeProjectPath());
-
-    PreferencesManager.convertPreferences(module, {
-        &quot;projectPath&quot;: &quot;user&quot;,
-        &quot;projectTreeState_&quot;: &quot;user&quot;,
-        &quot;welcomeProjects&quot;: &quot;user&quot;,
-        &quot;projectBaseUrl_&quot;: &quot;user&quot;
-    }, true, _checkPreferencePrefix);
-
-    exports.on(&quot;projectOpen&quot;, _reloadProjectPreferencesScope);
-    exports.on(&quot;projectOpen&quot;, _saveProjectPath);
-    exports.on(&quot;beforeAppClose&quot;, _unwatchProjectRoot);
-
-    &#x2F;&#x2F; Due to circular dependencies, not safe to call on() directly for other modules&#39; events
-    EventDispatcher.on_duringInit(FileViewController, &quot;documentSelectionFocusChange&quot;, _documentSelectionFocusChange);
-    EventDispatcher.on_duringInit(FileViewController, &quot;fileViewFocusChange&quot;, _fileViewControllerChange);
-    EventDispatcher.on_duringInit(MainViewManager, &quot;currentFileChange&quot;, _currentFileChange);
-
-    &#x2F;&#x2F; Commands
-    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
-    CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
-    CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
-
-    &#x2F;&#x2F; Define the preference to decide how to sort the Project Tree files
-    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, &quot;boolean&quot;, brackets.platform !== &quot;mac&quot;, {
-        description: Strings.DESCRIPTION_SORT_DIRECTORIES_FIRST
-    })
-        .on(&quot;change&quot;, function () {
-            actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
-        });
-
-    actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1480,7 +1412,36 @@ instead to check for unsaved changes and (optionally) let the user choose the fo
         _renderTree();
 
         ViewUtils.addScrollerShadow($projectTreeContainer[0]);
-    });</code></pre></div><div class="member private">
+    });
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    &#x2F;&#x2F; Init default project path to welcome project
+    PreferencesManager.stateManager.definePreference(&quot;projectPath&quot;, &quot;string&quot;, _getWelcomeProjectPath());
+
+    exports.on(&quot;projectOpen&quot;, _reloadProjectPreferencesScope);
+    exports.on(&quot;projectOpen&quot;, _saveProjectPath);
+    exports.on(&quot;beforeAppClose&quot;, _unwatchProjectRoot);
+
+    &#x2F;&#x2F; Due to circular dependencies, not safe to call on() directly for other modules&#39; events
+    EventDispatcher.on_duringInit(FileViewController, &quot;documentSelectionFocusChange&quot;, _documentSelectionFocusChange);
+    EventDispatcher.on_duringInit(FileViewController, &quot;fileViewFocusChange&quot;, _fileViewControllerChange);
+    EventDispatcher.on_duringInit(MainViewManager, &quot;currentFileChange&quot;, _currentFileChange);
+
+    &#x2F;&#x2F; Commands
+    CommandManager.register(Strings.CMD_OPEN_FOLDER,      Commands.FILE_OPEN_FOLDER,      openProject);
+    CommandManager.register(Strings.CMD_PROJECT_SETTINGS, Commands.FILE_PROJECT_SETTINGS, _projectSettings);
+    CommandManager.register(Strings.CMD_FILE_REFRESH,     Commands.FILE_REFRESH,          refreshFileTree);
+
+    &#x2F;&#x2F; Define the preference to decide how to sort the Project Tree files
+    PreferencesManager.definePreference(SORT_DIRECTORIES_FIRST, &quot;boolean&quot;, brackets.platform !== &quot;mac&quot;, {
+        description: Strings.DESCRIPTION_SORT_DIRECTORIES_FIRST
+    })
+        .on(&quot;change&quot;, function () {
+            actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));
+        });
+
+    actionCreator.setSortDirectoriesFirst(PreferencesManager.get(SORT_DIRECTORIES_FIRST));</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private

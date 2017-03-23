@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (180)</h2>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -328,6 +328,22 @@
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
             </ul>
@@ -336,7 +352,6 @@
               <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="../../modules/preferences/PreferenceStorage.html">PreferenceStorage</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -476,6 +491,7 @@
         <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
         <li><a href="..&#x2F;../modules/extensibility/registry_utils.html">registry_utils</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
     </ul>
@@ -856,6 +872,20 @@ Events:</p>
                 } else if (cur.toLowerCase().indexOf(query) !== -1) {
                     return true;
                 }
+            });
+    };
+
+    ExtensionManagerViewModel.prototype._setSortedExtensionList = function (extensions, isTheme) {
+        this.filterSet = this.sortedFullSet = registry_utils.sortRegistry(extensions, &quot;registryInfo&quot;, PreferencesManager.get(&quot;extensions.sort&quot;))
+            .filter(function (entry) {
+                if (!isTheme) {
+                    return entry.registryInfo &amp;&amp; !entry.registryInfo.metadata.theme;
+                } else {
+                    return entry.registryInfo &amp;&amp; entry.registryInfo.metadata.theme;
+                }
+            })
+            .map(function (entry) {
+                return entry.registryInfo.metadata.name;
             });
     };</code></pre></div><div class="member private">
 
@@ -1239,13 +1269,7 @@ Must be disposed with dispose() when done.</p>
                 self.extensions = ExtensionManager.extensions;
 
                 &#x2F;&#x2F; Sort the registry by last published date and store the sorted list of IDs.
-                self.sortedFullSet = registry_utils.sortRegistry(self.extensions, &quot;registryInfo&quot;)
-                    .filter(function (entry) {
-                        return entry.registryInfo !== undefined &amp;&amp; entry.registryInfo.metadata.theme === undefined;
-                    })
-                    .map(function (entry) {
-                        return entry.registryInfo.metadata.name;
-                    });
+                self._setSortedExtensionList(ExtensionManager.extensions, false);
                 self._setInitialFilter();
             })
             .fail(function () {
@@ -1665,13 +1689,7 @@ Must be disposed with dispose() when done.</p>
                 self.extensions = ExtensionManager.extensions;
 
                 &#x2F;&#x2F; Sort the registry by last published date and store the sorted list of IDs.
-                self.sortedFullSet = registry_utils.sortRegistry(self.extensions, &quot;registryInfo&quot;)
-                    .filter(function (entry) {
-                        return entry.registryInfo !== undefined &amp;&amp; entry.registryInfo.metadata.theme;
-                    })
-                    .map(function (entry) {
-                        return entry.registryInfo.metadata.name;
-                    });
+                self._setSortedExtensionList(ExtensionManager.extensions, true);
                 self._setInitialFilter();
             })
             .fail(function () {
