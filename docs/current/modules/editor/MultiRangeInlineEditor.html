@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>MultiRangeInlineEditor - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,11 +14,21 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>MultiRangeInlineEditor</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (181)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -132,7 +130,7 @@
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -147,17 +145,17 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
@@ -166,7 +164,7 @@
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -174,7 +172,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -192,9 +190,9 @@
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -211,9 +209,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -222,15 +220,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -242,9 +240,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_documents" class="nav nav-list">
@@ -252,75 +250,75 @@
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.language</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;language</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_language" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/node/LauncherDomain.html">LauncherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.html">DocumentObserver</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.html">LiveDevProtocolRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/node/NodeSocketTransportDomain.html">NodeSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport.html">NodeSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.html">NodeSocketTransportRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -328,23 +326,23 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -355,7 +353,7 @@
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -371,7 +369,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -390,15 +388,15 @@
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_search_node" class="nav nav-list">
               <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -434,7 +432,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -451,7 +449,7 @@
               <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
               <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -473,77 +471,82 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>An inline editor for displaying and editing multiple text ranges. Each range corresponds to a
+<h1>MultiRangeInlineEditor</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>An inline editor for displaying and editing multiple text ranges. Each range corresponds to a
 contiguous set of lines in a file.</p>
 <p>In the current implementation, only one range is visible at a time. A list on the right side
 of the editor allows the user to select which range is visible.</p>
 <p>This module does not dispatch any events.</p>
-
-            </div>
-          </section>
-    
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/document/TextRange.html">TextRange</a></li>
-            </ul>
-            
-            
-          </section>
-    
-    
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getPrefsContext</h4>
-              <div class="description"><p>Returns a &#39;context&#39; object for getting/setting project-specific preferences</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getPrefsContext() {
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/document/TextRange.html">TextRange</a></li>
+    </ul>
+
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getPrefsContext</h4>
+
+    
+    <div class="description"><p>Returns a &#39;context&#39; object for getting/setting project-specific preferences</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getPrefsContext() {
         var projectRoot = ProjectManager.getProjectRoot();  &#x2F;&#x2F; note: null during unit tests!
         return { location : { scope: &quot;user&quot;, layer: &quot;project&quot;, layerID: projectRoot &amp;&amp; projectRoot.fullPath } };
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_nextRange</h4>
-              <div class="description"><p>Next Range command handler</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_nextRange</h4>
+
+    
+    <div class="description"><p>Next Range command handler</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _nextRange() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _nextRange() {
         var focusedMultiRangeInlineEditor = getFocusedMultiRangeInlineEditor();
         if (focusedMultiRangeInlineEditor) {
             focusedMultiRangeInlineEditor._selectNextRange();
@@ -557,89 +560,101 @@ of the editor allows the user to select which range is visible.</p>
 
     exports.MultiRangeInlineEditor = MultiRangeInlineEditor;
     exports.getFocusedMultiRangeInlineEditor = getFocusedMultiRangeInlineEditor;
-});</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_parseStyleSize</h4>
-              <div class="description"><p>Remove trailing &quot;px&quot; from a style size value.</p>
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_parseStyleSize</h4>
+
+    
+    <div class="description"><p>Remove trailing &quot;px&quot; from a style size value.</p>
 </div>
-              <dl>
-                  <dt>$target</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">JQuery</dd>
-                  <dd>Element in DOM</dd>
-                  <dt>styleName</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Style name to query</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _parseStyleSize($target, styleName) {
+    
+<dl>
+    <dt>$target</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">JQuery</dd>
+    <dd>Element in DOM</dd>
+    <dt>styleName</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Style name to query</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Style value converted from string to number, removing "px" units</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _parseStyleSize($target, styleName) {
         return parseInt($target.css(styleName), 10);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_previousRange</h4>
-              <div class="description"><p>Previous Range command handler</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_previousRange</h4>
+
+    
+    <div class="description"><p>Previous Range command handler</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _previousRange() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _previousRange() {
         var focusedMultiRangeInlineEditor = getFocusedMultiRangeInlineEditor();
         if (focusedMultiRangeInlineEditor) {
             focusedMultiRangeInlineEditor._selectPreviousRange();
         }
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>getFocusedMultiRangeInlineEditor</h4>
-              <div class="description"><p>Returns the currently focused MultiRangeInlineEditor.</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>getFocusedMultiRangeInlineEditor</h4>
+
+    
+    <div class="description"><p>Returns the currently focused MultiRangeInlineEditor.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function getFocusedMultiRangeInlineEditor() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">MultiRangeInlineEditor</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getFocusedMultiRangeInlineEditor() {
         var focusedWidget = EditorManager.getFocusedInlineWidget();
         if (focusedWidget instanceof MultiRangeInlineEditor) {
             return focusedWidget;
         } else {
             return null;
         }
-    }</code></pre>
-            </div>
+    }</code></pre></div>
+</section>
+
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
             
-          </section>
-          
-          <section class="classes">
-            <h2>Classes</h2>
+            <span class="pull-right scope">Constructor</span>
             
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>SearchResultItem</h4>
-                  <em><p>Stores one search result: its source file, line range, etc. plus the DOM node representing it
+            <h4>SearchResultItem</h4>
+            <em><p>Stores one search result: its source file, line range, etc. plus the DOM node representing it
 in the results list.</p>
 </em>
-                  <dl>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function SearchResultItem(rangeResult) {
+            
+            <dl>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function SearchResultItem(rangeResult) {
         this.name = rangeResult.name;
         this.textRange = new TextRange(rangeResult.document, rangeResult.lineStart, rangeResult.lineEnd);
         &#x2F;&#x2F; this.$listItem is assigned in load()
@@ -656,35 +671,36 @@ in the results list.</p>
         listItem.html(text);
         listItem.attr(&quot;title&quot;, listItem.text());
     }</code></pre>
-                </div>
-      
-      
-                
-              </div>
-              <div class="well">
-                <div class="member public">
-                  <span class="pull-right scope">
-                    Constructor
-                  </span>
-                  <h4>MultiRangeInlineEditor</h4>
-                  <em></em>
-                  <dl>
-                    <dt>ranges</dt>
-                    <dd class="label label-info pull-left">Array.&lt;{name:String,document:Document,lineStart:number,lineEnd:number}&gt;</dd>
-                    <dd>The text ranges to display. Results within the same file are expected to be contiguous in this array.</dd>
-                    <dt>messageCB</dt>
-                    <dd class="label label-info pull-left">function(): $.Promise</dd>
-                    <dd>Optional; returns a promise resolved with a message to show when no matches are available. The message should be already-escaped HTML.</dd>
-                    <dt>labelCB</dt>
-                    <dd class="label label-info pull-left">function(range): string</dd>
-                    <dd>Optional; returns an updated label string for the given range. Called when we detect that the content of a range has changed. The label is plain text, not HTML.</dd>
-                    <dt>fileComparator</dt>
-                    <dd class="label label-info pull-left">function(!File, !File):number</dd>
-                    <dd>Optional comparison function for sorting the results list (based on range.document.file). Defaults to FileUtils.comparePaths().</dd>
-                  </dl>
-                  
-                  <button class="btn btn-small show-code">Show code</button>
-                  <pre class="language-javascript"><code class="language-javascript">    function MultiRangeInlineEditor(ranges, messageCB, labelCB, fileComparator) {
+        </div>
+        
+
+
+    </div>
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>MultiRangeInlineEditor</h4>
+            <em></em>
+            
+            <dl>
+                <dt>ranges</dt>
+                <dd class="label label-info pull-left">Array.&lt;{name:String,document:Document,lineStart:number,lineEnd:number}&gt;</dd>
+                <dd>The text ranges to display. Results within the same file are expected to be contiguous in this array.</dd>
+                <dt>messageCB</dt>
+                <dd class="label label-info pull-left">function(): $.Promise</dd>
+                <dd>Optional; returns a promise resolved with a message to show when no matches are available. The message should be already-escaped HTML.</dd>
+                <dt>labelCB</dt>
+                <dd class="label label-info pull-left">function(range): string</dd>
+                <dd>Optional; returns an updated label string for the given range. Called when we detect that the content of a range has changed. The label is plain text, not HTML.</dd>
+                <dt>fileComparator</dt>
+                <dd class="label label-info pull-left">function(!File, !File):number</dd>
+                <dd>Optional comparison function for sorting the results list (based on range.document.file). Defaults to FileUtils.comparePaths().</dd>
+            </dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function MultiRangeInlineEditor(ranges, messageCB, labelCB, fileComparator) {
         InlineTextEditor.call(this);
 
         &#x2F;&#x2F; Store the results to show in the range list. This creates TextRanges bound to the Document,
@@ -714,119 +730,131 @@ in the results list.</p>
     MultiRangeInlineEditor.prototype.$relatedContainer = null;
     MultiRangeInlineEditor.prototype.$related = null;
     MultiRangeInlineEditor.prototype.$selectedMarker = null;</code></pre>
-                </div>
-      
-                <section class="properties ">
-                  <h3>Properties 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>$rangeList</h4>
-                    <dl>
-                    </dl>
-                    <div class="description"><p>Includes all the _ranges[i].$listItem items, as well as section headers</p>
+        </div>
+        
+        <section class="properties ">
+
+            <h3>Properties 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>$rangeList</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Includes all the _ranges[i].$listItem items, as well as section headers</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.$rangeList = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_$headers</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>!Object.&lt;string, jQueryObject&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"></div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._$headers = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_collapsedFiles</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>!Object.&lt;string, boolean&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Map from fullPath to true if collapsed. May not agree with preferences, in cases where multiple inline editors make
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.$rangeList = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$headers</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>!Object.&lt;string, jQueryObject&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._$headers = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_collapsedFiles</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>!Object.&lt;string, boolean&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Map from fullPath to true if collapsed. May not agree with preferences, in cases where multiple inline editors make
 concurrent changes.</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._collapsedFiles = null;
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._collapsedFiles = null;
 
     MultiRangeInlineEditor.prototype._messageCB = null;
     MultiRangeInlineEditor.prototype._labelCB = null;
-    MultiRangeInlineEditor.prototype._fileComparator = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_ranges</h4>
-                    <dl>
-                      <dt>Type</dt>
-                      <dd>!Array.&lt;SearchResultItem&gt;</dd>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>List of search results. Section headers are not represented in this list (they are implied before each group of
+    MultiRangeInlineEditor.prototype._fileComparator = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_ranges</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>!Array.&lt;SearchResultItem&gt;</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>List of search results. Section headers are not represented in this list (they are implied before each group of
 of consecutive results from the same Document).</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ranges = null;</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_selectedRangeIndex</h4>
-                    <dl>
-                      <dt>Private</dt>
-                    </dl>
-                    <div class="description"><p>Index into this._ranges - indices do not include section headers</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ranges = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_selectedRangeIndex</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Index into this._ranges - indices do not include section headers</p>
 </div>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectedRangeIndex = null;</code></pre>
-                  </div>
-                  
-                </section>
-      
-                <section class="methods">
-                  <h3>Methods 
-                    <label class="checkbox">
-                      <input class="toggle-public" type="checkbox"> Show Private Members
-                    </label>
-                  </h3>
-                  
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_createHeaderItem</h4>
-                    <div class="description"><p>Adds a file section header &lt;li&gt; to the range list UI ($rangeList) and adds it to the this._$headers map</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectedRangeIndex = null;</code></pre></div>
+        </section>
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createHeaderItem</h4>
+
+    
+    <div class="description"><p>Adds a file section header &lt;li&gt; to the range list UI ($rangeList) and adds it to the this._$headers map</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._createHeaderItem = function (doc) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._createHeaderItem = function (doc) {
         var $headerItem = $(&quot;&lt;li class=&#39;section-header&#39;&gt;&lt;span class=&#39;disclosure-triangle expanded&#39;&#x2F;&gt;&lt;span class=&#39;filename&#39;&gt;&quot; + _.escape(doc.file.name) + &quot;&lt;&#x2F;span&gt;&lt;&#x2F;li&gt;&quot;)
             .attr(&quot;title&quot;, ProjectManager.makeProjectRelativeIfPossible(doc.file.fullPath))
             .appendTo(this.$rangeList);
@@ -836,24 +864,24 @@ of consecutive results from the same Document).</p>
         }.bind(this));
 
         this._$headers[doc.file.fullPath] = $headerItem;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_createListItem</h4>
-                    <div class="description"></div>
-                    <dl>
-                      <dt>range</dt>
-                      <dd class="label label-info pull-left">SearchResultItem</dd>
-                      <dd>The range to add.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._createListItem = function (range) {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_createListItem</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>range</dt>
+    <dd class="label label-info pull-left">SearchResultItem</dd>
+    <dd>The range to add.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._createListItem = function (range) {
         var self = this,
             $rangeItem = $(&quot;&lt;li&#x2F;&gt;&quot;);
 
@@ -868,23 +896,23 @@ of consecutive results from the same Document).</p>
         });
 
         range.$listItem = $rangeItem;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_ensureCursorVisible</h4>
-                    <div class="description"><p>Based on the position of the cursor in the inline editor, determine whether we need to change the
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_ensureCursorVisible</h4>
+
+    
+    <div class="description"><p>Based on the position of the cursor in the inline editor, determine whether we need to change the
 vertical scroll position of the host editor to ensure that the cursor is visible.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ensureCursorVisible = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ensureCursorVisible = function () {
         if (!this.editor) {
             return;
         }
@@ -903,62 +931,62 @@ vertical scroll position of the host editor to ensure that the cursor is visible
                 bottom: cursorCoords.bottom - scrollerTop
             });
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_getRanges</h4>
-                    <div class="description"></div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">Array.&lt;SearchResultItem&gt;</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getRanges = function () {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getRanges</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;SearchResultItem&gt;</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getRanges = function () {
         return this._ranges;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_getSelectedRange</h4>
-                    <div class="description"></div>
-                    <dl>
-                    </dl>
-                    <dl>
-                      <dt>Returns: </dt>
-                      <dd class="label label-info pull-left">!SearchResultItem</dd>
-                      <dd></dd>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getSelectedRange = function () {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getSelectedRange</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!SearchResultItem</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._getSelectedRange = function () {
         return this._selectedRangeIndex &gt;= 0 ? this._ranges[this._selectedRangeIndex] : null;
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_onClick</h4>
-                    <div class="description"><p>Prevent clicks in the dead areas of the inlineWidget from changing the focus and insertion point in the editor.
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onClick</h4>
+
+    
+    <div class="description"><p>Prevent clicks in the dead areas of the inlineWidget from changing the focus and insertion point in the editor.
 This is done by detecting clicks in the inlineWidget that are not inside the editor or the range list and
 restoring focus and the insertion point.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onClick = function (event) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onClick = function (event) {
         if (!this.editor) {
             return;
         }
@@ -985,43 +1013,43 @@ restoring focus and the insertion point.</p>
                 }
             }
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_onLostContent</h4>
-                    <div class="description"><p>Overwrite InlineTextEditor&#39;s _onLostContent to do nothing if the document&#39;s file is deleted
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onLostContent</h4>
+
+    
+    <div class="description"><p>Overwrite InlineTextEditor&#39;s _onLostContent to do nothing if the document&#39;s file is deleted
 (deletes are handled via TextRange&#39;s lostSync).</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onLostContent = function (event, cause) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._onLostContent = function (event, cause) {
         &#x2F;&#x2F; Ignore when the editor&#39;s content got lost due to a deleted file
         if (cause &amp;&amp; cause.type === &quot;deleted&quot;) { return; }
         &#x2F;&#x2F; Else yield to the parent&#39;s implementation
         return MultiRangeInlineEditor.prototype.parentClass._onLostContent.apply(this, arguments);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_renderList</h4>
-                    <div class="description"><p>Refresh the contents of $rangeList</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_renderList</h4>
+
+    
+    <div class="description"><p>Refresh the contents of $rangeList</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._renderList = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._renderList = function () {
         this.$rangeList.empty();
         this._$headers = {};
 
@@ -1057,22 +1085,22 @@ restoring focus and the insertion point.</p>
 
         &#x2F;&#x2F; Finalize last section
         finalizeSection();
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_ruleListHeightChanged</h4>
-                    <div class="description"><p>Update inline widget height to reflect changed rule-list height</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_ruleListHeightChanged</h4>
+
+    
+    <div class="description"><p>Update inline widget height to reflect changed rule-list height</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ruleListHeightChanged = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._ruleListHeightChanged = function () {
         &#x2F;&#x2F; Editor&#39;s min height depends on rule list height
         this._updateEditorMinHeight();
 
@@ -1124,23 +1152,23 @@ restoring focus and the insertion point.</p>
         }
 
         this._updateCommands();
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_selectNextPrev</h4>
-                    <div class="description"><p>Move the selection up or down, skipping any collapsed groups. If selection is currently IN a
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_selectNextPrev</h4>
+
+    
+    <div class="description"><p>Move the selection up or down, skipping any collapsed groups. If selection is currently IN a
 collapsed group, we expand it first so that other items in the same file are eligible.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectNextPrev = function (dir) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectNextPrev = function (dir) {
         if (this._selectedRangeIndex === -1) {
             return;
         }
@@ -1164,56 +1192,56 @@ collapsed group, we expand it first so that other items in the same file are eli
         }
         &#x2F;&#x2F; If we got here, we couldn&#39;t find any eligible item - so do nothing. Happens if selection is
         &#x2F;&#x2F; already the first&#x2F;last item, or if all remaining items above&#x2F;below the selection are collapsed.
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_selectNextRange</h4>
-                    <div class="description"><p>Display the next range in the range list</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_selectNextRange</h4>
+
+    
+    <div class="description"><p>Display the next range in the range list</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectNextRange = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectNextRange = function () {
         this._selectNextPrev(1);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_selectPreviousRange</h4>
-                    <div class="description"><p>Display the previous range in the range list</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_selectPreviousRange</h4>
+
+    
+    <div class="description"><p>Display the previous range in the range list</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectPreviousRange = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._selectPreviousRange = function () {
         this._selectNextPrev(-1);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_toggleSection</h4>
-                    <div class="description"><p>Collapses/expands a file section in the range list UI</p>
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_toggleSection</h4>
+
+    
+    <div class="description"><p>Collapses/expands a file section in the range list UI</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._toggleSection = function (fullPath, duringInit) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._toggleSection = function (fullPath, duringInit) {
         var $headerItem = this._$headers[fullPath];
         var $disclosureIcon = $headerItem.find(&quot;.disclosure-triangle&quot;);
         var isCollapsing = $disclosureIcon.hasClass(&quot;expanded&quot;);
@@ -1246,42 +1274,42 @@ collapsed group, we expand it first so that other items in the same file are eli
             });
             this.setSelectedIndex(index);
         }
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_updateCommands</h4>
-                    <div class="description"></div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateCommands = function () {
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateCommands</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateCommands = function () {
         var enabled = (this.hasFocus() &amp;&amp; this._ranges.length &gt; 1);
         _prevMatchCmd.setEnabled(enabled &amp;&amp; this._selectedRangeIndex &gt; 0);
         _nextMatchCmd.setEnabled(enabled &amp;&amp; this._selectedRangeIndex !== -1 &amp;&amp; this._selectedRangeIndex &lt; this._ranges.length - 1);
-    };</code></pre>
-                  </div>
-                  <div class="member private">
-                    <span class="pull-right scope">
-                      Private
-                      
-                    </span>
-                    <h4>_updateEditorMinHeight</h4>
-                    <div class="description"><p>Ensures that the editor&#39;s min-height is set so it never gets shorter than the rule list.
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateEditorMinHeight</h4>
+
+    
+    <div class="description"><p>Ensures that the editor&#39;s min-height is set so it never gets shorter than the rule list.
 This is necessary to make sure the editor&#39;s horizontal scrollbar stays at the bottom of the
 widget.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateEditorMinHeight = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype._updateEditorMinHeight = function () {
         if (!this.editor) {
             return;
         }
@@ -1302,36 +1330,36 @@ widget.</p>
         &#x2F;&#x2F;   respect it (height: 100% doesn&#39;t seem to work properly with min-height on the parent)
         $(this.editor.getScrollerElement())
             .css(&quot;min-height&quot;, (ruleListNaturalHeight - headerHeight) + &quot;px&quot;);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>addAndSelectRange</h4>
-                    <div class="description"><p>Adds a new range to the inline editor and selects it. The range will be inserted
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>addAndSelectRange</h4>
+
+    
+    <div class="description"><p>Adds a new range to the inline editor and selects it. The range will be inserted
 immediately below the last range for the same document, or at the end of the list
 if there are no other ranges for that document.</p>
 </div>
-                    <dl>
-                      <dt>name</dt>
-                      <dd class="label label-info pull-left">string</dd>
-                      <dd>The label for the new range.</dd>
-                      <dt>doc</dt>
-                      <dd class="label label-info pull-left">Document</dd>
-                      <dd>The document the range is in.</dd>
-                      <dt>lineStart</dt>
-                      <dd class="label label-info pull-left">number</dd>
-                      <dd>The starting line of the range, 0-based, inclusive.</dd>
-                      <dt>lineEnd</dt>
-                      <dd class="label label-info pull-left">number</dd>
-                      <dd>The ending line of the range, 0-based, inclusive.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.addAndSelectRange = function (name, doc, lineStart, lineEnd) {
+    
+<dl>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The label for the new range.</dd>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>The document the range is in.</dd>
+    <dt>lineStart</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The starting line of the range, 0-based, inclusive.</dd>
+    <dt>lineEnd</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The ending line of the range, 0-based, inclusive.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.addAndSelectRange = function (name, doc, lineStart, lineEnd) {
         var newRange = new SearchResultItem({
                 name: name,
                 document: doc,
@@ -1403,24 +1431,25 @@ if there are no other ranges for that document.</p>
                 this.$relatedContainer.scrollTop(itemBottom - containerHeight);
             }
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>load</h4>
-                    <div class="description"></div>
-                    <dl>
-                      <dt>hostEditor</dt>
-                      <dd class="label label-info pull-left">Editor</dd>
-                      <dd>Outer Editor instance that inline editor will sit within.</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.load = function (hostEditor) {
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>load</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>hostEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Outer Editor instance that inline editor will sit within.</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.load = function (hostEditor) {
         MultiRangeInlineEditor.prototype.parentClass.load.apply(this, arguments);
 
         &#x2F;&#x2F; Create the message area
@@ -1501,21 +1530,21 @@ if there are no other ranges for that document.</p>
         this.$htmlContent
             .on(&quot;focusin.MultiRangeInlineEditor&quot;, this._updateCommands.bind(this))
             .on(&quot;focusout.MultiRangeInlineEditor&quot;, this._updateCommands.bind(this));
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onAdded</h4>
-                    <div class="description"></div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onAdded = function () {
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onAdded</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onAdded = function () {
         &#x2F;&#x2F; Set the initial position of the selected marker now that we&#39;re laid out.
         this._updateSelectedMarker(false);
 
@@ -1526,22 +1555,22 @@ if there are no other ranges for that document.</p>
         this._ruleListHeightChanged();
 
         this._updateCommands();
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onClosed</h4>
-                    <div class="description"><p>Called any time inline is closed, whether manually (via closeThisInline()) or automatically</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onClosed</h4>
+
+    
+    <div class="description"><p>Called any time inline is closed, whether manually (via closeThisInline()) or automatically</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onClosed = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onClosed = function () {
         &#x2F;&#x2F; Superclass onClosed() destroys editor
         MultiRangeInlineEditor.prototype.parentClass.onClosed.apply(this, arguments);
 
@@ -1553,68 +1582,69 @@ if there are no other ranges for that document.</p>
         &#x2F;&#x2F; Remove event handlers
         this.$htmlContent.off(&quot;.MultiRangeInlineEditor&quot;);
         this.$editorHolder.off(&quot;.MultiRangeInlineEditor&quot;);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>onParentShown</h4>
-                    <div class="description"><p>Called when the editor containing the inline is made visible. Updates UI based on
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>onParentShown</h4>
+
+    
+    <div class="description"><p>Called when the editor containing the inline is made visible. Updates UI based on
 state that might have changed while the editor was hidden.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onParentShown = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.onParentShown = function () {
         MultiRangeInlineEditor.prototype.parentClass.onParentShown.apply(this, arguments);
         this._updateSelectedMarker(false);
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>refresh</h4>
-                    <div class="description"><p>Refreshes the height of the inline editor and all child editors.</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>refresh</h4>
+
+    
+    <div class="description"><p>Refreshes the height of the inline editor and all child editors.</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.refresh = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.refresh = function () {
         MultiRangeInlineEditor.prototype.parentClass.refresh.apply(this, arguments);
         this.sizeInlineWidgetToContents();
         if (this.editor) {
             this.editor.refresh();
         }
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>setSelectedIndex</h4>
-                    <div class="description"><p>Specify the range that is shown in the editor.</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>setSelectedIndex</h4>
+
+    
+    <div class="description"><p>Specify the range that is shown in the editor.</p>
 </div>
-                    <dl>
-                      <dt>index</dt>
-                      <dd class="label label-info pull-left">number</dd>
-                      <dd>The index of the range to select, or -1 to deselect all. Index into this._ranges, so section headers are not included in the sequence.</dd>
-                      <dt>force</dt>
-                      <dd class="label label-info pull-left">boolean</dd>
-                      <dd>Whether to re-select the item even if we think it's already selected (used if the range list has changed).</dd>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.setSelectedIndex = function (index, force) {
+    
+<dl>
+    <dt>index</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>The index of the range to select, or -1 to deselect all. Index into this._ranges, so section headers are not included in the sequence.</dd>
+    <dt>force</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether to re-select the item even if we think it's already selected (used if the range list has changed).</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.setSelectedIndex = function (index, force) {
         var newIndex = Math.min(Math.max(-1, index), this._ranges.length - 1),
             self = this;
 
@@ -1673,22 +1703,22 @@ state that might have changed while the editor was hidden.</p>
         }
 
         this._updateCommands();
-    };</code></pre>
-                  </div>
-                  <div class="member">
-                    <span class="pull-right scope">
-                      
-                      
-                    </span>
-                    <h4>sizeInlineWidgetToContents</h4>
-                    <div class="description"><p>Sizes the inline widget height to be the maximum between the range list height and the editor height</p>
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>sizeInlineWidgetToContents</h4>
+
+    
+    <div class="description"><p>Sizes the inline widget height to be the maximum between the range list height and the editor height</p>
 </div>
-                    <dl>
-                    </dl>
-                    <dl>
-                    </dl>
-                    <button class="btn btn-small show-code">Show code</button>
-                    <pre class="language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents = function () {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents = function () {
         &#x2F;&#x2F; Size the code mirror editors height to the editor content
         MultiRangeInlineEditor.prototype.parentClass.sizeInlineWidgetToContents.call(this);
 
@@ -1700,14 +1730,12 @@ state that might have changed while the editor was hidden.</p>
         if (widgetHeight) {
             this.hostEditor.setInlineWidgetHeight(this, widgetHeight, false);
         }
-    };</code></pre>
-                  </div>
-                </section>
-                
-              </div>
-            
-          </section>
-          
+    };</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

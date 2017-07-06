@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>DocumentCommandHandlers - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,11 +14,21 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>DocumentCommandHandlers</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (181)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -132,7 +130,7 @@
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -147,17 +145,17 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
@@ -166,7 +164,7 @@
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -174,7 +172,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -192,9 +190,9 @@
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -211,9 +209,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -222,15 +220,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -242,9 +240,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_documents" class="nav nav-list">
@@ -252,75 +250,75 @@
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.language</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;language</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_language" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/node/LauncherDomain.html">LauncherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.html">DocumentObserver</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.html">LiveDevProtocolRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/node/NodeSocketTransportDomain.html">NodeSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport.html">NodeSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.html">NodeSocketTransportRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -328,23 +326,23 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -355,7 +353,7 @@
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -371,7 +369,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -390,15 +388,15 @@
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_search_node" class="nav nav-list">
               <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -434,7 +432,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -451,7 +449,7 @@
               <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
               <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -473,388 +471,412 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              
-            </div>
-          </section>
+<h1>DocumentCommandHandlers</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-              <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-              <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
-              <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
-              <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
-              <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
-              <li><a href="..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
-              <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
-              <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
-              <li><a href="..&#x2F;../modules/widgets/PopUpManager.html">PopUpManager</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-              <li><a href="..&#x2F;../modules/utils/UrlParams.html">UrlParams</a></li>
-              <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
-            </ul>
-            
-            
-          </section>
+    <div></div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/project/FileViewController.html">FileViewController</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+        <li><a href="..&#x2F;../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Menus.html">Menus</a></li>
+        <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
+        <li><a href="..&#x2F;../modules/widgets/PopUpManager.html">PopUpManager</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/UrlParams.html">UrlParams</a></li>
+        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>USER_CANCELED</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Unique token used to indicate user-driven cancellation of Save As (as opposed to file IO error)</p>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>USER_CANCELED</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Unique token used to indicate user-driven cancellation of Save As (as opposed to file IO error)</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var USER_CANCELED = { userCanceled: true };
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var USER_CANCELED = { userCanceled: true };
 
     PreferencesManager.definePreference(&quot;defaultExtension&quot;, &quot;string&quot;, &quot;&quot;, {
         excludeFromHints: true
-    });</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>WINDOW_TITLE_STRING_DOC</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                </dl>
-                <div class="description"><p>String template for window title when a file is open.</p>
+    });</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>WINDOW_TITLE_STRING_DOC</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl>
+    <div class="description"><p>String template for window title when a file is open.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var WINDOW_TITLE_STRING_DOC = &quot;{0} ({1}) &quot; + _osDash + &quot; {2}&quot;;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>WINDOW_TITLE_STRING_NO_DOC</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                </dl>
-                <div class="description"><p>String template for window title when no file is open.</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var WINDOW_TITLE_STRING_DOC = &quot;{0} ({1}) &quot; + _osDash + &quot; {2}&quot;;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>WINDOW_TITLE_STRING_NO_DOC</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl>
+    <div class="description"><p>String template for window title when no file is open.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var WINDOW_TITLE_STRING_NO_DOC = &quot;{0} &quot; + _osDash + &quot; {1}&quot;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_$dirtydot</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Container for dirty dot; must be an inline element</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var WINDOW_TITLE_STRING_NO_DOC = &quot;{0} &quot; + _osDash + &quot; {1}&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$dirtydot</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Container for dirty dot; must be an inline element</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _$dirtydot = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_$title</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Container for label shown above editor; must be an inline element</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _$dirtydot = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$title</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Container for label shown above editor; must be an inline element</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _$title = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_$titleContainerToolbar</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Container for _$titleWrapper; if changing title changes this element&#39;s height, must kick editor to resize</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _$title = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$titleContainerToolbar</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Container for _$titleWrapper; if changing title changes this element&#39;s height, must kick editor to resize</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _$titleContainerToolbar = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_$titleWrapper</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>jQueryObject</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Container for _$title; need not be an inline element</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _$titleContainerToolbar = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_$titleWrapper</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>jQueryObject</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Container for _$title; need not be an inline element</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _$titleWrapper = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_addedNavKeyHandler</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Are we already listening for a keyup to call detectDocumentNavEnd()?</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _$titleWrapper = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_addedNavKeyHandler</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Are we already listening for a keyup to call detectDocumentNavEnd()?</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _addedNavKeyHandler = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_currentTitlePath</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Label shown above editor for current document: filename and potentially some of its path</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _addedNavKeyHandler = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_currentTitlePath</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Label shown above editor for current document: filename and potentially some of its path</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _currentTitlePath = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_defaultOpenDialogFullPath</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _defaultOpenDialogFullPath = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_isReloading</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>boolean</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>prevents reentrancy of browserReload()</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _currentTitlePath = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_defaultOpenDialogFullPath</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _defaultOpenDialogFullPath = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_isReloading</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>boolean</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>prevents reentrancy of browserReload()</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _isReloading = false;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_lastToolbarHeight</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>number</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Last known height of _$titleContainerToolbar</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _isReloading = false;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_lastToolbarHeight</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Last known height of _$titleContainerToolbar</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _lastToolbarHeight = null;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_nextUntitledIndexToUse</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>number</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>index to use for next, new Untitled document</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _lastToolbarHeight = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_nextUntitledIndexToUse</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>number</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>index to use for next, new Untitled document</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _nextUntitledIndexToUse = 1;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_osDash</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>string</dd>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"><p>Determine the dash character for each platform. Use emdash on Mac
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _nextUntitledIndexToUse = 1;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_osDash</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Determine the dash character for each platform. Use emdash on Mac
 and a standard dash on all other platforms.</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _osDash = brackets.platform === &quot;mac&quot; ? &quot;\u2014&quot; : &quot;-&quot;;</code></pre>
-              </div>
-              <div class="member private">
-      
-                <span class="pull-right scope">
-                  Private
-                  
-                </span>
-                <h4>_windowGoingAway</h4>
-                <dl>
-                    <dt>Private</dt>
-                </dl>
-                <div class="description"></div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var _windowGoingAway = false;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>fileNewInProgress</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Prevents re-entrancy into handleFileNewInProject()</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _osDash = brackets.platform === &quot;mac&quot; ? &quot;\u2014&quot; : &quot;-&quot;;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_windowGoingAway</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _windowGoingAway = false;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>fileNewInProgress</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Prevents re-entrancy into handleFileNewInProject()</p>
 <p>handleFileNewInProject() first prompts the user to name a file and then asynchronously writes the file when the
 filename field loses focus. This boolean prevent additional calls to handleFileNewInProject() when an existing
 file creation call is outstanding</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var fileNewInProgress = false;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>handleFileSaveAs</h4>
-                <dl>
-                    <dt>Type</dt>
-                      <dd>function</dd>
-                </dl>
-                <div class="description"><p>JSLint workaround for circular dependency</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var handleFileSaveAs;</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>handleReloadWithoutExts</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Reload Without Extensions commnad handler *</p>
-</div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var handleReloadWithoutExts = _.partial(handleReload, true);</code></pre>
-              </div>
-              
-            </section>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var fileNewInProgress = false;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_closeList</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>list</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
-                  <dd>- the list of files to close</dd>
-                  <dt>promptOnly</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- true to just prompt for saving documents with actually closing them.</dd>
-                  <dt>_forceClose</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>Whether to force all the documents to close even if they have unsaved changes. For unit testing only.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _closeList(list, promptOnly, _forceClose) {
+    
+</span>
+    <h4>handleFileSaveAs</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>function</dd>
+</dl>
+    <div class="description"><p>JSLint workaround for circular dependency</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var handleFileSaveAs;</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleReloadWithoutExts</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Reload Without Extensions commnad handler *</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var handleReloadWithoutExts = _.partial(handleReload, true);</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_closeList</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>list</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd>- the list of files to close</dd>
+    <dt>promptOnly</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- true to just prompt for saving documents with actually closing them.</dd>
+    <dt>_forceClose</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether to force all the documents to close even if they have unsaved changes. For unit testing only.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
+    <dd>promise that is resolved or rejected when the function finishes.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _closeList(list, promptOnly, _forceClose) {
         var result      = new $.Deferred(),
             unsavedDocs = [];
 
@@ -935,20 +957,25 @@ file creation call is outstanding</p>
         });
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_disableCache</h4>
-              <div class="description"><p>Disables Brackets&#39; cache via the remote debugging protocol.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_disableCache</h4>
+
+    
+    <div class="description"><p>Disables Brackets&#39; cache via the remote debugging protocol.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _disableCache() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>A jQuery promise that will be resolved when the cache is disabled and be rejected in any other case</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _disableCache() {
         var result = new $.Deferred();
 
         if (brackets.inBrowser) {
@@ -979,35 +1006,40 @@ file creation call is outstanding</p>
         }
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_doOpen</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>silent</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, don't show error message</dd>
-                  <dt>paneId,</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>the id oi the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE.</dd>
-                  <dt>options,</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">{*}</dd>
-                  <dd>command options</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doOpen(fullPath, silent, paneId, options) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doOpen</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>silent</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, don't show error message</dd>
+    <dt>paneId,</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>the id oi the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE.</dd>
+    <dt>options,</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">{*}</dd>
+    <dd>command options</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will either - be resolved with a file for the specified file path or - be rejected with FileSystemError if the file can not be read. If paneId is undefined, the ACTIVE_PANE constant</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doOpen(fullPath, silent, paneId, options) {
         var result = new $.Deferred();
 
         &#x2F;&#x2F; workaround for https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;6001
@@ -1073,35 +1105,40 @@ file creation call is outstanding</p>
         }
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_doOpenWithOptionalPath</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>fullPath</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- The path of the file to open; if it's null we'll prompt for it</dd>
-                  <dt>silent</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- If true, don't show error message</dd>
-                  <dt>paneId</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE</dd>
-                  <dt>options</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">{*}</dd>
-                  <dd>- options to pass to MainViewManager._open</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doOpenWithOptionalPath(fullPath, silent, paneId, options) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doOpenWithOptionalPath</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>fullPath</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- The path of the file to open; if it's null we'll prompt for it</dd>
+    <dt>silent</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- If true, don't show error message</dd>
+    <dt>paneId</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- the pane in which to open the file. Can be undefined, a valid pane id or ACTIVE_PANE</dd>
+    <dt>options</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">{*}</dd>
+    <dd>- options to pass to MainViewManager._open</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise resolved with a Document object or rejected with an err</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doOpenWithOptionalPath(fullPath, silent, paneId, options) {
         var result;
         paneId = paneId || MainViewManager.ACTIVE_PANE;
         if (!fullPath) {
@@ -1145,28 +1182,33 @@ file creation call is outstanding</p>
         }
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_doRevert</h4>
-              <div class="description"><p>Reverts the Document to the current contents of its file on disk. Discards any unsaved changes
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doRevert</h4>
+
+    
+    <div class="description"><p>Reverts the Document to the current contents of its file on disk. Discards any unsaved changes
 in the Document.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-                  <dt>suppressError</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>If true, then a failure to read the file will be ignored and the resulting promise will be resolved rather than rejected.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doRevert(doc, suppressError) {
+    
+<dl>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+    <dt>suppressError</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>If true, then a failure to read the file will be ignored and the resulting promise will be resolved rather than rejected.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a Promise that's resolved when done, or (if suppressError is false) rejected with a FileSystemError if the file cannot be read (after showing an error dialog to the user).</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doRevert(doc, suppressError) {
         var result = new $.Deferred();
 
         FileUtils.readAsText(doc.file)
@@ -1186,31 +1228,36 @@ in the Document.</p>
             });
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_doSaveAs</h4>
-              <div class="description"><p>Opens the native OS save as dialog and saves document.
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_doSaveAs</h4>
+
+    
+    <div class="description"><p>Opens the native OS save as dialog and saves document.
 The original document is reverted in case it was dirty.
 Text selection and cursor position from the original document
 are preserved in the new document.
 When saving to the original document the document is saved as if save was called.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-                  <dt>settings</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{cursorPos:!Object, selection:!Object, scrollPos:!Object}</dd>
-                  <dd>- properties of the original document's editor that need to be carried over to the new document i.e. scrollPos, cursorPos and text selection</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _doSaveAs(doc, settings) {
+    
+<dl>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+    <dt>settings</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{cursorPos:!Object, selection:!Object, scrollPos:!Object}</dd>
+    <dd>- properties of the original document's editor that need to be carried over to the new document i.e. scrollPos, cursorPos and text selection</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved with the saved document's File. Rejected in case of IO error (after error dialog dismissed), or if the Save dialog was canceled.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _doSaveAs(doc, settings) {
         var origPath,
             saveAsDefaultPath,
             defaultName,
@@ -1355,28 +1402,33 @@ When saving to the original document the document is saved as if save was called
             result.reject();
         }
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getUntitledFileSuggestion</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>dir</dt>
-                  <dd class="label label-info pull-left">Directory</dd>
-                  <dd>The directory to use</dd>
-                  <dt>baseFileName</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The base to start with, "-n" will get appended to make unique</dd>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>True if the suggestion is for a folder name</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getUntitledFileSuggestion(dir, baseFileName, isFolder) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getUntitledFileSuggestion</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>dir</dt>
+    <dd class="label label-info pull-left">Directory</dd>
+    <dd>The directory to use</dd>
+    <dt>baseFileName</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The base to start with, "-n" will get appended to make unique</dd>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>True if the suggestion is for a folder name</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with a unique name starting with the given base name</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getUntitledFileSuggestion(dir, baseFileName, isFolder) {
         var suggestedName   = baseFileName + &quot;-&quot; + _nextUntitledIndexToUse++,
             deferred        = $.Deferred();
 
@@ -1399,23 +1451,25 @@ When saving to the original document the document is saved as if save was called
         }
 
         return deferred.promise();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_handleNewItemInProject</h4>
-              <div class="description"><p>Bottleneck function for creating new files and folders in the project tree.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleNewItemInProject</h4>
+
+    
+    <div class="description"><p>Bottleneck function for creating new files and folders in the project tree.</p>
 </div>
-              <dl>
-                  <dt>isFolder</dt>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- true if creating a new folder, false if creating a new file</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _handleNewItemInProject(isFolder) {
+    
+<dl>
+    <dt>isFolder</dt>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- true if creating a new folder, false if creating a new file</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleNewItemInProject(isFolder) {
         if (fileNewInProgress) {
             ProjectManager.forceFinishRename();
             return;
@@ -1447,30 +1501,32 @@ When saving to the original document the document is saved as if save was called
 
         return _getUntitledFileSuggestion(baseDirEntry, Strings.UNTITLED, isFolder)
             .then(createWithSuggestedName, createWithSuggestedName.bind(undefined, Strings.UNTITLED));
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_handleWindowGoingAway</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>commandData</dt>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>- (not referenced)</dd>
-                  <dt>postCloseHandler</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function()</dd>
-                  <dd>- called after close</dd>
-                  <dt>failHandler</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">function()</dd>
-                  <dd>- called when the save fails to cancel closing the window</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _handleWindowGoingAway(commandData, postCloseHandler, failHandler) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_handleWindowGoingAway</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>commandData</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>- (not referenced)</dd>
+    <dt>postCloseHandler</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function()</dd>
+    <dd>- called after close</dd>
+    <dt>failHandler</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function()</dd>
+    <dd>- called when the save fails to cancel closing the window</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _handleWindowGoingAway(commandData, postCloseHandler, failHandler) {
         if (_windowGoingAway) {
             &#x2F;&#x2F;if we get called back while we&#39;re closing, then just return
             return (new $.Deferred()).reject().promise();
@@ -1496,23 +1552,28 @@ When saving to the original document the document is saved as if save was called
                     failHandler();
                 }
             });
-    }</code></pre>
-            </div>
-            <div class="member private public">
-              <span class="pull-right scope">
-                Private
-                Public API
-              </span>
-              <h4>_parseDecoratedPath</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>path</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>- a string of the form "fullpath[:lineNumber[:columnNumber]]"</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _parseDecoratedPath(path) {
+    }</code></pre></div><div class="member private public">
+
+<span class="pull-right scope">
+    Private
+    Public API
+</span>
+    <h4>_parseDecoratedPath</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>path</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- a string of the form "fullpath[:lineNumber[:columnNumber]]"</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{path: string,line: ?number,column: ?number}</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _parseDecoratedPath(path) {
         var result = {path: path, line: null, column: null};
         if (path) {
             &#x2F;&#x2F; If the path has a trailing :lineNumber and :columnNumber, strip
@@ -1529,29 +1590,34 @@ When saving to the original document the document is saved as if save was called
             }
         }
         return result;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_saveFileList</h4>
-              <div class="description"><p>Saves all unsaved documents corresponding to &#39;fileList&#39;. Returns a Promise that will be resolved
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_saveFileList</h4>
+
+    
+    <div class="description"><p>Saves all unsaved documents corresponding to &#39;fileList&#39;. Returns a Promise that will be resolved
 once ALL the save operations have been completed. If ANY save operation fails, an error dialog is
 immediately shown but after dismissing we continue saving the other files; after all files have
 been processed, the Promise is rejected if any ONE save operation failed (the error given is the
 first one encountered). If the user cancels any Save As dialog (for untitled files), the
 Promise is immediately rejected.</p>
 </div>
-              <dl>
-                  <dt>fileList</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _saveFileList(fileList) {
+    
+<dl>
+    <dt>fileList</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!$.Promise</dd>
+    <dd>Resolved with {!Array.<File>}, which may differ from 'fileList' if any of the files were Unsaved documents. Or rejected with {?FileSystemError}.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _saveFileList(fileList) {
         &#x2F;&#x2F; Do in serial because doSave shows error UI for each file, and we don&#39;t want to stack
         &#x2F;&#x2F; multiple dialogs on top of each other
         var userCanceled = false,
@@ -1588,23 +1654,28 @@ Promise is immediately rejected.</p>
         ).then(function () {
             return filesAfterSave;
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_shortTitleForDocument</h4>
-              <div class="description"><p>Returns a short title for a given document.</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_shortTitleForDocument</h4>
+
+    
+    <div class="description"><p>Returns a short title for a given document.</p>
 </div>
-              <dl>
-                  <dt>doc</dt>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd>- the document to compute the short title for</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _shortTitleForDocument(doc) {
+    
+<dl>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd>- the document to compute the short title for</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>- a short title for doc.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _shortTitleForDocument(doc) {
         var fullPath = doc.file.fullPath;
 
         &#x2F;&#x2F; If the document is untitled then return the filename, (&quot;Untitled-n.ext&quot;);
@@ -1615,25 +1686,30 @@ Promise is immediately rejected.</p>
         } else {
             return ProjectManager.makeProjectRelativeIfPossible(fullPath);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_showSaveFileError</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>name</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-                  <dt>path</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _showSaveFileError(name, path) {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_showSaveFileError</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>name</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Dialog</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _showSaveFileError(name, path) {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.ERROR_SAVING_FILE_TITLE,
@@ -1643,20 +1719,22 @@ Promise is immediately rejected.</p>
                 FileUtils.getFileErrorString(name)
             )
         );
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateTitle</h4>
-              <div class="description"><p>Updates the title bar with new file title or dirty indicator</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateTitle</h4>
+
+    
+    <div class="description"><p>Updates the title bar with new file title or dirty indicator</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateTitle() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateTitle() {
         var currentDoc          = DocumentManager.getCurrentDocument(),
             windowTitle         = brackets.config.app_title,
             currentlyViewedPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
@@ -1710,23 +1788,25 @@ Promise is immediately rejected.</p>
             }
         }
         window.document.title = windowTitle;
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>browserReload</h4>
-              <div class="description"><p>Does a full reload of the browser window</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>browserReload</h4>
+
+    
+    <div class="description"><p>Does a full reload of the browser window</p>
 </div>
-              <dl>
-                  <dt>href</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>The url to reload into the window</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function browserReload(href) {
+    
+<dl>
+    <dt>href</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>The url to reload into the window</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function browserReload(href) {
         if (_isReloading) {
             return;
         }
@@ -1763,53 +1843,60 @@ Promise is immediately rejected.</p>
         }).fail(function () {
             _isReloading = false;
         });
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>detectDocumentNavEnd</h4>
-              <div class="description"><p>When the Ctrl key is released, if we were in the middle of a next/prev document navigation
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>detectDocumentNavEnd</h4>
+
+    
+    <div class="description"><p>When the Ctrl key is released, if we were in the middle of a next/prev document navigation
 sequence, now is the time to end it and update the MRU order. If we allowed the order to update
 on every next/prev increment, the 1st &amp; 2nd entries would just switch places forever and we&#39;d
 never get further down the list.</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">jQueryEvent</dd>
-                  <dd>Key-up event</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function detectDocumentNavEnd(event) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">jQueryEvent</dd>
+    <dd>Key-up event</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function detectDocumentNavEnd(event) {
         if (event.keyCode === KeyEvent.DOM_VK_CONTROL) {  &#x2F;&#x2F; Ctrl key
             MainViewManager.endTraversal();
             _addedNavKeyHandler = false;
             $(window.document.body).off(&quot;keyup&quot;, detectDocumentNavEnd);
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>doSave</h4>
-              <div class="description"><p>Saves a document to its existing path. Does NOT support untitled documents.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>doSave</h4>
+
+    
+    <div class="description"><p>Saves a document to its existing path. Does NOT support untitled documents.</p>
 </div>
-              <dl>
-                  <dt>docToSave</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">Document</dd>
-                  <dd></dd>
-                  <dt>force</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>Ignore CONTENTS_MODIFIED errors from the FileSystem</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function doSave(docToSave, force) {
+    
+<dl>
+    <dt>docToSave</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
+    <dd></dd>
+    <dt>force</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Ignore CONTENTS_MODIFIED errors from the FileSystem</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved with the File of docToSave (to mirror the API of _doSaveAs()). Rejected in case of IO error (after error dialog dismissed).</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function doSave(docToSave, force) {
         var result = new $.Deferred(),
             file = docToSave.file;
 
@@ -1900,28 +1987,30 @@ never get further down the list.</p>
             MainViewManager.focusActivePane();
         });
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>goNextPrevDoc</h4>
-              <div class="description"><p>Navigate to the next/previous (MRU or list order) document. Don&#39;t update MRU order yet</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>goNextPrevDoc</h4>
+
+    
+    <div class="description"><p>Navigate to the next/previous (MRU or list order) document. Don&#39;t update MRU order yet</p>
 </div>
-              <dl>
-                  <dt>inc</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>Delta indicating in which direction we're going</dd>
-                  <dt>listOrder</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>Whether to navigate using MRU or list order. Defaults to MRU order</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function goNextPrevDoc(inc, listOrder) {
+    
+<dl>
+    <dt>inc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Delta indicating in which direction we're going</dd>
+    <dt>listOrder</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>Whether to navigate using MRU or list order. Defaults to MRU order</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function goNextPrevDoc(inc, listOrder) {
         var result;
         if (listOrder) {
             result = MainViewManager.traverseToNextViewInListOrder(inc);
@@ -1943,48 +2032,54 @@ never get further down the list.</p>
                 $(window.document.body).keyup(detectDocumentNavEnd);
             }
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>handleAbortQuit</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleAbortQuit() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>handleAbortQuit</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleAbortQuit() {
         _windowGoingAway = false;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>handleBeforeMenuPopup</h4>
-              <div class="description"></div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleBeforeMenuPopup() {
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>handleBeforeMenuPopup</h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleBeforeMenuPopup() {
         PopUpManager.trigger(&quot;beforeMenuPopup&quot;);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleCurrentFileChange</h4>
-              <div class="description"><p>Handles currentFileChange and filenameChanged events and updates the titlebar</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleCurrentFileChange</h4>
+
+    
+    <div class="description"><p>Handles currentFileChange and filenameChanged events and updates the titlebar</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleCurrentFileChange() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleCurrentFileChange() {
         var newFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
 
         if (newFile) {
@@ -2001,42 +2096,49 @@ never get further down the list.</p>
 
         &#x2F;&#x2F; Update title text &amp; &quot;dirty dot&quot; display
         _updateTitle();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleDirtyChange</h4>
-              <div class="description"><p>Handles dirtyFlagChange event and updates the title bar if necessary</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleDirtyChange</h4>
+
+    
+    <div class="description"><p>Handles dirtyFlagChange event and updates the title bar if necessary</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleDirtyChange(event, changedDoc) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleDirtyChange(event, changedDoc) {
         var currentDoc = DocumentManager.getCurrentDocument();
 
         if (currentDoc &amp;&amp; changedDoc.file.fullPath === currentDoc.file.fullPath) {
             _updateTitle();
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleDocumentOpen</h4>
-              <div class="description"><p>Opens the given file, makes it the current file, does NOT add it to the workingset</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleDocumentOpen</h4>
+
+    
+    <div class="description"><p>Opens the given file, makes it the current file, does NOT add it to the workingset</p>
 </div>
-              <dl>
-                  <dt>commandData</dt>
-                  <dd class="label label-info pull-left">FileCommandData</dd>
-                  <dd>fullPath: File to open; silent: optional flag to suppress error messages; paneId: optional PaneId (defaults to active pane)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleDocumentOpen(commandData) {
+    
+<dl>
+    <dt>commandData</dt>
+    <dd class="label label-info pull-left">FileCommandData</dd>
+    <dd>fullPath: File to open; silent: optional flag to suppress error messages; paneId: optional PaneId (defaults to active pane)</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with @type {Document}</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleDocumentOpen(commandData) {
         var result = new $.Deferred();
         handleFileOpen(commandData)
             .done(function (file) {
@@ -2053,23 +2155,29 @@ never get further down the list.</p>
 
         return result.promise();
 
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileAddToWorkingSet</h4>
-              <div class="description"></div>
-              <dl>
-                  <dt>commandData</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">PaneCommandData</dd>
-                  <dd>- record with the following properties: fullPath: File to open; index: optional index to position in workingset (defaults to last); silent: optional flag to suppress error messages; forceRedraw: flag to force the working set view redraw; paneId: optional PaneId (defaults to active pane)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileAddToWorkingSet(commandData) {
+    }</code></pre></div><div class="member deprecated">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>handleFileAddToWorkingSet</h4>
+
+<div class="alert alert-error">Opens the given file, makes it the current document, AND adds it to the workingset</div>
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>commandData</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">PaneCommandData</dd>
+    <dd>- record with the following properties: fullPath: File to open; index: optional index to position in workingset (defaults to last); silent: optional flag to suppress error messages; forceRedraw: flag to force the working set view redraw; paneId: optional PaneId (defaults to active pane)</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with @type {File}</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileAddToWorkingSet(commandData) {
         &#x2F;&#x2F; This is a legacy deprecated command that
         &#x2F;&#x2F;  will use the new command and resolve with a document
         &#x2F;&#x2F;  as the legacy command would only support.
@@ -2090,48 +2198,58 @@ never get further down the list.</p>
             });
 
         return result.promise();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileAddToWorkingSetAndOpen</h4>
-              <div class="description"><p>Opens the given file, makes it the current file, AND adds it to the workingset</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileAddToWorkingSetAndOpen</h4>
+
+    
+    <div class="description"><p>Opens the given file, makes it the current file, AND adds it to the workingset</p>
 </div>
-              <dl>
-                  <dt>commandData</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">PaneCommandData</dd>
-                  <dd>- record with the following properties: fullPath: File to open; index: optional index to position in workingset (defaults to last); silent: optional flag to suppress error messages; forceRedraw: flag to force the working set view redraw; paneId: optional PaneId (defaults to active pane)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileAddToWorkingSetAndOpen(commandData) {
+    
+<dl>
+    <dt>commandData</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">PaneCommandData</dd>
+    <dd>- record with the following properties: fullPath: File to open; index: optional index to position in workingset (defaults to last); silent: optional flag to suppress error messages; forceRedraw: flag to force the working set view redraw; paneId: optional PaneId (defaults to active pane)</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with a @type {File}</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileAddToWorkingSetAndOpen(commandData) {
         return handleFileOpen(commandData).done(function (file) {
             var paneId = (commandData &amp;&amp; commandData.paneId) || MainViewManager.ACTIVE_PANE;
             MainViewManager.addToWorkingSet(paneId, file, commandData.index, commandData.forceRedraw);
             HealthLogger.fileOpened(file.fullPath, true);
         });
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileClose</h4>
-              <div class="description"><p>Closes the specified file: removes it from the workingset, and closes the main editor if one
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileClose</h4>
+
+    
+    <div class="description"><p>Closes the specified file: removes it from the workingset, and closes the main editor if one
 is open. Prompts user about saving changes first, if document is dirty.</p>
 </div>
-              <dl>
-                  <dt>commandData</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{file: File, promptOnly:boolean}</dd>
-                  <dd>Optional bag of arguments: file - File to close; assumes the current document if not specified. promptOnly - If true, only displays the relevant confirmation UI and does NOT actually close the document. This is useful when chaining file-close together with other user prompts that may be cancelable. _forceClose - If true, closes the document without prompting even if there are unsaved changes. Only for use in unit tests.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileClose(commandData) {
+    
+<dl>
+    <dt>commandData</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{file: File, promptOnly:boolean}</dd>
+    <dd>Optional bag of arguments: file - File to close; assumes the current document if not specified. promptOnly - If true, only displays the relevant confirmation UI and does NOT actually close the document. This is useful when chaining file-close together with other user prompts that may be cancelable. _forceClose - If true, closes the document without prompting even if there are unsaved changes. Only for use in unit tests.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved when the file is closed, or if no file is open. FUTURE: should we reject the promise if no file is open?</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileClose(commandData) {
         var file,
             promptOnly,
             _forceClose,
@@ -2243,64 +2361,76 @@ is open. Prompts user about saving changes first, if document is dirty.</p>
             result.resolve();
         }
         return promise;
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileCloseAll</h4>
-              <div class="description"><p>Closes all open files; equivalent to calling handleFileClose() for each document, except
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileCloseAll</h4>
+
+    
+    <div class="description"><p>Closes all open files; equivalent to calling handleFileClose() for each document, except
 that unsaved changes are confirmed once, in bulk.</p>
 </div>
-              <dl>
-                  <dt>If</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{promptOnly: boolean, _forceClose: boolean}</dd>
-                  <dd>promptOnly is true, only displays the relevant confirmation UI and does NOT actually close any documents. This is useful when chaining close-all together with other user prompts that may be cancelable. If _forceClose is true, forces the files to close with no confirmation even if dirty. Should only be used for unit test cleanup.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileCloseAll(commandData) {
+    
+<dl>
+    <dt>If</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{promptOnly: boolean, _forceClose: boolean}</dd>
+    <dd>promptOnly is true, only displays the relevant confirmation UI and does NOT actually close any documents. This is useful when chaining close-all together with other user prompts that may be cancelable. If _forceClose is true, forces the files to close with no confirmation even if dirty. Should only be used for unit test cleanup.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved when all files are closed</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileCloseAll(commandData) {
         return _closeList(MainViewManager.getAllOpenFiles(),
                                     (commandData &amp;&amp; commandData.promptOnly), (commandData &amp;&amp; commandData._forceClose));
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileCloseList</h4>
-              <div class="description"><p>Closes a list of open files; equivalent to calling handleFileClose() for each document, except
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileCloseList</h4>
+
+    
+    <div class="description"><p>Closes a list of open files; equivalent to calling handleFileClose() for each document, except
 that unsaved changes are confirmed once, in bulk.</p>
 </div>
-              <dl>
-                  <dt>If</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{promptOnly: boolean, _forceClose: boolean}</dd>
-                  <dd>promptOnly is true, only displays the relevant confirmation UI and does NOT actually close any documents. This is useful when chaining close-all together with other user prompts that may be cancelable. If _forceClose is true, forces the files to close with no confirmation even if dirty. Should only be used for unit test cleanup.</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileCloseList(commandData) {
+    
+<dl>
+    <dt>If</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{promptOnly: boolean, _forceClose: boolean}</dd>
+    <dd>promptOnly is true, only displays the relevant confirmation UI and does NOT actually close any documents. This is useful when chaining close-all together with other user prompts that may be cancelable. If _forceClose is true, forces the files to close with no confirmation even if dirty. Should only be used for unit test cleanup.</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved when all files are closed</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileCloseList(commandData) {
         return _closeList(commandData.fileList);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileCloseWindow</h4>
-              <div class="description"><p>Confirms any unsaved changes, then closes the window</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileCloseWindow</h4>
+
+    
+    <div class="description"><p>Confirms any unsaved changes, then closes the window</p>
 </div>
-              <dl>
-                  <dt>command</dt>
-                  <dd class="label label-info pull-left">Object</dd>
-                  <dd>data</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileCloseWindow(commandData) {
+    
+<dl>
+    <dt>command</dt>
+    <dd class="label label-info pull-left">Object</dd>
+    <dd>data</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileCloseWindow(commandData) {
         return _handleWindowGoingAway(
             commandData,
             function () {
@@ -2311,20 +2441,22 @@ that unsaved changes are confirmed once, in bulk.</p>
                 brackets.app.abortQuit();
             }
         );
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileDelete</h4>
-              <div class="description"><p>Delete file command handler  *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileDelete</h4>
+
+    
+    <div class="description"><p>Delete file command handler  *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileDelete() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileDelete() {
         var entry = ProjectManager.getSelectedItem();
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_EXT_DELETED,
@@ -2351,21 +2483,23 @@ that unsaved changes are confirmed once, in bulk.</p>
                     ProjectManager.deleteItem(entry);
                 }
             });
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileNew</h4>
-              <div class="description"><p>Create a new untitled document in the workingset, and make it the current document.
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileNew</h4>
+
+    
+    <div class="description"><p>Create a new untitled document in the workingset, and make it the current document.
 Promise is resolved (synchronously) with the newly-created Document.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileNew() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileNew() {
         &#x2F;&#x2F;var defaultExtension = PreferencesManager.get(&quot;defaultExtension&quot;);
         &#x2F;&#x2F;if (defaultExtension) {
         &#x2F;&#x2F;    defaultExtension = &quot;.&quot; + defaultExtension;
@@ -2376,39 +2510,46 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
 
         return new $.Deferred().resolve(doc).promise();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileNewInProject</h4>
-              <div class="description"><p>Create a new file in the project tree.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileNewInProject</h4>
+
+    
+    <div class="description"><p>Create a new file in the project tree.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileNewInProject() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileNewInProject() {
         _handleNewItemInProject(false);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileOpen</h4>
-              <div class="description"><p>Opens the given file and makes it the current file. Does NOT add it to the workingset.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileOpen</h4>
+
+    
+    <div class="description"><p>Opens the given file and makes it the current file. Does NOT add it to the workingset.</p>
 </div>
-              <dl>
-                  <dt>commandData</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">FileCommandData</dd>
-                  <dd>- record with the following properties: fullPath: File to open; silent: optional flag to suppress error messages; paneId: optional PaneId (defaults to active pane)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileOpen(commandData) {
+    
+<dl>
+    <dt>commandData</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">FileCommandData</dd>
+    <dd>- record with the following properties: fullPath: File to open; silent: optional flag to suppress error messages; paneId: optional PaneId (defaults to active pane)</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a jQuery promise that will be resolved with a file object</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileOpen(commandData) {
         var fileInfo = _parseDecoratedPath(commandData ? commandData.fullPath : null),
             silent = (commandData &amp;&amp; commandData.silent) || false,
             paneId = (commandData &amp;&amp; commandData.paneId) || MainViewManager.ACTIVE_PANE,
@@ -2451,20 +2592,22 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         &#x2F;&#x2F; from command line: .....&#x2F;Brackets.app path                  - where &#39;path&#39; has the form &quot;path:line:column&quot;
         &#x2F;&#x2F; from command line: open -a .....&#x2F;Brackets.app path          - where &#39;path&#39; is undecorated
         &#x2F;&#x2F; do &quot;View Source&quot; from Adobe Scout version 1.2 or newer (this will use decorated paths of the form &quot;path:line:column&quot;)
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileQuit</h4>
-              <div class="description"><p>Closes the window, then quits the app</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileQuit</h4>
+
+    
+    <div class="description"><p>Closes the window, then quits the app</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileQuit(commandData) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileQuit(commandData) {
         return _handleWindowGoingAway(
             commandData,
             function () {
@@ -2475,20 +2618,22 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
                 brackets.app.abortQuit();
             }
         );
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileRename</h4>
-              <div class="description"><p>Show a textfield to rename whatever is currently selected in the sidebar (or current doc if nothing else selected)</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileRename</h4>
+
+    
+    <div class="description"><p>Show a textfield to rename whatever is currently selected in the sidebar (or current doc if nothing else selected)</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileRename() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileRename() {
         &#x2F;&#x2F; Prefer selected sidebar item (which could be a folder)
         var entry = ProjectManager.getContext();
         if (!entry) {
@@ -2498,24 +2643,29 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         if (entry) {
             ProjectManager.renameItemInline(entry);
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileSave</h4>
-              <div class="description"><p>Saves the given file. If no file specified, assumes the current document.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileSave</h4>
+
+    
+    <div class="description"><p>Saves the given file. If no file specified, assumes the current document.</p>
 </div>
-              <dl>
-                  <dt>commandData</dt>
-                    <span class="label label-nullable pull-left">nullable</span>
-                  <dd class="label label-info pull-left">{doc: ?Document}</dd>
-                  <dd>Document to close, or null</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileSave(commandData) {
+    
+<dl>
+    <dt>commandData</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{doc: ?Document}</dd>
+    <dd>Document to close, or null</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>resolved with the saved document's File (which MAY DIFFER from the doc passed in, if the doc was untitled). Rejected in case of IO error (after error dialog dismissed), or if doc was untitled and the Save dialog was canceled (will be rejected with USER_CANCELED object).</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileSave(commandData) {
         var activeEditor = EditorManager.getActiveEditor(),
             activeDoc = activeEditor &amp;&amp; activeEditor.document,
             doc = (commandData &amp;&amp; commandData.doc) || activeDoc,
@@ -2537,114 +2687,131 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         }
 
         return $.Deferred().reject().promise();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleFileSaveAll</h4>
-              <div class="description"><p>Saves all unsaved documents.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleFileSaveAll</h4>
+
+    
+    <div class="description"><p>Saves all unsaved documents.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleFileSaveAll() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd>a promise that is resolved once ALL the saves have been completed; or rejected after all operations completed if any ONE of them failed.</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleFileSaveAll() {
         return saveAll();
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleGoNextDoc</h4>
-              <div class="description"><p>Next Doc command handler (MRU order) *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleGoNextDoc</h4>
+
+    
+    <div class="description"><p>Next Doc command handler (MRU order) *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleGoNextDoc() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoNextDoc() {
         goNextPrevDoc(+1);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleGoNextDocListOrder</h4>
-              <div class="description"><p>Next Doc command handler (list order) *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleGoNextDocListOrder</h4>
+
+    
+    <div class="description"><p>Next Doc command handler (list order) *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleGoNextDocListOrder() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoNextDocListOrder() {
         goNextPrevDoc(+1, true);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleGoPrevDoc</h4>
-              <div class="description"><p>Previous Doc command handler (MRU order) *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleGoPrevDoc</h4>
+
+    
+    <div class="description"><p>Previous Doc command handler (MRU order) *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleGoPrevDoc() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoPrevDoc() {
         goNextPrevDoc(-1);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleGoPrevDocListOrder</h4>
-              <div class="description"><p>Previous Doc command handler (list order) *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleGoPrevDocListOrder</h4>
+
+    
+    <div class="description"><p>Previous Doc command handler (list order) *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleGoPrevDocListOrder() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleGoPrevDocListOrder() {
         goNextPrevDoc(-1, true);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleNewFolderInProject</h4>
-              <div class="description"><p>Create a new folder in the project tree.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleNewFolderInProject</h4>
+
+    
+    <div class="description"><p>Create a new folder in the project tree.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleNewFolderInProject() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleNewFolderInProject() {
         _handleNewItemInProject(true);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleReload</h4>
-              <div class="description"><p>Restarts brackets Handler</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleReload</h4>
+
+    
+    <div class="description"><p>Restarts brackets Handler</p>
 </div>
-              <dl>
-                  <dt>loadWithoutExtensions</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>- true to restart without extensions, otherwise extensions are loadeed as it is durning a typical boot</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleReload(loadWithoutExtensions) {
+    
+<dl>
+    <dt>loadWithoutExtensions</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>- true to restart without extensions, otherwise extensions are loadeed as it is durning a typical boot</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleReload(loadWithoutExtensions) {
         var href    = window.location.href,
             params  = new UrlParams();
 
@@ -2674,20 +2841,22 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
         window.setTimeout(function () {
             browserReload(href);
         }, 100);
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleShowInOS</h4>
-              <div class="description"><p>Show the selected sidebar (tree or workingset) item in Finder/Explorer</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleShowInOS</h4>
+
+    
+    <div class="description"><p>Show the selected sidebar (tree or workingset) item in Finder/Explorer</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleShowInOS() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleShowInOS() {
         var entry = ProjectManager.getSelectedItem();
         if (entry) {
             brackets.app.showOSFolder(entry.fullPath, function (err) {
@@ -2696,54 +2865,66 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
                 }
             });
         }
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>handleShowInTree</h4>
-              <div class="description"><p>Show in File Tree command handler *</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>handleShowInTree</h4>
+
+    
+    <div class="description"><p>Show in File Tree command handler *</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function handleShowInTree() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleShowInTree() {
         ProjectManager.showInTree(MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE));
-    }</code></pre>
-            </div>
-            <div class="member">
-              <span class="pull-right scope">
-                
-                
-              </span>
-              <h4>saveAll</h4>
-              <div class="description"><p>Saves all unsaved documents. See _saveFileList() for details on the semantics.</p>
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>saveAll</h4>
+
+    
+    <div class="description"><p>Saves all unsaved documents. See _saveFileList() for details on the semantics.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function saveAll() {
+    
+<dl>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function saveAll() {
         return _saveFileList(MainViewManager.getWorkingSet(MainViewManager.ALL_PANES));
-    }</code></pre>
-            </div>
-            <div class="member public">
-              <span class="pull-right scope">
-                
-                Public API
-              </span>
-              <h4>showFileOpenError</h4>
-              <div class="description"><p>Shows an error dialog indicating that the given file could not be opened due to the given error</p>
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>showFileOpenError</h4>
+
+    
+    <div class="description"><p>Shows an error dialog indicating that the given file could not be opened due to the given error</p>
 </div>
-              <dl>
-                  <dt>name</dt>
-                    <span class="label label-non-nullable pull-left">non-nullable</span>
-                  <dd class="label label-info pull-left">FileSystemError</dd>
-                  <dd></dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function showFileOpenError(name, path) {
+    
+<dl>
+    <dt>name</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">FileSystemError</dd>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!Dialog</dd>
+    <dd></dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function showFileOpenError(name, path) {
         return Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_ERROR,
             Strings.ERROR_OPENING_FILE_TITLE,
@@ -2753,12 +2934,9 @@ Promise is resolved (synchronously) with the newly-created Document.</p>
                 FileUtils.getFileErrorString(name)
             )
         );
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>EditorStatusBar - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -14,11 +14,21 @@
     <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
     <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
     
     <script>
       window.moduleLevel = "../..";
     </script>
   </head>
+  
   <body>
     <div class="row-fluid">
       <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,27 +46,15 @@
             <input class="typeahead" placeholder="Search..." type="text" >
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="page-header">
-            <h1>EditorStatusBar</h1>
-          </div>
-        </div>
-      </div>
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <ul class="nav nav-list">
-              <li class="nav-header">
-                <a href="#" id="toggle-other-modules"><i class="icon-folder-close"></i> Modules (181)</a>
-              </li>
-            </ul>
+            <h2 class="number-of-modules">Modules (181)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i></a>
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
               </li>
             </ul>
             <ul id="package_" class="nav nav-list">
@@ -66,7 +64,7 @@
               <li><a href="../../modules/strings.html">strings</a></li>
               <li><a href="../../modules/xorigin.html">xorigin</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
               </li>
@@ -78,7 +76,7 @@
               <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
               <li><a href="../../modules/command/Menus.html">Menus</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
               </li>
@@ -91,7 +89,7 @@
               <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
               <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
               </li>
@@ -110,7 +108,7 @@
               <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
               <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
               </li>
@@ -124,7 +122,7 @@
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
               </li>
@@ -132,7 +130,7 @@
             <ul id="package_file" class="nav nav-list">
               <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
               </li>
@@ -147,17 +145,17 @@
               <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
               <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem.impls.appshell</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell" class="nav nav-list">
               <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem.impls.appshell.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
@@ -166,7 +164,7 @@
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
               <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
               </li>
@@ -174,7 +172,7 @@
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
               </li>
@@ -192,9 +190,9 @@
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment.Agents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
@@ -211,9 +209,9 @@
               <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
               <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment.Documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
@@ -222,15 +220,15 @@
               <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment.Inspector</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
               </li>
@@ -242,9 +240,9 @@
               <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
               <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.documents</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;documents</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_documents" class="nav nav-list">
@@ -252,75 +250,75 @@
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.language</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;language</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_language" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.launchers.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/node/LauncherDomain.html">LauncherDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.protocol.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.html">DocumentObserver</a></li>
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.html">LiveDevProtocolRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/node/NodeSocketTransportDomain.html">NodeSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport.html">NodeSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment.MultiBrowserImpl.transports.remote</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;remote</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_remote" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.html">NodeSocketTransportRemote</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment.Servers</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
@@ -328,23 +326,23 @@
               <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
               <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment.transports.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment.transports</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
               </li>
             </ul>
             <ul id="package_LiveDevelopment_transports" class="nav nav-list">
               <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
               </li>
@@ -355,7 +353,7 @@
               <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
               <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
               </li>
@@ -371,7 +369,7 @@
               <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
               <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
               </li>
@@ -390,15 +388,15 @@
               <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
               <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
-                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search.node</a>
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
               </li>
             </ul>
             <ul id="package_search_node" class="nav nav-list">
               <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
               </li>
@@ -434,7 +432,7 @@
               <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
               <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
               </li>
@@ -451,7 +449,7 @@
               <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
               <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
             </ul>
-                        <ul class="nav nav-list package-list">
+            <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
               </li>
@@ -473,116 +471,121 @@
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
             </ul>
-            
           </div>
         </div>
         <div class="module span9">
-          <section class="description">
-            <h3>Description</h3>
-            <div>
-              <p>Manages parts of the status bar related to the current editor&#39;s state.</p>
+<h1>EditorStatusBar</h1>
 
-            </div>
-          </section>
+
+<section class="description">
+    <h3>Description</h3>
     
-          <section class="dependencies">
-            <h3>Dependencies</h3>
-            
-            <ul class="nav nav-list">
-              <li><a href="..&#x2F;../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
-              <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
-              <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
-              <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
-              <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
-              <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
-              <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
-              <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
-              <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
-              <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
-              <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
-              <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
-              <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
-              <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
-              <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
-              <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
-              <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
-              <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
-              <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
-              <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
-              <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
-              <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
-              <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
-              <li><a href="..&#x2F;../modules/text!supported-encodings.json.html">text!supported-encodings.json</a></li>
-            </ul>
-            
-            
-          </section>
+    <div><p>Manages parts of the status bar related to the current editor&#39;s state.</p>
+</div>
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+        <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+        <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
+        <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
+        <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
+        <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/text!supported-encodings.json.html">text!supported-encodings.json</a></li>
+    </ul>
+
+</section>
+<section id="variables">
     
-            <section class="variables">
-              <h3>Variables 
-                <label class="checkbox">
-                  <input class="toggle-public" type="checkbox"> Show Private Members
-                </label>
-              </h3>
-              
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>LANGUAGE_SET_AS_DEFAULT</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>Special list item for the &#39;set as default&#39; gesture in language switcher dropdown</p>
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>LANGUAGE_SET_AS_DEFAULT</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>Special list item for the &#39;set as default&#39; gesture in language switcher dropdown</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var LANGUAGE_SET_AS_DEFAULT = {};</code></pre>
-              </div>
-              <div class="member">
-      
-                <span class="pull-right scope">
-                  
-                  
-                </span>
-                <h4>languageSelect</h4>
-                <dl>
-                </dl>
-                <div class="description"><p>StatusBar indicators</p>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var LANGUAGE_SET_AS_DEFAULT = {};</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>languageSelect</h4>
+
+    
+<dl>
+</dl>
+    <div class="description"><p>StatusBar indicators</p>
 </div>
-                <button class="btn btn-small show-code">Show code</button>
-                <pre class="language-javascript"><code class="language-javascript">    var languageSelect, &#x2F;&#x2F; this is a DropdownButton instance
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var languageSelect, &#x2F;&#x2F; this is a DropdownButton instance
         encodingSelect, &#x2F;&#x2F; this is a DropdownButton instance
         $cursorInfo,
         $fileInfo,
         $indentType,
         $indentWidthLabel,
         $indentWidthInput,
-        $statusOverwrite;</code></pre>
-              </div>
-              
-            </section>
+        $statusOverwrite;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
     
-          <section class="functions">
-            <h3>Functions 
-              <label class="checkbox">
-                <input class="toggle-public" type="checkbox"> Show Private Members
-              </label>
-            </h3>
-            
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_changeEncodingAndReloadDoc</h4>
-              <div class="description"><p>Change the encoding and reload the current document.
+</span>
+    <h4>_changeEncodingAndReloadDoc</h4>
+
+    
+    <div class="description"><p>Change the encoding and reload the current document.
 If passed then save the preferred encoding in state.</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _changeEncodingAndReloadDoc(document) {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _changeEncodingAndReloadDoc(document) {
         var promise = document.reload();
         promise.done(function (text, readTimestamp) {
             encodingSelect.$button.text(document.file._encoding);
@@ -602,26 +605,28 @@ If passed then save the preferred encoding in state.</p>
         promise.fail(function (error) {
             console.log(&quot;Error reloading contents of &quot; + document.file.fullPath, error);
         });
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_changeIndentWidth</h4>
-              <div class="description"><p>Change indent size</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_changeIndentWidth</h4>
+
+    
+    <div class="description"><p>Change indent size</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path to file in current editor</dd>
-                  <dt>value</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Size entered into status bar</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _changeIndentWidth(fullPath, value) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path to file in current editor</dd>
+    <dt>value</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Size entered into status bar</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _changeIndentWidth(fullPath, value) {
         $indentWidthLabel.removeClass(&quot;hidden&quot;);
         $indentWidthInput.addClass(&quot;hidden&quot;);
 
@@ -647,62 +652,74 @@ If passed then save the preferred encoding in state.</p>
 
         &#x2F;&#x2F; column position may change when tab size changes
         _updateCursorInfo();
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_formatCountable</h4>
-              <div class="description"><p>Determine string based on count</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_formatCountable</h4>
+
+    
+    <div class="description"><p>Determine string based on count</p>
 </div>
-              <dl>
-                  <dt>number</dt>
-                  <dd class="label label-info pull-left">number</dd>
-                  <dd>Count</dd>
-                  <dt>singularStr</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Singular string</dd>
-                  <dt>pluralStr</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Plural string</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _formatCountable(number, singularStr, pluralStr) {
+    
+<dl>
+    <dt>number</dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Count</dd>
+    <dt>singularStr</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Singular string</dd>
+    <dt>pluralStr</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Plural string</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Proper string to use for count</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _formatCountable(number, singularStr, pluralStr) {
         return StringUtils.format(number &gt; 1 ? pluralStr : singularStr, number);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_getIndentSize</h4>
-              <div class="description"><p>Get indent size based on type</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_getIndentSize</h4>
+
+    
+    <div class="description"><p>Get indent size based on type</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path to file in current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _getIndentSize(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path to file in current editor</dd>
+</dl><dl>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
+    <dd>Indent size</dd>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getIndentSize(fullPath) {
         return Editor.getUseTabChar(fullPath) ? Editor.getTabSize(fullPath) : Editor.getSpaceUnits(fullPath);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_init</h4>
-              <div class="description"><p>Initialize</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_init</h4>
+
+    
+    <div class="description"><p>Initialize</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _init() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _init() {
 
         $cursorInfo         = $(&quot;#status-cursor&quot;);
         $fileInfo           = $(&quot;#status-file&quot;);
@@ -879,48 +896,52 @@ If passed then save the preferred encoding in state.</p>
         _onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
         StatusBar.show();
     });
-});</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_initOverwriteMode</h4>
-              <div class="description"><p>Initialize insert/overwrite indicator</p>
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_initOverwriteMode</h4>
+
+    
+    <div class="description"><p>Initialize insert/overwrite indicator</p>
 </div>
-              <dl>
-                  <dt>currentEditor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _initOverwriteMode(currentEditor) {
+    
+<dl>
+    <dt>currentEditor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _initOverwriteMode(currentEditor) {
         currentEditor.toggleOverwrite($statusOverwrite.text() === Strings.STATUSBAR_OVERWRITE);
         $statusOverwrite.attr(&quot;title&quot;, Strings.STATUSBAR_INSOVR_TOOLTIP);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_onActiveEditorChange</h4>
-              <div class="description"><p>Handle active editor change event</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_onActiveEditorChange</h4>
+
+    
+    <div class="description"><p>Handle active editor change event</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">Event</dd>
-                  <dd>(unused)</dd>
-                  <dt>current</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-                  <dt>previous</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Previous editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _onActiveEditorChange(event, current, previous) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
+    <dd>(unused)</dd>
+    <dt>current</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+    <dt>previous</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Previous editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _onActiveEditorChange(event, current, previous) {
         if (previous) {
             previous.off(&quot;.statusbar&quot;);
             previous.document.off(&quot;.statusbar&quot;);
@@ -957,35 +978,39 @@ If passed then save the preferred encoding in state.</p>
             _updateIndentType(fullPath);
             _updateIndentSize(fullPath);
         }
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_populateEncodingDropdown</h4>
-              <div class="description"><p>Populate the encodingSelect DropdownButton&#39;s menu with all registered encodings</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_populateEncodingDropdown</h4>
+
+    
+    <div class="description"><p>Populate the encodingSelect DropdownButton&#39;s menu with all registered encodings</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _populateEncodingDropdown() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _populateEncodingDropdown() {
         encodingSelect.items = SupportedEncodings;
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_populateLanguageDropdown</h4>
-              <div class="description"><p>Populate the languageSelect DropdownButton&#39;s menu with all registered Languages</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_populateLanguageDropdown</h4>
+
+    
+    <div class="description"><p>Populate the languageSelect DropdownButton&#39;s menu with all registered Languages</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _populateLanguageDropdown() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _populateLanguageDropdown() {
         &#x2F;&#x2F; Get all non-binary languages
         var languages = _.values(LanguageManager.getLanguages()).filter(function (language) {
             return !language.isBinary();
@@ -1001,46 +1026,50 @@ If passed then save the preferred encoding in state.</p>
         &#x2F;&#x2F; Add option to top of menu for persisting the override
         languageSelect.items.unshift(&quot;---&quot;);
         languageSelect.items.unshift(LANGUAGE_SET_AS_DEFAULT);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_toggleIndentType</h4>
-              <div class="description"><p>Toggle indent type</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_toggleIndentType</h4>
+
+    
+    <div class="description"><p>Toggle indent type</p>
 </div>
-              <dl>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _toggleIndentType() {
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _toggleIndentType() {
         var current = EditorManager.getActiveEditor(),
             fullPath = current &amp;&amp; current.document.file.fullPath;
 
         Editor.setUseTabChar(!Editor.getUseTabChar(fullPath), fullPath);
         _updateIndentType(fullPath);
         _updateIndentSize(fullPath);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateCursorInfo</h4>
-              <div class="description"><p>Update cursor(s)/selection(s) information</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateCursorInfo</h4>
+
+    
+    <div class="description"><p>Update cursor(s)/selection(s) information</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">Event</dd>
-                  <dd>(unused)</dd>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateCursorInfo(event, editor) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
+    <dd>(unused)</dd>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateCursorInfo(event, editor) {
         editor = editor || EditorManager.getActiveEditor();
 
         &#x2F;&#x2F; compute columns, account for tab size
@@ -1067,46 +1096,50 @@ If passed then save the preferred encoding in state.</p>
             }
         }
         $cursorInfo.text(cursorStr + selStr);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateEditorOverwriteMode</h4>
-              <div class="description"><p>Update insert/overwrite indicator</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateEditorOverwriteMode</h4>
+
+    
+    <div class="description"><p>Update insert/overwrite indicator</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">Event</dd>
-                  <dd>(unused)</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateEditorOverwriteMode(event) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
+    <dd>(unused)</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateEditorOverwriteMode(event) {
         var editor = EditorManager.getActiveEditor(),
             newstate = !editor._codeMirror.state.overwrite;
 
         &#x2F;&#x2F; update label with no transition
         _updateOverwriteLabel(event, editor, newstate, true);
         editor.toggleOverwrite(newstate);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateEncodingInfo</h4>
-              <div class="description"><p>Update encoding</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateEncodingInfo</h4>
+
+    
+    <div class="description"><p>Update encoding</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateEncodingInfo(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateEncodingInfo(editor) {
         var doc = editor.document;
 
         &#x2F;&#x2F; Show the current encoding as button title
@@ -1114,115 +1147,125 @@ If passed then save the preferred encoding in state.</p>
             doc.file._encoding = &quot;UTF-8&quot;;
         }
         encodingSelect.$button.text(doc.file._encoding);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateFileInfo</h4>
-              <div class="description"><p>Update file information</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateFileInfo</h4>
+
+    
+    <div class="description"><p>Update file information</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateFileInfo(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateFileInfo(editor) {
         var lines = editor.lineCount();
         $fileInfo.text(_formatCountable(lines, Strings.STATUSBAR_LINE_COUNT_SINGULAR, Strings.STATUSBAR_LINE_COUNT_PLURAL));
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateIndentSize</h4>
-              <div class="description"><p>Update indent size</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateIndentSize</h4>
+
+    
+    <div class="description"><p>Update indent size</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path to file in current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateIndentSize(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path to file in current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateIndentSize(fullPath) {
         var size = _getIndentSize(fullPath);
         $indentWidthLabel.text(size);
         $indentWidthInput.val(size);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateIndentType</h4>
-              <div class="description"><p>Update indent type and size</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateIndentType</h4>
+
+    
+    <div class="description"><p>Update indent type and size</p>
 </div>
-              <dl>
-                  <dt>fullPath</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>Path to file in current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateIndentType(fullPath) {
+    
+<dl>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>Path to file in current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateIndentType(fullPath) {
         var indentWithTabs = Editor.getUseTabChar(fullPath);
         $indentType.text(indentWithTabs ? Strings.STATUSBAR_TAB_SIZE : Strings.STATUSBAR_SPACES);
         $indentType.attr(&quot;title&quot;, indentWithTabs ? Strings.STATUSBAR_INDENT_TOOLTIP_SPACES : Strings.STATUSBAR_INDENT_TOOLTIP_TABS);
         $indentWidthLabel.attr(&quot;title&quot;, indentWithTabs ? Strings.STATUSBAR_INDENT_SIZE_TOOLTIP_TABS : Strings.STATUSBAR_INDENT_SIZE_TOOLTIP_SPACES);
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateLanguageInfo</h4>
-              <div class="description"><p>Update file mode</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateLanguageInfo</h4>
+
+    
+    <div class="description"><p>Update file mode</p>
 </div>
-              <dl>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateLanguageInfo(editor) {
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateLanguageInfo(editor) {
         var doc = editor.document,
             lang = doc.getLanguage();
 
         &#x2F;&#x2F; Show the current language as button title
         languageSelect.$button.text(lang.getName());
-    }</code></pre>
-            </div>
-            <div class="member private">
-              <span class="pull-right scope">
-                Private
-                
-              </span>
-              <h4>_updateOverwriteLabel</h4>
-              <div class="description"><p>Update insert/overwrite label</p>
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateOverwriteLabel</h4>
+
+    
+    <div class="description"><p>Update insert/overwrite label</p>
 </div>
-              <dl>
-                  <dt>event</dt>
-                  <dd class="label label-info pull-left">Event</dd>
-                  <dd>(unused)</dd>
-                  <dt>editor</dt>
-                  <dd class="label label-info pull-left">Editor</dd>
-                  <dd>Current editor</dd>
-                  <dt>newstate</dt>
-                  <dd class="label label-info pull-left">string</dd>
-                  <dd>New overwrite state</dd>
-                  <dt>doNotAnimate</dt>
-                    <span class="label label-optional pull-left">optional</span>
-                  <dd class="label label-info pull-left">boolean</dd>
-                  <dd>True if state should not be animated</dd>
-              </dl>
-              <button class="btn btn-small show-code">Show code</button>
-              <pre class="language-javascript"><code class="language-javascript">    function _updateOverwriteLabel(event, editor, newstate, doNotAnimate) {
+    
+<dl>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
+    <dd>(unused)</dd>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+    <dt>newstate</dt>
+    <dd class="label label-info pull-left">string</dd>
+    <dd>New overwrite state</dd>
+    <dt>doNotAnimate</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
+    <dd>True if state should not be animated</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateOverwriteLabel(event, editor, newstate, doNotAnimate) {
         if ($statusOverwrite.text() === (newstate ? Strings.STATUSBAR_OVERWRITE : Strings.STATUSBAR_INSERT)) {
             &#x2F;&#x2F; label already up-to-date
             return;
@@ -1233,12 +1276,9 @@ If passed then save the preferred encoding in state.</p>
         if (!doNotAnimate) {
             AnimationUtils.animateUsingClass($statusOverwrite[0], &quot;flash&quot;, 1500);
         }
-    }</code></pre>
-            </div>
-            
-          </section>
-          
-          
+    }</code></pre></div>
+</section>
+
         </div>
       </div>
     </div>
