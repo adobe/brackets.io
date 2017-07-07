@@ -482,7 +482,6 @@
     
     <div><p>Manages parts of the status bar related to the current editor&#39;s state.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -491,17 +490,28 @@
     <ul class="nav nav-list">
         <li><a href="..&#x2F;../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
         <li><a href="..&#x2F;../modules/utils/AppInit.html">AppInit</a></li>
+        <li><a href="..&#x2F;../modules/utils/Async.html">Async</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+        <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
+        <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/widgets/DropdownButton.html">DropdownButton</a></li>
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/widgets/StatusBar.html">StatusBar</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
         <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/text!supported-encodings.json.html">text!supported-encodings.json</a></li>
     </ul>
 
 </section>
@@ -518,37 +528,32 @@
     
     
 </span>
-    <h4>
-        LANGUAGE_SET_AS_DEFAULT 
-        <a class="anchor" href="#-LANGUAGE_SET_AS_DEFAULT" id="-LANGUAGE_SET_AS_DEFAULT"><span class="icon-link"></span></a>
-    </h4>
+    <h4>LANGUAGE_SET_AS_DEFAULT</h4>
 
     
+<dl>
+</dl>
     <div class="description"><p>Special list item for the &#39;set as default&#39; gesture in language switcher dropdown</p>
 </div>
-    
-<dl>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var LANGUAGE_SET_AS_DEFAULT = {};</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        languageSelect 
-        <a class="anchor" href="#-languageSelect" id="-languageSelect"><span class="icon-link"></span></a>
-    </h4>
+    <h4>languageSelect</h4>
 
     
+<dl>
+</dl>
     <div class="description"><p>StatusBar indicators</p>
 </div>
-    
-<dl>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var languageSelect, &#x2F;&#x2F; this is a DropdownButton instance
+        encodingSelect, &#x2F;&#x2F; this is a DropdownButton instance
         $cursorInfo,
         $fileInfo,
         $indentType,
@@ -570,30 +575,57 @@
     Private
     
 </span>
-    <h4>
-        _changeIndentWidth 
-        <a class="anchor" href="#-_changeIndentWidth" id="-_changeIndentWidth"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_changeEncodingAndReloadDoc</h4>
+
+    
+    <div class="description"><p>Change the encoding and reload the current document.
+If passed then save the preferred encoding in state.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _changeEncodingAndReloadDoc(document) {
+        var promise = document.reload();
+        promise.done(function (text, readTimestamp) {
+            encodingSelect.$button.text(document.file._encoding);
+            &#x2F;&#x2F; Store the preferred encoding in the state
+            var projectRoot = ProjectManager.getProjectRoot(),
+                context = {
+                    location : {
+                        scope: &quot;user&quot;,
+                        layer: &quot;project&quot;,
+                        layerID: projectRoot.fullPath
+                    }
+                };
+            var encoding = PreferencesManager.getViewState(&quot;encoding&quot;, context);
+            encoding[document.file.fullPath] = document.file._encoding;
+            PreferencesManager.setViewState(&quot;encoding&quot;, encoding, context);
+        });
+        promise.fail(function (error) {
+            console.log(&quot;Error reloading contents of &quot; + document.file.fullPath, error);
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_changeIndentWidth</h4>
 
     
     <div class="description"><p>Change indent size</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Path to file in current editor</dd>
-    <dt>
-        value
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>value</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Size entered into status bar</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _changeIndentWidth(fullPath, value) {
         $indentWidthLabel.removeClass(&quot;hidden&quot;);
         $indentWidthInput.addClass(&quot;hidden&quot;);
@@ -626,38 +658,27 @@
     Private
     
 </span>
-    <h4>
-        _formatCountable 
-        <a class="anchor" href="#-_formatCountable" id="-_formatCountable"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_formatCountable</h4>
 
     
     <div class="description"><p>Determine string based on count</p>
 </div>
     
 <dl>
-    <dt>
-        number
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>number</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>Count</dd>
-    <dt>
-        singularStr
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>singularStr</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Singular string</dd>
-    <dt>
-        pluralStr
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>pluralStr</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Plural string</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Proper string to use for count</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _formatCountable(number, singularStr, pluralStr) {
         return StringUtils.format(number &gt; 1 ? pluralStr : singularStr, number);
     }</code></pre></div><div class="member private">
@@ -666,28 +687,21 @@
     Private
     
 </span>
-    <h4>
-        _getIndentSize 
-        <a class="anchor" href="#-_getIndentSize" id="-_getIndentSize"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getIndentSize</h4>
 
     
     <div class="description"><p>Get indent size based on type</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Path to file in current editor</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">number</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>Indent size</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getIndentSize(fullPath) {
         return Editor.getUseTabChar(fullPath) ? Editor.getTabSize(fullPath) : Editor.getSpaceUnits(fullPath);
     }</code></pre></div><div class="member private">
@@ -696,10 +710,7 @@
     Private
     
 </span>
-    <h4>
-        _init 
-        <a class="anchor" href="#-_init" id="-_init"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_init</h4>
 
     
     <div class="description"><p>Initialize</p>
@@ -707,9 +718,7 @@
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _init() {
 
         $cursorInfo         = $(&quot;#status-cursor&quot;);
@@ -744,6 +753,27 @@
         languageSelect.$button.addClass(&quot;btn-status-bar&quot;);
         $(&quot;#status-language&quot;).append(languageSelect.$button);
         languageSelect.$button.attr(&quot;title&quot;, Strings.STATUSBAR_LANG_TOOLTIP);
+
+
+        encodingSelect = new DropdownButton(&quot;&quot;, [], function (item, index) {
+            var document = EditorManager.getActiveEditor().document;
+            var html = _.escape(item);
+
+            &#x2F;&#x2F; Show indicators for currently selected &amp; default languages for the current file
+            if (item === &quot;UTF-8&quot;) {
+                html += &quot; &lt;span class=&#39;default-language&#39;&gt;&quot; + Strings.STATUSBAR_DEFAULT_LANG + &quot;&lt;&#x2F;span&gt;&quot;;
+            }
+            if (item === document.file._encoding) {
+                html = &quot;&lt;span class=&#39;checked-language&#39;&gt;&lt;&#x2F;span&gt;&quot; + html;
+            }
+            return html;
+        });
+
+        encodingSelect.dropdownExtraClasses = &quot;dropdown-status-bar&quot;;
+        encodingSelect.$button.addClass(&quot;btn-status-bar&quot;);
+        $(&quot;#status-encoding&quot;).append(encodingSelect.$button);
+        encodingSelect.$button.attr(&quot;title&quot;, Strings.STATUSBAR_ENCODING_TOOLTIP);
+
 
         &#x2F;&#x2F; indentation event handlers
         $indentType.on(&quot;click&quot;, _toggleIndentType);
@@ -791,16 +821,77 @@
             }
         });
 
+        &#x2F;&#x2F; Encoding select change handler
+        encodingSelect.on(&quot;select&quot;, function (e, encoding) {
+            var document = EditorManager.getActiveEditor().document,
+                originalPath = document.file.fullPath,
+                originalEncoding = document.file._encoding;
+
+            document.file._encoding = encoding;
+            if (!(document.file instanceof InMemoryFile) &amp;&amp; document.isDirty) {
+                CommandManager.execute(Commands.FILE_SAVE_AS, {doc: document}).done(function () {
+                    var doc = DocumentManager.getCurrentDocument();
+                    if (originalPath === doc.file.fullPath) {
+                        _changeEncodingAndReloadDoc(doc);
+                    } else {
+                        document.file._encoding = originalEncoding;
+                    }
+                });
+            } else if (document.file instanceof InMemoryFile) {
+                encodingSelect.$button.text(encoding);
+            } else if (!document.isDirty) {
+                _changeEncodingAndReloadDoc(document);
+            }
+        });
+
         $statusOverwrite.on(&quot;click&quot;, _updateEditorOverwriteMode);
     }
 
     &#x2F;&#x2F; Initialize: status bar focused listener
     EditorManager.on(&quot;activeEditorChange&quot;, _onActiveEditorChange);
 
+    function _checkFileExistance(filePath, index, encoding) {
+        var deferred = new $.Deferred(),
+            fileEntry = FileSystem.getFileForPath(filePath);
+    
+        fileEntry.exists(function (err, exists) {
+            if (!err &amp;&amp; exists) {
+                deferred.resolve();
+            } else {
+                delete encoding[filePath];
+                deferred.reject();
+            }
+        });
+
+        return deferred.promise();
+    }
+
+    ProjectManager.on(&quot;projectOpen&quot;, function () {
+        var projectRoot = ProjectManager.getProjectRoot(),
+            context = {
+                location : {
+                    scope: &quot;user&quot;,
+                    layer: &quot;project&quot;,
+                    layerID: projectRoot.fullPath
+                }
+            };
+        var encoding = PreferencesManager.getViewState(&quot;encoding&quot;, context);
+        if (!encoding) {
+            PreferencesManager.setViewState(&quot;encoding&quot;, {}, context);
+        }
+        Async.doSequentially(Object.keys(encoding), function (filePath, index) {
+            return _checkFileExistance(filePath, index, encoding);
+        }, false)
+            .always(function () {
+                PreferencesManager.setViewState(&quot;encoding&quot;, encoding, context);
+            });
+    });
+
     AppInit.htmlReady(_init);
     AppInit.appReady(function () {
         &#x2F;&#x2F; Populate language switcher with all languages after startup; update it later if this set changes
         _populateLanguageDropdown();
+        _populateEncodingDropdown();
         LanguageManager.on(&quot;languageAdded languageModified&quot;, _populateLanguageDropdown);
         _onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
         StatusBar.show();
@@ -811,25 +902,18 @@
     Private
     
 </span>
-    <h4>
-        _initOverwriteMode 
-        <a class="anchor" href="#-_initOverwriteMode" id="-_initOverwriteMode"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_initOverwriteMode</h4>
 
     
     <div class="description"><p>Initialize insert/overwrite indicator</p>
 </div>
     
 <dl>
-    <dt>
-        currentEditor
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>currentEditor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _initOverwriteMode(currentEditor) {
         currentEditor.toggleOverwrite($statusOverwrite.text() === Strings.STATUSBAR_OVERWRITE);
         $statusOverwrite.attr(&quot;title&quot;, Strings.STATUSBAR_INSOVR_TOOLTIP);
@@ -839,35 +923,24 @@
     Private
     
 </span>
-    <h4>
-        _onActiveEditorChange 
-        <a class="anchor" href="#-_onActiveEditorChange" id="-_onActiveEditorChange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_onActiveEditorChange</h4>
 
     
     <div class="description"><p>Handle active editor change event</p>
 </div>
     
 <dl>
-    <dt>
-        event
-        <span class="label label-info">Event</span>
-    </dt>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
     <dd>(unused)</dd>
-    <dt>
-        current
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>current</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
-    <dt>
-        previous
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>previous</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Previous editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onActiveEditorChange(event, current, previous) {
         if (previous) {
             previous.off(&quot;.statusbar&quot;);
@@ -899,6 +972,7 @@
 
             _updateCursorInfo(null, current);
             _updateLanguageInfo(current);
+            _updateEncodingInfo(current);
             _updateFileInfo(current);
             _initOverwriteMode(current);
             _updateIndentType(fullPath);
@@ -910,10 +984,24 @@
     Private
     
 </span>
-    <h4>
-        _populateLanguageDropdown 
-        <a class="anchor" href="#-_populateLanguageDropdown" id="-_populateLanguageDropdown"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_populateEncodingDropdown</h4>
+
+    
+    <div class="description"><p>Populate the encodingSelect DropdownButton&#39;s menu with all registered encodings</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _populateEncodingDropdown() {
+        encodingSelect.items = SupportedEncodings;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_populateLanguageDropdown</h4>
 
     
     <div class="description"><p>Populate the languageSelect DropdownButton&#39;s menu with all registered Languages</p>
@@ -921,9 +1009,7 @@
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _populateLanguageDropdown() {
         &#x2F;&#x2F; Get all non-binary languages
         var languages = _.values(LanguageManager.getLanguages()).filter(function (language) {
@@ -946,10 +1032,7 @@
     Private
     
 </span>
-    <h4>
-        _toggleIndentType 
-        <a class="anchor" href="#-_toggleIndentType" id="-_toggleIndentType"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_toggleIndentType</h4>
 
     
     <div class="description"><p>Toggle indent type</p>
@@ -957,9 +1040,7 @@
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _toggleIndentType() {
         var current = EditorManager.getActiveEditor(),
             fullPath = current &amp;&amp; current.document.file.fullPath;
@@ -973,30 +1054,21 @@
     Private
     
 </span>
-    <h4>
-        _updateCursorInfo 
-        <a class="anchor" href="#-_updateCursorInfo" id="-_updateCursorInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateCursorInfo</h4>
 
     
     <div class="description"><p>Update cursor(s)/selection(s) information</p>
 </div>
     
 <dl>
-    <dt>
-        event
-        <span class="label label-info">Event</span>
-    </dt>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
     <dd>(unused)</dd>
-    <dt>
-        editor
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateCursorInfo(event, editor) {
         editor = editor || EditorManager.getActiveEditor();
 
@@ -1030,25 +1102,18 @@
     Private
     
 </span>
-    <h4>
-        _updateEditorOverwriteMode 
-        <a class="anchor" href="#-_updateEditorOverwriteMode" id="-_updateEditorOverwriteMode"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateEditorOverwriteMode</h4>
 
     
     <div class="description"><p>Update insert/overwrite indicator</p>
 </div>
     
 <dl>
-    <dt>
-        event
-        <span class="label label-info">Event</span>
-    </dt>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
     <dd>(unused)</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateEditorOverwriteMode(event) {
         var editor = EditorManager.getActiveEditor(),
             newstate = !editor._codeMirror.state.overwrite;
@@ -1062,25 +1127,44 @@
     Private
     
 </span>
-    <h4>
-        _updateFileInfo 
-        <a class="anchor" href="#-_updateFileInfo" id="-_updateFileInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateEncodingInfo</h4>
+
+    
+    <div class="description"><p>Update encoding</p>
+</div>
+    
+<dl>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
+    <dd>Current editor</dd>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _updateEncodingInfo(editor) {
+        var doc = editor.document;
+
+        &#x2F;&#x2F; Show the current encoding as button title
+        if (!doc.file._encoding) {
+            doc.file._encoding = &quot;UTF-8&quot;;
+        }
+        encodingSelect.$button.text(doc.file._encoding);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_updateFileInfo</h4>
 
     
     <div class="description"><p>Update file information</p>
 </div>
     
 <dl>
-    <dt>
-        editor
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateFileInfo(editor) {
         var lines = editor.lineCount();
         $fileInfo.text(_formatCountable(lines, Strings.STATUSBAR_LINE_COUNT_SINGULAR, Strings.STATUSBAR_LINE_COUNT_PLURAL));
@@ -1090,25 +1174,18 @@
     Private
     
 </span>
-    <h4>
-        _updateIndentSize 
-        <a class="anchor" href="#-_updateIndentSize" id="-_updateIndentSize"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateIndentSize</h4>
 
     
     <div class="description"><p>Update indent size</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Path to file in current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateIndentSize(fullPath) {
         var size = _getIndentSize(fullPath);
         $indentWidthLabel.text(size);
@@ -1119,25 +1196,18 @@
     Private
     
 </span>
-    <h4>
-        _updateIndentType 
-        <a class="anchor" href="#-_updateIndentType" id="-_updateIndentType"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateIndentType</h4>
 
     
     <div class="description"><p>Update indent type and size</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Path to file in current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateIndentType(fullPath) {
         var indentWithTabs = Editor.getUseTabChar(fullPath);
         $indentType.text(indentWithTabs ? Strings.STATUSBAR_TAB_SIZE : Strings.STATUSBAR_SPACES);
@@ -1149,31 +1219,22 @@
     Private
     
 </span>
-    <h4>
-        _updateLanguageInfo 
-        <a class="anchor" href="#-_updateLanguageInfo" id="-_updateLanguageInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateLanguageInfo</h4>
 
     
     <div class="description"><p>Update file mode</p>
 </div>
     
 <dl>
-    <dt>
-        editor
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateLanguageInfo(editor) {
         var doc = editor.document,
             lang = doc.getLanguage();
 
-        &#x2F;&#x2F; Ensure width isn&#39;t left locked by a previous click of the dropdown (which may not have resulted in a &quot;change&quot; event at the time)
-        languageSelect.$button.css(&quot;width&quot;, &quot;auto&quot;);
         &#x2F;&#x2F; Show the current language as button title
         languageSelect.$button.text(lang.getName());
     }</code></pre></div><div class="member private">
@@ -1182,41 +1243,28 @@
     Private
     
 </span>
-    <h4>
-        _updateOverwriteLabel 
-        <a class="anchor" href="#-_updateOverwriteLabel" id="-_updateOverwriteLabel"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateOverwriteLabel</h4>
 
     
     <div class="description"><p>Update insert/overwrite label</p>
 </div>
     
 <dl>
-    <dt>
-        event
-        <span class="label label-info">Event</span>
-    </dt>
+    <dt>event</dt>
+    <dd class="label label-info pull-left">Event</dd>
     <dd>(unused)</dd>
-    <dt>
-        editor
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Current editor</dd>
-    <dt>
-        newstate
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>newstate</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>New overwrite state</dd>
-    <dt>
-        doNotAnimate
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>doNotAnimate</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>True if state should not be animated</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateOverwriteLabel(event, editor, newstate, doNotAnimate) {
         if ($statusOverwrite.text() === (newstate ? Strings.STATUSBAR_OVERWRITE : Strings.STATUSBAR_INSERT)) {
             &#x2F;&#x2F; label already up-to-date

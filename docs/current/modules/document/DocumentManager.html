@@ -525,7 +525,6 @@ will need to compare the newname.</p>
    DocumentManager.on(&quot;eventname&quot;, handler);</p>
 <p>Document objects themselves also dispatch some events - see Document docs for details.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -548,6 +547,7 @@ will need to compare the newname.</p>
         <li><a href="..&#x2F;../modules/view/MainViewManager.html">MainViewManager</a></li>
         <li><a href="..&#x2F;../modules/utils/PerfUtils.html">PerfUtils</a></li>
         <li><a href="..&#x2F;../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+        <li><a href="..&#x2F;../modules/project/ProjectManager.html">ProjectManager</a></li>
         <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
     </ul>
 
@@ -565,39 +565,33 @@ will need to compare the newname.</p>
     Private
     
 </span>
-    <h4>
-        _openDocuments 
-        <a class="anchor" href="#-_openDocuments" id="-_openDocuments"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_openDocuments</h4>
 
-    
-    <div class="description"><p>All documents with refCount &gt; 0. Maps Document.file.id -&gt; Document.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Object.&lt;string, Document&gt;</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>All documents with refCount &gt; 0. Maps Document.file.id -&gt; Document.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _openDocuments = {};</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _untitledDocumentPath 
-        <a class="anchor" href="#-_untitledDocumentPath" id="-_untitledDocumentPath"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_untitledDocumentPath</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _untitledDocumentPath = &quot;&#x2F;_brackets_&quot; + _.random(10000000, 99999999);</code></pre></div>
 </section>
 
@@ -614,10 +608,7 @@ will need to compare the newname.</p>
     Private
     
 </span>
-    <h4>
-        _gcDocuments 
-        <a class="anchor" href="#-_gcDocuments" id="-_gcDocuments"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_gcDocuments</h4>
 
     
     <div class="description"><p>Cleans up any loose Documents whose only ref is its own master Editor, and that Editor is not
@@ -628,9 +619,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _gcDocuments() {
         getAllOpenDocuments().forEach(function (doc) {
             &#x2F;&#x2F; Is the only ref to this document its own master Editor?
@@ -645,19 +634,14 @@ inline editor makes no-op edits or does a read-only operation.</p>
     Private
     
 </span>
-    <h4>
-        _handleLanguageAdded 
-        <a class="anchor" href="#-_handleLanguageAdded" id="-_handleLanguageAdded"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_handleLanguageAdded</h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleLanguageAdded() {
         _.forEach(_openDocuments, function (doc) {
             &#x2F;&#x2F; No need to look at the new language if this document has one already
@@ -671,19 +655,14 @@ inline editor makes no-op edits or does a read-only operation.</p>
     Private
     
 </span>
-    <h4>
-        _handleLanguageModified 
-        <a class="anchor" href="#-_handleLanguageModified" id="-_handleLanguageModified"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_handleLanguageModified</h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _handleLanguageModified(event, language) {
         _.forEach(_openDocuments, function (doc) {
             var docLanguage = doc.getLanguage();
@@ -767,26 +746,19 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        addListToWorkingSet 
-        <a class="anchor" href="#-addListToWorkingSet" id="-addListToWorkingSet"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>addListToWorkingSet</h4>
 
+<div class="alert alert-error">Use MainViewManager.addListToWorkingSet() instead Adds the given file list to the end of the working set list. If a file in the list has its own custom viewer, then it is not added into the working set. Does not change which document is currently open in the editor. More efficient than calling addToWorkingSet() (in a loop) for a list of files because there&#39;s only 1 redraw at the end</div>
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        fileList
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Array.&lt;File&gt;</span>
-    </dt>
+    <dt>fileList</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addListToWorkingSet(fileList) {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.addListToWorkingSet() instead of DocumentManager.addListToWorkingSet()&quot;, true);
         MainViewManager.addListToWorkingSet(MainViewManager.ACTIVE_PANE, fileList);
@@ -796,39 +768,28 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        addToWorkingSet 
-        <a class="anchor" href="#-addToWorkingSet" id="-addToWorkingSet"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>addToWorkingSet</h4>
 
+<div class="alert alert-error">Use MainViewManager.addToWorkingSet() instead</div>
     
     <div class="description"><p>Adds the given file to the end of the working set list.</p>
 </div>
     
 <dl>
-    <dt>
-        file
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">File</span>
-    </dt>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
     <dd></dd>
-    <dt>
-        index
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>index</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
     <dd>Position to add to list (defaults to last); -1 is ignored</dd>
-    <dt>
-        forceRedraw
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>forceRedraw</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>If true, a working set change notification is always sent (useful if suppressRedraw was used with removeFromWorkingSet() earlier)</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addToWorkingSet(file, index, forceRedraw) {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.addToWorkingSet() instead of DocumentManager.addToWorkingSet()&quot;, true);
         MainViewManager.addToWorkingSet(MainViewManager.ACTIVE_PANE, file, index, forceRedraw);
@@ -838,21 +799,16 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        beginDocumentNavigation 
-        <a class="anchor" href="#-beginDocumentNavigation" id="-beginDocumentNavigation"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>beginDocumentNavigation</h4>
 
+<div class="alert alert-error">use MainViewManager.beginTraversal() instead</div>
     
     <div class="description"><p>freezes the Working Set MRU list</p>
 </div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function beginDocumentNavigation() {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.beginTraversal() instead of DocumentManager.beginDocumentNavigation()&quot;, true);
         MainViewManager.beginTraversal();
@@ -862,21 +818,16 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        closeAll 
-        <a class="anchor" href="#-closeAll" id="-closeAll"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>closeAll</h4>
 
+<div class="alert alert-error">CommandManager.execute(Commands.FILE_CLOSE_ALL) instead</div>
     
     <div class="description"><p>closes all open files</p>
 </div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function closeAll() {
         DeprecationWarning.deprecationWarning(&quot;Use CommandManager.execute(Commands.FILE_CLOSE_ALL,{PaneId: MainViewManager.ALL_PANES}) instead of DocumentManager.closeAll()&quot;, true);
         CommandManager.execute(Commands.FILE_CLOSE_ALL, {PaneId: MainViewManager.ALL_PANES});
@@ -886,27 +837,20 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        closeFullEditor 
-        <a class="anchor" href="#-closeFullEditor" id="-closeFullEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>closeFullEditor</h4>
 
+<div class="alert alert-error">use CommandManager.execute(Commands.FILE_CLOSE, {File: file}) instead</div>
     
     <div class="description"><p>closes the specified file file</p>
 </div>
     
 <dl>
-    <dt>
-        file
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">File</span>
-    </dt>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
     <dd>- the file to close</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function closeFullEditor(file) {
         DeprecationWarning.deprecationWarning(&quot;Use CommandManager.execute(Commands.FILE_CLOSE, {File: file} instead of DocumentManager.closeFullEditor()&quot;, true);
         CommandManager.execute(Commands.FILE_CLOSE, {File: file});
@@ -916,10 +860,7 @@ inline editor makes no-op edits or does a read-only operation.</p>
     
     Public API
 </span>
-    <h4>
-        createUntitledDocument 
-        <a class="anchor" href="#-createUntitledDocument" id="-createUntitledDocument"><span class="icon-link"></span></a>
-    </h4>
+    <h4>createUntitledDocument</h4>
 
     
     <div class="description"><p>Creates an untitled document. The associated File has a fullPath that
@@ -927,23 +868,17 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
 </div>
     
 <dl>
-    <dt>
-        counter
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>counter</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>- used in the name of the new Document's File</dd>
-    <dt>
-        fileExt
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fileExt</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>- file extension of the new Document's File, including "."</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Document</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Document</dd>
     <dd>- a new untitled Document</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function createUntitledDocument(counter, fileExt) {
         var filename = Strings.UNTITLED + &quot;-&quot; + counter + fileExt,
             fullPath = _untitledDocumentPath + &quot;&#x2F;&quot; + filename,
@@ -959,21 +894,16 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        finalizeDocumentNavigation 
-        <a class="anchor" href="#-finalizeDocumentNavigation" id="-finalizeDocumentNavigation"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>finalizeDocumentNavigation</h4>
 
+<div class="alert alert-error">use MainViewManager.endTraversal() instead</div>
     
     <div class="description"><p>ends document navigation and moves the current file to the front of the MRU list in the Working Set</p>
 </div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function finalizeDocumentNavigation() {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.endTraversal() instead of DocumentManager.finalizeDocumentNavigation()&quot;, true);
         MainViewManager.endTraversal();
@@ -983,30 +913,23 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        findInWorkingSet 
-        <a class="anchor" href="#-findInWorkingSet" id="-findInWorkingSet"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>findInWorkingSet</h4>
 
+<div class="alert alert-error">Use MainViewManager.findInWorkingSet() instead</div>
     
     <div class="description"><p>Returns the index of the file matching fullPath in the working set.</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">number</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>index, -1 if not found</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findInWorkingSet(fullPath) {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.findInWorkingSet() instead of DocumentManager.findInWorkingSet()&quot;, true);
         return MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, fullPath);
@@ -1016,10 +939,7 @@ looks like /some-random-string/Untitled-counter.fileExt.</p>
     
     Public API
 </span>
-    <h4>
-        getAllOpenDocuments 
-        <a class="anchor" href="#-getAllOpenDocuments" id="-getAllOpenDocuments"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getAllOpenDocuments</h4>
 
     
     <div class="description"><p>Returns all Documents that are &#39;open&#39; in the UI somewhere (for now, this means open in an
@@ -1029,12 +949,10 @@ these Documents are synced with external changes on disk.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;Document&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;Document&gt;</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getAllOpenDocuments() {
         var result = [];
         var id;
@@ -1050,10 +968,7 @@ these Documents are synced with external changes on disk.</p>
     
     Public API
 </span>
-    <h4>
-        getCurrentDocument 
-        <a class="anchor" href="#-getCurrentDocument" id="-getCurrentDocument"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getCurrentDocument</h4>
 
     
     <div class="description"><p>Returns the Document that is currently open in the editor UI. May be null.</p>
@@ -1061,12 +976,10 @@ these Documents are synced with external changes on disk.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?Document</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Document</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCurrentDocument() {
         var file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
 
@@ -1081,10 +994,7 @@ these Documents are synced with external changes on disk.</p>
     
     Public API
 </span>
-    <h4>
-        getDocumentForPath 
-        <a class="anchor" href="#-getDocumentForPath" id="-getDocumentForPath"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getDocumentForPath</h4>
 
     
     <div class="description"><p>Gets an existing open Document for the given file, or creates a new one if the Document is
@@ -1099,19 +1009,15 @@ refs and listeners for that Editor UI).</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">$.Promise</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
     <dd>A promise object that will be resolved with the Document, or rejected with a FileSystemError if the file is not yet open and can't be read from disk.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath) {
         var doc = getOpenDocumentForPath(fullPath);
 
@@ -1173,10 +1079,7 @@ refs and listeners for that Editor UI).</p>
     
     Public API
 </span>
-    <h4>
-        getDocumentText 
-        <a class="anchor" href="#-getDocumentText" id="-getDocumentText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getDocumentText</h4>
 
     
     <div class="description"><p>Gets the text of a Document (including any unsaved changes), or would-be Document if the
@@ -1189,32 +1092,26 @@ as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
 </div>
     
 <dl>
-    <dt>
-        file
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">File</span>
-    </dt>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
     <dd>The file to get the text for.</dd>
-    <dt>
-        checkLineEndings
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>checkLineEndings</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>Whether to return line ending information. Default false (slightly more efficient).</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">$.Promise</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
     <dd>A promise that is resolved with three parameters: contents - string: the document's text timestamp - Date: the last time the document was changed on disk (might not be the same as the last time it was changed in memory) lineEndings - string: the original line endings of the file, one of the FileUtils.LINE_ENDINGS_* constants; will be null if checkLineEndings was false. or rejected with a filesystem error.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getDocumentText(file, checkLineEndings) {
         var result = new $.Deferred(),
             doc = getOpenDocumentForPath(file.fullPath);
         if (doc) {
             result.resolve(doc.getText(), doc.diskTimestamp, checkLineEndings ? doc._lineEndings : null);
         } else {
-            file.read(function (err, contents, stat) {
+            file.read(function (err, contents, encoding, stat) {
                 if (err) {
                     result.reject(err);
                 } else {
@@ -1233,12 +1130,9 @@ as in Document.getText(); (b) unsaved changes are returned if there are any.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        getNextPrevFile 
-        <a class="anchor" href="#-getNextPrevFile" id="-getNextPrevFile"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>getNextPrevFile</h4>
 
+<div class="alert alert-error">use MainViewManager.traverseToNextViewByMRU() instead</div>
     
     <div class="description"><p>Get the next or previous file in the working set, in MRU order (relative to currentDocument). May
 return currentDocument itself if working set is length 1.</p>
@@ -1246,9 +1140,7 @@ return currentDocument itself if working set is length 1.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getNextPrevFile(inc) {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.traverseToNextViewByMRU() instead of DocumentManager.getNextPrevFile()&quot;, true);
         var result = MainViewManager.traverseToNextViewByMRU(inc);
@@ -1262,10 +1154,7 @@ return currentDocument itself if working set is length 1.</p>
     
     Public API
 </span>
-    <h4>
-        getOpenDocumentForPath 
-        <a class="anchor" href="#-getOpenDocumentForPath" id="-getOpenDocumentForPath"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getOpenDocumentForPath</h4>
 
     
     <div class="description"><p>Returns the existing open Document for the given file, or null if the file is not open (&#39;open&#39;
@@ -1274,19 +1163,15 @@ it; see {@link #getDocumentForPath} for details.</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?Document</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Document</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getOpenDocumentForPath(fullPath) {
         var id;
 
@@ -1307,24 +1192,19 @@ it; see {@link #getDocumentForPath} for details.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        getWorkingSet 
-        <a class="anchor" href="#-getWorkingSet" id="-getWorkingSet"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>getWorkingSet</h4>
 
+<div class="alert alert-error">Use MainViewManager.getWorkingSet() instead</div>
     
     <div class="description"><p>Returns a list of items in the working set in UI list order. May be 0-length, but never null.</p>
 </div>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;File&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getWorkingSet() {
         DeprecationWarning.deprecationWarning(&quot;Use MainViewManager.getWorkingSet() instead of DocumentManager.getWorkingSet()&quot;, true);
         return MainViewManager.getWorkingSet(MainViewManager.ALL_PANES)
@@ -1338,10 +1218,7 @@ it; see {@link #getDocumentForPath} for details.</p>
     
     Public API
 </span>
-    <h4>
-        notifyFileDeleted 
-        <a class="anchor" href="#-notifyFileDeleted" id="-notifyFileDeleted"><span class="icon-link"></span></a>
-    </h4>
+    <h4>notifyFileDeleted</h4>
 
     
     <div class="description"><p>Reacts to a file being deleted: if there is a Document for this file, causes it to dispatch a
@@ -1356,16 +1233,12 @@ sort of &quot;project file model,&quot; making this just a private event handler
 </div>
     
 <dl>
-    <dt>
-        file
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">File</span>
-    </dt>
+    <dt>file</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">File</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function notifyFileDeleted(file) {
         &#x2F;&#x2F; Notify all editors to close as well
         exports.trigger(&quot;pathDeleted&quot;, file.fullPath);
@@ -1386,10 +1259,7 @@ sort of &quot;project file model,&quot; making this just a private event handler
     
     Public API
 </span>
-    <h4>
-        notifyPathDeleted 
-        <a class="anchor" href="#-notifyPathDeleted" id="-notifyPathDeleted"><span class="icon-link"></span></a>
-    </h4>
+    <h4>notifyPathDeleted</h4>
 
     
     <div class="description"><p>Called after a file or folder has been deleted. This function is responsible
@@ -1397,20 +1267,28 @@ for updating underlying model data and notifying all views of the change.</p>
 </div>
     
 <dl>
-    <dt>
-        fullPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>fullPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The path of the file/folder that has been deleted</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function notifyPathDeleted(fullPath) {
         &#x2F;&#x2F; FileSyncManager.syncOpenDocuments() does all the work prompting
         &#x2F;&#x2F;  the user to save any unsaved changes and then calls us back
         &#x2F;&#x2F;  via notifyFileDeleted
         FileSyncManager.syncOpenDocuments(Strings.FILE_DELETED_TITLE);
+
+        var projectRoot = ProjectManager.getProjectRoot(),
+            context = {
+                location : {
+                    scope: &quot;user&quot;,
+                    layer: &quot;project&quot;,
+                    layerID: projectRoot.fullPath
+                }
+            };
+        var encoding = PreferencesManager.getViewState(&quot;encoding&quot;, context);
+        delete encoding[fullPath];
+        PreferencesManager.setViewState(&quot;encoding&quot;, encoding, context);
 
         if (!getOpenDocumentForPath(fullPath) &amp;&amp;
                 !MainViewManager.findInAllWorkingSets(fullPath).length) {
@@ -1425,10 +1303,7 @@ for updating underlying model data and notifying all views of the change.</p>
     
     Public API
 </span>
-    <h4>
-        notifyPathNameChanged 
-        <a class="anchor" href="#-notifyPathNameChanged" id="-notifyPathNameChanged"><span class="icon-link"></span></a>
-    </h4>
+    <h4>notifyPathNameChanged</h4>
 
     
     <div class="description"><p>Called after a file or folder name has changed. This function is responsible
@@ -1436,20 +1311,14 @@ for updating underlying model data and notifying all views of the change.</p>
 </div>
     
 <dl>
-    <dt>
-        oldName
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>oldName</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The old name of the file/folder</dd>
-    <dt>
-        newName
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>newName</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The new name of the file/folder</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function notifyPathNameChanged(oldName, newName) {
         &#x2F;&#x2F; Notify all open documents
         _.forEach(_openDocuments, function (doc) {
@@ -1467,27 +1336,20 @@ for updating underlying model data and notifying all views of the change.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        removeListFromWorkingSet 
-        <a class="anchor" href="#-removeListFromWorkingSet" id="-removeListFromWorkingSet"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>removeListFromWorkingSet</h4>
 
+<div class="alert alert-error">Use CommandManager.execute(Commands.FILE_CLOSE_LIST) instead</div>
     
     <div class="description"><p>closes a list of files</p>
 </div>
     
 <dl>
-    <dt>
-        list
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Array.&lt;File&gt;</span>
-    </dt>
+    <dt>list</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;File&gt;</dd>
     <dd>- list of File objectgs to close</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function removeListFromWorkingSet(list) {
         DeprecationWarning.deprecationWarning(&quot;Use CommandManager.execute(Commands.FILE_CLOSE_LIST, {PaneId: MainViewManager.ALL_PANES, fileList: list}) instead of DocumentManager.removeListFromWorkingSet()&quot;, true);
         CommandManager.execute(Commands.FILE_CLOSE_LIST, {PaneId: MainViewManager.ALL_PANES, fileList: list});
@@ -1497,27 +1359,20 @@ for updating underlying model data and notifying all views of the change.</p>
     
     Public API
 </span>
-    <h4>
-            <span class="label label-deprecated label-inverse">deprecated</span>
-        setCurrentDocument 
-        <a class="anchor" href="#-setCurrentDocument" id="-setCurrentDocument"><span class="icon-link"></span></a>
-    </h4>
+    <h4><span class="label label-deprecated label-inverse">deprecated</span>setCurrentDocument</h4>
 
+<div class="alert alert-error">use CommandManager.execute(Commands.CMD_OPEN, {fullPath: doc.file.fullPath}) instead</div>
     
     <div class="description"><p>opens the specified document for editing in the currently active pane</p>
 </div>
     
 <dl>
-    <dt>
-        document
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Document</span>
-    </dt>
+    <dt>document</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
     <dd>The Document to make current.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setCurrentDocument(doc) {
         DeprecationWarning.deprecationWarning(&quot;Use CommandManager.execute(Commands.CMD_OPEN) instead of DocumentManager.setCurrentDocument()&quot;, true);
         CommandManager.execute(Commands.CMD_OPEN, {fullPath: doc.file.fullPath});

@@ -483,7 +483,6 @@
     <div><p>FileIndex is an internal module used by FileSystem to maintain an index of all files and directories.</p>
 <p>This module is <em>only</em> used by FileSystem, and should not be called directly.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -503,16 +502,11 @@
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>
-                FileIndex
-                
-            </h4>
-            
+            <h4>FileIndex</h4>
             <em></em>
             
             <dl>
             </dl>
-          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function FileIndex() {
@@ -533,21 +527,18 @@
     Private
     
 </span>
-    <h4>
-        _index 
-        <a class="anchor" href="#FileIndex-_index" id="FileIndex-_index"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_index</h4>
 
-    
-    <div class="description"><p>Master index</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Object.&lt;string, File, Directory&gt;</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Master index</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype._index = null;</code></pre></div>
         </section>
 
@@ -564,25 +555,18 @@
     
     
 </span>
-    <h4>
-        addEntry 
-        <a class="anchor" href="#FileIndex-addEntry" id="FileIndex-addEntry"><span class="icon-link"></span></a>
-    </h4>
+    <h4>addEntry</h4>
 
     
     <div class="description"><p>Add an entry.</p>
 </div>
     
 <dl>
-    <dt>
-        entry
-        <span class="label label-info">FileSystemEntry</span>
-    </dt>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
     <dd>The entry to add.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.addEntry = function (entry) {
         this._index[entry.fullPath] = entry;
     };</code></pre></div><div class="member">
@@ -591,10 +575,7 @@
     
     
 </span>
-    <h4>
-        clear 
-        <a class="anchor" href="#FileIndex-clear" id="FileIndex-clear"><span class="icon-link"></span></a>
-    </h4>
+    <h4>clear</h4>
 
     
     <div class="description"><p>Clear the file index cache.</p>
@@ -602,9 +583,7 @@
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.clear = function () {
         this._index = {};
     };</code></pre></div><div class="member">
@@ -613,10 +592,7 @@
     
     
 </span>
-    <h4>
-        entryRenamed 
-        <a class="anchor" href="#FileIndex-entryRenamed" id="FileIndex-entryRenamed"><span class="icon-link"></span></a>
-    </h4>
+    <h4>entryRenamed</h4>
 
     
     <div class="description"><p>Notify the index that an entry has been renamed. This updates
@@ -624,25 +600,17 @@ all affected entries in the index.</p>
 </div>
     
 <dl>
-    <dt>
-        oldPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>oldPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-    <dt>
-        newPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>newPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-    <dt>
-        isDirectory
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>isDirectory</dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.entryRenamed = function (oldPath, newPath, isDirectory) {
         var path,
             renameMap = {};
@@ -679,10 +647,7 @@ all affected entries in the index.</p>
     
     
 </span>
-    <h4>
-        getEntry 
-        <a class="anchor" href="#FileIndex-getEntry" id="FileIndex-getEntry"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getEntry</h4>
 
     
     <div class="description"><p>Returns the cached entry for the specified path, or undefined
@@ -690,18 +655,14 @@ if the path has not been cached.</p>
 </div>
     
 <dl>
-    <dt>
-        path
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>path</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The path of the entry to return.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">File,Directory</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">File,Directory</dd>
     <dd>The entry for the path, or undefined if it hasn't been cached yet.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.getEntry = function (path) {
         return this._index[path];
     };
@@ -714,25 +675,18 @@ if the path has not been cached.</p>
     
     
 </span>
-    <h4>
-        removeEntry 
-        <a class="anchor" href="#FileIndex-removeEntry" id="FileIndex-removeEntry"><span class="icon-link"></span></a>
-    </h4>
+    <h4>removeEntry</h4>
 
     
     <div class="description"><p>Remove an entry.</p>
 </div>
     
 <dl>
-    <dt>
-        entry
-        <span class="label label-info">FileSystemEntry</span>
-    </dt>
+    <dt>entry</dt>
+    <dd class="label label-info pull-left">FileSystemEntry</dd>
     <dd>The entry to remove.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.removeEntry = function (entry) {
         var path = entry.fullPath,
             property;
@@ -760,26 +714,19 @@ if the path has not been cached.</p>
     
     
 </span>
-    <h4>
-        visitAll 
-        <a class="anchor" href="#FileIndex-visitAll" id="FileIndex-visitAll"><span class="icon-link"></span></a>
-    </h4>
+    <h4>visitAll</h4>
 
     
     <div class="description"><p>Visits every entry in the entire index; no stopping condition.</p>
 </div>
     
 <dl>
-    <dt>
-        Called
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">function(FileSystemEntry, string):void</span>
-    </dt>
+    <dt>Called</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">function(FileSystemEntry, string):void</dd>
     <dd>with an entry and its fullPath</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.visitAll = function (visitor) {
         var path;
         for (path in this._index) {

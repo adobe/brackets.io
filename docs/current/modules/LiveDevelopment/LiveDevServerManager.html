@@ -492,7 +492,6 @@ removed entirely.</p>
 <p>A Live Development server must implement the BaseServer API. See
 LiveDevelopment/Servers/BaseServer base class.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -515,29 +514,20 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     Private
     
 </span>
-    <h4>
-        _providerSort 
-        <a class="anchor" href="#-_providerSort" id="-_providerSort"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_providerSort</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        a
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>a</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd></dd>
-    <dt>
-        b
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>b</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _providerSort(a, b) {
         return b.priority - a.priority;
     }</code></pre></div><div class="member public">
@@ -546,28 +536,21 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     
     Public API
 </span>
-    <h4>
-        getServer 
-        <a class="anchor" href="#-getServer" id="-getServer"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getServer</h4>
 
     
     <div class="description"><p>Determines which provider can serve a file with a local path.</p>
 </div>
     
 <dl>
-    <dt>
-        localPath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>localPath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>A local path to file being served.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?BaseServer</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?BaseServer</dd>
     <dd>A server no null if no servers can serve the file</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getServer(localPath) {
         var provider, server, i;
 
@@ -587,10 +570,7 @@ LiveDevelopment/Servers/BaseServer base class.</p>
     
     Public API
 </span>
-    <h4>
-        registerServer 
-        <a class="anchor" href="#-registerServer" id="-registerServer"><span class="icon-link"></span></a>
-    </h4>
+    <h4>registerServer</h4>
 
     
     <div class="description"><p>The method by which a server registers itself. It returns an
@@ -598,23 +578,17 @@ object handler that can be used to remove that server from the list.</p>
 </div>
     
 <dl>
-    <dt>
-        provider
-        <span class="label label-info">BaseServer,{create: function():BaseServer}</span>
-    </dt>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">BaseServer,{create: function():BaseServer}</dd>
     <dd>The provider to be registered, described below.</dd>
-    <dt>
-        priority
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>priority</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>A non-negative number used to break ties among providers for a particular url. Providers that register with a higher priority will have the opportunity to provide a given url before those with a lower priority. The higher the number, the higher the priority.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{object}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{object}</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function registerServer(provider, priority) {
         if (!provider.create) {
             console.error(&quot;Incompatible live development server provider&quot;);
@@ -636,25 +610,18 @@ object handler that can be used to remove that server from the list.</p>
     
     Public API
 </span>
-    <h4>
-        removeServer 
-        <a class="anchor" href="#-removeServer" id="-removeServer"><span class="icon-link"></span></a>
-    </h4>
+    <h4>removeServer</h4>
 
     
     <div class="description"><p>Remove a server from the list of the registered providers.</p>
 </div>
     
 <dl>
-    <dt>
-        provider
-        <span class="label label-info">{object}</span>
-    </dt>
+    <dt>provider</dt>
+    <dd class="label label-info pull-left">{object}</dd>
     <dd>The provider to be removed.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function removeServer(provider) {
         var i;
         for (i = 0; i &lt; _serverProviders.length; i++) {

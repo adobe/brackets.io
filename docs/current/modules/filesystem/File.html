@@ -481,7 +481,6 @@
     <h3>Description</h3>
     
     <div></div>
-    
 </section>
 
 <section id="dependencies">
@@ -503,11 +502,7 @@
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>
-                File
-                
-            </h4>
-            
+            <h4>File</h4>
             <em><p>Model for a File.</p>
 <p>This class should <em>not</em> be instantiated directly. Use FileSystem.getFileForPath,
 FileSystem.resolve, or Directory.getContents to create an instance of this class.</p>
@@ -515,12 +510,13 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
 </em>
             
             <dl>
-                <dt>fullPath <span class="label label-info pull-left">string</span></dt>
+                <dt>fullPath</dt>
+                <dd class="label label-info pull-left">string</dd>
                 <dd>The full path for this File.</dd>
-                <dt>fileSystem <span class="label label-info pull-left">FileSystem</span></dt>
+                <dt>fileSystem</dt>
+                <dd class="label label-info pull-left">FileSystem</dd>
                 <dd>The file system associated with this File.</dd>
             </dl>
-          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function File(fullPath, fileSystem) {
@@ -546,46 +542,76 @@ FileSystem.resolve, or Directory.getContents to create an instance of this class
     Private
     
 </span>
-    <h4>
-        _contents 
-        <a class="anchor" href="#File-_contents" id="File-_contents"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_contents</h4>
 
-    
-    <div class="description"><p>Cached contents of this file. This value is nullable but should NOT be undefined.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>?string</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Cached contents of this file. This value is nullable but should NOT be undefined.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    File.prototype._contents = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _hash 
-        <a class="anchor" href="#File-_hash" id="File-_hash"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_encoding</h4>
 
     
-    <div class="description"><p>Consistency hash for this file. Reads and writes update this value, and
-writes confirm the hash before overwriting existing files. The type of
-this object is dependent on the FileSystemImpl; the only constraint is
-that === can be used as an equality relation on hashes.</p>
+<dl>
+    <dt>Type</dt>
+    <dd>?string</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>Encoding detected by brackets-shell</p>
 </div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    File.prototype._encoding = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_hash</h4>
+
     
 <dl>
     <dt>Type</dt>
     <dd>?object</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    File.prototype._hash = null;</code></pre></div>
+</dl>
+    <div class="description"><p>Consistency hash for this file. Reads and writes update this value, and
+writes confirm the hash before overwriting existing files. The type of
+this object is dependent on the FileSystemImpl; the only constraint is
+that === can be used as an equality relation on hashes.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    File.prototype._hash = null;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_preserveBOM</h4>
+
+    
+<dl>
+    <dt>Type</dt>
+    <dd>?bool</dd>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>BOM detected by brackets-shell</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    File.prototype._preserveBOM = false;</code></pre></div>
         </section>
 
         <section class="methods">
@@ -601,10 +627,7 @@ that === can be used as an equality relation on hashes.</p>
     Private
     
 </span>
-    <h4>
-        _clearCachedData 
-        <a class="anchor" href="#File-_clearCachedData" id="File-_clearCachedData"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_clearCachedData</h4>
 
     
     <div class="description"><p>Clear any cached data for this file. Note that this explicitly does NOT
@@ -613,9 +636,7 @@ clear the file&#39;s hash.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    File.prototype._clearCachedData = function () {
         FileSystemEntry.prototype._clearCachedData.apply(this);
         this._contents = null;
@@ -625,43 +646,36 @@ clear the file&#39;s hash.</p>
     
     
 </span>
-    <h4>
-        read 
-        <a class="anchor" href="#File-read" id="File-read"><span class="icon-link"></span></a>
-    </h4>
+    <h4>read</h4>
 
     
     <div class="description"><p>Read a file.</p>
 </div>
     
 <dl>
-    <dt>
-        options
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">Object</span>
-    </dt>
+    <dt>options</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Object</dd>
     <dd>Currently unused.</dd>
-    <dt>
-        callback
-        <span class="label label-info">function (?string,string=,FileSystemStats=)</span>
-    </dt>
+    <dt>callback</dt>
+    <dd class="label label-info pull-left">function (?string,string=,FileSystemStats=)</dd>
     <dd>Callback that is passed the FileSystemError string or the file's contents and its stats.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    File.prototype.read = function (options, callback) {
         if (typeof (options) === &quot;function&quot;) {
             callback = options;
             options = {};
+            options.encoding = this._encoding;
         }
+        options.encoding = this._encoding || &quot;utf8&quot;;
 
         &#x2F;&#x2F; We don&#39;t need to check isWatched() here because contents are only saved
         &#x2F;&#x2F; for watched files. Note that we need to explicitly test this._contents
         &#x2F;&#x2F; for a default value; otherwise it could be the empty string, which is
         &#x2F;&#x2F; falsey.
         if (this._contents !== null &amp;&amp; this._stat) {
-            callback(null, this._contents, this._stat);
+            callback(null, this._contents, this._encoding, this._stat);
             return;
         }
 
@@ -670,7 +684,7 @@ clear the file&#39;s hash.</p>
             options.stat = this._stat;
         }
 
-        this._impl.readFile(this._path, options, function (err, data, stat) {
+        this._impl.readFile(this._path, options, function (err, data, encoding, preserveBOM, stat) {
             if (err) {
                 this._clearCachedData();
                 callback(err);
@@ -679,6 +693,8 @@ clear the file&#39;s hash.</p>
 
             &#x2F;&#x2F; Always store the hash
             this._hash = stat._hash;
+            this._encoding = encoding;
+            this._preserveBOM = preserveBOM;
 
             &#x2F;&#x2F; Only cache data for watched files
             if (watched) {
@@ -686,7 +702,7 @@ clear the file&#39;s hash.</p>
                 this._contents = data;
             }
 
-            callback(err, data, stat);
+            callback(err, data, encoding, stat);
         }.bind(this));
     };</code></pre></div><div class="member">
 
@@ -694,37 +710,26 @@ clear the file&#39;s hash.</p>
     
     
 </span>
-    <h4>
-        write 
-        <a class="anchor" href="#File-write" id="File-write"><span class="icon-link"></span></a>
-    </h4>
+    <h4>write</h4>
 
     
     <div class="description"><p>Write a file.</p>
 </div>
     
 <dl>
-    <dt>
-        data
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>data</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Data to write.</dd>
-    <dt>
-        options
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">object</span>
-    </dt>
+    <dt>options</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">object</dd>
     <dd>Currently unused.</dd>
-    <dt>
-        callback
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">function (?string, FileSystemStats=)</span>
-    </dt>
+    <dt>callback</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">function (?string, FileSystemStats=)</dd>
     <dd>Callback that is passed the FileSystemError string or the file's new stats.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    File.prototype.write = function (data, options, callback) {
         if (typeof options === &quot;function&quot;) {
             callback = options;
@@ -742,6 +747,10 @@ clear the file&#39;s hash.</p>
             options.expectedHash = this._hash;
             options.expectedContents = this._contents;
         }
+        if (!options.encoding) {
+            options.encoding = this._encoding || &quot;utf8&quot;;
+        }
+        options.preserveBOM = this._preserveBOM;
 
         &#x2F;&#x2F; Block external change events until after the write has finished
         this._fileSystem._beginChange();

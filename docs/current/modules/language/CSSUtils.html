@@ -482,7 +482,6 @@
     
     <div><p>Set of utilities for simple parsing of CSS text.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -514,26 +513,58 @@
     Private
     
 </span>
-    <h4>
-        _bracketPairs 
-        <a class="anchor" href="#-_bracketPairs" id="-_bracketPairs"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_bracketPairs</h4>
 
-    
-    <div class="description"><p>List of all bracket pairs that is keyed by opening brackets, and the inverted list
-that is keyed by closing brackets.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>{string: string}</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>List of all bracket pairs that is keyed by opening brackets, and the inverted list
+that is keyed by closing brackets.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _bracketPairs = { &quot;{&quot;: &quot;}&quot;,
                           &quot;[&quot;: &quot;]&quot;,
                           &quot;(&quot;: &quot;)&quot; },
-        _invertedBracketPairs = _.invert(_bracketPairs);</code></pre></div>
+        _invertedBracketPairs = _.invert(_bracketPairs);</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>_contextCM</h4>
+
+    
+<dl>
+    <dt>Private</dt>
+</dl>
+    <div class="description"><p>We will use this CM to cook css context in case of style attribute value
+as CM in htmlmixed mode doesn&#39;t yet identify this as css context. We provide
+a no-op display function to run CM without a DOM head.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">            var _contextCM = new CodeMirror(function () {}, {
+                value: &quot;{&quot; + tagInfo.attr.value.replace(&#x2F;(^&quot;)|(&quot;$)&#x2F;g, &quot;&quot;),
+                mode:  &quot;css&quot;
+            });
+
+            ctx = TokenUtils.getInitialContext(_contextCM, {line: 0, ch: offset + 1});
+        }
+        
+        if (_isInPropName(ctx)) {
+            return _getPropNameInfo(ctx, ctx.editor);
+        }
+        
+        if (_isInPropValue(ctx)) {
+            return _getRuleInfoStartingFromPropValue(ctx, ctx.editor);
+        }
+
+        return createInfo();
+    }</code></pre></div>
 </section>
 
 <section id="functions">
@@ -549,10 +580,7 @@ that is keyed by closing brackets.</p>
     Private
     
 </span>
-    <h4>
-        _addSelectorsToResults 
-        <a class="anchor" href="#-_addSelectorsToResults" id="-_addSelectorsToResults"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_addSelectorsToResults</h4>
 
     
     <div class="description"><p>Converts the results of _findAllMatchingSelectorsInText() into a simpler bag of data and
@@ -560,32 +588,22 @@ appends those new objects to the given &#39;resultSelectors&#39; Array.</p>
 </div>
     
 <dl>
-    <dt>
-        resultSelectors
-        <span class="label label-info">Array.&lt;{document:Document,lineStart:number,lineEnd:number}&gt;</span>
-    </dt>
+    <dt>resultSelectors</dt>
+    <dd class="label label-info pull-left">Array.&lt;{document:Document,lineStart:number,lineEnd:number}&gt;</dd>
     <dd></dd>
-    <dt>
-        selectorsToAdd
-        <span class="label label-info">Array.&lt;SelectorInfo&gt;</span>
-    </dt>
+    <dt>selectorsToAdd</dt>
+    <dd class="label label-info pull-left">Array.&lt;SelectorInfo&gt;</dd>
     <dd></dd>
-    <dt>
-        sourceDoc
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Document</span>
-    </dt>
+    <dt>sourceDoc</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
     <dd></dd>
-    <dt>
-        lineOffset
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>lineOffset</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">number</dd>
     <dd>Amount to offset all line number info by. Used if the first line of the parsed CSS text is not the first line of the sourceDoc.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _addSelectorsToResults(resultSelectors, selectorsToAdd, sourceDoc, lineOffset) {
         selectorsToAdd.forEach(function (selectorInfo) {
             resultSelectors.push({
@@ -602,10 +620,7 @@ appends those new objects to the given &#39;resultSelectors&#39; Array.</p>
     Private
     Public API
 </span>
-    <h4>
-        _findAllMatchingSelectorsInText 
-        <a class="anchor" href="#-_findAllMatchingSelectorsInText" id="-_findAllMatchingSelectorsInText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_findAllMatchingSelectorsInText</h4>
 
     
     <div class="description"><p>Finds all instances of the specified selector in &quot;text&quot;.
@@ -620,31 +635,23 @@ we know the selector applies.</p>
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>CSS text to search</dd>
-    <dt>
-        selector
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>selector</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>selector to search for</dd>
-    <dt>
-        mode
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>mode</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>language mode of the document that text belongs to</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;{selectorGroupStartLine:number,declListEndLine:number,selector:string}&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;{selectorGroupStartLine:number,declListEndLine:number,selector:string}&gt;</dd>
     <dd>Array of objects containing the start and end line numbers (0-based, inclusive range) for each matched selector.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _findAllMatchingSelectorsInText(text, selector, mode) {
         var allSelectors = extractAllSelectors(text, mode);
         var result = [];
@@ -688,10 +695,7 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _findMatchingRulesInCSSFiles 
-        <a class="anchor" href="#-_findMatchingRulesInCSSFiles" id="-_findMatchingRulesInCSSFiles"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_findMatchingRulesInCSSFiles</h4>
 
     
     <div class="description"><p>Finds matching selectors in CSS files; adds them to &#39;resultSelectors&#39;</p>
@@ -699,9 +703,7 @@ we know the selector applies.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _findMatchingRulesInCSSFiles(selector, resultSelectors) {
         var result          = new $.Deferred();
 
@@ -742,10 +744,7 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _findMatchingRulesInStyleBlocks 
-        <a class="anchor" href="#-_findMatchingRulesInStyleBlocks" id="-_findMatchingRulesInStyleBlocks"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_findMatchingRulesInStyleBlocks</h4>
 
     
     <div class="description"><p>Finds matching selectors in the &lt;style&gt; block of a single HTML file; adds them to &#39;resultSelectors&#39;</p>
@@ -753,9 +752,7 @@ we know the selector applies.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _findMatchingRulesInStyleBlocks(htmlDocument, selector, resultSelectors) {
         &#x2F;&#x2F; HTMLUtils requires a real CodeMirror instance; make sure we can give it the right Editor
         var htmlEditor = EditorManager.getCurrentFullEditor();
@@ -778,34 +775,32 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getContextState 
-        <a class="anchor" href="#-_getContextState" id="-_getContextState"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getContextState</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        ctx
-        <span class="label label-info">{editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}}</span>
-    </dt>
+    <dt>ctx</dt>
+    <dd class="label label-info pull-left">{editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{tokenize:function,state:string,stateArg:string,context:Object}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{tokenize:function,state:string,stateArg:string,context:Object}</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getContextState(ctx) {
         if (!ctx || !ctx.token) {
             return null;
         }
         var state = ctx.token.state.localState || ctx.token.state;
-        if (!state.context &amp;&amp; ctx.token.state.html &amp;&amp; ctx.token.state.html.localState) {
-            state = ctx.token.state.html.localState;
+        &#x2F;&#x2F; if state contains a valid html inner state use that first
+        if (state.htmlState) {
+            state = ctx.token.state.htmlState;
+        } else {
+            if (!state.context &amp;&amp; ctx.token.state.html &amp;&amp; ctx.token.state.html.localState) {
+                state = ctx.token.state.html.localState;
+            }
         }
         return state;
     }</code></pre></div><div class="member private">
@@ -814,33 +809,24 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getImportUrlInfo 
-        <a class="anchor" href="#-_getImportUrlInfo" id="-_getImportUrlInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getImportUrlInfo</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</dd>
     <dd>A CSS context info object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getImportUrlInfo(ctx, editor) {
         var backwardPos = $.extend({}, ctx.pos),
             forwardPos  = $.extend({}, ctx.pos),
@@ -900,27 +886,20 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getPrecedingPropValues 
-        <a class="anchor" href="#-_getPrecedingPropValues" id="-_getPrecedingPropValues"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getPrecedingPropValues</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?Array.&lt;string&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Array.&lt;string&gt;</dd>
     <dd>An array of all the space/comma seperated tokens before the current cursor position</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getPrecedingPropValues(ctx) {
         var lastValue = &quot;&quot;,
             curValue,
@@ -962,27 +941,20 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getPropNameInfo 
-        <a class="anchor" href="#-_getPropNameInfo" id="-_getPropNameInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getPropNameInfo</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        ctx
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>ctx</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd>context</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</dd>
     <dd>A CSS context info object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getPropNameInfo(ctx) {
         var propName = &quot;&quot;,
             offset = TokenUtils.offsetInToken(ctx),
@@ -1035,27 +1007,20 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getPropNameStartingFromPropValue 
-        <a class="anchor" href="#-_getPropNameStartingFromPropValue" id="-_getPropNameStartingFromPropValue"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getPropNameStartingFromPropValue</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>the property name of the current rule.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getPropNameStartingFromPropValue(ctx) {
         var ctxClone = $.extend({}, ctx),
             propName = &quot;&quot;;
@@ -1082,32 +1047,23 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getRangeForPropValue 
-        <a class="anchor" href="#-_getRangeForPropValue" id="-_getRangeForPropValue"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getRangeForPropValue</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        startCtx
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>startCtx</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd>context</dd>
-    <dt>
-        endCtx
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>endCtx</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd>context</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{start: {line: number,ch: number},end: {line: number,ch: number}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{start: {line: number,ch: number},end: {line: number,ch: number}}</dd>
     <dd>A range object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getRangeForPropValue(startCtx, endCtx) {
         var range = { &quot;start&quot;: {},
                       &quot;end&quot;: {} };
@@ -1138,38 +1094,31 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getRuleInfoStartingFromPropValue 
-        <a class="anchor" href="#-_getRuleInfoStartingFromPropValue" id="-_getRuleInfoStartingFromPropValue"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getRuleInfoStartingFromPropValue</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</dd>
     <dd>A CSS context info object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _getRuleInfoStartingFromPropValue(ctx, editor) {
-        var propNamePos = $.extend({}, ctx.pos),
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getRuleInfoStartingFromPropValue(ctx, editorParam) {
+        var editor      = editorParam._codeMirror || editorParam,
+            contextDoc  = editor.document || editor.doc,
+            propNamePos = $.extend({}, ctx.pos),
             backwardPos = $.extend({}, ctx.pos),
             forwardPos  = $.extend({}, ctx.pos),
-            propNameCtx = TokenUtils.getInitialContext(editor._codeMirror, propNamePos),
+            propNameCtx = TokenUtils.getInitialContext(editor, propNamePos),
             backwardCtx,
             forwardCtx,
             lastValue = &quot;&quot;,
@@ -1178,7 +1127,7 @@ we know the selector applies.</p>
             offset = TokenUtils.offsetInToken(ctx),
             canAddNewOne = false,
             testPos = {ch: ctx.pos.ch + 1, line: ctx.pos.line},
-            testToken = editor._codeMirror.getTokenAt(testPos, true),
+            testToken = editor.getTokenAt(testPos, true),
             propName,
             range;
 
@@ -1190,7 +1139,7 @@ we know the selector applies.</p>
         }
 
         &#x2F;&#x2F; Scan backward to collect all preceding property values
-        backwardCtx = TokenUtils.getInitialContext(editor._codeMirror, backwardPos);
+        backwardCtx = TokenUtils.getInitialContext(editor, backwardPos);
         propValues = _getPrecedingPropValues(backwardCtx);
 
         lastValue = &quot;&quot;;
@@ -1222,14 +1171,14 @@ we know the selector applies.</p>
             offset = 0;
 
             &#x2F;&#x2F; If pos is at EOL, then there&#39;s implied whitespace (newline).
-            if (editor.document.getLine(ctx.pos.line).length &gt; ctx.pos.ch  &amp;&amp;
+            if (contextDoc.getLine(ctx.pos.line).length &gt; ctx.pos.ch  &amp;&amp;
                     (testToken.string.length === 0 || testToken.string.match(&#x2F;\S&#x2F;))) {
                 canAddNewOne = false;
             }
         }
 
         &#x2F;&#x2F; Scan forward to collect all succeeding property values and append to all propValues.
-        forwardCtx = TokenUtils.getInitialContext(editor._codeMirror, forwardPos);
+        forwardCtx = TokenUtils.getInitialContext(editor, forwardPos);
         propValues = propValues.concat(_getSucceedingPropValues(forwardCtx, lastValue));
 
         if (propValues.length) {
@@ -1253,10 +1202,7 @@ we know the selector applies.</p>
     Private
     
 </span>
-    <h4>
-        _getSelectorInFinalCSSForm 
-        <a class="anchor" href="#-_getSelectorInFinalCSSForm" id="-_getSelectorInFinalCSSForm"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getSelectorInFinalCSSForm</h4>
 
     
     <div class="description"><p>Converts the given selector array into the actual CSS selectors similar to
@@ -1264,18 +1210,14 @@ those generated by a CSS preprocessor.</p>
 </div>
     
 <dl>
-    <dt>
-        selectorArray
-        <span class="label label-info">Array.&lt;string&gt;</span>
-    </dt>
+    <dt>selectorArray</dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getSelectorInFinalCSSForm(selectorArray) {
         var finalSelectorArray = [&quot;&quot;],
             parentSelectorArray = [],
@@ -1309,32 +1251,23 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _getSucceedingPropValues 
-        <a class="anchor" href="#-_getSucceedingPropValues" id="-_getSucceedingPropValues"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_getSucceedingPropValues</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
-    <dt>
-        currentValue
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>currentValue</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The token string at the current cursor position</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">?Array.&lt;string&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">?Array.&lt;string&gt;</dd>
     <dd>An array of all the space/comma seperated tokens after the current cursor position</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getSucceedingPropValues(ctx, currentValue) {
         var lastValue = currentValue,
             propValues = [];
@@ -1381,28 +1314,21 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _hasNonWhitespace 
-        <a class="anchor" href="#-_hasNonWhitespace" id="-_hasNonWhitespace"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_hasNonWhitespace</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if text has any non whitespace character</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _hasNonWhitespace(text) {
         return (&#x2F;\S&#x2F;.test(text));
     }</code></pre></div><div class="member private">
@@ -1411,27 +1337,20 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _isInAtRule 
-        <a class="anchor" href="#-_isInAtRule" id="-_isInAtRule"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_isInAtRule</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if the context is in property value</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isInAtRule(ctx) {
         var state = _getContextState(ctx);
         if (!state || !state.context) {
@@ -1444,27 +1363,20 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _isInPropName 
-        <a class="anchor" href="#-_isInPropName" id="-_isInPropName"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_isInPropName</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if the context is in property name</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isInPropName(ctx) {
         var state = _getContextState(ctx),
             lastToken;
@@ -1480,27 +1392,20 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _isInPropValue 
-        <a class="anchor" href="#-_isInPropValue" id="-_isInPropValue"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_isInPropValue</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-info">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</span>
-    </dt>
+    <dt>context</dt>
+    <dd class="label label-info pull-left">editor:{CodeMirror},pos:{ch:{string},line:{number}},token:{object}</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if the context is in property value</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isInPropValue(ctx) {
 
         function isInsideParens(context) {
@@ -1529,29 +1434,22 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _removeComments 
-        <a class="anchor" href="#-_removeComments" id="-_removeComments"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_removeComments</h4>
 
     
     <div class="description"><p>removes CSS comments from the content</p>
 </div>
     
 <dl>
-    <dt>
-        content
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>content</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>to reduce</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>reduced content</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeComments(content) {
         return content.replace(&#x2F;\&#x2F;\*(?:(?!\*\&#x2F;)[\s\S])*\*\&#x2F;&#x2F;g, &quot;&quot;);
     }</code></pre></div><div class="member private">
@@ -1560,29 +1458,22 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _removeStrings 
-        <a class="anchor" href="#-_removeStrings" id="-_removeStrings"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_removeStrings</h4>
 
     
     <div class="description"><p>removes strings from the content</p>
 </div>
     
 <dl>
-    <dt>
-        content
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>content</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>to reduce</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>reduced content</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _removeStrings(content) {
         &#x2F;&#x2F; First remove escaped quotes so we can balance unescaped quotes
         &#x2F;&#x2F; since JavaScript doesn&#39;t support negative lookbehind
@@ -1596,10 +1487,7 @@ those generated by a CSS preprocessor.</p>
     Private
     
 </span>
-    <h4>
-        _stripAtRules 
-        <a class="anchor" href="#-_stripAtRules" id="-_stripAtRules"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_stripAtRules</h4>
 
     
     <div class="description"><p>Helper function to remove whitespaces before and after a selector
@@ -1607,18 +1495,14 @@ Returns trimmed selector if it is not an at-rule, or null if it starts with @.</
 </div>
     
 <dl>
-    <dt>
-        selector
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>selector</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _stripAtRules(selector) {
         selector = selector.trim();
         if (selector.indexOf(&quot;@&quot;) === 0) {
@@ -1631,10 +1515,7 @@ Returns trimmed selector if it is not an at-rule, or null if it starts with @.</
     
     Public API
 </span>
-    <h4>
-        addRuleToDocument 
-        <a class="anchor" href="#-addRuleToDocument" id="-addRuleToDocument"><span class="icon-link"></span></a>
-    </h4>
+    <h4>addRuleToDocument</h4>
 
     
     <div class="description"><p>Adds a new rule to the end of the given document, and returns the range of the added rule
@@ -1643,33 +1524,23 @@ not include all the inserted text (we insert extra newlines before and after the
 </div>
     
 <dl>
-    <dt>
-        doc
-        <span class="label label-info">Document</span>
-    </dt>
+    <dt>doc</dt>
+    <dd class="label label-info pull-left">Document</dd>
     <dd>The document to insert the rule into.</dd>
-    <dt>
-        selector
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>selector</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The selector to use for the given rule.</dd>
-    <dt>
-        useTabChar
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>useTabChar</dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>Whether to indent with a tab.</dd>
-    <dt>
-        indentUnit
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>indentUnit</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>If useTabChar is false, how many spaces to indent with.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{range: {from: {line: number,ch: number},to: {line: number,ch: number}},pos: {line: number,ch: number}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{range: {from: {line: number,ch: number},to: {line: number,ch: number}},pos: {line: number,ch: number}}</dd>
     <dd>The range of the inserted rule and the location where the cursor should be placed.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function addRuleToDocument(doc, selector, useTabChar, indentUnit) {
         var newRule = &quot;\n&quot; + selector + &quot; {\n&quot;,
             blankLineOffset;
@@ -1702,10 +1573,7 @@ not include all the inserted text (we insert extra newlines before and after the
     
     Public API
 </span>
-    <h4>
-        consolidateRules 
-        <a class="anchor" href="#-consolidateRules" id="-consolidateRules"><span class="icon-link"></span></a>
-    </h4>
+    <h4>consolidateRules</h4>
 
     
     <div class="description"><p>In the given rule array (as returned by <code>findMatchingRules()</code>), if multiple rules in a row
@@ -1715,9 +1583,7 @@ rules. Also, always use the selector group if available instead of the original 
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function consolidateRules(rules) {
         var newRules = [], lastRule;
         rules.forEach(function (rule) {
@@ -1741,64 +1607,45 @@ rules. Also, always use the selector group if available instead of the original 
     Private
     Public API
 </span>
-    <h4>
-        createInfo 
-        <a class="anchor" href="#-createInfo" id="-createInfo"><span class="icon-link"></span></a>
-    </h4>
+    <h4>createInfo</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        context
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>context</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>A constant string</dd>
-    <dt>
-        offset
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>offset</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
     <dd>The offset of the token for a given cursor position</dd>
-    <dt>
-        name
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>name</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Property name of the context</dd>
-    <dt>
-        index
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>index</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">number</dd>
     <dd>The index of the property value for a given cursor position</dd>
-    <dt>
-        values
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">Array.&lt;string&gt;</span>
-    </dt>
+    <dt>values</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
     <dd>An array of property values</dd>
-    <dt>
-        isNewItem
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>isNewItem</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>If this is true, then the value in index refers to the index at which a new item is going to be inserted and should not be used for accessing an existing value in values array.</dd>
-    <dt>
-        range
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">{start: {line: number, ch: number}, end: {line: number, ch: number}}</span>
-    </dt>
+    <dt>range</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">{start: {line: number, ch: number}, end: {line: number, ch: number}}</dd>
     <dd>A range object with a start position and an end position</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</dd>
     <dd>A CSS context info object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function createInfo(context, offset, name, index, values, isNewItem, range) {
         var ruleInfo = { context: context || &quot;&quot;,
                          offset: offset || 0,
@@ -1820,29 +1667,22 @@ rules. Also, always use the selector group if available instead of the original 
     
     Public API
 </span>
-    <h4>
-        extractAllNamedFlows 
-        <a class="anchor" href="#-extractAllNamedFlows" id="-extractAllNamedFlows"><span class="icon-link"></span></a>
-    </h4>
+    <h4>extractAllNamedFlows</h4>
 
     
     <div class="description"><p>Extracts all named flow instances</p>
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>to extract from</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;string&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
     <dd>array of unique flow names found in the content (empty if none)</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function extractAllNamedFlows(text) {
         var namedFlowRegEx = &#x2F;(?:flow\-(into|from)\:\s*)([\w\-]+)(?:\s*;)&#x2F;gi,
             result = [],
@@ -1873,10 +1713,7 @@ rules. Also, always use the selector group if available instead of the original 
     
     Public API
 </span>
-    <h4>
-        extractAllSelectors 
-        <a class="anchor" href="#-extractAllSelectors" id="-extractAllSelectors"><span class="icon-link"></span></a>
-    </h4>
+    <h4>extractAllSelectors</h4>
 
     
     <div class="description"><p>Extracts all CSS selectors from the given text
@@ -1907,25 +1744,19 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>CSS text to extract from</dd>
-    <dt>
-        documentMode
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>documentMode</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>language mode of the document that text belongs to, default to css if undefined.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array.&lt;SelectorInfo&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array.&lt;SelectorInfo&gt;</dd>
     <dd>Array with objects specifying selectors.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function extractAllSelectors(text, documentMode) {
         var state, lines, lineCount,
             token, style, stream, line,
@@ -2472,10 +2303,7 @@ Returns an array of SelectorInfo. Each SelectorInfo is an object with the follow
     
     Public API
 </span>
-    <h4>
-        findMatchingRules 
-        <a class="anchor" href="#-findMatchingRules" id="-findMatchingRules"><span class="icon-link"></span></a>
-    </h4>
+    <h4>findMatchingRules</h4>
 
     
     <div class="description"><p>Return all rules matching the specified selector.
@@ -2495,25 +2323,19 @@ but will <em>not</em> match these rules:
 </div>
     
 <dl>
-    <dt>
-        selector
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>selector</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The selector to match. This can be a tag selector, class selector or id selector</dd>
-    <dt>
-        htmlDocument
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">Document</span>
-    </dt>
+    <dt>htmlDocument</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">Document</dd>
     <dd>An HTML file for context (so we can search <style> blocks)</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">$.Promise</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">$.Promise</dd>
     <dd>that will be resolved with an Array of objects containing the source document, start line, and end line (0-based, inclusive range) for each matching declaration list. Does not addRef() the documents returned in the array.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findMatchingRules(selector, htmlDocument) {
         var result          = new $.Deferred(),
             resultSelectors = [];
@@ -2540,10 +2362,7 @@ but will <em>not</em> match these rules:
     
     Public API
 </span>
-    <h4>
-        findSelectorAtDocumentPos 
-        <a class="anchor" href="#-findSelectorAtDocumentPos" id="-findSelectorAtDocumentPos"><span class="icon-link"></span></a>
-    </h4>
+    <h4>findSelectorAtDocumentPos</h4>
 
     
     <div class="description"><p>Returns the selector(s) of the rule at the specified document pos, or &quot;&quot; if the position is
@@ -2551,25 +2370,19 @@ is not within a style rule.</p>
 </div>
     
 <dl>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Editor to search</dd>
-    <dt>
-        pos
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line: number, ch: number}</span>
-    </dt>
+    <dt>pos</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line: number, ch: number}</dd>
     <dd>Position to search</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Selector(s) for the rule at the specified position, or "" if the position is not within a style rule. If the rule has multiple selectors, a comma-separated selector string is returned.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function findSelectorAtDocumentPos(editor, pos) {
         var cm = editor._codeMirror;
         var ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
@@ -2732,10 +2545,7 @@ is not within a style rule.</p>
     
     Public API
 </span>
-    <h4>
-        getCompleteSelectors 
-        <a class="anchor" href="#-getCompleteSelectors" id="-getCompleteSelectors"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getCompleteSelectors</h4>
 
     
     <div class="description"><p>Return a string that shows the literal parent hierarchy of the selector
@@ -2743,25 +2553,19 @@ in info.</p>
 </div>
     
 <dl>
-    <dt>
-        info
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">SelectorInfo</span>
-    </dt>
+    <dt>info</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">SelectorInfo</dd>
     <dd></dd>
-    <dt>
-        useGroup
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>useGroup</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true to append selectorGroup instead of selector</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>the literal parent hierarchy of the selector</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getCompleteSelectors(info, useGroup) {
         if (info.parentSelectors) {
             &#x2F;&#x2F; Show parents with &#x2F; separators.
@@ -2783,34 +2587,25 @@ in info.</p>
     
     Public API
 </span>
-    <h4>
-        getInfoAtPos 
-        <a class="anchor" href="#-getInfoAtPos" id="-getInfoAtPos"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getInfoAtPos</h4>
 
     
     <div class="description"><p>Returns a context info object for the given cursor position</p>
 </div>
     
 <dl>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>editor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd></dd>
-    <dt>
-        constPos
-        <span class="label label-info">{ch: number,line: number}</span>
-    </dt>
+    <dt>constPos</dt>
+    <dd class="label label-info pull-left">{ch: number,line: number}</dd>
     <dd>A CM pos (likely from editor.getCursorPos())</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{context: string,offset: number,name: string,index: number,values: Array.&lt;string&gt;,isNewItem: boolean,range: {start: {line: number,ch: number},end: {line: number,ch: number}}}</dd>
     <dd>A CSS context info object.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getInfoAtPos(editor, constPos) {
         &#x2F;&#x2F; We&#39;re going to be changing pos a lot, but we don&#39;t want to mess up
         &#x2F;&#x2F; the pos the caller passed in so we use extend to make a safe copy of it.
@@ -2823,29 +2618,20 @@ in info.</p>
             return createInfo();
         }
 
-        if (_isInPropName(ctx)) {
-            return _getPropNameInfo(ctx, editor);
-        }
+        &#x2F;&#x2F; Context from the current editor will have htmlState if we are in css mode
+        &#x2F;&#x2F; and in attribute value state of a tag with attribute name style
+        if (ctx.token.state.htmlState &amp;&amp; (!ctx.token.state.localMode || ctx.token.state.localMode.name !== &quot;css&quot;)) {
 
-        if (_isInPropValue(ctx)) {
-            return _getRuleInfoStartingFromPropValue(ctx, editor);
-        }
-
-        if (_isInAtRule(ctx)) {
-            return _getImportUrlInfo(ctx, editor);
-        }
-
-        return createInfo();
-    }</code></pre></div><div class="member public">
+            &#x2F;&#x2F; tagInfo is required to aquire the style attr value
+            var tagInfo = HTMLUtils.getTagInfo(editor, pos, true),
+                &#x2F;&#x2F; To be used as relative character position
+                offset = tagInfo.position.offset;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
     Public API
 </span>
-    <h4>
-        getRangeSelectors 
-        <a class="anchor" href="#-getRangeSelectors" id="-getRangeSelectors"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getRangeSelectors</h4>
 
     
     <div class="description"><p>Given a TextRange, extracts the selector(s) for the rule in the range and returns it.
@@ -2854,18 +2640,14 @@ selector(s) for the first rule.</p>
 </div>
     
 <dl>
-    <dt>
-        range
-        <span class="label label-info">TextRange</span>
-    </dt>
+    <dt>range</dt>
+    <dd class="label label-info pull-left">TextRange</dd>
     <dd>The range to extract the selector(s) from.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The selector(s) for the rule in the range.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getRangeSelectors(range) {
         &#x2F;&#x2F; There&#39;s currently no immediate way to access a given line in a Document, because it&#39;s just
         &#x2F;&#x2F; stored as a string. Eventually, we should have Documents cache the lines in the document
@@ -2915,28 +2697,21 @@ selector(s) for the first rule.</p>
     
     Public API
 </span>
-    <h4>
-        isCSSPreprocessorFile 
-        <a class="anchor" href="#-isCSSPreprocessorFile" id="-isCSSPreprocessorFile"><span class="icon-link"></span></a>
-    </h4>
+    <h4>isCSSPreprocessorFile</h4>
 
     
     <div class="description"><p>Determines if the given path is a CSS preprocessor file that CSSUtils supports.</p>
 </div>
     
 <dl>
-    <dt>
-        filePath
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>filePath</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Absolute path to the file.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if LanguageManager identifies filePath as less or scss language.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function isCSSPreprocessorFile(filePath) {
         var languageId = LanguageManager.getLanguageForPath(filePath).getId();
         return (languageId === &quot;less&quot; || languageId === &quot;scss&quot;);
@@ -2946,10 +2721,7 @@ selector(s) for the first rule.</p>
     
     Public API
 </span>
-    <h4>
-        reduceStyleSheetForRegExParsing 
-        <a class="anchor" href="#-reduceStyleSheetForRegExParsing" id="-reduceStyleSheetForRegExParsing"><span class="icon-link"></span></a>
-    </h4>
+    <h4>reduceStyleSheetForRegExParsing</h4>
 
     
     <div class="description"><p>Reduces the style sheet by removing comments and strings
@@ -2957,19 +2729,15 @@ so that the content can be parsed using a regular expression</p>
 </div>
     
 <dl>
-    <dt>
-        content
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>content</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>to reduce</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>reduced content</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function reduceStyleSheetForRegExParsing(content) {
         return _removeStrings(_removeComments(content));
     }</code></pre></div>

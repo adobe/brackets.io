@@ -481,7 +481,6 @@
     <h3>Description</h3>
     
     <div></div>
-    
 </section>
 
 <section id="dependencies">
@@ -513,10 +512,7 @@
     
     
 </span>
-    <h4>
-        oneOrEach 
-        <a class="anchor" href="#-oneOrEach" id="-oneOrEach"><span class="icon-link"></span></a>
-    </h4>
+    <h4>oneOrEach</h4>
 
     
     <div class="description"><p>Like _.each(), but if given a single item not in an array, acts as
@@ -525,9 +521,7 @@ if it were an array containing just that item.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function oneOrEach(itemOrArr, cb) {
         if (Array.isArray(itemOrArr)) {
             _.each(itemOrArr, cb);
@@ -546,11 +540,7 @@ if it were an array containing just that item.</p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>
-                Document
-                
-            </h4>
-            
+            <h4>Document</h4>
             <em><p>Model for the contents of a single file and its current modification state.
 See DocumentManager documentation for important usage notes.</p>
 <p>Document dispatches these events:</p>
@@ -575,14 +565,16 @@ be closed. The document will no longer be editable or dispatch &quot;change&quot
 </em>
             
             <dl>
-                <dt>file <span class="label label-info pull-left">File</span></dt>
+                <dt>file</dt>
+                <dd class="label label-info pull-left">File</dd>
                 <dd>Need not lie within the project.</dd>
-                <dt>initialTimestamp <span class="label label-info pull-left">Date</span></dt>
+                <dt>initialTimestamp</dt>
+                <dd class="label label-info pull-left">Date</dd>
                 <dd>File's timestamp when we read it off disk.</dd>
-                <dt>rawText <span class="label label-info pull-left">string</span></dt>
+                <dt>rawText</dt>
+                <dd class="label label-info pull-left">string</dd>
                 <dd>Text content of the file.</dd>
             </dl>
-          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function Document(file, initialTimestamp, rawText) {
@@ -609,234 +601,201 @@ be closed. The document will no longer be editable or dispatch &quot;change&quot
     Private
     
 </span>
-    <h4>
-        _lineEndings 
-        <a class="anchor" href="#Document-_lineEndings" id="Document-_lineEndings"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_lineEndings</h4>
 
-    
-    <div class="description"><p>The content&#39;s line-endings style. If a Document is created on empty text, or text with
-inconsistent line endings, defaults to the current platform&#39;s standard endings.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>FileUtils.LINE_ENDINGS_CRLF, FileUtils.LINE_ENDINGS_LF</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>The content&#39;s line-endings style. If a Document is created on empty text, or text with
+inconsistent line endings, defaults to the current platform&#39;s standard endings.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._lineEndings = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _masterEditor 
-        <a class="anchor" href="#Document-_masterEditor" id="Document-_masterEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_masterEditor</h4>
 
-    
-    <div class="description"><p>Editor object representing the full-size editor UI for this document. May be null if Document
-has not yet been modified or been the currentDocument; in that case, our backing model is the
-string _text.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>?Editor</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Editor object representing the full-size editor UI for this document. May be null if Document
+has not yet been modified or been the currentDocument; in that case, our backing model is the
+string _text.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._masterEditor = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _refCount 
-        <a class="anchor" href="#Document-_refCount" id="Document-_refCount"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_refCount</h4>
 
-    
-    <div class="description"><p>Number of clients who want this Document to stay alive. The Document is listed in
-DocumentManager._openDocuments whenever refCount &gt; 0.</p>
-</div>
     
 <dl>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Number of clients who want this Document to stay alive. The Document is listed in
+DocumentManager._openDocuments whenever refCount &gt; 0.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._refCount = 0;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _refreshInProgress 
-        <a class="anchor" href="#Document-_refreshInProgress" id="Document-_refreshInProgress"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_refreshInProgress</h4>
 
-    
-    <div class="description"><p>True while refreshText() is in progress and change notifications shouldn&#39;t trip the dirty flag.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>True while refreshText() is in progress and change notifications shouldn&#39;t trip the dirty flag.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._refreshInProgress = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _text 
-        <a class="anchor" href="#Document-_text" id="Document-_text"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_text</h4>
 
-    
-    <div class="description"><p>The text contents of the file, or null if our backing model is _masterEditor.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>?string</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>The text contents of the file, or null if our backing model is _masterEditor.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._text = null;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        diskTimestamp 
-        <a class="anchor" href="#Document-diskTimestamp" id="Document-diskTimestamp"><span class="icon-link"></span></a>
-    </h4>
+    <h4>diskTimestamp</h4>
 
-    
-    <div class="description"><p>What we expect the file&#39;s timestamp to be on disk. If the timestamp differs from this, then
-it means the file was modified by an app other than Brackets.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>!Date</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>What we expect the file&#39;s timestamp to be on disk. If the timestamp differs from this, then
+it means the file was modified by an app other than Brackets.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.diskTimestamp = null;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        file 
-        <a class="anchor" href="#Document-file" id="Document-file"><span class="icon-link"></span></a>
-    </h4>
+    <h4>file</h4>
 
-    
-    <div class="description"><p>The File for this document. Need not lie within the project.
-If Document is untitled, this is an InMemoryFile object.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>!File</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>The File for this document. Need not lie within the project.
+If Document is untitled, this is an InMemoryFile object.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.file = null;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        isDirty 
-        <a class="anchor" href="#Document-isDirty" id="Document-isDirty"><span class="icon-link"></span></a>
-    </h4>
+    <h4>isDirty</h4>
 
-    
-    <div class="description"><p>Whether this document has unsaved changes or not.
-When this changes on any Document, DocumentManager dispatches a &quot;dirtyFlagChange&quot; event.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Whether this document has unsaved changes or not.
+When this changes on any Document, DocumentManager dispatches a &quot;dirtyFlagChange&quot; event.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.isDirty = false;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        isSaving 
-        <a class="anchor" href="#Document-isSaving" id="Document-isSaving"><span class="icon-link"></span></a>
-    </h4>
+    <h4>isSaving</h4>
 
-    
-    <div class="description"><p>Whether this document is currently being saved.</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Whether this document is currently being saved.</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.isSaving = false;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        keepChangesTime 
-        <a class="anchor" href="#Document-keepChangesTime" id="Document-keepChangesTime"><span class="icon-link"></span></a>
-    </h4>
+    <h4>keepChangesTime</h4>
 
     
+<dl>
+    <dt>Type</dt>
+    <dd>?Number</dd>
+</dl>
     <div class="description"><p>The timestamp of the document at the point where the user last said to keep changes that conflict
 with the current disk version. Can also be -1, indicating that the file was deleted on disk at the
 last point when the user said to keep changes, or null, indicating that the user has not said to
 keep changes.
 Note that this is a time as returned by Date.getTime(), not a Date object.</p>
 </div>
-    
-<dl>
-    <dt>Type</dt>
-    <dd>?Number</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.keepChangesTime = null;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        language 
-        <a class="anchor" href="#Document-language" id="Document-language"><span class="icon-link"></span></a>
-    </h4>
+    <h4>language</h4>
 
-    
-    <div class="description"><p>The Language for this document. Will be resolved by file extension in the constructor</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>!Language</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>The Language for this document. Will be resolved by file extension in the constructor</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.language = null;</code></pre></div>
         </section>
 
@@ -853,10 +812,7 @@ Note that this is a time as returned by Date.getTime(), not a Date object.</p>
     Private
     
 </span>
-    <h4>
-        _associateEditor 
-        <a class="anchor" href="#Document-_associateEditor" id="Document-_associateEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_associateEditor</h4>
 
     
     <div class="description"><p>Aassociates a full editor to this document
@@ -865,9 +821,7 @@ To be used internally by Editor only when pane marking happens</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._associateEditor = function (editor) {
         &#x2F;&#x2F; Do a check before processing the request to ensure inline editors are not being handled
         if (this._associatedFullEditors.indexOf(editor) === -1) {
@@ -879,28 +833,21 @@ To be used internally by Editor only when pane marking happens</p>
     Private
     
 </span>
-    <h4>
-        _checkAssociatedEditorForPane 
-        <a class="anchor" href="#Document-_checkAssociatedEditorForPane" id="Document-_checkAssociatedEditorForPane"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_checkAssociatedEditorForPane</h4>
 
     
     <div class="description"><p>Checks and returns if a full editor exists for the provided pane attached to this document</p>
 </div>
     
 <dl>
-    <dt>
-        paneId
-        <span class="label label-info">String</span>
-    </dt>
+    <dt>paneId</dt>
+    <dd class="label label-info pull-left">String</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Editor</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd>Attached editor bound to the provided pane id</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._checkAssociatedEditorForPane = function (paneId) {
         var editorCount, editorForPane;
         for (editorCount = 0; editorCount &lt; this._associatedFullEditors.length; ++editorCount) {
@@ -917,10 +864,7 @@ To be used internally by Editor only when pane marking happens</p>
     Private
     
 </span>
-    <h4>
-        _disassociateEditor 
-        <a class="anchor" href="#Document-_disassociateEditor" id="Document-_disassociateEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_disassociateEditor</h4>
 
     
     <div class="description"><p>Disassociates an editor from this document if present in the associated editor list
@@ -929,9 +873,7 @@ To be used internally by Editor only when destroyed and not the current master e
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._disassociateEditor = function (editor) {
         &#x2F;&#x2F; Do a check before processing the request to ensure inline editors are not being handled
         if (this._associatedFullEditors.indexOf(editor) &gt;= 0) {
@@ -943,10 +885,7 @@ To be used internally by Editor only when destroyed and not the current master e
     Private
     
 </span>
-    <h4>
-        _ensureMasterEditor 
-        <a class="anchor" href="#Document-_ensureMasterEditor" id="Document-_ensureMasterEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_ensureMasterEditor</h4>
 
     
     <div class="description"><p>Guarantees that _masterEditor is non-null. If needed, asks EditorManager to create a new master
@@ -956,9 +895,7 @@ Should ONLY be called by Editor and Document.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._ensureMasterEditor = function () {
         if (!this._masterEditor) {
             EditorManager._createUnattachedMasterEditor(this);
@@ -969,10 +906,7 @@ Should ONLY be called by Editor and Document.</p>
     Private
     
 </span>
-    <h4>
-        _handleEditorChange 
-        <a class="anchor" href="#Document-_handleEditorChange" id="Document-_handleEditorChange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_handleEditorChange</h4>
 
     
     <div class="description"><p>Handles changes from the master backing Editor. Changes are triggered either by direct edits
@@ -981,9 +915,7 @@ to that Editor&#39;s UI, OR by our setText()/refreshText() methods.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._handleEditorChange = function (event, editor, changeList) {
         &#x2F;&#x2F; Handle editor change event only when it is originated from the master editor for this doc
         if (this._masterEditor !== editor) {
@@ -1012,10 +944,7 @@ to that Editor&#39;s UI, OR by our setText()/refreshText() methods.</p>
     Private
     
 </span>
-    <h4>
-        _makeEditable 
-        <a class="anchor" href="#Document-_makeEditable" id="Document-_makeEditable"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_makeEditable</h4>
 
     
     <div class="description"><p>Attach a backing Editor to the Document, enabling setText() to be called. Assumes Editor has
@@ -1024,16 +953,12 @@ when EditorManager has told it to act as the master editor).</p>
 </div>
     
 <dl>
-    <dt>
-        masterEditor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
+    <dt>masterEditor</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Editor</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._makeEditable = function (masterEditor) {
 
         this._text = null;
@@ -1046,10 +971,7 @@ when EditorManager has told it to act as the master editor).</p>
     Private
     
 </span>
-    <h4>
-        _makeNonEditable 
-        <a class="anchor" href="#Document-_makeNonEditable" id="Document-_makeNonEditable"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_makeNonEditable</h4>
 
     
     <div class="description"><p>Detach the backing Editor from the Document, disallowing setText(). The text content is
@@ -1059,9 +981,7 @@ Editor.destroy() should call this.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._makeNonEditable = function () {
         if (!this._masterEditor) {
             console.error(&quot;Document is already non-editable&quot;);
@@ -1083,19 +1003,14 @@ Editor.destroy() should call this.</p>
     Private
     
 </span>
-    <h4>
-        _markClean 
-        <a class="anchor" href="#Document-_markClean" id="Document-_markClean"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_markClean</h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._markClean = function () {
         this.isDirty = false;
         if (this._masterEditor) {
@@ -1108,24 +1023,17 @@ Editor.destroy() should call this.</p>
     Private
     
 </span>
-    <h4>
-        _notifyDocumentChange 
-        <a class="anchor" href="#Document-_notifyDocumentChange" id="Document-_notifyDocumentChange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_notifyDocumentChange</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        changeList
-        <span class="label label-info">Object</span>
-    </dt>
+    <dt>changeList</dt>
+    <dd class="label label-info pull-left">Object</dd>
     <dd>Changelist in CodeMirror format</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._notifyDocumentChange = function (changeList) {
         this.trigger(&quot;change&quot;, this, changeList);
         exports.trigger(&quot;documentChange&quot;, this, changeList);
@@ -1135,10 +1043,7 @@ Editor.destroy() should call this.</p>
     Private
     
 </span>
-    <h4>
-        _notifyFilePathChanged 
-        <a class="anchor" href="#Document-_notifyFilePathChanged" id="Document-_notifyFilePathChanged"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_notifyFilePathChanged</h4>
 
     
     <div class="description"><p>Called when Document.file has been modified (due to a rename)</p>
@@ -1146,9 +1051,7 @@ Editor.destroy() should call this.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._notifyFilePathChanged = function () {
         &#x2F;&#x2F; File extension may have changed
         this._updateLanguage();
@@ -1158,10 +1061,7 @@ Editor.destroy() should call this.</p>
     Private
     
 </span>
-    <h4>
-        _toggleMasterEditor 
-        <a class="anchor" href="#Document-_toggleMasterEditor" id="Document-_toggleMasterEditor"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_toggleMasterEditor</h4>
 
     
     <div class="description"><p>Toggles the master editor which has gained focus from a pool of full editors
@@ -1170,9 +1070,7 @@ To be used internally by Editor only</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._toggleMasterEditor = function (masterEditor) {
         &#x2F;&#x2F; Do a check before processing the request to ensure inline editors are not being set as master editor
         if (this.file === masterEditor.document.file &amp;&amp; this._associatedFullEditors.indexOf(masterEditor) &gt;= 0) {
@@ -1184,10 +1082,7 @@ To be used internally by Editor only</p>
     Private
     
 </span>
-    <h4>
-        _updateLanguage 
-        <a class="anchor" href="#Document-_updateLanguage" id="Document-_updateLanguage"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateLanguage</h4>
 
     
     <div class="description"><p>Updates the language to match the current mapping given by LanguageManager</p>
@@ -1195,9 +1090,7 @@ To be used internally by Editor only</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._updateLanguage = function () {
         var oldLanguage = this.language;
         this.language = LanguageManager.getLanguageForPath(this.file.fullPath);
@@ -1210,19 +1103,14 @@ To be used internally by Editor only</p>
     Private
     
 </span>
-    <h4>
-        _updateTimestamp 
-        <a class="anchor" href="#Document-_updateTimestamp" id="Document-_updateTimestamp"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateTimestamp</h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype._updateTimestamp = function (timestamp) {
         this.diskTimestamp = timestamp;
         &#x2F;&#x2F; Clear the &quot;keep changes&quot; timestamp since it&#39;s no longer relevant.
@@ -1233,10 +1121,7 @@ To be used internally by Editor only</p>
     
     
 </span>
-    <h4>
-        addRef 
-        <a class="anchor" href="#Document-addRef" id="Document-addRef"><span class="icon-link"></span></a>
-    </h4>
+    <h4>addRef</h4>
 
     
     <div class="description"><p>Add a ref to keep this Document alive</p>
@@ -1244,9 +1129,7 @@ To be used internally by Editor only</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.addRef = function () {
         &#x2F;&#x2F;console.log(&quot;+++REF+++ &quot;+this);
 
@@ -1263,10 +1146,7 @@ To be used internally by Editor only</p>
     
     
 </span>
-    <h4>
-        adjustPosForChange 
-        <a class="anchor" href="#Document-adjustPosForChange" id="Document-adjustPosForChange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>adjustPosForChange</h4>
 
     
     <div class="description"><p>Adjusts a given position taking a given replaceRange-type edit into account.
@@ -1277,37 +1157,27 @@ it did before the edit.</p>
 </div>
     
 <dl>
-    <dt>
-        pos
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line:number, ch: number}</span>
-    </dt>
+    <dt>pos</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line:number, ch: number}</dd>
     <dd>The position to adjust.</dd>
-    <dt>
-        textLines
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Array.&lt;string&gt;</span>
-    </dt>
+    <dt>textLines</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;string&gt;</dd>
     <dd>The text of the change, split into an array of lines.</dd>
-    <dt>
-        start
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line: number, ch: number}</span>
-    </dt>
+    <dt>start</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line: number, ch: number}</dd>
     <dd>The start of the edit.</dd>
-    <dt>
-        end
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line: number, ch: number}</span>
-    </dt>
+    <dt>end</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line: number, ch: number}</dd>
     <dd>The end of the edit.</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">{line: number,ch: number}</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">{line: number,ch: number}</dd>
     <dd>The adjusted position.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.adjustPosForChange = function (pos, textLines, start, end) {
         &#x2F;&#x2F; Same as CodeMirror.adjustForChange(), but that&#39;s a private function
         &#x2F;&#x2F; and Marijn would rather not expose it publicly.
@@ -1332,10 +1202,7 @@ it did before the edit.</p>
     
     
 </span>
-    <h4>
-        batchOperation 
-        <a class="anchor" href="#Document-batchOperation" id="Document-batchOperation"><span class="icon-link"></span></a>
-    </h4>
+    <h4>batchOperation</h4>
 
     
     <div class="description"><p>Batches a series of related Document changes. Repeated calls to replaceRange() should be wrapped in a
@@ -1343,15 +1210,11 @@ batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and
 </div>
     
 <dl>
-    <dt>
-        doOperation
-        <span class="label label-info">function()</span>
-    </dt>
+    <dt>doOperation</dt>
+    <dd class="label label-info pull-left">function()</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.batchOperation = function (doOperation) {
         this._ensureMasterEditor();
 
@@ -1363,10 +1226,7 @@ batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and
     
     
 </span>
-    <h4>
-        doMultipleEdits 
-        <a class="anchor" href="#Document-doMultipleEdits" id="Document-doMultipleEdits"><span class="icon-link"></span></a>
-    </h4>
+    <h4>doMultipleEdits</h4>
 
     
     <div class="description"><p>Helper function for edit operations that operate on multiple selections. Takes an &quot;edit list&quot;
@@ -1386,25 +1246,19 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
 </div>
     
 <dl>
-    <dt>
-        |
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Array.&lt;{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}</span>
-    </dt>
+    <dt>|</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}</dd>
     <dd>Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>, selection: ?{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>} | ?Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}>} edits Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array will be mutated. `edit` is the edit to perform: `text` will replace the current contents of the range between `start` and `end`. If `end` is unspecified, the text is inserted at `start`. `start` and `end` should be positions relative to the document *ignoring* all other edit descriptions (i.e., as if you were only performing this one edit on the document). If any of the edits overlap, an error will be thrown. If `selection` is specified, it should be a selection associated with this edit. If `isBeforeEdit` is set on the selection, the selection will be fixed up for this edit. If not, it won't be fixed up for this edit, meaning it should be expressed in terms of the document state after this individual edit is performed (ignoring any other edits). Note that if you were planning on just specifying `isBeforeEdit` for every selection, you can accomplish the same thing by simply not passing any selections and letting the editor update the existing selections automatically. Note that `edit` and `selection` can each be either an individual edit/selection, or a group of edits/selections to apply in order. This can be useful if you need to perform multiple edits in a row and then specify a resulting selection that shouldn't be fixed up for any of those edits (but should be fixed up for edits related to other selections). It can also be useful if you have several selections that should ignore the effects of a given edit because you've fixed them up already (this commonly happens with line-oriented edits where multiple cursors on the same line should be ignored, but still tracked). Within an edit group, edit positions must be specified relative to previous edits within that group. Also, the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group). </dd>
-    <dt>
-        origin
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>origin</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>An optional edit origin that's passed through to each replaceRange().</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Array&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean}&gt;</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Array&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean}&gt;</dd>
     <dd>The list of passed selections adjusted for the performed edits, if any.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.doMultipleEdits = function (edits, origin) {
         var self = this;
 
@@ -1497,10 +1351,7 @@ flat list of all the selections, suitable for passing to <code>setSelections()</
     
     
 </span>
-    <h4>
-        getLanguage 
-        <a class="anchor" href="#Document-getLanguage" id="Document-getLanguage"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getLanguage</h4>
 
     
     <div class="description"><p>Returns the language this document is written in.
@@ -1509,12 +1360,10 @@ The language returned is based on the file extension.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">Language</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">Language</dd>
     <dd>An object describing the language used in this document</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.getLanguage = function () {
         return this.language;
     };</code></pre></div><div class="member">
@@ -1523,28 +1372,21 @@ The language returned is based on the file extension.</p>
     
     
 </span>
-    <h4>
-        getLine 
-        <a class="anchor" href="#Document-getLine" id="Document-getLine"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getLine</h4>
 
     
     <div class="description"><p>Returns the text of the given line (excluding any line ending characters)</p>
 </div>
     
 <dl>
-    <dt>
-        Zero-based
-        <span class="label label-info">number</span>
-    </dt>
+    <dt>Zero-based</dt>
+    <dd class="label label-info pull-left">number</dd>
     <dd>line number</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">!string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.getLine = function (lineNum) {
         this._ensureMasterEditor();
         return this._masterEditor._codeMirror.getLine(lineNum);
@@ -1554,35 +1396,26 @@ The language returned is based on the file extension.</p>
     
     
 </span>
-    <h4>
-        getRange 
-        <a class="anchor" href="#Document-getRange" id="Document-getRange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getRange</h4>
 
     
     <div class="description"><p>Returns the characters in the given range. Line endings are normalized to &#39;\n&#39;.</p>
 </div>
     
 <dl>
-    <dt>
-        start
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line:number, ch:number}</span>
-    </dt>
+    <dt>start</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line:number, ch:number}</dd>
     <dd>Start of range, inclusive</dd>
-    <dt>
-        end
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line:number, ch:number}</span>
-    </dt>
+    <dt>end</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line:number, ch:number}</dd>
     <dd>End of range, exclusive</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">!string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">!string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.getRange = function (start, end) {
         this._ensureMasterEditor();
         return this._masterEditor._codeMirror.getRange(start, end);
@@ -1592,10 +1425,7 @@ The language returned is based on the file extension.</p>
     
     
 </span>
-    <h4>
-        getText 
-        <a class="anchor" href="#Document-getText" id="Document-getText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getText</h4>
 
     
     <div class="description"><p>Returns the document&#39;s current contents; may not be saved to disk yet. Whenever this
@@ -1603,19 +1433,15 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
 </div>
     
 <dl>
-    <dt>
-        useOriginalLineEndings
-        <span class="label label-optional">optional</span>
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>useOriginalLineEndings</dt>
+    <span class="label label-optional pull-left">optional</span>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>If true, line endings in the result depend on the Document's line endings setting (based on OS & the original text loaded from disk). If false, line endings are always \n (like all the other Document text getter methods).</dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.getText = function (useOriginalLineEndings) {
         if (this._masterEditor) {
             &#x2F;&#x2F; CodeMirror.getValue() always returns text with LF line endings; fix up to match line
@@ -1642,10 +1468,7 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
     
     
 </span>
-    <h4>
-        isUntitled 
-        <a class="anchor" href="#Document-isUntitled" id="Document-isUntitled"><span class="icon-link"></span></a>
-    </h4>
+    <h4>isUntitled</h4>
 
     
     <div class="description"><p>Is this an untitled document?</p>
@@ -1653,55 +1476,19 @@ value changes, the Document dispatches a &quot;change&quot; event.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>- whether or not the document is untitled</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.isUntitled = function () {
         return this.file instanceof InMemoryFile;
-    };
-
-    &#x2F;&#x2F; We dispatch events from the module level, and the instance level. Instance events are wired up
-    &#x2F;&#x2F; in the Document constructor.
-    EventDispatcher.makeEventDispatcher(exports);
-
-    &#x2F;&#x2F; Define public API
-    exports.Document = Document;
-});</code></pre></div><div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        normalizeText     <span class="label label-info">STATIC</span>
-
-        <a class="anchor" href="#Document-normalizeText" id="Document-normalizeText"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Normalizes line endings the same way CodeMirror would</p>
-</div>
-    
-<dl>
-</dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    Document.normalizeText = function (text) {
-        return text.replace(&#x2F;\r\n&#x2F;g, &quot;\n&quot;);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        notifySaved 
-        <a class="anchor" href="#Document-notifySaved" id="Document-notifySaved"><span class="icon-link"></span></a>
-    </h4>
+    <h4>notifySaved</h4>
 
     
     <div class="description"><p>Called when the document is saved (which currently happens in DocumentCommandHandlers). Marks the
@@ -1710,9 +1497,7 @@ document not dirty and notifies listeners of the save.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.notifySaved = function () {
         if (!this._masterEditor) {
             console.log(&quot;### Warning: saving a Document that is not modifiable!&quot;);
@@ -1736,10 +1521,7 @@ document not dirty and notifies listeners of the save.</p>
     
     
 </span>
-    <h4>
-        refreshText 
-        <a class="anchor" href="#Document-refreshText" id="Document-refreshText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>refreshText</h4>
 
     
     <div class="description"><p>Sets the contents of the document. Treated as reloading the document from disk: the document
@@ -1748,27 +1530,19 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The text to replace the contents of the document with.</dd>
-    <dt>
-        newTimestamp
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Date</span>
-    </dt>
+    <dt>newTimestamp</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Date</dd>
     <dd>Timestamp of file at the time we read its new contents from disk.</dd>
-    <dt>
-        initial
-        <span class="label label-info">boolean</span>
-    </dt>
+    <dt>initial</dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>True if this is the initial load of the document. In that case, we don't send change events.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.refreshText = function (text, newTimestamp, initial) {
         var perfTimerName = PerfUtils.markStart(&quot;refreshText:\t&quot; + (!this.file || this.file.fullPath));
 
@@ -1815,10 +1589,7 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
     
     
 </span>
-    <h4>
-        releaseRef 
-        <a class="anchor" href="#Document-releaseRef" id="Document-releaseRef"><span class="icon-link"></span></a>
-    </h4>
+    <h4>releaseRef</h4>
 
     
     <div class="description"><p>Remove a ref that was keeping this Document alive</p>
@@ -1826,9 +1597,7 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.releaseRef = function () {
         &#x2F;&#x2F;console.log(&quot;---REF--- &quot;+this);
 
@@ -1849,10 +1618,44 @@ the text&#39;s line-ending style. CAN be called even if there is no backing edit
     
     
 </span>
-    <h4>
-        replaceRange 
-        <a class="anchor" href="#Document-replaceRange" id="Document-replaceRange"><span class="icon-link"></span></a>
-    </h4>
+    <h4>reload</h4>
+
+    
+    <div class="description"><p>Reloads the document from FileSystem
+ @return {promise} - to check if reload was successful or not</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Document.prototype.reload = function () {
+        var $deferred = $.Deferred();
+        var self = this;
+        FileUtils.readAsText(this.file)
+            .done(function (text, readTimestamp) {
+                self.refreshText(text, readTimestamp);
+                $deferred.resolve();
+            })
+            .fail(function (error) {
+                console.log(&quot;Error reloading contents of &quot; + self.file.fullPath, error);
+                $deferred.reject();
+            });
+        return $deferred.promise();
+    };
+
+    &#x2F;&#x2F; We dispatch events from the module level, and the instance level. Instance events are wired up
+    &#x2F;&#x2F; in the Document constructor.
+    EventDispatcher.makeEventDispatcher(exports);
+
+    &#x2F;&#x2F; Define public API
+    exports.Document = Document;
+});</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>replaceRange</h4>
 
     
     <div class="description"><p>Adds, replaces, or removes text. If a range is given, the text at that range is replaced with the
@@ -1868,34 +1671,24 @@ fixed when we migrate to use CodeMirror&#39;s native document-linking functional
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Text to insert or replace the range with</dd>
-    <dt>
-        start
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">{line:number, ch:number}</span>
-    </dt>
+    <dt>start</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">{line:number, ch:number}</dd>
     <dd>Start of range, inclusive (if 'to' specified) or insertion point (if not)</dd>
-    <dt>
-        end
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">{line:number, ch:number}</span>
-    </dt>
+    <dt>end</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">{line:number, ch:number}</dd>
     <dd>End of range, exclusive; optional</dd>
-    <dt>
-        origin
-        <span class="label label-nullable">nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>origin</dt>
+    <span class="label label-nullable pull-left">nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>Optional string used to batch consecutive edits for undo. If origin starts with "+", then consecutive edits with the same origin will be batched for undo if they are close enough together in time. If origin starts with "*", then all consecutive edit with the same origin will be batched for undo. Edits with origins starting with other characters will not be batched. (Note that this is a higher level of batching than batchOperation(), which already batches all edits within it for undo. Origin batching works across operations.)</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.replaceRange = function (text, start, end, origin) {
         this._ensureMasterEditor();
         this._masterEditor._codeMirror.replaceRange(text, start, end, origin);
@@ -1906,10 +1699,7 @@ fixed when we migrate to use CodeMirror&#39;s native document-linking functional
     
     
 </span>
-    <h4>
-        setText 
-        <a class="anchor" href="#Document-setText" id="Document-setText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>setText</h4>
 
     
     <div class="description"><p>Sets the contents of the document. Treated as an edit. Line endings will be rewritten to
@@ -1917,16 +1707,12 @@ match the document&#39;s current line-ending style.</p>
 </div>
     
 <dl>
-    <dt>
-        text
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>text</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd>The text to replace the contents of the document with.</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.setText = function (text) {
         this._ensureMasterEditor();
         this._masterEditor._codeMirror.setValue(text);
@@ -1937,10 +1723,7 @@ match the document&#39;s current line-ending style.</p>
     
     
 </span>
-    <h4>
-        toString 
-        <a class="anchor" href="#Document-toString" id="Document-toString"><span class="icon-link"></span></a>
-    </h4>
+    <h4>toString</h4>
 
     
     <div class="description"><p>(pretty toString(), to aid debugging)</p>
@@ -1948,9 +1731,7 @@ match the document&#39;s current line-ending style.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    Document.prototype.toString = function () {
         var dirtyInfo = (this.isDirty ? &quot; (dirty!)&quot; : &quot; (clean)&quot;);
         var editorInfo = (this._masterEditor ? &quot; (Editable)&quot; : &quot; (Non-editable)&quot;);

@@ -481,7 +481,6 @@
     <h3>Description</h3>
     
     <div></div>
-    
 </section>
 
 <section id="dependencies">
@@ -503,20 +502,17 @@
     Private
     
 </span>
-    <h4>
-        _editHandler 
-        <a class="anchor" href="#-_editHandler" id="-_editHandler"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_editHandler</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>DOMEditHandler</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _editHandler;
 
     var HIGHLIGHT_CLASSNAME = &quot;__brackets-ld-highlight&quot;,
@@ -729,56 +725,209 @@
             }
             return false;
         },
-
         _makeHighlightDiv: function (element, doAnimation) {
             var elementBounds = element.getBoundingClientRect(),
                 highlight = window.document.createElement(&quot;div&quot;),
-                styles = window.getComputedStyle(element);
+                elementStyling = window.getComputedStyle(element),
+                transitionDuration = parseFloat(elementStyling.getPropertyValue(&#39;transition-duration&#39;)),
+                animationDuration = parseFloat(elementStyling.getPropertyValue(&#39;animation-duration&#39;));
+            
+            if (transitionDuration) {
+                animateHighlight(transitionDuration);
+            }
+
+            if (animationDuration) {
+                animateHighlight(animationDuration);
+            }
 
             &#x2F;&#x2F; Don&#39;t highlight elements with 0 width &amp; height
             if (elementBounds.width === 0 &amp;&amp; elementBounds.height === 0) {
                 return;
             }
+            
+            var realElBorder = {
+              right: elementStyling.getPropertyValue(&#39;border-right-width&#39;),
+              left: elementStyling.getPropertyValue(&#39;border-left-width&#39;),
+              top: elementStyling.getPropertyValue(&#39;border-top-width&#39;),
+              bottom: elementStyling.getPropertyValue(&#39;border-bottom-width&#39;)
+            };
+            
+            var borderBox = elementStyling.boxSizing === &#39;border-box&#39;;
+            
+            var innerWidth = parseFloat(elementStyling.width),
+                innerHeight = parseFloat(elementStyling.height),
+                outerHeight = innerHeight,
+                outerWidth = innerWidth;
+                
+            if (!borderBox) {
+                innerWidth += parseFloat(elementStyling.paddingLeft) + parseFloat(elementStyling.paddingRight);
+                innerHeight += parseFloat(elementStyling.paddingTop) + parseFloat(elementStyling.paddingBottom);
+                outerWidth = innerWidth + parseFloat(realElBorder.right) +
+                parseFloat(realElBorder.left),
+                outerHeight = innerHeight + parseFloat(realElBorder.bottom) + parseFloat(realElBorder.top);
+            }
 
+          
+            var visualisations = {
+                horizontal: &quot;left, right&quot;,
+                vertical: &quot;top, bottom&quot;
+            };
+          
+            var drawPaddingRect = function(side) {
+              var elStyling = {};
+                
+              if (visualisations.horizontal.indexOf(side) &gt;= 0) {
+                elStyling[&#39;width&#39;] =  elementStyling.getPropertyValue(&#39;padding-&#39; + side);
+                elStyling[&#39;height&#39;] = innerHeight + &quot;px&quot;;
+                elStyling[&#39;top&#39;] = 0;
+                  
+                  if (borderBox) {
+                    elStyling[&#39;height&#39;] = innerHeight - parseFloat(realElBorder.top) - parseFloat(realElBorder.bottom) + &quot;px&quot;;
+                  }
+                
+              } else {
+                elStyling[&#39;height&#39;] = elementStyling.getPropertyValue(&#39;padding-&#39; + side);  
+                elStyling[&#39;width&#39;] = innerWidth + &quot;px&quot;;
+                elStyling[&#39;left&#39;] = 0;
+                  
+                  if (borderBox) {
+                    elStyling[&#39;width&#39;] = innerWidth - parseFloat(realElBorder.left) - parseFloat(realElBorder.right) + &quot;px&quot;;
+                  }
+              }
+                
+              elStyling[side] = 0;
+              elStyling[&#39;position&#39;] = &#39;absolute&#39;;
+              
+              return elStyling;
+            };
+          
+          var drawMarginRect = function(side) {
+            var elStyling = {};
+            
+            var margin = [];
+            margin[&#39;right&#39;] = parseFloat(elementStyling.getPropertyValue(&#39;margin-right&#39;));
+            margin[&#39;top&#39;] = parseFloat(elementStyling.getPropertyValue(&#39;margin-top&#39;));
+            margin[&#39;bottom&#39;] = parseFloat(elementStyling.getPropertyValue(&#39;margin-bottom&#39;));
+            margin[&#39;left&#39;] = parseFloat(elementStyling.getPropertyValue(&#39;margin-left&#39;));
+          
+            if(visualisations[&#39;horizontal&#39;].indexOf(side) &gt;= 0) {
+
+              elStyling[&#39;width&#39;] = elementStyling.getPropertyValue(&#39;margin-&#39; + side);
+              elStyling[&#39;height&#39;] = outerHeight + margin[&#39;top&#39;] + margin[&#39;bottom&#39;] + &quot;px&quot;;
+              elStyling[&#39;top&#39;] = &quot;-&quot; + (margin[&#39;top&#39;] + parseFloat(realElBorder.top))  + &quot;px&quot;;
+            } else {
+              elStyling[&#39;height&#39;] = elementStyling.getPropertyValue(&#39;margin-&#39; + side);
+              elStyling[&#39;width&#39;] = outerWidth + &quot;px&quot;;
+              elStyling[&#39;left&#39;] = &quot;-&quot; + realElBorder.left;
+            }
+
+            elStyling[side] = &quot;-&quot; + (margin[side] + parseFloat(realElBorder[side])) + &quot;px&quot;;
+            elStyling[&#39;position&#39;] = &#39;absolute&#39;;
+
+            return elStyling;
+          };
+
+            var setVisibility = function (el) {
+                if (
+                    !config.remoteHighlight.showPaddingMargin || 
+                    parseInt(el.height, 10) &lt;= 0 || 
+                    parseInt(el.width, 10) &lt;= 0 
+                ) {
+                    el.display = &#39;none&#39;;
+                } else {
+                    el.display = &#39;block&#39;;
+                }
+            };
+            
+            var mainBoxStyles = config.remoteHighlight.stylesToSet;
+            
+            var paddingVisualisations = [
+              drawPaddingRect(&#39;top&#39;),
+              drawPaddingRect(&#39;right&#39;),
+              drawPaddingRect(&#39;bottom&#39;),
+              drawPaddingRect(&#39;left&#39;)  
+            ];
+                
+            var marginVisualisations = [
+              drawMarginRect(&#39;top&#39;),
+              drawMarginRect(&#39;right&#39;),
+              drawMarginRect(&#39;bottom&#39;),
+              drawMarginRect(&#39;left&#39;)  
+            ];
+            
+            var setupVisualisations = function (arr, config) {
+                var i;
+                for (i = 0; i &lt; arr.length; i++) {
+                    setVisibility(arr[i]);
+                    
+                    &#x2F;&#x2F; Applies to every visualisationElement (padding or margin div)
+                    arr[i][&quot;transform&quot;] = &quot;none&quot;;
+                    var el = window.document.createElement(&quot;div&quot;),
+                        styles = Object.assign(
+                        {},
+                        config,
+                        arr[i]
+                    );
+
+                    _setStyleValues(styles, el.style);
+
+                    highlight.appendChild(el);
+                }
+            };
+            
+            setupVisualisations(
+                marginVisualisations,
+                config.remoteHighlight.marginStyling
+            );
+            setupVisualisations(
+                paddingVisualisations,
+                config.remoteHighlight.paddingStyling
+            );
+            
             highlight.className = HIGHLIGHT_CLASSNAME;
 
             var offset = _screenOffset(element);
+            		
+            var el = element,		
+            offsetLeft = 0,		
+            offsetTop  = 0;		
+             		
+            &#x2F;&#x2F; Probably the easiest way to get elements position without including transform		
+            do {		
+               offsetLeft += el.offsetLeft;		
+               offsetTop  += el.offsetTop;		
+               el = el.offsetParent;		
+            } while(el);
 
             var stylesToSet = {
-                &quot;left&quot;: offset.left + &quot;px&quot;,
-                &quot;top&quot;: offset.top + &quot;px&quot;,
-                &quot;width&quot;: elementBounds.width + &quot;px&quot;,
-                &quot;height&quot;: elementBounds.height + &quot;px&quot;,
+                &quot;left&quot;: offsetLeft + &quot;px&quot;,
+                &quot;top&quot;: offsetTop + &quot;px&quot;,
+                &quot;width&quot;: innerWidth + &quot;px&quot;,
+                &quot;height&quot;: innerHeight + &quot;px&quot;,
                 &quot;z-index&quot;: 2000000,
                 &quot;margin&quot;: 0,
                 &quot;padding&quot;: 0,
                 &quot;position&quot;: &quot;absolute&quot;,
                 &quot;pointer-events&quot;: &quot;none&quot;,
-                &quot;border-top-left-radius&quot;: styles.borderTopLeftRadius,
-                &quot;border-top-right-radius&quot;: styles.borderTopRightRadius,
-                &quot;border-bottom-left-radius&quot;: styles.borderBottomLeftRadius,
-                &quot;border-bottom-right-radius&quot;: styles.borderBottomRightRadius,
-                &quot;border-style&quot;: &quot;solid&quot;,
-                &quot;border-width&quot;: &quot;1px&quot;,
-                &quot;border-color&quot;: &quot;#00a2ff&quot;,
                 &quot;box-shadow&quot;: &quot;0 0 1px #fff&quot;,
-                &quot;box-sizing&quot;: &quot;border-box&quot;
+                &quot;box-sizing&quot;: elementStyling.getPropertyValue(&#39;box-sizing&#39;),		
+                &quot;border-right&quot;: elementStyling.getPropertyValue(&#39;border-right&#39;),		
+                &quot;border-left&quot;: elementStyling.getPropertyValue(&#39;border-left&#39;),		
+                &quot;border-top&quot;: elementStyling.getPropertyValue(&#39;border-top&#39;),		
+                &quot;border-bottom&quot;: elementStyling.getPropertyValue(&#39;border-bottom&#39;),		
+                &quot;transform&quot;: elementStyling.getPropertyValue(&#39;transform&#39;),		
+                &quot;transform-origin&quot;: elementStyling.getPropertyValue(&#39;transform-origin&#39;),		
+                &quot;border-color&quot;: config.remoteHighlight.borderColor
             };
+            
+            var mergedStyles = Object.assign({}, stylesToSet,  config.remoteHighlight.stylesToSet);
 
-            var animateStartValues = {
-                &quot;background-color&quot;: &quot;rgba(0, 162, 255, 0.5)&quot;,
-                &quot;opacity&quot;: 0
-            };
+            var animateStartValues = config.remoteHighlight.animateStartValue;
 
-            var animateEndValues = {
-                &quot;background-color&quot;: &quot;rgba(0, 162, 255, 0)&quot;,
-                &quot;opacity&quot;: 1
-            };
+            var animateEndValues = config.remoteHighlight.animateEndValue;
 
             var transitionValues = {
-                &quot;-webkit-transition-property&quot;: &quot;opacity, background-color&quot;,
-                &quot;-webkit-transition-duration&quot;: &quot;300ms, 2.3s&quot;,
-                &quot;transition-property&quot;: &quot;opacity, background-color&quot;,
+                &quot;transition-property&quot;: &quot;opacity, background-color, transform&quot;,
                 &quot;transition-duration&quot;: &quot;300ms, 2.3s&quot;
             };
 
@@ -790,7 +939,7 @@
                 }
             }
 
-            _setStyleValues(stylesToSet, highlight.style);
+            _setStyleValues(mergedStyles, highlight.style);
             _setStyleValues(
                 doAnimation ? animateStartValues : animateEndValues,
                 highlight.style
@@ -894,25 +1043,18 @@
     
     
 </span>
-    <h4>
-        DOMEditHandler 
-        <a class="anchor" href="#-DOMEditHandler" id="-DOMEditHandler"><span class="icon-link"></span></a>
-    </h4>
+    <h4>DOMEditHandler</h4>
 
     
     <div class="description"><p>Constructor</p>
 </div>
     
 <dl>
-    <dt>
-        htmlDocument
-        <span class="label label-info">Document</span>
-    </dt>
+    <dt>htmlDocument</dt>
+    <dd class="label label-info pull-left">Document</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function DOMEditHandler(htmlDocument) {
         this.htmlDocument = htmlDocument;
         this.rememberedNodes = null;
@@ -923,10 +1065,7 @@
     
     
 </span>
-    <h4>
-        RemoteFunctions 
-        <a class="anchor" href="#-RemoteFunctions" id="-RemoteFunctions"><span class="icon-link"></span></a>
-    </h4>
+    <h4>RemoteFunctions</h4>
 
     
     <div class="description"><p>RemoteFunctions define the functions to be executed in the browser. This
@@ -936,36 +1075,46 @@ exported functions.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">function RemoteFunctions(experimental, remoteWSPort) {
+</dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">function RemoteFunctions(config, remoteWSPort) {
     &quot;use strict&quot;;
 
-    var lastKeepAliveTime = Date.now();</code></pre></div><div class="member private">
+    var experimental;
+    if (!config) {
+        experimental = false;    
+    } else {
+        experimental = config.experimental;    
+    }
+    var lastKeepAliveTime = Date.now();
+    var req, timeout;
+    var animateHighlight = function (time) {
+        if(req) {
+            window.cancelAnimationFrame(req);	
+            window.clearTimeout(timeout);
+        }
+        req = window.requestAnimationFrame(redrawHighlights);
+
+        timeout = setTimeout(function () {
+            window.cancelAnimationFrame(req);	
+            req = null;
+        }, time * 1000);
+    };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _domElementToJSON 
-        <a class="anchor" href="#-_domElementToJSON" id="-_domElementToJSON"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_domElementToJSON</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        elem
-        <span class="label label-info">Element</span>
-    </dt>
+    <dt>elem</dt>
+    <dd class="label label-info pull-left">Element</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _domElementToJSON(elem) {
         var json = { tag: elem.tagName.toLowerCase(), attributes: {}, children: [] },
             i,
@@ -998,6 +1147,11 @@ exported functions.</p>
     function getSimpleDOM() {
         return JSON.stringify(_domElementToJSON(window.document.documentElement));
     }
+    
+    function updateConfig(newConfig) {
+        config = JSON.parse(newConfig);
+        return JSON.stringify(config);
+    }
 
     &#x2F;&#x2F; init
     _editHandler = new DOMEditHandler(window.document);
@@ -1027,10 +1181,10 @@ exported functions.</p>
         _ws.onopen = function () {
             window.document.addEventListener(&quot;click&quot;, onDocumentClick);
         };
-				
+                
         _ws.onmessage = function (evt) {
         };
-				
+                
         _ws.onclose = function () {
             &#x2F;&#x2F; websocket is closed
             window.document.removeEventListener(&quot;click&quot;, onDocumentClick);
@@ -1050,7 +1204,8 @@ exported functions.</p>
         &quot;highlightRule&quot;         : highlightRule,
         &quot;redrawHighlights&quot;      : redrawHighlights,
         &quot;applyDOMEdits&quot;         : applyDOMEdits,
-        &quot;getSimpleDOM&quot;          : getSimpleDOM
+        &quot;getSimpleDOM&quot;          : getSimpleDOM,
+        &quot;updateConfig&quot;          : updateConfig
     };
 }</code></pre></div><div class="member private">
 
@@ -1058,27 +1213,20 @@ exported functions.</p>
     Private
     
 </span>
-    <h4>
-        _isRawTextNode 
-        <a class="anchor" href="#-_isRawTextNode" id="-_isRawTextNode"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_isRawTextNode</h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>
-        node
-        <span class="label label-info">Node</span>
-    </dt>
+    <dt>node</dt>
+    <dd class="label label-info pull-left">Node</dd>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">boolean</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">boolean</dd>
     <dd>true if node expects its content to be raw text (not parsed for entities) according to the HTML5 spec.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _isRawTextNode(node) {
         return (node.nodeType === Node.ELEMENT_NODE &amp;&amp; &#x2F;script|style|noscript|noframes|noembed|iframe|xmp&#x2F;i.test(node.tagName));
     }</code></pre></div><div class="member">
@@ -1087,10 +1235,7 @@ exported functions.</p>
     
     
 </span>
-    <h4>
-        onMouseOver 
-        <a class="anchor" href="#-onMouseOver" id="-onMouseOver"><span class="icon-link"></span></a>
-    </h4>
+    <h4>onMouseOver</h4>
 
     
     <div class="description"><p>Event Handlers <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p>
@@ -1098,9 +1243,7 @@ exported functions.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">
     function onMouseOver(event) {
         if (_validEvent(event)) {

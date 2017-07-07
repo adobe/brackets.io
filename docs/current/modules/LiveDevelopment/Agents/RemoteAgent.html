@@ -485,7 +485,6 @@ loaded from RemoteFunctions. Remote commands are executed via
 <code>call(name, varargs)</code>.</p>
 <p>Remote events are dispatched as events on this object.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -514,10 +513,7 @@ loaded from RemoteFunctions. Remote commands are executed via
     
     Public API
 </span>
-    <h4>
-        call 
-        <a class="anchor" href="#-call" id="-call"><span class="icon-link"></span></a>
-    </h4>
+    <h4>call</h4>
 
     
     <div class="description"><p>Call a remote function
@@ -526,15 +522,11 @@ and sent as objectIds.</p>
 </div>
     
 <dl>
-    <dt>
-        function
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>function</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>name</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function call(method, varargs) {
         var argsArray = [_objectId, &quot;_LD.&quot; + method];
 
@@ -571,7 +563,7 @@ and sent as objectIds.</p>
         _stopKeepAliveInterval();
 
         &#x2F;&#x2F; inject RemoteFunctions
-        var command = &quot;window._LD=&quot; + RemoteFunctions + &quot;(&quot; + LiveDevelopment.config.experimental + &quot;,&quot; + PreferencesManager.get(&quot;livedev.wsPort&quot;) + &quot;);&quot;;
+        var command = &quot;window._LD=&quot; + RemoteFunctions + &quot;(&quot; + JSON.stringify(LiveDevelopment.config) + &quot;,&quot; + PreferencesManager.get(&quot;livedev.wsPort&quot;) + &quot;);&quot;;
 
         Inspector.Runtime.evaluate(command, function onEvaluate(response) {
             if (response.error || response.wasThrown) {
@@ -589,10 +581,7 @@ and sent as objectIds.</p>
     
     Public API
 </span>
-    <h4>
-        load 
-        <a class="anchor" href="#-load" id="-load"><span class="icon-link"></span></a>
-    </h4>
+    <h4>load</h4>
 
     
     <div class="description"><p>Initialize the agent</p>
@@ -600,9 +589,7 @@ and sent as objectIds.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function load() {
         _load = new $.Deferred();
         Inspector.Page.on(&quot;frameNavigated.RemoteAgent&quot;, _onFrameNavigated);
@@ -616,10 +603,7 @@ and sent as objectIds.</p>
     
     Public API
 </span>
-    <h4>
-        unload 
-        <a class="anchor" href="#-unload" id="-unload"><span class="icon-link"></span></a>
-    </h4>
+    <h4>unload</h4>
 
     
     <div class="description"><p>Clean up</p>
@@ -627,9 +611,7 @@ and sent as objectIds.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function unload() {
         Inspector.Page.off(&quot;.RemoteAgent&quot;);
         Inspector.DOM.off(&quot;.RemoteAgent&quot;);

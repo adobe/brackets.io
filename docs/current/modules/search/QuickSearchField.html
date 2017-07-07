@@ -491,7 +491,6 @@ And the text field is:
      input
      input.no-results</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -513,31 +512,36 @@ And the text field is:
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>
-                QuickSearchField
-                
-            </h4>
-            
+            <h4>QuickSearchField</h4>
             <em><p>Attaches to an existing &lt;input&gt; tag</p>
 </em>
             
             <dl>
-                <dt>$input <span class="label label-info pull-left">jQueryObject</span></dt>
+                <dt>$input</dt>
+                <dd class="label label-info pull-left">jQueryObject</dd>
                 <dd></dd>
-                <dt>options.resultProvider <span class="label label-info pull-left">function(string):($.Promise, Array.&lt;*&gt;, {error:?string}</span></dt>
+                <dt>options.resultProvider</dt>
+                <dd class="label label-info pull-left">function(string):($.Promise, Array.&lt;*&gt;, {error:?string}</dd>
                 <dd>Given the current search text, returns an an array of result objects, an error object, or a Promise that yields one of those. If the Promise is still outstanding when the query next changes, resultProvider() will be called again (without waiting for the earlier Promise), and the Promise's result will be ignored. If the provider yields [], or a non-null error string, input is decorated with ".no-results"; if the provider yields a null error string, input is not decorated. </dd>
-                <dt>options.formatter <span class="label label-info pull-left">function(*, string):string</span></dt>
+                <dt>options.formatter</dt>
+                <dd class="label label-info pull-left">function(*, string):string</dd>
                 <dd>Converts one result object to a string of HTML text. Passed the item and the current query. The outermost element must be <li>. The ".highlight" class can be ignored as it is applied automatically.</dd>
-                <dt>options.onCommit <span class="label label-info pull-left">function(?*, string):void</span></dt>
+                <dt>options.onCommit</dt>
+                <dd class="label label-info pull-left">function(?*, string):void</dd>
                 <dd>Called when an item is selected by clicking or pressing Enter. Passed the item and the current query. If the current result list is not up to date with the query text at the time Enter is pressed, waits until it is before running this callback. If Enter pressed with no results, passed null. The popup remains open after this event.</dd>
-                <dt>options.onHighlight <span class="label label-info pull-left">function(*, string, boolean):void</span></dt>
+                <dt>options.onHighlight</dt>
+                <dd class="label label-info pull-left">function(*, string, boolean):void</dd>
                 <dd>Called when an item is highlighted in the list. Passed the item, the current query, and a flag that is true if the item was highlighted explicitly (arrow keys), not simply due to a results list update. Since the top item in the list is always initially highlighted, every time the list is updated onHighlight() is called with the top item and with the explicit flag set to false.</dd>
-                <dt>options.maxResults <span class="label label-info pull-left">number</span></dt>
+                <dt>options.maxResults</dt>
+                <dd class="label label-info pull-left">number</dd>
                 <dd>Maximum number of items from resultProvider() to display in the popup.</dd>
-                <dt>options.verticalAdjust <span class="label label-info pull-left">number</span></dt>
+                <dt>options.verticalAdjust</dt>
+                <dd class="label label-info pull-left">number</dd>
                 <dd>Number of pixels to position the popup below where $input is when constructor is called. Useful if UI is going to animate position after construction, but QuickSearchField may receive input before the animation is done.</dd>
+                <dt>options.firstHighlightIndex</dt>
+                <dd class="label label-info pull-left">number</dd>
+                <dd>Index of the result that is highlighted by default. null to not highlight any result.</dd>
             </dl>
-          
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function QuickSearchField($input, options) {
@@ -549,8 +553,17 @@ And the text field is:
         this._handleInput   = this._handleInput.bind(this);
         this._handleKeyDown = this._handleKeyDown.bind(this);
 
+        if (options.highlightZeroResults !== undefined) {
+            this._highlightZeroResults = options.highlightZeroResults;
+        } else {
+            this._highlightZeroResults = true;
+        }
+
         $input.on(&quot;input&quot;, this._handleInput);
         $input.on(&quot;keydown&quot;, this._handleKeyDown);
+        
+        &#x2F;&#x2F; For search History this value is set to null
+        this._firstHighlightIndex = options.firstHighlightIndex;
 
         this._dropdownTop = $input.offset().top + $input.height() + (options.verticalAdjust || 0);
     }</code></pre>
@@ -569,158 +582,134 @@ And the text field is:
     
     
 </span>
-    <h4>
-        $input 
-        <a class="anchor" href="#QuickSearchField-$input" id="QuickSearchField-$input"><span class="icon-link"></span></a>
-    </h4>
+    <h4>$input</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>!jQueryObject</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.$input = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _$dropdown 
-        <a class="anchor" href="#QuickSearchField-_$dropdown" id="QuickSearchField-_$dropdown"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_$dropdown</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>?jQueryObject</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._$dropdown = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _commitPending 
-        <a class="anchor" href="#QuickSearchField-_commitPending" id="QuickSearchField-_commitPending"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_commitPending</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>boolean</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._commitPending = false;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _displayedQuery 
-        <a class="anchor" href="#QuickSearchField-_displayedQuery" id="QuickSearchField-_displayedQuery"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_displayedQuery</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>?string</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._displayedQuery = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _displayedResults 
-        <a class="anchor" href="#QuickSearchField-_displayedResults" id="QuickSearchField-_displayedResults"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_displayedResults</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>?Array.&lt;*&gt;</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._displayedResults = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _highlightIndex 
-        <a class="anchor" href="#QuickSearchField-_highlightIndex" id="QuickSearchField-_highlightIndex"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_highlightIndex</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>?number</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._highlightIndex = null;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
     
 </span>
-    <h4>
-        _pending 
-        <a class="anchor" href="#QuickSearchField-_pending" id="QuickSearchField-_pending"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_pending</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>?$.Promise</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._pending = null;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
     
 </span>
-    <h4>
-        options 
-        <a class="anchor" href="#QuickSearchField-options" id="QuickSearchField-options"><span class="icon-link"></span></a>
-    </h4>
+    <h4>options</h4>
 
-    
-    <div class="description"></div>
     
 <dl>
     <dt>Type</dt>
     <dd>!Object</dd>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"></div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.options = null;</code></pre></div>
         </section>
 
@@ -737,10 +726,7 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _closeDropdown 
-        <a class="anchor" href="#QuickSearchField-_closeDropdown" id="QuickSearchField-_closeDropdown"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_closeDropdown</h4>
 
     
     <div class="description"><p>Close dropdown result list if visible</p>
@@ -748,9 +734,7 @@ And the text field is:
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._closeDropdown = function () {
         if (this._$dropdown) {
             this._$dropdown.remove();
@@ -762,10 +746,7 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _doCommit 
-        <a class="anchor" href="#QuickSearchField-_doCommit" id="QuickSearchField-_doCommit"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_doCommit</h4>
 
     
     <div class="description"><p>Call onCommit() immediately</p>
@@ -773,14 +754,15 @@ And the text field is:
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._doCommit = function (index) {
         var item;
         if (this._displayedResults &amp;&amp; this._displayedResults.length) {
-            var committedIndex = index !== undefined ? index : (this._highlightIndex || 0);
-            item = this._displayedResults[committedIndex];
+            if (index &gt;= 0) {
+                item = this._displayedResults[index];
+            } else if (this._highlightIndex &gt;= 0) {
+                item = this._displayedResults[this._highlightIndex];
+            }
         }
         this.options.onCommit(item, this._displayedQuery);
     };</code></pre></div><div class="member private">
@@ -789,10 +771,7 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _handleInput 
-        <a class="anchor" href="#QuickSearchField-_handleInput" id="QuickSearchField-_handleInput"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_handleInput</h4>
 
     
     <div class="description"><p>When text field changes, update results list</p>
@@ -800,9 +779,7 @@ And the text field is:
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._handleInput = function () {
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any previous Promise
 
@@ -822,10 +799,7 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _handleKeyDown 
-        <a class="anchor" href="#QuickSearchField-_handleKeyDown" id="QuickSearchField-_handleKeyDown"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_handleKeyDown</h4>
 
     
     <div class="description"><p>Handle special keys: Enter, Up/Down</p>
@@ -833,9 +807,7 @@ And the text field is:
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._handleKeyDown = function (event) {
         if (event.keyCode === KeyEvent.DOM_VK_RETURN) {
             &#x2F;&#x2F; Enter should always act on the latest results. If input has changed and we&#39;re still waiting for
@@ -877,26 +849,19 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _openDropdown 
-        <a class="anchor" href="#QuickSearchField-_openDropdown" id="QuickSearchField-_openDropdown"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_openDropdown</h4>
 
     
     <div class="description"><p>Open dropdown result list &amp; populate with the given content</p>
 </div>
     
 <dl>
-    <dt>
-        htmlContent
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>htmlContent</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._openDropdown = function (htmlContent) {
         if (!this._$dropdown) {
             var self = this;
@@ -922,10 +887,7 @@ And the text field is:
     Private
     
 </span>
-    <h4>
-        _render 
-        <a class="anchor" href="#QuickSearchField-_render" id="QuickSearchField-_render"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_render</h4>
 
     
     <div class="description"><p>Given finished provider result, format it into HTML and show in dropdown, and update &quot;no-results&quot; style.
@@ -933,37 +895,41 @@ If an Enter key commit was pending from earlier, process it now.</p>
 </div>
     
 <dl>
-    <dt>
-        results
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Array.&lt;*&gt;</span>
-    </dt>
+    <dt>results</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">Array.&lt;*&gt;</dd>
     <dd></dd>
-    <dt>
-        query
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>query</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._render = function (results, query) {
         this._displayedQuery = query;
         this._displayedResults = results;
-        this._highlightIndex = 0;
+        if (this._firstHighlightIndex &gt;= 0) {
+            this._highlightIndex = this._firstHighlightIndex;
+        } else {
+            this._highlightIndex = null;
+        }
         &#x2F;&#x2F; TODO: fixup to match prev value&#39;s item if possible?
 
         if (results.error || results.length === 0) {
             this._closeDropdown();
-            this.$input.addClass(&quot;no-results&quot;);
+            if (this._highlightZeroResults) {
+                this.$input.addClass(&quot;no-results&quot;);
+            }
         } else if (results.hasOwnProperty(&quot;error&quot;)) {
             &#x2F;&#x2F; Error present but falsy - no results to show, but don&#39;t decorate with error style
             this._closeDropdown();
-            this.$input.removeClass(&quot;no-results&quot;);
+            if (this._highlightZeroResults) {
+                this.$input.removeClass(&quot;no-results&quot;);
+            }
         } else {
-            this.$input.removeClass(&quot;no-results&quot;);
+            if (this._highlightZeroResults) {
+                this.$input.removeClass(&quot;no-results&quot;);
+            }
 
             var count = Math.min(results.length, this.options.maxResults),
                 html = &quot;&quot;,
@@ -988,10 +954,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
     Private
     
 </span>
-    <h4>
-        _updateHighlight 
-        <a class="anchor" href="#QuickSearchField-_updateHighlight" id="QuickSearchField-_updateHighlight"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_updateHighlight</h4>
 
     
     <div class="description"><p>Update display to reflect value of _highlightIndex, &amp; call onHighlight()</p>
@@ -999,16 +962,16 @@ If an Enter key commit was pending from earlier, process it now.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype._updateHighlight = function (explicit) {
-        var $items = this._$dropdown.find(&quot;li&quot;);
-        $items.removeClass(&quot;highlight&quot;);
-        if (this._highlightIndex !== null) {
-            $items.eq(this._highlightIndex).addClass(&quot;highlight&quot;);
+        if (this._$dropdown) {
+            var $items = this._$dropdown.find(&quot;li&quot;);
+            $items.removeClass(&quot;highlight&quot;);
+            if (this._highlightIndex !== null) {
+                $items.eq(this._highlightIndex).addClass(&quot;highlight&quot;);
 
-            this.options.onHighlight(this._displayedResults[this._highlightIndex], this.$input.val(), explicit);
+                this.options.onHighlight(this._displayedResults[this._highlightIndex], this.$input.val(), explicit);
+            }
         }
     };</code></pre></div><div class="member">
 
@@ -1016,10 +979,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
     
     
 </span>
-    <h4>
-        destroy 
-        <a class="anchor" href="#QuickSearchField-destroy" id="QuickSearchField-destroy"><span class="icon-link"></span></a>
-    </h4>
+    <h4>destroy</h4>
 
     
     <div class="description"><p>Closes the dropdown, and discards any pending Promises.</p>
@@ -1027,9 +987,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.destroy = function () {
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any pending Promise
         this._closeDropdown();
@@ -1043,26 +1001,19 @@ If an Enter key commit was pending from earlier, process it now.</p>
     
     
 </span>
-    <h4>
-        setText 
-        <a class="anchor" href="#QuickSearchField-setText" id="QuickSearchField-setText"><span class="icon-link"></span></a>
-    </h4>
+    <h4>setText</h4>
 
     
     <div class="description"><p>Programmatically changes the search text and updates the results.</p>
 </div>
     
 <dl>
-    <dt>
-        value
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>value</dt>
+    <span class="label label-non-nullable pull-left">non-nullable</span>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.setText = function (value) {
         this.$input.val(value);
         this.updateResults();  &#x2F;&#x2F; programmatic changes don&#39;t trigger &quot;input&quot; event
@@ -1072,10 +1023,7 @@ If an Enter key commit was pending from earlier, process it now.</p>
     
     
 </span>
-    <h4>
-        updateResults 
-        <a class="anchor" href="#QuickSearchField-updateResults" id="QuickSearchField-updateResults"><span class="icon-link"></span></a>
-    </h4>
+    <h4>updateResults</h4>
 
     
     <div class="description"><p>Refresh the results dropdown, as if the user had changed the search text. Useful for providers that
@@ -1084,9 +1032,7 @@ want to show cached data initially, then update the results with fresher data on
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    QuickSearchField.prototype.updateResults = function () {
         this._pending = null;  &#x2F;&#x2F; immediately invalidate any previous Promise
 
@@ -1103,12 +1049,14 @@ want to show cached data initially, then update the results with fresher data on
                     this._pending = null;
                 }
             });
-            this._pending.fail(function () {
-                if (self._pending === results) {
-                    self._render([], query);
-                    this._pending = null;
-                }
-            });
+            if (this._pending) {
+                this._pending.fail(function () {
+                    if (self._pending === results) {
+                        self._render([], query);
+                        this._pending = null;
+                    }
+                });
+            }
         } else {
             &#x2F;&#x2F; Synchronous result - render immediately
             this._render(results, query);

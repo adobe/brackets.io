@@ -519,7 +519,6 @@ command function call is a function, it will be used as the callback.</p>
 the event name. The handler function will be called with a single parameter
 that stores all returned values as an object.</p>
 </div>
-    
 </section>
 
 <section id="dependencies">
@@ -545,21 +544,18 @@ that stores all returned values as an object.</p>
     Private
     
 </span>
-    <h4>
-        _messageCallbacks 
-        <a class="anchor" href="#-_messageCallbacks" id="-_messageCallbacks"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_messageCallbacks</h4>
 
-    
-    <div class="description"><p>Map message IDs to the callback function and original JSON message</p>
-</div>
     
 <dl>
     <dt>Type</dt>
     <dd>Object.&lt;number, {callback: function, message: Object}</dd>
     <dt>Private</dt>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl>
+    <div class="description"><p>Map message IDs to the callback function and original JSON message</p>
+</div>
+
+<button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var _messageCallbacks = {};
 
     var _messageId = 1,     &#x2F;&#x2F; id used for remote method calls, auto-incrementing
@@ -581,10 +577,7 @@ that stores all returned values as an object.</p>
     Private
     
 </span>
-    <h4>
-        _onConnect 
-        <a class="anchor" href="#-_onConnect" id="-_onConnect"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_onConnect</h4>
 
     
     <div class="description"><p>WebSocket did open</p>
@@ -592,9 +585,7 @@ that stores all returned values as an object.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onConnect() {
         if (_connectDeferred) {
             _connectDeferred.resolve();
@@ -607,10 +598,7 @@ that stores all returned values as an object.</p>
     Private
     
 </span>
-    <h4>
-        _onDisconnect 
-        <a class="anchor" href="#-_onDisconnect" id="-_onDisconnect"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_onDisconnect</h4>
 
     
     <div class="description"><p>WebSocket did close</p>
@@ -618,9 +606,7 @@ that stores all returned values as an object.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onDisconnect() {
         _socket = undefined;
         exports.trigger(&quot;disconnect&quot;);
@@ -630,10 +616,7 @@ that stores all returned values as an object.</p>
     Private
     
 </span>
-    <h4>
-        _onError 
-        <a class="anchor" href="#-_onError" id="-_onError"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_onError</h4>
 
     
     <div class="description"><p>WebSocket reported an error</p>
@@ -641,9 +624,7 @@ that stores all returned values as an object.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onError(error) {
         if (_connectDeferred) {
             _connectDeferred.reject();
@@ -656,10 +637,7 @@ that stores all returned values as an object.</p>
     Private
     
 </span>
-    <h4>
-        _onMessage 
-        <a class="anchor" href="#-_onMessage" id="-_onMessage"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_onMessage</h4>
 
     
     <div class="description"><p>Received message from the WebSocket
@@ -672,15 +650,11 @@ A message can be one of three things:</p>
 </div>
     
 <dl>
-    <dt>
-        message
-        <span class="label label-info">object</span>
-    </dt>
+    <dt>message</dt>
+    <dd class="label label-info pull-left">object</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _onMessage(message) {
         var response    = JSON.parse(message.data),
             msgRecord   = _messageCallbacks[response.id],
@@ -712,10 +686,7 @@ A message can be one of three things:</p>
     Private
     
 </span>
-    <h4>
-        _send 
-        <a class="anchor" href="#-_send" id="-_send"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_send</h4>
 
     
     <div class="description"><p>Send a message to the remote debugger
@@ -724,20 +695,14 @@ If the last argument is a function, it is used as the callback function.</p>
 </div>
     
 <dl>
-    <dt>
-        remote
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>remote</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>method</dd>
-    <dt>
-        the
-        <span class="label label-info">object</span>
-    </dt>
+    <dt>the</dt>
+    <dd class="label label-info pull-left">object</dd>
     <dd>method signature</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _send(method, signature, varargs) {
         if (!_socket) {
             console.log(&quot;You must connect to the WebSocket before sending messages.&quot;);
@@ -793,10 +758,7 @@ If the last argument is a function, it is used as the callback function.</p>
     Private
     
 </span>
-    <h4>
-        _verifySignature 
-        <a class="anchor" href="#-_verifySignature" id="-_verifySignature"><span class="icon-link"></span></a>
-    </h4>
+    <h4>_verifySignature</h4>
 
     
     <div class="description"><p>Check a parameter value against the given signature
@@ -805,20 +767,14 @@ Type checking is complex because of $ref and done on the remote end anyways</p>
 </div>
     
 <dl>
-    <dt>
-        
-        <span class="label label-info">signature</span>
-    </dt>
+    <dt></dt>
+    <dd class="label label-info pull-left">signature</dd>
     <dd></dd>
-    <dt>
-        
-        <span class="label label-info">value</span>
-    </dt>
+    <dt></dt>
+    <dd class="label label-info pull-left">value</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _verifySignature(signature, value) {
         if (value === undefined) {
             console.assert(signature.optional === true, &quot;Missing argument: &quot; + signature.name);
@@ -830,10 +786,7 @@ Type checking is complex because of $ref and done on the remote end anyways</p>
     
     Public API
 </span>
-    <h4>
-        connect 
-        <a class="anchor" href="#-connect" id="-connect"><span class="icon-link"></span></a>
-    </h4>
+    <h4>connect</h4>
 
     
     <div class="description"><p>Connect to the remote debugger WebSocket at the given URL.
@@ -841,15 +794,11 @@ Clients must listen for the <code>connect</code> event.</p>
 </div>
     
 <dl>
-    <dt>
-        WebSocket
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>WebSocket</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>URL</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function connect(socketURL) {
         disconnect().done(function () {
             _socket = new WebSocket(socketURL);
@@ -864,25 +813,18 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        connectToURL 
-        <a class="anchor" href="#-connectToURL" id="-connectToURL"><span class="icon-link"></span></a>
-    </h4>
+    <h4>connectToURL</h4>
 
     
     <div class="description"><p>Connect to the remote debugger of the page that is at the given URL</p>
 </div>
     
 <dl>
-    <dt>
-        url
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>url</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function connectToURL(url) {
         if (_connectDeferred) {
             &#x2F;&#x2F; reject an existing connection attempt
@@ -913,10 +855,7 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        connected 
-        <a class="anchor" href="#-connected" id="-connected"><span class="icon-link"></span></a>
-    </h4>
+    <h4>connected</h4>
 
     
     <div class="description"><p>Check if the inspector is connected</p>
@@ -924,9 +863,7 @@ Clients must listen for the <code>connect</code> event.</p>
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function connected() {
         return _socket !== undefined &amp;&amp; _socket.readyState === WebSocket.OPEN;
     }</code></pre></div><div class="member public">
@@ -935,10 +872,7 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        disconnect 
-        <a class="anchor" href="#-disconnect" id="-disconnect"><span class="icon-link"></span></a>
-    </h4>
+    <h4>disconnect</h4>
 
     
     <div class="description"><p>Disconnect from the remote debugger WebSocket</p>
@@ -946,12 +880,10 @@ Clients must listen for the <code>connect</code> event.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">jQuery.Promise</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">jQuery.Promise</dd>
     <dd>Promise that is resolved immediately if not currently connected or asynchronously when the socket is closed.</dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function disconnect() {
         var deferred = new $.Deferred(),
             promise = deferred.promise();
@@ -987,30 +919,21 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        getDebuggableWindows 
-        <a class="anchor" href="#-getDebuggableWindows" id="-getDebuggableWindows"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getDebuggableWindows</h4>
 
     
     <div class="description"><p>Get a list of the available windows/tabs/extensions that are remote-debuggable</p>
 </div>
     
 <dl>
-    <dt>
-        host
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>host</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>IP or name</dd>
-    <dt>
-        debugger
-        <span class="label label-info">integer</span>
-    </dt>
+    <dt>debugger</dt>
+    <dd class="label label-info pull-left">integer</dd>
     <dd>port</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getDebuggableWindows(host, port) {
         if (!host) {
             host = &quot;127.0.0.1&quot;;
@@ -1038,10 +961,7 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        getUserAgent 
-        <a class="anchor" href="#-getUserAgent" id="-getUserAgent"><span class="icon-link"></span></a>
-    </h4>
+    <h4>getUserAgent</h4>
 
     
     <div class="description"><p>Get user agent string</p>
@@ -1049,12 +969,10 @@ Clients must listen for the <code>connect</code> event.</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: <span class="label label-info">string</span>
-</dt>
+    <dt>Returns: </dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getUserAgent() {
         return _userAgent;
     }</code></pre></div><div class="member public">
@@ -1063,10 +981,7 @@ Clients must listen for the <code>connect</code> event.</p>
     
     Public API
 </span>
-    <h4>
-        init 
-        <a class="anchor" href="#-init" id="-init"><span class="icon-link"></span></a>
-    </h4>
+    <h4>init</h4>
 
     
     <div class="description"><p>Initialize the Inspector
@@ -1076,9 +991,7 @@ Read the Inspector.json configuration and define the command objects
     
 <dl>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init(theConfig) {
         exports.config = theConfig;
 
@@ -1117,10 +1030,7 @@ Read the Inspector.json configuration and define the command objects
     
     Public API
 </span>
-    <h4>
-        send 
-        <a class="anchor" href="#-send" id="-send"><span class="icon-link"></span></a>
-    </h4>
+    <h4>send</h4>
 
     
     <div class="description"><p>Manually send a message to the remote debugger
@@ -1129,20 +1039,14 @@ If the last argument is a function, it is used as the callback function.</p>
 </div>
     
 <dl>
-    <dt>
-        domain
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>domain</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
-    <dt>
-        command
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>command</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd></dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function send(domain, command, varargs) {
         return _send(domain + &quot;.&quot; + command, null, varargs);
     }</code></pre></div><div class="member public">
@@ -1151,25 +1055,18 @@ If the last argument is a function, it is used as the callback function.</p>
     
     Public API
 </span>
-    <h4>
-        setUserAgent 
-        <a class="anchor" href="#-setUserAgent" id="-setUserAgent"><span class="icon-link"></span></a>
-    </h4>
+    <h4>setUserAgent</h4>
 
     
     <div class="description"><p>Set user agent string</p>
 </div>
     
 <dl>
-    <dt>
-        userAgent
-        <span class="label label-info">string</span>
-    </dt>
+    <dt>userAgent</dt>
+    <dd class="label label-info pull-left">string</dd>
     <dd>User agent string returned from Chrome</dd>
 </dl><dl>
-</dl>
-<dl>
-<dl><button class="btn btn-small show-code">Show code</button>
+</dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setUserAgent(userAgent) {
         _userAgent = userAgent;
     }</code></pre></div>
