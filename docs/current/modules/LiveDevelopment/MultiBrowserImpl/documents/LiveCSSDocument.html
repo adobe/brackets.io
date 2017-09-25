@@ -491,6 +491,7 @@ which immediately updates the appearance of the rendered document.</p>
  deleted - When the file for the underlying Document has been deleted. The
      2nd argument to the listener will be this LiveCSSDocument.</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -516,23 +517,28 @@ which immediately updates the appearance of the rendered document.</p>
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>LiveCSSDocument</h4>
+            <h4>
+                LiveCSSDocument
+                
+            </h4>
+            
             <em></em>
             
             <dl>
-                <dt>protocol</dt>
-                <dd class="label label-info pull-left">LiveDevProtocol</dd>
+                <dt>protocol <span class="label label-info pull-left">LiveDevProtocol</span></dt>
                 <dd>The protocol to use for communicating with the browser.</dd>
-                <dt>urlResolver</dt>
-                <dd class="label label-info pull-left">function(string): string</dd>
+                <dt>urlResolver <span class="label label-info pull-left">function(string): string</span></dt>
                 <dd>A function that, given a path on disk, should return the URL that Live Development serves that path at.</dd>
-                <dt>doc</dt>
-                <dd class="label label-info pull-left">Document</dd>
+                <dt>doc <span class="label label-info pull-left">Document</span></dt>
                 <dd>The Brackets document that this live document is connected to.</dd>
-                <dt>editor</dt>
-                <dd class="label label-info pull-left">Editor</dd>
+                <dt>editor <span class="label label-info pull-left">Editor</span></dt>
                 <dd>If specified, a particular editor that this live document is managing. If not specified initially, the LiveDocument will connect to the editor for the given document when it next becomes the active editor.</dd>
             </dl>
+          
+<dl>
+    <dt>See</dt>
+    <dd><a href="../../../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></dd>
+</dl>
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    var LiveCSSDocument = function LiveCSSDocument(protocol, urlResolver, doc, editor, roots) {
@@ -571,7 +577,10 @@ which immediately updates the appearance of the rendered document.</p>
     Private
     
 </span>
-    <h4>_updateBrowser</h4>
+    <h4>
+        _updateBrowser 
+        <a class="anchor" href="#LiveCSSDocument-_updateBrowser" id="LiveCSSDocument-_updateBrowser"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>When the user edits the file, update the stylesheet in the browser and redraw highlights.</p>
@@ -579,7 +588,9 @@ which immediately updates the appearance of the rendered document.</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype._updateBrowser = function () {
         var i,
             docUrl = this.doc.url;
@@ -615,14 +626,20 @@ which immediately updates the appearance of the rendered document.</p>
     
     
 </span>
-    <h4>close</h4>
+    <h4>
+        close     <span class="label label-info">Overrides parent implementation</span>
+
+        <a class="anchor" href="#LiveCSSDocument-close" id="LiveCSSDocument-close"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype.close = function () {
         this.doc.off(&quot;.LiveCSSDocument&quot;);
         this.doc.releaseRef();
@@ -633,17 +650,22 @@ which immediately updates the appearance of the rendered document.</p>
     
     
 </span>
-    <h4>isLiveEditingEnabled</h4>
+    <h4>
+        isLiveEditingEnabled     <span class="label label-info">Overrides parent implementation</span>
+
+        <a class="anchor" href="#LiveCSSDocument-isLiveEditingEnabled" id="LiveCSSDocument-isLiveEditingEnabled"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
     <dd></dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype.isLiveEditingEnabled = function () {
         return true;
     };</code></pre></div><div class="member private">
@@ -652,23 +674,34 @@ which immediately updates the appearance of the rendered document.</p>
     Private
     
 </span>
-    <h4>onChange</h4>
+    <h4>
+        onChange 
+        <a class="anchor" href="#LiveCSSDocument-onChange" id="LiveCSSDocument-onChange"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>event</dt>
-    <dd class="label label-info pull-left">$.Event</dd>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
     <dd></dd>
-    <dt>editor</dt>
-    <dd class="label label-info pull-left">Editor</dd>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
     <dd></dd>
-    <dt>change</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        change
+        <span class="label label-info">Object</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype.onChange = function (event, editor, change) {
         this._updateBrowser();
     };</code></pre></div><div class="member private">
@@ -677,17 +710,24 @@ which immediately updates the appearance of the rendered document.</p>
     Private
     
 </span>
-    <h4>onDeleted</h4>
+    <h4>
+        onDeleted 
+        <a class="anchor" href="#LiveCSSDocument-onDeleted" id="LiveCSSDocument-onDeleted"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
-    <dt>event</dt>
-    <dd class="label label-info pull-left">$.Event</dd>
+    <dt>
+        event
+        <span class="label label-info">$.Event</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype.onDeleted = function (event) {
         &#x2F;&#x2F; TODO Need to add protocol API to remove the stylesheet from the document.
         &#x2F;&#x2F;CSSAgent.clearCSSForDocument(this.doc);
@@ -717,14 +757,20 @@ which immediately updates the appearance of the rendered document.</p>
     
     
 </span>
-    <h4>updateHighlight</h4>
+    <h4>
+        updateHighlight     <span class="label label-info">Overrides parent implementation</span>
+
+        <a class="anchor" href="#LiveCSSDocument-updateHighlight" id="LiveCSSDocument-updateHighlight"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"></div>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    LiveCSSDocument.prototype.updateHighlight = function () {
         if (this.isHighlightEnabled() &amp;&amp; this.editor) {
             var editor = this.editor,

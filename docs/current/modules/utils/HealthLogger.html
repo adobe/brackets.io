@@ -482,6 +482,7 @@
     
     <div><p>Utilities functions related to Health Data logging</p>
 </div>
+    
 </section>
 
 <section id="dependencies">
@@ -511,7 +512,10 @@
     
     Public API
 </span>
-    <h4>clearHealthData</h4>
+    <h4>
+        clearHealthData 
+        <a class="anchor" href="#-clearHealthData" id="-clearHealthData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Clears all the health data recorded till now</p>
@@ -519,7 +523,9 @@
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function clearHealthData() {
         PreferencesManager.setViewState(HEALTH_DATA_STATE_KEY, {});
         &#x2F;&#x2F;clear the performance related health data also
@@ -530,7 +536,10 @@
     
     Public API
 </span>
-    <h4>fileOpened</h4>
+    <h4>
+        fileOpened 
+        <a class="anchor" href="#-fileOpened" id="-fileOpened"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Whenever a file is opened call this function. The function will record the number of times
@@ -538,15 +547,21 @@ the standard file types have been opened. We only log the standard filetypes</p>
 </div>
     
 <dl>
-    <dt>filePath</dt>
-    <dd class="label label-info pull-left">String</dd>
+    <dt>
+        filePath
+        <span class="label label-info">String</span>
+    </dt>
     <dd>The path of the file to be registered</dd>
-    <dt>addedToWorkingSet</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        addedToWorkingSet
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>set to true if extensions of files added to the working set needs to be logged</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function fileOpened(filePath, addedToWorkingSet) {
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function fileOpened(filePath, addedToWorkingSet, encoding) {
         if (!shouldLogHealthData()) {
             return;
         }
@@ -556,7 +571,8 @@ the standard file types have been opened. We only log the standard filetypes</p>
             fileExtCountMap = [];
         healthData.fileStats = healthData.fileStats || {
             openedFileExt     : {},
-            workingSetFileExt : {}
+            workingSetFileExt : {},
+            openedFileEncoding: {}
         };
         if (language.getId() !== &quot;unknown&quot;) {
             fileExtCountMap = addedToWorkingSet ? healthData.fileStats.workingSetFileExt : healthData.fileStats.openedFileExt;
@@ -566,13 +582,28 @@ the standard file types have been opened. We only log the standard filetypes</p>
             fileExtCountMap[fileExtension]++;
             setHealthData(healthData);
         }
+        if (encoding) {
+            var fileEncCountMap = healthData.fileStats.openedFileEncoding;
+            if (!fileEncCountMap) {
+                healthData.fileStats.openedFileEncoding = {};
+                fileEncCountMap = healthData.fileStats.openedFileEncoding;
+            }
+            if (!fileEncCountMap[encoding]) {
+                fileEncCountMap[encoding] = 0;
+            }
+            fileEncCountMap[encoding]++;
+            setHealthData(healthData);
+        }
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
     Public API
 </span>
-    <h4>getAggregatedHealthData</h4>
+    <h4>
+        getAggregatedHealthData 
+        <a class="anchor" href="#-getAggregatedHealthData" id="-getAggregatedHealthData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Return the aggregate of all health data logged till now from all sources</p>
@@ -580,10 +611,11 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>Returns: <span class="label label-info">Object</span></dt>
     <dd>Health Data aggregated till now</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getAggregatedHealthData() {
         var healthData = getStoredHealthData();
         $.extend(healthData, PerfUtils.getHealthReport());
@@ -595,7 +627,10 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>getHealthDataLog</h4>
+    <h4>
+        getHealthDataLog 
+        <a class="anchor" href="#-getHealthDataLog" id="-getHealthDataLog"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns health data logged for the given key</p>
@@ -603,10 +638,11 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>Returns: <span class="label label-info">Object</span></dt>
     <dd>Health Data object for the key or undefined if no health data stored</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getHealthDataLog(key) {
         var healthData = getStoredHealthData();
         return healthData[key];
@@ -616,7 +652,10 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     
 </span>
-    <h4>getStoredHealthData</h4>
+    <h4>
+        getStoredHealthData 
+        <a class="anchor" href="#-getStoredHealthData" id="-getStoredHealthData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Return all health data logged till now stored in the state prefs</p>
@@ -624,10 +663,11 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>Returns: <span class="label label-info">Object</span></dt>
     <dd>Health Data aggregated till now</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function getStoredHealthData() {
         var storedData = PreferencesManager.getViewState(HEALTH_DATA_STATE_KEY) || {};
         return storedData;
@@ -637,7 +677,10 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>init</h4>
+    <h4>
+        init 
+        <a class="anchor" href="#-init" id="-init"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Init: creates the health log preference keys in the state.json file</p>
@@ -645,7 +688,9 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
 <dl>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init() {
         PreferencesManager.stateManager.definePreference(HEALTH_DATA_STATE_KEY, &quot;object&quot;, {});
     }</code></pre></div><div class="member public">
@@ -654,18 +699,25 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>searchDone</h4>
+    <h4>
+        searchDone 
+        <a class="anchor" href="#-searchDone" id="-searchDone"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Increments health log count for a particular kind of search done</p>
 </div>
     
 <dl>
-    <dt>searchType</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        searchType
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The kind of search type that needs to be logged- should be a js var compatible string</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function searchDone(searchType) {
         var searchDetails = getHealthDataLog(&quot;searchDetails&quot;);
         if (!searchDetails) {
@@ -709,18 +761,25 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     
 </span>
-    <h4>setHealthData</h4>
+    <h4>
+        setHealthData 
+        <a class="anchor" href="#-setHealthData" id="-setHealthData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the health data</p>
 </div>
     
 <dl>
-    <dt>dataObject</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        dataObject
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The object to be stored as health data</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setHealthData(dataObject) {
         if (!shouldLogHealthData()) {
             return;
@@ -732,18 +791,25 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>setHealthDataLog</h4>
+    <h4>
+        setHealthDataLog 
+        <a class="anchor" href="#-setHealthDataLog" id="-setHealthDataLog"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the health data for the given key</p>
 </div>
     
 <dl>
-    <dt>dataObject</dt>
-    <dd class="label label-info pull-left">Object</dd>
+    <dt>
+        dataObject
+        <span class="label label-info">Object</span>
+    </dt>
     <dd>The object to be stored as health data for the key</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setHealthDataLog(key, dataObject) {
         var healthData = getStoredHealthData();
         healthData[key] = dataObject;
@@ -754,18 +820,25 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>setHealthLogsEnabled</h4>
+    <h4>
+        setHealthLogsEnabled 
+        <a class="anchor" href="#-setHealthLogsEnabled" id="-setHealthLogsEnabled"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Enable or disable health data logs</p>
 </div>
     
 <dl>
-    <dt>enabled</dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>
+        enabled
+        <span class="label label-info">boolean</span>
+    </dt>
     <dd>true to enable health logs</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setHealthLogsEnabled(enabled) {
         logHealthData = enabled;
         if (!enabled) {
@@ -777,7 +850,10 @@ the standard file types have been opened. We only log the standard filetypes</p>
     
     Public API
 </span>
-    <h4>setProjectDetail</h4>
+    <h4>
+        setProjectDetail 
+        <a class="anchor" href="#-setProjectDetail" id="-setProjectDetail"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Sets the project details(a probably unique prjID, number of files in the project and the node cache size) in the health log
@@ -785,17 +861,25 @@ The name of the project is never saved into the health data log, only the hash(n
 </div>
     
 <dl>
-    <dt>projectName</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        projectName
+        <span class="label label-info">string</span>
+    </dt>
     <dd>The name of the project</dd>
-    <dt>numFiles</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        numFiles
+        <span class="label label-info">number</span>
+    </dt>
     <dd>The number of file in the project</dd>
-    <dt>cacheSize</dt>
-    <dd class="label label-info pull-left">number</dd>
+    <dt>
+        cacheSize
+        <span class="label label-info">number</span>
+    </dt>
     <dd>The node file cache memory consumed by the project</dd>
 </dl><dl>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function setProjectDetail(projectName, numFiles, cacheSize) {
         var projectNameHash = StringUtils.hashCode(projectName),
             FIFLog = getHealthDataLog(&quot;ProjectDetails&quot;);
@@ -813,7 +897,10 @@ The name of the project is never saved into the health data log, only the hash(n
     
     Public API
 </span>
-    <h4>shouldLogHealthData</h4>
+    <h4>
+        shouldLogHealthData 
+        <a class="anchor" href="#-shouldLogHealthData" id="-shouldLogHealthData"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>All the logging functions should be disabled if this returns false</p>
@@ -821,10 +908,11 @@ The name of the project is never saved into the health data log, only the hash(n
     
 <dl>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
     <dd>true if health data can be logged</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function shouldLogHealthData() {
         return logHealthData;
     }</code></pre></div>
