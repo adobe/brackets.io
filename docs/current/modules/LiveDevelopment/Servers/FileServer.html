@@ -481,6 +481,7 @@
     <h3>Description</h3>
     
     <div></div>
+    
 </section>
 
 <section id="dependencies">
@@ -503,7 +504,12 @@
             
             <span class="pull-right scope">Constructor</span>
             
-            <h4>FileServer</h4>
+            <h4>
+                FileServer
+                
+                <span class="scope">(extends BaseServer)</span>
+            </h4>
+            
             <em><p>Server for file: URLs</p>
 <p>Configuration parameters for this server:</p>
 <ul>
@@ -514,10 +520,12 @@
 </em>
             
             <dl>
-                <dt>config</dt>
-                <dd class="label label-info pull-left">{baseUrl: string, root: string, pathResolver: function(string): string}</dd>
+                <dt>config <span class="label label-info pull-left">{baseUrl: string, root: string, pathResolver: function(string): string}</span></dt>
                 <dd></dd>
             </dl>
+          
+<dl>
+</dl>
 
             <button class="btn btn-small show-code">Show code</button>
             <pre class="code language-javascript"><code class="language-javascript">    function FileServer(config) {
@@ -542,21 +550,27 @@
     
     
 </span>
-    <h4>canServe</h4>
+    <h4>
+        canServe 
+        <a class="anchor" href="#FileServer-canServe" id="FileServer-canServe"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Determines whether we can serve local file.</p>
 </div>
     
 <dl>
-    <dt>localPath</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        localPath
+        <span class="label label-info">string</span>
+    </dt>
     <dd>A local path to file being served.</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">boolean</dd>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
     <dd>true for yes, otherwise false.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileServer.prototype.canServe = function (localPath) {
         &#x2F;&#x2F; FileServer requires that the base URL is undefined and static HTML files
         return (!this._baseUrl &amp;&amp; LiveDevelopmentUtils.isStaticHtmlFileExt(localPath));
@@ -566,21 +580,27 @@
     
     
 </span>
-    <h4>pathToUrl</h4>
+    <h4>
+        pathToUrl 
+        <a class="anchor" href="#FileServer-pathToUrl" id="FileServer-pathToUrl"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Returns a file: URL for a given absolute path</p>
 </div>
     
 <dl>
-    <dt>path</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
     <dd>Absolute path to covert to a file: URL</dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>Returns: <span class="label label-info">string</span></dt>
     <dd>Converts an absolute path within the project root to a file: URL.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileServer.prototype.pathToUrl = function (path) {
         return encodeURI(PREFIX + path);
     };
@@ -592,21 +612,27 @@
     
     
 </span>
-    <h4>urlToPath</h4>
+    <h4>
+        urlToPath 
+        <a class="anchor" href="#FileServer-urlToPath" id="FileServer-urlToPath"><span class="icon-link"></span></a>
+    </h4>
 
     
     <div class="description"><p>Convert a file: URL to a absolute file path</p>
 </div>
     
 <dl>
-    <dt>url</dt>
-    <dd class="label label-info pull-left">string</dd>
+    <dt>
+        url
+        <span class="label label-info">string</span>
+    </dt>
     <dd></dd>
 </dl><dl>
-    <dt>Returns: </dt>
-    <dd class="label label-info pull-left">?string</dd>
+    <dt>Returns: <span class="label label-info">?string</span></dt>
     <dd>The absolute path for given file: URL or null if the path is not a descendant of the project.</dd>
-</dl><button class="btn btn-small show-code">Show code</button>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileServer.prototype.urlToPath = function (url) {
         if (url.indexOf(PREFIX) === 0) {
             &#x2F;&#x2F; Convert a file URL to local file path
