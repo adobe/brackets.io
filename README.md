@@ -13,7 +13,7 @@ Refer to the section below for assistance on how to develop the css for brackets
 ### Developing CSS
 - Requirements 
     - Git command line tools — follow the setup instructions on [GitHub](https://help.github.com/articles/set-up-git) or download [here](http://git-scm.com/downloads)
-    - [NodeJS installed](https://nodejs.org/en/download/current/)
+    - [NodeJS installed](https://nodejs.org/en/download/releases/). Tested with node v6.3.1 & npm v5.5.1
 - Steps to follow
     - Open gitbash (or any other command line shell of your choice, that supports git & node) & clone the repository  
     
