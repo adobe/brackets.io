@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PanelManager - Brackets API</title>
+    <title>Preferences - Brackets API</title>
     <link rel="stylesheet" href="../../assets/css/bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
     <link rel="stylesheet" href="../../assets/css/font-awesome.css">
@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (181)</h2>
+            <h2 class="number-of-modules">Modules (188)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -171,6 +171,27 @@
             </ul>
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils"><i class="icon-folder-open"></i>JSUtils</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/HintUtils.html">HintUtils</a></li>
+              <li><a href="../../modules/JSUtils/MessageIds.html">MessageIds</a></li>
+              <li><a href="../../modules/JSUtils/Preferences.html">Preferences</a></li>
+              <li><a href="../../modules/JSUtils/ScopeManager.html">ScopeManager</a></li>
+              <li><a href="../../modules/JSUtils/Session.html">Session</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils_node"><i class="icon-folder-open"></i>JSUtils&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils_node" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/node/ExtractFileContent.html">ExtractFileContent</a></li>
+              <li><a href="../../modules/JSUtils/node/TernNodeDomain.html">TernNodeDomain</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -441,7 +462,6 @@
               <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
               <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
               <li><a href="../../modules/view/Pane.html">Pane</a></li>
-              <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
@@ -467,6 +487,7 @@
               <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
               <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
               <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/InlineMenu.html">InlineMenu</a></li>
               <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
@@ -474,12 +495,8 @@
           </div>
         </div>
         <div class="module span9">
-<h1>PanelManager</h1>
+<h1>Preferences</h1>
 
-    <div class="alert alert-error">
-        <span class="label label-warn pull-right">deprecated</span>
-        <div>This module provided for backwards compatibility. Use WorkspaceManager instead.</div>
-    </div>
 
 <section class="description">
     <h3>Description</h3>
@@ -492,9 +509,7 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
-        <li><a href="..&#x2F;../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
-        <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
-        <li><a href="..&#x2F;../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
     </ul>
 
 </section>
@@ -506,59 +521,252 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member private">
+<div class="member">
 
 <span class="pull-right scope">
-    Private
+    
     
 </span>
     <h4>
-        _deprecateEvent 
-        <a class="anchor" href="#-_deprecateEvent" id="-_deprecateEvent"><span class="icon-link"></span></a>
+        settingsToRegExp 
+        <a class="anchor" href="#-settingsToRegExp" id="-settingsToRegExp"><span class="icon-link"></span></a>
     </h4>
 
     
-    <div class="description"><p>Creates a deprecation warning event handler</p>
+    <div class="description"><p>Convert an array of strings with optional wildcards, to an equivalent
+ regular expression.</p>
 </div>
     
 <dl>
     <dt>
-        the
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
+        settings
+        <span class="label label-info">Array.&lt;string,RegExp&gt;</span>
     </dt>
-    <dd>event being deprecated</dd>
+    <dd>from the file (note: this may be mutated by this function)</dd>
     <dt>
-        the
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">string</span>
+        baseRegExp
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">RegExp</span>
     </dt>
-    <dd>new event to use</dd>
+    <dd>base regular expression that is always used</dd>
+    <dt>
+        defaultRegExp
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">RegExp</span>
+    </dt>
+    <dd>additional regular expression that is only used if the user has not configured settings</dd>
 </dl><dl>
+    <dt>Returns: <span class="label label-info">RegExp</span></dt>
+    <dd>Regular expression that captures the array of string with optional wildcards.</dd>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _deprecateEvent(oldEventName, newEventName) {
-        DeprecationWarning.deprecateEvent(exports,
-                                          WorkspaceManager,
-                                          oldEventName,
-                                          newEventName,
-                                          &quot;PanelManager.&quot; + oldEventName,
-                                          &quot;MainViewManager.&quot; + newEventName);
-    }
+<pre class="code language-javascript"><code class="language-javascript">    function settingsToRegExp(settings, baseRegExp, defaultRegExp) {
+        var regExpString = &quot;&quot;;
 
-    &#x2F;&#x2F; Define public API
-    exports.createBottomPanel   = function (id, $panel, minSize) {
-        DeprecationWarning.deprecationWarning(&quot;Use WorkspaceManager.createBottomPanel() instead of PanelManager.createBottomPanel().&quot;, true);
-        return WorkspaceManager.createBottomPanel(id, $panel, minSize);
-    };
+        if (settings instanceof Array &amp;&amp; settings.length &gt; 0) {
 
-    &#x2F;&#x2F; Deprecated PanelManager events
-    EventDispatcher.makeEventDispatcher(exports);
-    _deprecateEvent(&quot;editorAreaResize&quot;, &quot;workspaceUpdateLayout&quot;);
-});</code></pre></div>
+            &#x2F;&#x2F; Append base settings to user settings. The base
+            &#x2F;&#x2F; settings are builtin and cannot be overridden.
+            if (baseRegExp) {
+                settings.push(&quot;&#x2F;&quot; + baseRegExp.source + &quot;&#x2F;&quot;);
+            }
+
+            &#x2F;&#x2F; convert each string, with optional wildcards to an equivalent
+            &#x2F;&#x2F; string in a regular expression.
+            settings.forEach(function (value, index) {
+
+                if (typeof value === &quot;string&quot;) {
+                    var isRegExp = value[0] === &#39;&#x2F;&#39; &amp;&amp; value[value.length - 1] === &#39;&#x2F;&#39;;
+
+                    if (isRegExp) {
+                        value = value.substring(1, value.length - 1);
+                    } else {
+                        value = StringUtils.regexEscape(value);
+
+                        &#x2F;&#x2F; convert user input wildcard, &quot;*&quot; or &quot;?&quot;, to a regular
+                        &#x2F;&#x2F; expression. We can just replace the escaped &quot;*&quot; or &quot;?&quot;
+                        &#x2F;&#x2F; since we know it is a wildcard.
+                        value = value.replace(&quot;\\?&quot;, &quot;.?&quot;);
+                        value = value.replace(&quot;\\*&quot;, &quot;.*&quot;);
+
+                        &#x2F;&#x2F; Add &quot;^&quot; and &quot;$&quot; to prevent matching in the middle of strings.
+                        value = &quot;^&quot; + value + &quot;$&quot;;
+                    }
+
+                    if (index &gt; 0) {
+                        regExpString += &quot;|&quot;;
+                    }
+
+                    regExpString = regExpString.concat(value);
+                }
+            });
+        }
+
+        if (!regExpString) {
+            var defaultParts = [];
+            if (baseRegExp) {
+                defaultParts.push(baseRegExp.source);
+            }
+            if (defaultRegExp) {
+                defaultParts.push(defaultRegExp.source);
+            }
+            if (defaultParts.length &gt; 0) {
+                regExpString  = defaultParts.join(&quot;|&quot;);
+            } else {
+                return null;
+            }
+        }
+
+        return new RegExp(regExpString);
+    }</code></pre></div>
 </section>
 
+<section id="classes">
+    
+    <h2>Classes</h2>
+
+    <div class="well">
+        <div class="member public">
+            
+            <span class="pull-right scope">Constructor</span>
+            
+            <h4>
+                Preferences
+                
+            </h4>
+            
+            <em><p>Constructor to create a default preference object.</p>
+</em>
+            
+            <dl>
+                <dt>prefs <span class="label label-info pull-left">Object</span></dt>
+                <dd>preference object</dd>
+            </dl>
+          
+<dl>
+</dl>
+
+            <button class="btn btn-small show-code">Show code</button>
+            <pre class="code language-javascript"><code class="language-javascript">    function Preferences(prefs) {
+        var BASE_EXCLUDED_DIRECTORIES = null,</code></pre>
+        </div>
+        
+
+        <section class="methods">
+
+            <h3>Methods 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>            </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getExcludedDirectories 
+        <a class="anchor" href="#Preferences-getExcludedDirectories" id="Preferences-getExcludedDirectories"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the regular expression for excluded directories.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?RegExp</span></dt>
+    <dd>Regular expression matching the directories that should be excluded. Returns null if no directories are excluded.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Preferences.prototype.getExcludedDirectories = function () {
+        return this._excludedDirectories;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getExcludedFiles 
+        <a class="anchor" href="#Preferences-getExcludedFiles" id="Preferences-getExcludedFiles"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the regular expression for excluded files.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">?RegExp</span></dt>
+    <dd>Regular expression matching the files that should be excluded. Returns null if no files are excluded.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Preferences.prototype.getExcludedFiles = function () {
+        return this._excludedFiles;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getMaxFileCount 
+        <a class="anchor" href="#Preferences-getMaxFileCount" id="Preferences-getMaxFileCount"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the maximum number of files that will be analyzed.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Preferences.prototype.getMaxFileCount = function () {
+        return this._maxFileCount;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        getMaxFileSize 
+        <a class="anchor" href="#Preferences-getMaxFileSize" id="Preferences-getMaxFileSize"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Get the maximum size of a file that will be analyzed. Files that are
+larger will be ignored.</p>
+</div>
+    
+<dl>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">number</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Preferences.prototype.getMaxFileSize = function () {
+        return this._maxFileSize;
+    };
+
+    module.exports = Preferences;
+
+});</code></pre></div>
+        </section>
+
+    </div>
+
+</section>
         </div>
       </div>
     </div>

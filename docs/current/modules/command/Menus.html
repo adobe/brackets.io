@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (181)</h2>
+            <h2 class="number-of-modules">Modules (188)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -171,6 +171,27 @@
             </ul>
             <ul id="package_help" class="nav nav-list">
               <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils"><i class="icon-folder-open"></i>JSUtils</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/HintUtils.html">HintUtils</a></li>
+              <li><a href="../../modules/JSUtils/MessageIds.html">MessageIds</a></li>
+              <li><a href="../../modules/JSUtils/Preferences.html">Preferences</a></li>
+              <li><a href="../../modules/JSUtils/ScopeManager.html">ScopeManager</a></li>
+              <li><a href="../../modules/JSUtils/Session.html">Session</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils_node"><i class="icon-folder-open"></i>JSUtils&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils_node" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/node/ExtractFileContent.html">ExtractFileContent</a></li>
+              <li><a href="../../modules/JSUtils/node/TernNodeDomain.html">TernNodeDomain</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -441,7 +462,6 @@
               <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
               <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
               <li><a href="../../modules/view/Pane.html">Pane</a></li>
-              <li><a href="../../modules/view/PanelManager.html">PanelManager</a></li>
               <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
               <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
               <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
@@ -467,6 +487,7 @@
               <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
               <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
               <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/InlineMenu.html">InlineMenu</a></li>
               <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
               <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
@@ -610,7 +631,8 @@ specify the relative position of a newly created menu object</p>
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var DIVIDER = &quot;---&quot;;</code></pre></div><div class="member public">
+<pre class="code language-javascript"><code class="language-javascript">    var DIVIDER = &quot;---&quot;;
+    var SUBMENU = &quot;SUBMENU&quot;;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -1326,7 +1348,7 @@ name, enabled, and checked state of a MenuItem. The MenuItem will update automat
         this.isDivider = (command === DIVIDER);
         this.isNative = false;
 
-        if (!this.isDivider) {
+        if (!this.isDivider &amp;&amp; command !== SUBMENU) {
             &#x2F;&#x2F; Bind event handlers
             this._enabledChanged = this._enabledChanged.bind(this);
             this._checkedChanged = this._checkedChanged.bind(this);
@@ -1888,6 +1910,11 @@ allow adding new MenuItems to sub-menus as well.</p>
                 $menuItem.on(&quot;click&quot;, function () {
                     menuItem._command.execute();
                 });
+
+                var self = this;
+                $menuItem.on(&quot;mouseenter&quot;, function () {
+                    self.closeSubMenu();
+                });
             }
 
             &#x2F;&#x2F; Insert menu item
@@ -1959,6 +1986,142 @@ allow adding new MenuItems to sub-menus as well.</p>
         }
 
         return menuItem;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        addSubMenu 
+        <a class="anchor" href="#Menu-addSubMenu" id="Menu-addSubMenu"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Creates a new submenu and a menuItem and adds the menuItem of the submenu
+to the menu and returns the submenu.</p>
+<p>A submenu will have the same structure of a menu with a additional field
+parentMenuItem which has the reference of the submenu&#39;s parent menuItem.</p>
+<p>A submenu will raise the following events:</p>
+<ul>
+<li>beforeSubMenuOpen</li>
+<li>beforeSubMenuClose</li>
+</ul>
+<p>Note, This function will create only a context submenu.</p>
+<p>TODO: Make this function work for Menus</p>
+</div>
+    
+<dl>
+    <dt>
+        name
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>displayed in menu item of the submenu</dd>
+    <dt>
+        id
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        position
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>constant defining the position of new MenuItem of the submenu relative to other MenuItems. Values: - With no relativeID, use Menus.FIRST or LAST (default is LAST) - Relative to a command id, use BEFORE or AFTER (required) - Relative to a MenuSection, use FIRST_IN_SECTION or LAST_IN_SECTION (required)</dd>
+    <dt>
+        relativeID
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>command id OR one of the MenuSection.* constants. Required for all position constants except FIRST and LAST. </dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Menu</span></dt>
+    <dd>the newly created submenu</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Menu.prototype.addSubMenu = function (name, id, position, relativeID) {
+
+        if (!name || !id) {
+            console.error(&quot;addSubMenu(): missing required parameters: name and id&quot;);
+            return null;
+        }
+
+        &#x2F;&#x2F; Guard against duplicate context menu ids
+        if (contextMenuMap[id]) {
+            console.log(&quot;Context menu added with id of existing Context Menu: &quot; + id);
+            return null;
+        }
+
+        var menu = new ContextMenu(id);
+        contextMenuMap[id] = menu;
+
+        var menuItemID = this.id + &quot;-&quot; + id;
+
+        if (menuItemMap[menuItemID]) {
+            console.log(&quot;MenuItem added with same id of existing MenuItem: &quot; + id);
+            return null;
+        }
+
+        &#x2F;&#x2F; create MenuItem
+        var menuItem = new MenuItem(menuItemID, SUBMENU);
+        menuItemMap[menuItemID] = menuItem;
+
+        menu.parentMenuItem = menuItem;
+
+        &#x2F;&#x2F; create MenuItem DOM
+        if (_isHTMLMenu(this.id)) {
+            &#x2F;&#x2F; Create the HTML MenuItem
+            var $menuItem = $(&quot;&lt;li&gt;&lt;a href=&#39;#&#39; id=&#39;&quot; + menuItemID + &quot;&#39;&gt; &quot;   +
+                             &quot;&lt;span class=&#39;menu-name&#39;&gt;&quot; + name + &quot;&lt;&#x2F;span&gt;&quot; +
+                             &quot;&lt;span style=&#39;float: right&#39;&gt;&amp;rtrif;&lt;&#x2F;span&gt;&quot;   +
+                             &quot;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;&quot;);
+
+            var self = this;
+            $menuItem.on(&quot;mouseenter&quot;, function(e) {
+                if (self.openSubMenu &amp;&amp; self.openSubMenu.id === menu.id) {
+                    return;
+                }
+                self.closeSubMenu();
+                self.openSubMenu = menu;
+                menu.open();
+            });
+
+            &#x2F;&#x2F; Insert menu item
+            var $relativeElement = this._getRelativeMenuItem(relativeID, position);
+            _insertInList($(&quot;li#&quot; + StringUtils.jQueryIdEscape(this.id) + &quot; &gt; ul.dropdown-menu&quot;),
+            $menuItem, position, $relativeElement);
+        } else {
+            &#x2F;&#x2F; TODO: add submenus for native menus
+        }
+        return menu;
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        closeSubMenu 
+        <a class="anchor" href="#Menu-closeSubMenu" id="Menu-closeSubMenu"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Closes the submenu if the menu has a submenu open.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Menu.prototype.closeSubMenu = function() {
+        if (this.openSubMenu) {
+            this.openSubMenu.close();
+            this.openSubMenu = null;
+        }
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2092,6 +2255,81 @@ directly to remove key bindings if desired.</p>
         }
 
         delete menuItemMap[menuItemID];
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        removeSubMenu 
+        <a class="anchor" href="#Menu-removeSubMenu" id="Menu-removeSubMenu"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Removes the specified submenu from this Menu.</p>
+<p>Note, this function will only remove context submenus</p>
+<p>TODO: Make this function work for Menus</p>
+</div>
+    
+<dl>
+    <dt>
+        subMenuID
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the menu id of the submenu to remove.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    Menu.prototype.removeSubMenu = function (subMenuID) {
+        var subMenu,
+            parentMenuItem,
+            commandID = &quot;&quot;;
+
+        if (!subMenuID) {
+            console.error(&quot;removeSubMenu(): missing required parameters: subMenuID&quot;);
+            return;
+        }
+
+        subMenu = getContextMenu(subMenuID);
+
+        if (!subMenu || !subMenu.parentMenuItem) {
+            console.error(&quot;removeSubMenu(): parameter subMenuID: %s is not a valid submenu id&quot;, subMenuID);
+            return;
+        }
+
+        parentMenuItem = subMenu.parentMenuItem;
+
+
+        if (!menuItemMap[parentMenuItem.id]) {
+            console.error(&quot;removeSubMenu(): parent menuItem not found in menuItemMap: %s&quot;, parentMenuItem.id);
+            return;
+        }
+
+        &#x2F;&#x2F; Remove all of the menu items in the submenu
+        _.forEach(menuItemMap, function (value, key) {
+            if (_.startsWith(key, subMenuID)) {
+                if (value.isDivider) {
+                    subMenu.removeMenuDivider(key);
+                } else {
+                    commandID = value.getCommand();
+                    subMenu.removeMenuItem(commandID);
+                }
+            }
+        });
+
+        if (_isHTMLMenu(this.id)) {
+            $(_getHTMLMenuItem(parentMenuItem.id)).parent().remove(); &#x2F;&#x2F; remove the menu item
+            $(_getHTMLMenu(subMenuID)).remove(); &#x2F;&#x2F; remove the menu
+        } else {
+            &#x2F;&#x2F; TODO: remove submenus for native menus
+        }
+
+
+        delete menuItemMap[parentMenuItem.id];
+        delete contextMenuMap[subMenuID];
     };</code></pre></div>
         </section>
 
@@ -2225,7 +2463,12 @@ listener and passing the right &quot;position&quot; object to the Context#open m
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ContextMenu.prototype.close = function () {
-        this.trigger(&quot;beforeContextMenuClose&quot;);
+        if (this.parentMenuItem) {
+            this.trigger(&quot;beforeSubMenuClose&quot;);
+        } else {
+            this.trigger(&quot;beforeContextMenuClose&quot;);
+        }
+        this.closeSubMenu();
         $(&quot;#&quot; + StringUtils.jQueryIdEscape(this.id)).removeClass(&quot;open&quot;);
     };</code></pre></div><div class="member">
 
@@ -2262,9 +2505,13 @@ listener and passing the right &quot;position&quot; object to the Context#open m
 
     
     <div class="description"><p>Displays the ContextMenu at the specified location and dispatches the
-&quot;beforeContextMenuOpen&quot; event.The menu location may be adjusted to prevent
-clipping by the browser window. All other menus and ContextMenus will be closed
-bofore a new menu is shown.</p>
+&quot;beforeContextMenuOpen&quot; event or &quot;beforeSubMenuOpen&quot; event (for submenus).
+The menu location may be adjusted to prevent clipping by the browser window.
+All other menus and ContextMenus will be closed before a new menu
+will be closed before a new menu is shown (if the new menu is not
+a submenu).</p>
+<p>In case of submenus, the parentMenu of the submenu will not be closed when the
+sub menu is open.</p>
 </div>
     
 <dl>
@@ -2272,14 +2519,15 @@ bofore a new menu is shown.</p>
         mouseOrLocation
         <span class="label label-info">MouseEvent,{pageX:number,pageY:number}</span>
     </dt>
-    <dd>pass a MouseEvent to display the menu near the mouse or pass in an object with page x/y coordinates for a specific location.</dd>
+    <dd>pass a MouseEvent to display the menu near the mouse or pass in an object with page x/y coordinates for a specific location.This paramter is not used for submenus. Submenus are always displayed at a position relative to the parent menu.</dd>
 </dl><dl>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    ContextMenu.prototype.open = function (mouseOrLocation) {
 
-        if (!mouseOrLocation || !mouseOrLocation.hasOwnProperty(&quot;pageX&quot;) || !mouseOrLocation.hasOwnProperty(&quot;pageY&quot;)) {
+        if (!this.parentMenuItem &amp;&amp;
+           (!mouseOrLocation || !mouseOrLocation.hasOwnProperty(&quot;pageX&quot;) || !mouseOrLocation.hasOwnProperty(&quot;pageY&quot;))) {
             console.error(&quot;ContextMenu open(): missing required parameter&quot;);
             return;
         }
@@ -2288,21 +2536,26 @@ bofore a new menu is shown.</p>
             escapedId = StringUtils.jQueryIdEscape(this.id),
             $menuAnchor = $(&quot;#&quot; + escapedId),
             $menuWindow = $(&quot;#&quot; + escapedId + &quot; &gt; ul&quot;),
-            posTop  = mouseOrLocation.pageY,
-            posLeft = mouseOrLocation.pageX;
+            posTop,
+            posLeft;
 
         &#x2F;&#x2F; only show context menu if it has menu items
         if ($menuWindow.children().length &lt;= 0) {
             return;
         }
 
-        this.trigger(&quot;beforeContextMenuOpen&quot;);
-
-        &#x2F;&#x2F; close all other dropdowns
-        closeAll();
 
         &#x2F;&#x2F; adjust positioning so menu is not clipped off bottom or right
-        var elementRect = {
+        if (this.parentMenuItem) { &#x2F;&#x2F; If context menu is a submenu
+
+            this.trigger(&quot;beforeSubMenuOpen&quot;);
+
+            var $parentMenuItem = $(_getHTMLMenuItem(this.parentMenuItem.id));
+
+            posTop = $parentMenuItem.offset().top;
+            posLeft = $parentMenuItem.offset().left + $parentMenuItem.outerWidth();
+
+            var elementRect = {
                 top:    posTop,
                 left:   posLeft,
                 height: $menuWindow.height() + 25,
@@ -2310,15 +2563,43 @@ bofore a new menu is shown.</p>
             },
             clip = ViewUtils.getElementClipSize($window, elementRect);
 
-        if (clip.bottom &gt; 0) {
-            posTop = Math.max(0, posTop - clip.bottom);
-        }
-        posTop -= 30;   &#x2F;&#x2F; shift top for hidden parent element
-        posLeft += 5;
+            if (clip.bottom &gt; 0) {
+                posTop = Math.max(0, posTop + $parentMenuItem.height() - $menuWindow.height());
+            }
+
+            posTop -= 30;   &#x2F;&#x2F; shift top for hidden parent element
+            posLeft += 3;
+
+            if (clip.right &gt; 0) {
+                posLeft = Math.max(0, posLeft - 2 * $parentMenuItem.outerWidth());
+            }
+        } else {
+            this.trigger(&quot;beforeContextMenuOpen&quot;);
+
+            &#x2F;&#x2F; close all other dropdowns
+            closeAll();
+
+            posTop  = mouseOrLocation.pageY;
+            posLeft = mouseOrLocation.pageX;
+
+            var elementRect = {
+                top:    posTop,
+                left:   posLeft,
+                height: $menuWindow.height() + 25,
+                width:  $menuWindow.width()
+            },
+            clip = ViewUtils.getElementClipSize($window, elementRect);
+
+            if (clip.bottom &gt; 0) {
+                posTop = Math.max(0, posTop - clip.bottom);
+            }
+            posTop -= 30;   &#x2F;&#x2F; shift top for hidden parent element
+            posLeft += 5;
 
 
-        if (clip.right &gt; 0) {
-            posLeft = Math.max(0, posLeft - clip.right);
+            if (clip.right &gt; 0) {
+                posLeft = Math.max(0, posLeft - clip.right);
+            }
         }
 
         &#x2F;&#x2F; open the context menu at final location
