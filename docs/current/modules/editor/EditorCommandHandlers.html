@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EditorCommandHandlers - Brackets API</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/typeahead.js-bootstrap.css">
+    <link rel="stylesheet" href="../../assets/css/font-awesome.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.css">
+    <![endif]-->
+    <script type="text/javascript" src="../../assets/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../assets/js/typeahead.js"></script>
+    <script type="text/javascript" src="../../assets/js/main.js"></script>
+    <script src="http://use.edgefonts.net/source-sans-pro:n3,i3,n4,i4;source-code-pro.js"></script>
+
+    <!-- Control the Flash of Unstyled Text (or FOUT) -->
+    <style type="text/css">
+        .wf-loading h1, .wf-loading h2, .wf-loading h3, .wf-loading h4,
+        .wf-loading h5, .wf-loading h6, .wf-loading p, .wf-loading a {
+            visibility: hidden;
+        }
+    </style>
+    
+    <script>
+      window.moduleLevel = "../..";
+    </script>
+  </head>
+  
+  <body>
+    <div class="row-fluid">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="../../index.html">Brackets API</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="#dependencies">Dependencies</a></li>
+                <li><a href="#variables">Variables</a></li>
+                <li><a href="#functions">Functions</a></li>
+                <li><a href="#classes">Classes</a></li>
+              </ul>
+            </div>
+            <input class="typeahead" placeholder="Search..." type="text" >
+          </div>
+        </div>
+      </div>    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="left-section">
+            <h2 class="number-of-modules">Modules (188)</h2>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
+              </li>
+            </ul>
+            <ul id="package_" class="nav nav-list">
+              <li><a href="../../modules/brackets.html">brackets</a></li>
+              <li><a href="../../modules/dependencies.html">dependencies</a></li>
+              <li><a href="../../modules/main.html">main</a></li>
+              <li><a href="../../modules/strings.html">strings</a></li>
+              <li><a href="../../modules/xorigin.html">xorigin</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_command"><i class="icon-folder-open"></i>command</a>
+              </li>
+            </ul>
+            <ul id="package_command" class="nav nav-list">
+              <li><a href="../../modules/command/CommandManager.html">CommandManager</a></li>
+              <li><a href="../../modules/command/Commands.html">Commands</a></li>
+              <li><a href="../../modules/command/DefaultMenus.html">DefaultMenus</a></li>
+              <li><a href="../../modules/command/KeyBindingManager.html">KeyBindingManager</a></li>
+              <li><a href="../../modules/command/Menus.html">Menus</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_document"><i class="icon-folder-open"></i>document</a>
+              </li>
+            </ul>
+            <ul id="package_document" class="nav nav-list">
+              <li><a href="../../modules/document/ChangedDocumentTracker.html">ChangedDocumentTracker</a></li>
+              <li><a href="../../modules/document/Document.html">Document</a></li>
+              <li><a href="../../modules/document/DocumentCommandHandlers.html">DocumentCommandHandlers</a></li>
+              <li><a href="../../modules/document/DocumentManager.html">DocumentManager</a></li>
+              <li><a href="../../modules/document/InMemoryFile.html">InMemoryFile</a></li>
+              <li><a href="../../modules/document/TextRange.html">TextRange</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_editor"><i class="icon-folder-open"></i>editor</a>
+              </li>
+            </ul>
+            <ul id="package_editor" class="nav nav-list">
+              <li><a href="../../modules/editor/CodeHintList.html">CodeHintList</a></li>
+              <li><a href="../../modules/editor/CodeHintManager.html">CodeHintManager</a></li>
+              <li><a href="../../modules/editor/CSSInlineEditor.html">CSSInlineEditor</a></li>
+              <li><a href="../../modules/editor/Editor.html">Editor</a></li>
+              <li><a href="../../modules/editor/EditorCommandHandlers.html">EditorCommandHandlers</a></li>
+              <li><a href="../../modules/editor/EditorManager.html">EditorManager</a></li>
+              <li><a href="../../modules/editor/EditorOptionHandlers.html">EditorOptionHandlers</a></li>
+              <li><a href="../../modules/editor/EditorStatusBar.html">EditorStatusBar</a></li>
+              <li><a href="../../modules/editor/ImageViewer.html">ImageViewer</a></li>
+              <li><a href="../../modules/editor/InlineTextEditor.html">InlineTextEditor</a></li>
+              <li><a href="../../modules/editor/InlineWidget.html">InlineWidget</a></li>
+              <li><a href="../../modules/editor/MultiRangeInlineEditor.html">MultiRangeInlineEditor</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_extensibility"><i class="icon-folder-open"></i>extensibility</a>
+              </li>
+            </ul>
+            <ul id="package_extensibility" class="nav nav-list">
+              <li><a href="../../modules/extensibility/ExtensionManager.html">ExtensionManager</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerDialog.html">ExtensionManagerDialog</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerView.html">ExtensionManagerView</a></li>
+              <li><a href="../../modules/extensibility/ExtensionManagerViewModel.html">ExtensionManagerViewModel</a></li>
+              <li><a href="../../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
+              <li><a href="../../modules/extensibility/Package.html">Package</a></li>
+              <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_file"><i class="icon-folder-open"></i>file</a>
+              </li>
+            </ul>
+            <ul id="package_file" class="nav nav-list">
+              <li><a href="../../modules/file/FileUtils.html">FileUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem"><i class="icon-folder-open"></i>filesystem</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem" class="nav nav-list">
+              <li><a href="../../modules/filesystem/Directory.html">Directory</a></li>
+              <li><a href="../../modules/filesystem/File.html">File</a></li>
+              <li><a href="../../modules/filesystem/FileIndex.html">FileIndex</a></li>
+              <li><a href="../../modules/filesystem/FileSystem.html">FileSystem</a></li>
+              <li><a href="../../modules/filesystem/FileSystemEntry.html">FileSystemEntry</a></li>
+              <li><a href="../../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
+              <li><a href="../../modules/filesystem/FileSystemStats.html">FileSystemStats</a></li>
+              <li><a href="../../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/AppshellFileSystem.html">AppshellFileSystem</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_filesystem_impls_appshell_node"><i class="icon-folder-open"></i>filesystem&#x2F;impls&#x2F;appshell&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_filesystem_impls_appshell_node" class="nav nav-list">
+              <li><a href="../../modules/filesystem/impls/appshell/node/ChokidarWatcher.html">ChokidarWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/CSharpWatcher.html">CSharpWatcher</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherDomain.html">FileWatcherDomain</a></li>
+              <li><a href="../../modules/filesystem/impls/appshell/node/FileWatcherManager.html">FileWatcherManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_help"><i class="icon-folder-open"></i>help</a>
+              </li>
+            </ul>
+            <ul id="package_help" class="nav nav-list">
+              <li><a href="../../modules/help/HelpCommandHandlers.html">HelpCommandHandlers</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils"><i class="icon-folder-open"></i>JSUtils</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/HintUtils.html">HintUtils</a></li>
+              <li><a href="../../modules/JSUtils/MessageIds.html">MessageIds</a></li>
+              <li><a href="../../modules/JSUtils/Preferences.html">Preferences</a></li>
+              <li><a href="../../modules/JSUtils/ScopeManager.html">ScopeManager</a></li>
+              <li><a href="../../modules/JSUtils/Session.html">Session</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_JSUtils_node"><i class="icon-folder-open"></i>JSUtils&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_JSUtils_node" class="nav nav-list">
+              <li><a href="../../modules/JSUtils/node/ExtractFileContent.html">ExtractFileContent</a></li>
+              <li><a href="../../modules/JSUtils/node/TernNodeDomain.html">TernNodeDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_language"><i class="icon-folder-open"></i>language</a>
+              </li>
+            </ul>
+            <ul id="package_language" class="nav nav-list">
+              <li><a href="../../modules/language/CodeInspection.html">CodeInspection</a></li>
+              <li><a href="../../modules/language/CSSUtils.html">CSSUtils</a></li>
+              <li><a href="../../modules/language/HTMLDOMDiff.html">HTMLDOMDiff</a></li>
+              <li><a href="../../modules/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
+              <li><a href="../../modules/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
+              <li><a href="../../modules/language/HTMLTokenizer.html">HTMLTokenizer</a></li>
+              <li><a href="../../modules/language/HTMLUtils.html">HTMLUtils</a></li>
+              <li><a href="../../modules/language/JSONUtils.html">JSONUtils</a></li>
+              <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
+              <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
+              <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Agents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Agents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Agents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Agents/ConsoleAgent.html">ConsoleAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/CSSAgent.html">CSSAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMAgent.html">DOMAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMHelpers.html">DOMHelpers</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/DOMNode.html">DOMNode</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/EditAgent.html">EditAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/GotoAgent.html">GotoAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/HighlightAgent.html">HighlightAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/NetworkAgent.html">NetworkAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteAgent.html">RemoteAgent</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/RemoteFunctions.html">RemoteFunctions</a></li>
+              <li><a href="../../modules/LiveDevelopment/Agents/ScriptAgent.html">ScriptAgent</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Documents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Documents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSDocument.html">CSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/CSSPreprocessorDocument.html">CSSPreprocessorDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/HTMLDocument.html">HTMLDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/Documents/JSDocument.html">JSDocument</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Inspector"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Inspector</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Inspector" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Inspector/Inspector.html">Inspector</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment"><i class="icon-folder-open"></i>LiveDevelopment</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopment.html">LiveDevelopment</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevelopmentUtils.html">LiveDevelopmentUtils</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevMultiBrowser.html">LiveDevMultiBrowser</a></li>
+              <li><a href="../../modules/LiveDevelopment/LiveDevServerManager.html">LiveDevServerManager</a></li>
+              <li><a href="../../modules/LiveDevelopment/main.html">main</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_documents"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;documents</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_documents" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveCSSDocument.html">LiveCSSDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.html">LiveDocument</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/documents/LiveHTMLDocument.html">LiveHTMLDocument</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_language"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;language</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_language" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation.html">HTMLInstrumentation</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/language/HTMLSimpleDOM.html">HTMLSimpleDOM</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/Launcher.html">Launcher</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_launchers_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;launchers&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_launchers_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/launchers/node/LauncherDomain.html">LauncherDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol.html">LiveDevProtocol</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_protocol_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;protocol&#x2F;remote</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_protocol_remote" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/DocumentObserver.html">DocumentObserver</a></li>
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/protocol/remote/LiveDevProtocolRemote.html">LiveDevProtocolRemote</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/node/NodeSocketTransportDomain.html">NodeSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/NodeSocketTransport.html">NodeSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_MultiBrowserImpl_transports_remote"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;MultiBrowserImpl&#x2F;transports&#x2F;remote</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_MultiBrowserImpl_transports_remote" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/MultiBrowserImpl/transports/remote/NodeSocketTransportRemote.html">NodeSocketTransportRemote</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_Servers"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;Servers</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_Servers" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/Servers/BaseServer.html">BaseServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/FileServer.html">FileServer</a></li>
+              <li><a href="../../modules/LiveDevelopment/Servers/UserServer.html">UserServer</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports_node"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports_node" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/node/WebSocketTransportDomain.html">WebSocketTransportDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_LiveDevelopment_transports"><i class="icon-folder-open"></i>LiveDevelopment&#x2F;transports</a>
+              </li>
+            </ul>
+            <ul id="package_LiveDevelopment_transports" class="nav nav-list">
+              <li><a href="../../modules/LiveDevelopment/transports/WebSocketTransport.html">WebSocketTransport</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_preferences"><i class="icon-folder-open"></i>preferences</a>
+              </li>
+            </ul>
+            <ul id="package_preferences" class="nav nav-list">
+              <li><a href="../../modules/preferences/PreferencesBase.html">PreferencesBase</a></li>
+              <li><a href="../../modules/preferences/PreferencesDialogs.html">PreferencesDialogs</a></li>
+              <li><a href="../../modules/preferences/PreferencesImpl.html">PreferencesImpl</a></li>
+              <li><a href="../../modules/preferences/PreferencesManager.html">PreferencesManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_project"><i class="icon-folder-open"></i>project</a>
+              </li>
+            </ul>
+            <ul id="package_project" class="nav nav-list">
+              <li><a href="../../modules/project/FileSyncManager.html">FileSyncManager</a></li>
+              <li><a href="../../modules/project/FileTreeView.html">FileTreeView</a></li>
+              <li><a href="../../modules/project/FileTreeViewModel.html">FileTreeViewModel</a></li>
+              <li><a href="../../modules/project/FileViewController.html">FileViewController</a></li>
+              <li><a href="../../modules/project/ProjectManager.html">ProjectManager</a></li>
+              <li><a href="../../modules/project/ProjectModel.html">ProjectModel</a></li>
+              <li><a href="../../modules/project/SidebarView.html">SidebarView</a></li>
+              <li><a href="../../modules/project/WorkingSetSort.html">WorkingSetSort</a></li>
+              <li><a href="../../modules/project/WorkingSetView.html">WorkingSetView</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search"><i class="icon-folder-open"></i>search</a>
+              </li>
+            </ul>
+            <ul id="package_search" class="nav nav-list">
+              <li><a href="../../modules/search/FileFilters.html">FileFilters</a></li>
+              <li><a href="../../modules/search/FindBar.html">FindBar</a></li>
+              <li><a href="../../modules/search/FindInFiles.html">FindInFiles</a></li>
+              <li><a href="../../modules/search/FindInFilesUI.html">FindInFilesUI</a></li>
+              <li><a href="../../modules/search/FindReplace.html">FindReplace</a></li>
+              <li><a href="../../modules/search/FindUtils.html">FindUtils</a></li>
+              <li><a href="../../modules/search/QuickOpen.html">QuickOpen</a></li>
+              <li><a href="../../modules/search/QuickOpenHelper.html">QuickOpenHelper</a></li>
+              <li><a href="../../modules/search/QuickSearchField.html">QuickSearchField</a></li>
+              <li><a href="../../modules/search/ScrollTrackMarkers.html">ScrollTrackMarkers</a></li>
+              <li><a href="../../modules/search/SearchModel.html">SearchModel</a></li>
+              <li><a href="../../modules/search/SearchResultsView.html">SearchResultsView</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_search_node"><i class="icon-folder-open"></i>search&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_search_node" class="nav nav-list">
+              <li><a href="../../modules/search/node/FindInFilesDomain.html">FindInFilesDomain</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_utils"><i class="icon-folder-open"></i>utils</a>
+              </li>
+            </ul>
+            <ul id="package_utils" class="nav nav-list">
+              <li><a href="../../modules/utils/AnimationUtils.html">AnimationUtils</a></li>
+              <li><a href="../../modules/utils/AppInit.html">AppInit</a></li>
+              <li><a href="../../modules/utils/Async.html">Async</a></li>
+              <li><a href="../../modules/utils/BuildInfoUtils.html">BuildInfoUtils</a></li>
+              <li><a href="../../modules/utils/ColorUtils.html">ColorUtils</a></li>
+              <li><a href="../../modules/utils/Compatibility.html">Compatibility</a></li>
+              <li><a href="../../modules/utils/DeprecationWarning.html">DeprecationWarning</a></li>
+              <li><a href="../../modules/utils/DragAndDrop.html">DragAndDrop</a></li>
+              <li><a href="../../modules/utils/DropdownEventHandler.html">DropdownEventHandler</a></li>
+              <li><a href="../../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
+              <li><a href="../../modules/utils/ExtensionLoader.html">ExtensionLoader</a></li>
+              <li><a href="../../modules/utils/ExtensionUtils.html">ExtensionUtils</a></li>
+              <li><a href="../../modules/utils/Global.html">Global</a></li>
+              <li><a href="../../modules/utils/HealthLogger.html">HealthLogger</a></li>
+              <li><a href="../../modules/utils/KeyEvent.html">KeyEvent</a></li>
+              <li><a href="../../modules/utils/LocalizationUtils.html">LocalizationUtils</a></li>
+              <li><a href="../../modules/utils/NativeApp.html">NativeApp</a></li>
+              <li><a href="../../modules/utils/NodeConnection.html">NodeConnection</a></li>
+              <li><a href="../../modules/utils/NodeDomain.html">NodeDomain</a></li>
+              <li><a href="../../modules/utils/PerfUtils.html">PerfUtils</a></li>
+              <li><a href="../../modules/utils/Resizer.html">Resizer</a></li>
+              <li><a href="../../modules/utils/ShellAPI.html">ShellAPI</a></li>
+              <li><a href="../../modules/utils/StringMatch.html">StringMatch</a></li>
+              <li><a href="../../modules/utils/StringUtils.html">StringUtils</a></li>
+              <li><a href="../../modules/utils/TokenUtils.html">TokenUtils</a></li>
+              <li><a href="../../modules/utils/UpdateNotification.html">UpdateNotification</a></li>
+              <li><a href="../../modules/utils/UrlParams.html">UrlParams</a></li>
+              <li><a href="../../modules/utils/ValidationUtils.html">ValidationUtils</a></li>
+              <li><a href="../../modules/utils/ViewUtils.html">ViewUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_view"><i class="icon-folder-open"></i>view</a>
+              </li>
+            </ul>
+            <ul id="package_view" class="nav nav-list">
+              <li><a href="../../modules/view/MainViewFactory.html">MainViewFactory</a></li>
+              <li><a href="../../modules/view/MainViewManager.html">MainViewManager</a></li>
+              <li><a href="../../modules/view/Pane.html">Pane</a></li>
+              <li><a href="../../modules/view/ThemeManager.html">ThemeManager</a></li>
+              <li><a href="../../modules/view/ThemeSettings.html">ThemeSettings</a></li>
+              <li><a href="../../modules/view/ThemeView.html">ThemeView</a></li>
+              <li><a href="../../modules/view/ViewCommandHandlers.html">ViewCommandHandlers</a></li>
+              <li><a href="../../modules/view/ViewStateManager.html">ViewStateManager</a></li>
+              <li><a href="../../modules/view/WorkspaceManager.html">WorkspaceManager</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_widgets"><i class="icon-folder-open"></i>widgets</a>
+              </li>
+            </ul>
+            <ul id="package_widgets" class="nav nav-list">
+              <li><a href="../../modules/widgets/bootstrap-alerts.html">bootstrap-alerts</a></li>
+              <li><a href="../../modules/widgets/bootstrap-button.html">bootstrap-button</a></li>
+              <li><a href="../../modules/widgets/bootstrap-dropdown.html">bootstrap-dropdown</a></li>
+              <li><a href="../../modules/widgets/bootstrap-modal.html">bootstrap-modal</a></li>
+              <li><a href="../../modules/widgets/bootstrap-popover.html">bootstrap-popover</a></li>
+              <li><a href="../../modules/widgets/bootstrap-scrollspy.html">bootstrap-scrollspy</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tab.html">bootstrap-tab</a></li>
+              <li><a href="../../modules/widgets/bootstrap-tooltip.html">bootstrap-tooltip</a></li>
+              <li><a href="../../modules/widgets/bootstrap-twipsy-mod.html">bootstrap-twipsy-mod</a></li>
+              <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
+              <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
+              <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/InlineMenu.html">InlineMenu</a></li>
+              <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
+              <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
+              <li><a href="../../modules/widgets/StatusBar.html">StatusBar</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="module span9">
+<h1>EditorCommandHandlers</h1>
+
+
+<section class="description">
+    <h3>Description</h3>
+    
+    <div><p>Text-editing commands that apply to whichever Editor is currently focused</p>
+</div>
+    
+</section>
+
+<section id="dependencies">
+    <h3>Dependencies</h3>
+
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/thirdparty/CodeMirror/lib/codemirror.html">codemirror</a></li>
+        <li><a href="..&#x2F;../modules/command/CommandManager.html">CommandManager</a></li>
+        <li><a href="..&#x2F;../modules/command/Commands.html">Commands</a></li>
+        <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
+        <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/strings.html">strings</a></li>
+        <li><a href="..&#x2F;../modules/utils/StringUtils.html">StringUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/TokenUtils.html">TokenUtils</a></li>
+    </ul>
+
+</section>
+<section id="variables">
+    
+    <h3>Variables 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        DIRECTION_UP 
+        <a class="anchor" href="#-DIRECTION_UP" id="-DIRECTION_UP"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>List of constants</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var DIRECTION_UP    = -1;
+    var DIRECTION_DOWN  = +1;</code></pre></div>
+</section>
+
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _containsNotLineComment 
+        <a class="anchor" href="#-_containsNotLineComment" id="-_containsNotLineComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        startLine
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>valid line inside the document</dd>
+    <dt>
+        endLine
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>valid line inside the document</dd>
+    <dt>
+        lineExp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;RegExp&gt;</span>
+    </dt>
+    <dd>an array of line comment prefixes regular expressions</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
+    <dd>true if there is at least one uncommented line</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _containsNotLineComment(editor, startLine, endLine, lineExp) {
+        var i, line,
+            containsNotLineComment = false;
+
+        for (i = startLine; i &lt;= endLine; i++) {
+            line = editor.document.getLine(i);
+            &#x2F;&#x2F; A line is commented out if it starts with 0-N whitespace chars, then a line comment prefix
+            if (line.match(&#x2F;\S&#x2F;) &amp;&amp; !_matchExpressions(line, lineExp)) {
+                containsNotLineComment = true;
+                break;
+            }
+        }
+        return containsNotLineComment;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _createLineExpressions 
+        <a class="anchor" href="#-_createLineExpressions" id="-_createLineExpressions"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        prefixes
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>the line comment prefixes</dd>
+    <dt>
+        blockPrefix
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the block comment prefix</dd>
+    <dt>
+        blockSuffix
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the block comment suffix</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;RegExp&gt;</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createLineExpressions(prefixes, blockPrefix, blockSuffix) {
+        var lineExp = [], escapedPrefix, nothingPushed;
+
+        prefixes.forEach(function (prefix) {
+            escapedPrefix = StringUtils.regexEscape(prefix);
+            nothingPushed = true;
+
+            if (blockPrefix &amp;&amp; blockPrefix.indexOf(prefix) === 0) {
+                lineExp.push(_createSpecialLineExp(prefix, blockPrefix));
+                nothingPushed = false;
+            }
+            if (blockSuffix &amp;&amp; blockPrefix !== blockSuffix &amp;&amp; blockSuffix.indexOf(prefix) === 0) {
+                lineExp.push(_createSpecialLineExp(prefix, blockSuffix));
+                nothingPushed = false;
+            }
+            if (nothingPushed) {
+                lineExp.push(new RegExp(&quot;^\\s*&quot; + escapedPrefix));
+            }
+        });
+        return lineExp;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _createSpecialLineExp 
+        <a class="anchor" href="#-_createSpecialLineExp" id="-_createSpecialLineExp"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        lineSyntax
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>a line comment prefix</dd>
+    <dt>
+        blockSyntax
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>a block comment prefix or suffix</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">RegExp</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _createSpecialLineExp(lineSyntax, blockSyntax) {
+        var i, character, escapedCharacter,
+            subExps   = [],
+            prevChars = &quot;&quot;;
+
+        for (i = lineSyntax.length; i &lt; blockSyntax.length; i++) {
+            character = blockSyntax.charAt(i);
+            escapedCharacter = StringUtils.regexEscape(character);
+            subExps.push(prevChars + &quot;[^&quot; + escapedCharacter + &quot;]&quot;);
+            if (prevChars) {
+                subExps.push(prevChars + &quot;$&quot;);
+            }
+            prevChars += escapedCharacter;
+        }
+        return new RegExp(&quot;^\\s*&quot; + StringUtils.regexEscape(lineSyntax) + &quot;($|&quot; + subExps.join(&quot;|&quot;) + &quot;)&quot;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _firstNotWs 
+        <a class="anchor" href="#-_firstNotWs" id="-_firstNotWs"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Return the column of the first non whitespace char in the given line.</p>
+</div>
+    
+<dl>
+    <dt>
+        doc
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Document</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        lineNum
+        <span class="label label-info">number</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+        <dt>returns</dt>
+        <dd>{number} the column index or null</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _firstNotWs(doc, lineNum) {
+        var text = doc.getLine(lineNum);
+        if (text === null || text === undefined) {
+            return 0;
+        }
+
+        return text.search(&#x2F;\S|$&#x2F;);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getBlockCommentPrefixSuffixEdit 
+        <a class="anchor" href="#-_getBlockCommentPrefixSuffixEdit" id="-_getBlockCommentPrefixSuffixEdit"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
+and cursor position. Applies to the currently focused Editor.</p>
+<p>If the selection is inside a block-comment or one block-comment is inside or partially inside the selection
+it will uncomment, otherwise it will comment out, unless if there are multiple block comments inside the selection,
+where it does nothing.
+Commenting out adds the prefix before the selection and the suffix after.
+Uncommenting removes them.</p>
+<p>If all the lines inside the selection are line-comment and if the selection is not inside a block-comment, it will
+line uncomment all the lines, otherwise it will block comment/uncomment. In the first case, we return null to
+indicate to the caller that it needs to handle this selection as a line comment.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        prefix,
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>e.g. "<!--"</dd>
+    <dt>
+        suffix,
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>e.g. "-->"</dd>
+    <dt>
+        linePrefixes,
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>e.g. ["//"]</dd>
+    <dt>
+        sel
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}</span>
+    </dt>
+    <dd>The selection to block comment/uncomment.</dd>
+    <dt>
+        selectionsToTrack
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Array.&lt;{!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}&gt;</span>
+    </dt>
+    <dd>An array of selections that should be tracked through this edit.</dd>
+    <dt>
+        command
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>The command callee. It cans be "line" or "block".</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</span></dt>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack, command) {
+        var doc            = editor.document,
+            ctx            = TokenUtils.getInitialContext(editor._codeMirror, {line: sel.start.line, ch: sel.start.ch}),
+            selEndIndex    = editor.indexFromPos(sel.end),
+            lineExp        = _createLineExpressions(linePrefixes, prefix, suffix),
+            prefixExp      = new RegExp(&quot;^&quot; + StringUtils.regexEscape(prefix), &quot;g&quot;),
+            suffixExp      = new RegExp(StringUtils.regexEscape(suffix) + &quot;$&quot;, &quot;g&quot;),
+            prefixPos      = null,
+            suffixPos      = null,
+            commentAtStart = true,
+            isBlockComment = false,
+            canComment     = false,
+            invalidComment = false,
+            lineUncomment  = false,
+            result         = true,
+            editGroup      = [],
+            edit;
+
+        var searchCtx, atSuffix, suffixEnd, initialPos, endLine;
+
+        var indentLineComment = Editor.getIndentLineComment();
+
+        function isIndentLineCommand() {
+            return indentLineComment &amp;&amp; command === &quot;line&quot;;
+        }
+
+        if (!selectionsToTrack) {
+            &#x2F;&#x2F; Track the original selection.
+            selectionsToTrack = [_.cloneDeep(sel)];
+        }
+
+        &#x2F;&#x2F; First move the context to the first none white-space token
+        if (!ctx.token.type &amp;&amp; !&#x2F;\S&#x2F;.test(ctx.token.string)) {
+            result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
+        }
+
+        &#x2F;&#x2F; Next, move forwards until we find a comment inside the selection
+        while (result &amp;&amp; ctx.token.type !== &quot;comment&quot;) {
+            result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) &amp;&amp; editor.indexFromPos(ctx.pos) &lt;= selEndIndex;
+            commentAtStart = false;
+        }
+
+        &#x2F;&#x2F; We are now in a comment, lets check if it is a block or a line comment
+        if (result &amp;&amp; ctx.token.type === &quot;comment&quot;) {
+            &#x2F;&#x2F; This token might be at a line comment, but we can&#39;t be sure yet
+            if (_matchExpressions(ctx.token.string, lineExp)) {
+                &#x2F;&#x2F; If the token starts at ch 0 with no starting white spaces, then this might be a block comment or a line
+                &#x2F;&#x2F; comment over the whole line, and if we found this comment at the start of the selection, we need to search
+                &#x2F;&#x2F; backwards until we get can tell if we are in a block or a line comment
+                if (ctx.token.start === 0 &amp;&amp; !ctx.token.string.match(&#x2F;^\\s*&#x2F;) &amp;&amp; commentAtStart) {
+                    searchCtx      = TokenUtils.getInitialContext(editor._codeMirror, {line: ctx.pos.line, ch: ctx.token.start});
+                    isBlockComment = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
+
+                &#x2F;&#x2F; If not, we already know that is a line comment
+                } else {
+                    isBlockComment = false;
+                }
+
+            &#x2F;&#x2F; If it was not a line comment, it has to be a block comment
+            } else {
+                isBlockComment = true;
+
+                &#x2F;&#x2F; If we are in a line that only has a prefix or a suffix and the prefix and suffix are the same string,
+                &#x2F;&#x2F; lets find first if this is a prefix or suffix and move the context position to the inside of the block comment.
+                &#x2F;&#x2F; This means that the token will be anywere inside the block comment, including the lines with the delimiters.
+                &#x2F;&#x2F; This is required so that later we can find the prefix by moving backwards and the suffix by moving forwards.
+                if (ctx.token.string === prefix &amp;&amp; prefix === suffix) {
+                    searchCtx = TokenUtils.getInitialContext(editor._codeMirror, {line: ctx.pos.line, ch: ctx.token.start});
+                    atSuffix  = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
+                    if (atSuffix) {
+                        TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
+                    } else {
+                        TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
+                    }
+                }
+            }
+
+            if (isBlockComment) {
+                &#x2F;&#x2F; Save the initial position to start searching for the suffix from here
+                initialPos = _.cloneDeep(ctx.pos);
+
+                &#x2F;&#x2F; Find the position of the start of the prefix
+                result = true;
+                while (result &amp;&amp; !ctx.token.string.match(prefixExp)) {
+                    result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
+                }
+                prefixPos = result &amp;&amp; {line: ctx.pos.line, ch: ctx.token.start};
+
+                &#x2F;&#x2F; Restore the context at the initial position to find the position of the start of the suffix,
+                &#x2F;&#x2F; but only when we found the prefix alone in one line
+                if (ctx.token.string === prefix &amp;&amp; prefix === suffix) {
+                    ctx = TokenUtils.getInitialContext(editor._codeMirror, _.cloneDeep(initialPos));
+                }
+
+                while (result &amp;&amp; !ctx.token.string.match(suffixExp)) {
+                    result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
+                }
+                suffixPos = result &amp;&amp; {line: ctx.pos.line, ch: ctx.token.end - suffix.length};
+
+                &#x2F;&#x2F; Lets check if there are more comments in the selection. We do nothing if there is one
+                do {
+                    result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) &amp;&amp;
+                        editor.indexFromPos(ctx.pos) &lt;= selEndIndex;
+                } while (result &amp;&amp; !ctx.token.string.match(prefixExp));
+                invalidComment = result &amp;&amp; !!ctx.token.string.match(prefixExp);
+
+                &#x2F;&#x2F; Make sure we didn&#39;t search so far backward or forward that we actually found a block comment
+                &#x2F;&#x2F; that&#39;s entirely before or after the selection.
+                suffixEnd = suffixPos &amp;&amp; { line: suffixPos.line, ch: suffixPos.ch + suffix.length };
+                if ((suffixEnd &amp;&amp; CodeMirror.cmpPos(sel.start, suffixEnd) &gt; 0) || (prefixPos &amp;&amp; CodeMirror.cmpPos(sel.end, prefixPos) &lt; 0)) {
+                    canComment = true;
+                }
+
+            } else {
+                &#x2F;&#x2F; In full-line selection, cursor pos is at the start of next line - but don&#39;t want to modify that line
+                endLine = sel.end.line;
+                if (sel.end.ch === 0 &amp;&amp; editor.hasSelection()) {
+                    endLine--;
+                }
+                &#x2F;&#x2F; Find if all the lines are line-commented.
+                if (!_containsNotLineComment(editor, sel.start.line, endLine, lineExp)) {
+                    lineUncomment = true;
+                } else {
+                    canComment = true;
+                }
+            }
+        &#x2F;&#x2F; If not, we can comment
+        } else {
+            canComment = true;
+        }
+
+
+        &#x2F;&#x2F; Make the edit
+        if (invalidComment) {
+            &#x2F;&#x2F; We don&#39;t want to do an edit, but we still want to track selections associated with it.
+            edit = {edit: [], selection: selectionsToTrack};
+
+        } else if (lineUncomment) {
+            &#x2F;&#x2F; Return a null edit. This is a signal to the caller that we should delegate to the
+            &#x2F;&#x2F; line commenting code. We don&#39;t want to just generate the edit here, because the edit
+            &#x2F;&#x2F; might need to be coalesced with other line-uncomment edits generated by cursors on the
+            &#x2F;&#x2F; same line.
+            edit = null;
+
+        } else {
+            &#x2F;&#x2F; Comment out - add the suffix to the start and the prefix to the end.
+            if (canComment) {
+                var completeLineSel = sel.start.ch === 0 &amp;&amp; sel.end.ch === 0 &amp;&amp; sel.start.line &lt; sel.end.line;
+                var startCh = _firstNotWs(doc, sel.start.line);
+                if (completeLineSel) {
+                    if (isIndentLineCommand()) {
+                        var endCh = _firstNotWs(doc, sel.end.line - 1);
+                        var useTabChar = Editor.getUseTabChar(editor.document.file.fullPath);
+                        var indentChar = useTabChar ? &quot;\t&quot; : &quot; &quot;;
+                        editGroup.push({
+                            text: _.repeat(indentChar, endCh) + suffix + &quot;\n&quot;,
+                            start: {line: sel.end.line, ch: 0}
+                        });
+                        editGroup.push({
+                            text: prefix + &quot;\n&quot; + _.repeat(indentChar, startCh),
+                            start: {line: sel.start.line, ch: startCh}
+                        });
+                    } else {
+                        editGroup.push({text: suffix + &quot;\n&quot;, start: sel.end});
+                        editGroup.push({text: prefix + &quot;\n&quot;, start: sel.start});
+                    }
+                } else {
+                    editGroup.push({text: suffix, start: sel.end});
+                    if (isIndentLineCommand()) {
+                        editGroup.push({text: prefix, start: { line: sel.start.line, ch: startCh }});
+                    } else {
+                        editGroup.push({text: prefix, start: sel.start});
+                    }
+                }
+
+                &#x2F;&#x2F; Correct the tracked selections. We can&#39;t just use the default selection fixup,
+                &#x2F;&#x2F; because it will push the end of the selection past the inserted content. Also,
+                &#x2F;&#x2F; it&#39;s possible that we have to deal with tracked selections that might be outside
+                &#x2F;&#x2F; the bounds of the edit.
+                _.each(selectionsToTrack, function (trackedSel) {
+                    function updatePosForEdit(pos) {
+                        &#x2F;&#x2F; First adjust for the suffix insertion. Don&#39;t adjust
+                        &#x2F;&#x2F; positions that are exactly at the suffix insertion point.
+                        if (CodeMirror.cmpPos(pos, sel.end) &gt; 0) {
+                            if (completeLineSel) {
+                                pos.line++;
+                            } else if (pos.line === sel.end.line) {
+                                pos.ch += suffix.length;
+                            }
+                        }
+                        &#x2F;&#x2F; Now adjust for the prefix insertion. In this case, we do
+                        &#x2F;&#x2F; want to adjust positions that are exactly at the insertion
+                        &#x2F;&#x2F; point.
+                        if (CodeMirror.cmpPos(pos, sel.start) &gt;= 0) {
+                            if (completeLineSel) {
+                                &#x2F;&#x2F; Just move the line down.
+                                pos.line++;
+                            } else if (pos.line === sel.start.line &amp;&amp; !(isIndentLineCommand() &amp;&amp; pos.ch &lt; startCh)) {
+                                pos.ch += prefix.length;
+                            }
+                        }
+                    }
+
+                    updatePosForEdit(trackedSel.start);
+                    updatePosForEdit(trackedSel.end);
+                });
+
+            &#x2F;&#x2F; Uncomment - remove prefix and suffix.
+            } else {
+                &#x2F;&#x2F; Find if the prefix and suffix are at the ch 0 and if they are the only thing in the line.
+                &#x2F;&#x2F; If both are found we assume that a complete line selection comment added new lines, so we remove them.
+                var line          = doc.getLine(prefixPos.line).trim(),
+                    prefixAtStart = prefixPos.ch === 0 &amp;&amp; prefix.length === line.length,
+                    prefixIndented = indentLineComment &amp;&amp; prefix.length === line.length,
+                    suffixAtStart = false,
+                    suffixIndented = false;
+
+                if (suffixPos) {
+                    line = doc.getLine(suffixPos.line).trim();
+                    suffixAtStart = suffixPos.ch === 0 &amp;&amp; suffix.length === line.length;
+                    suffixIndented = indentLineComment &amp;&amp; suffix.length === line.length;
+                }
+
+                &#x2F;&#x2F; Remove the suffix if there is one
+                if (suffixPos) {
+                    if (suffixIndented) {
+                        editGroup.push({text: &quot;&quot;, start: {line: suffixPos.line, ch: 0}, end: {line: suffixPos.line + 1, ch: 0}});
+                    } else if (prefixAtStart &amp;&amp; suffixAtStart) {
+                        editGroup.push({text: &quot;&quot;, start: suffixPos, end: {line: suffixPos.line + 1, ch: 0}});
+                    } else {
+                        editGroup.push({text: &quot;&quot;, start: suffixPos, end: {line: suffixPos.line, ch: suffixPos.ch + suffix.length}});
+                    }
+                }
+
+                &#x2F;&#x2F; Remove the prefix
+                if (prefixIndented) {
+                    editGroup.push({text: &quot;&quot;, start: {line: prefixPos.line, ch: 0}, end: {line: prefixPos.line + 1, ch: 0}});
+                } else if (prefixAtStart &amp;&amp; suffixAtStart) {
+                    editGroup.push({text: &quot;&quot;, start: prefixPos, end: {line: prefixPos.line + 1, ch: 0}});
+                } else {
+                    editGroup.push({text: &quot;&quot;, start: prefixPos, end: {line: prefixPos.line, ch: prefixPos.ch + prefix.length}});
+                }
+
+                &#x2F;&#x2F; Don&#39;t fix up the tracked selections here - let the edit fix them up.
+                _.each(selectionsToTrack, function (trackedSel) {
+                    trackedSel.isBeforeEdit = true;
+                });
+            }
+
+            edit = {edit: editGroup, selection: selectionsToTrack};
+        }
+
+        return edit;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getLineCommentEdits 
+        <a class="anchor" href="#-_getLineCommentEdits" id="-_getLineCommentEdits"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to edit within.</dd>
+    <dt>
+        selections
+        <span class="label label-info">Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;</span>
+    </dt>
+    <dd>The selections we want to line-comment.</dd>
+    <dt>
+        command
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>The command callee. It cans be "line" or "block".</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">Array.&lt;{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}&gt;</span></dt>
+    <dd>An array of edit descriptions suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentEdits(editor, selections, command) {
+        &#x2F;&#x2F; We need to expand line selections in order to coalesce cursors on the same line, but we
+        &#x2F;&#x2F; don&#39;t want to merge adjacent line selections.
+        var lineSelections = editor.convertToLineSelections(selections, { mergeAdjacent: false }),
+            edits = [];
+        _.each(lineSelections, function (lineSel) {
+            var sel = lineSel.selectionForEdit,
+                mode = editor.getModeForRange(sel.start, sel.end),
+                edit;
+            if (mode) {
+                var language = editor.document.getLanguage().getLanguageForMode(mode.name || mode);
+
+                if (language.hasLineCommentSyntax()) {
+                    edit = _getLineCommentPrefixEdit(editor, language.getLineCommentPrefixes(), language.getBlockCommentPrefix(), language.getBlockCommentSuffix(), lineSel);
+                } else if (language.hasBlockCommentSyntax()) {
+                    edit = _getLineCommentPrefixSuffixEdit(editor, language.getBlockCommentPrefix(), language.getBlockCommentSuffix(), lineSel, command);
+                }
+            }
+            if (!edit) {
+                &#x2F;&#x2F; Even if we didn&#39;t want to do an edit, we still need to track the selection.
+                edit = {selection: lineSel.selectionsToTrack};
+            }
+            edits.push(edit);
+        });
+        return edits;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getLineCommentPrefixEdit 
+        <a class="anchor" href="#-_getLineCommentPrefixEdit" id="-_getLineCommentPrefixEdit"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        prefixes,
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>e.g. ["//"]</dd>
+    <dt>
+        blockPrefix,
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>e.g. "<!--"</dd>
+    <dt>
+        blockSuffix,
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>e.g. "-->"</dd>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to edit within.</dd>
+    <dt>
+        lineSel
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}, selectionsToTrack: Array.&lt;{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}&gt;}</span>
+    </dt>
+    <dd>A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be tracked through the edit.</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</span></dt>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
+        var doc         = editor.document,
+            sel         = lineSel.selectionForEdit,
+            trackedSels = lineSel.selectionsToTrack,
+            lineExp     = _createLineExpressions(prefixes, blockPrefix, blockSuffix),
+            startLine   = sel.start.line,
+            endLine     = sel.end.line,
+            editGroup   = [];
+
+        &#x2F;&#x2F; In full-line selection, cursor pos is start of next line - but don&#39;t want to modify that line
+        if (sel.end.ch === 0) {
+            endLine--;
+        }
+
+        &#x2F;&#x2F; Decide if we&#39;re commenting vs. un-commenting
+        &#x2F;&#x2F; Are there any non-blank lines that aren&#39;t commented out? (We ignore blank lines because
+        &#x2F;&#x2F; some editors like Sublime don&#39;t comment them out)
+        var i, line, prefix, commentI,
+            containsNotLineComment = _containsNotLineComment(editor, startLine, endLine, lineExp);
+
+        if (containsNotLineComment) {
+            &#x2F;&#x2F; Comment out - prepend the first prefix to each line
+            line = doc.getLine(startLine);
+            var originalCursorPosition = line.search(&#x2F;\S|$&#x2F;);
+            
+            var firstCharPosition, cursorPosition = originalCursorPosition;
+            
+            for (i = startLine; i &lt;= endLine; i++) {
+                &#x2F;&#x2F;check if preference for indent line comment is available otherwise go back to default indentation
+                if (Editor.getIndentLineComment()) {
+                    &#x2F;&#x2F;ignore the first line and recalculate cursor position for first non white space char of every line
+                    if (i !== startLine) {
+                        line = doc.getLine(i);
+                        firstCharPosition = line.search(&#x2F;\S|$&#x2F;);
+                    }
+                    &#x2F;&#x2F;if the non space first character position is before original start position , put comment at the new position otherwise older pos
+                    if (firstCharPosition &lt; originalCursorPosition) {
+                        cursorPosition = firstCharPosition;
+                    } else {
+                        cursorPosition = originalCursorPosition;
+                    }
+                    
+                    editGroup.push({text: prefixes[0], start: {line: i, ch: cursorPosition}});
+                } else {
+                    editGroup.push({text: prefixes[0], start: {line: i, ch: 0}});
+                }
+            }
+
+            &#x2F;&#x2F; Make sure tracked selections include the prefix that was added at start of range
+            _.each(trackedSels, function (trackedSel) {
+                if (trackedSel.start.ch === 0 &amp;&amp; CodeMirror.cmpPos(trackedSel.start, trackedSel.end) !== 0) {
+                    trackedSel.start = {line: trackedSel.start.line, ch: 0};
+                    trackedSel.end = {line: trackedSel.end.line, ch: (trackedSel.end.line === endLine ? trackedSel.end.ch + prefixes[0].length : 0)};
+                } else {
+                    trackedSel.isBeforeEdit = true;
+                }
+            });
+        } else {
+            &#x2F;&#x2F; Uncomment - remove the prefix on each line (if any)
+            for (i = startLine; i &lt;= endLine; i++) {
+                line   = doc.getLine(i);
+                prefix = _getLinePrefix(line, lineExp, prefixes);
+
+                if (prefix) {
+                    commentI = line.indexOf(prefix);
+                    editGroup.push({text: &quot;&quot;, start: {line: i, ch: commentI}, end: {line: i, ch: commentI + prefix.length}});
+                }
+            }
+            _.each(trackedSels, function (trackedSel) {
+                trackedSel.isBeforeEdit = true;
+            });
+        }
+        return {edit: editGroup, selection: trackedSels};
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getLineCommentPrefixSuffixEdit 
+        <a class="anchor" href="#-_getLineCommentPrefixSuffixEdit" id="-_getLineCommentPrefixSuffixEdit"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
+and cursor position. Applies to the currently focused Editor. The selection must already be a
+line selection in the form returned by <code>Editor.convertToLineSelections()</code>.</p>
+<p>The implementation uses blockCommentPrefixSuffix, with the exception of the case where
+there is no selection on a uncommented and not empty line. In this case the whole lines gets
+commented in a block-comment.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        prefix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">String</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        suffix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">String</span>
+    </dt>
+    <dd></dd>
+    <dt>
+        lineSel
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}, selectionsToTrack: Array.&lt;{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}&gt;}</span>
+    </dt>
+    <dd>A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be tracked through the edit.</dd>
+    <dt>
+        command
+        <span class="label label-info">String</span>
+    </dt>
+    <dd>The command callee. It cans be "line" or "block".</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">{edit: {text: string,start:{line: number,ch: number},end:?{line: number,ch: number}},Array.&lt;{text: string,start:{line: number,ch: number},end:?{line: number,ch: number}}&gt;,selection: {start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;},Array.&lt;{start:{line:number,ch:number},end:{line:number,ch:number},primary:boolean,reversed: boolean,isBeforeEdit: boolean}&gt;}</span></dt>
+    <dd>An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel, command) {
+        var sel = lineSel.selectionForEdit;
+
+        &#x2F;&#x2F; For one-line selections, we shrink the selection to exclude the trailing newline.
+        if (sel.end.line === sel.start.line + 1 &amp;&amp; sel.end.ch === 0) {
+            sel.end = {line: sel.start.line, ch: editor.document.getLine(sel.start.line).length};
+        }
+
+        &#x2F;&#x2F; Now just run the standard block comment code, but make sure to track any associated selections
+        &#x2F;&#x2F; that were subsumed into this line selection.
+        return _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, [], sel, lineSel.selectionsToTrack, command);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getLinePrefix 
+        <a class="anchor" href="#-_getLinePrefix" id="-_getLinePrefix"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        string
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>where to look</dd>
+    <dt>
+        expressions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;RegExp&gt;</span>
+    </dt>
+    <dd>the line comment regular expressions</dd>
+    <dt>
+        prefixes
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;string&gt;</span>
+    </dt>
+    <dd>the line comment prefixes</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getLinePrefix(string, expressions, prefixes) {
+        var result = null;
+        expressions.forEach(function (exp, index) {
+            if (string.match(exp) &amp;&amp; ((result &amp;&amp; result.length &lt; prefixes[index].length) || !result)) {
+                result = prefixes[index];
+            }
+        });
+        return result;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _isPrevTokenABlockComment 
+        <a class="anchor" href="#-_isPrevTokenABlockComment" id="-_isPrevTokenABlockComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        ctx
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">{editor:{CodeMirror}, pos:{ch:{number}, line:{number}}, token:{object}}</span>
+    </dt>
+    <dd>token context</dd>
+    <dt>
+        prefix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the block comment prefix</dd>
+    <dt>
+        suffix
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>the block comment suffix</dd>
+    <dt>
+        prefixExp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">RegExp</span>
+    </dt>
+    <dd>a block comment prefix regular expression</dd>
+    <dt>
+        suffixExp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">RegExp</span>
+    </dt>
+    <dd>a block comment suffix regular expression</dd>
+    <dt>
+        lineExp
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;RegExp&gt;</span>
+    </dt>
+    <dd>an array of line comment prefixes regular expressions</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp) {
+        &#x2F;&#x2F; Start searching from the previous token
+        var result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
+
+        &#x2F;&#x2F; Look backwards until we find a none line comment token
+        while (result &amp;&amp; _matchExpressions(ctx.token.string, lineExp)) {
+            result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
+        }
+
+        &#x2F;&#x2F; If we are now in a block comment token
+        if (result &amp;&amp; ctx.token.type === &quot;comment&quot;) {
+            &#x2F;&#x2F; If it doesnt matches either prefix or suffix, we know is a block comment
+            if (!ctx.token.string.match(prefixExp) &amp;&amp; !ctx.token.string.match(suffixExp)) {
+                return true;
+            &#x2F;&#x2F; We found a line with just a block comment delimiter, but we can&#39;t tell which one it is, so we will
+            &#x2F;&#x2F; keep searching recursively and return the opposite value
+            } else if (prefix === suffix &amp;&amp; ctx.token.string.length === prefix.length) {
+                return !_isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp);
+            &#x2F;&#x2F; We can just now the result by checking if the string matches the prefix
+            } else {
+                return ctx.token.string.match(prefixExp);
+            }
+        }
+        return false;
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _matchExpressions 
+        <a class="anchor" href="#-_matchExpressions" id="-_matchExpressions"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        string
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>where to look</dd>
+    <dt>
+        expressions
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Array.&lt;RegExp&gt;</span>
+    </dt>
+    <dd>what to look</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
+    <dd></dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _matchExpressions(string, expressions) {
+        return expressions.some(function (exp) {
+            return string.match(exp);
+        });
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        addCursorToNextLine 
+        <a class="anchor" href="#-addCursorToNextLine" id="-addCursorToNextLine"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToNextLine(editor) {
+        addCursorToSelection(editor, 1);
+    }
+
+    function handleUndoRedo(operation) {
+        var editor = EditorManager.getFocusedEditor();
+        var result = new $.Deferred();
+
+        if (editor) {
+            editor[operation]();
+            result.resolve();
+        } else {
+            result.reject();
+        }
+
+        return result.promise();
+    }
+
+    function handleUndo() {
+        return handleUndoRedo(&quot;undo&quot;);
+    }
+
+    function handleRedo() {
+        return handleUndoRedo(&quot;redo&quot;);
+    }
+
+    function _handleSelectAll() {
+        var result = new $.Deferred(),
+            editor = EditorManager.getFocusedEditor();
+
+        if (editor) {
+            editor.selectAllNoScroll();
+            result.resolve();
+        } else {
+            result.reject();    &#x2F;&#x2F; command not handled
+        }
+
+        return result.promise();
+    }
+
+    function _execCommand(cmd) {
+        window.document.execCommand(cmd);
+    }
+    function _execCommandCut() {
+        _execCommand(&quot;cut&quot;);
+    }
+    function _execCommandCopy() {
+        _execCommand(&quot;copy&quot;);
+    }
+    function _execCommandPaste() {
+        _execCommand(&quot;paste&quot;);
+    }
+
+    &#x2F;&#x2F; Register commands
+    CommandManager.register(Strings.CMD_INDENT,                 Commands.EDIT_INDENT,                 indentText);
+    CommandManager.register(Strings.CMD_UNINDENT,               Commands.EDIT_UNINDENT,               unindentText);
+    CommandManager.register(Strings.CMD_COMMENT,                Commands.EDIT_LINE_COMMENT,           lineComment);
+    CommandManager.register(Strings.CMD_BLOCK_COMMENT,          Commands.EDIT_BLOCK_COMMENT,          blockComment);
+    CommandManager.register(Strings.CMD_DUPLICATE,              Commands.EDIT_DUPLICATE,              duplicateText);
+    CommandManager.register(Strings.CMD_DELETE_LINES,           Commands.EDIT_DELETE_LINES,           deleteCurrentLines);
+    CommandManager.register(Strings.CMD_LINE_UP,                Commands.EDIT_LINE_UP,                moveLineUp);
+    CommandManager.register(Strings.CMD_LINE_DOWN,              Commands.EDIT_LINE_DOWN,              moveLineDown);
+    CommandManager.register(Strings.CMD_OPEN_LINE_ABOVE,        Commands.EDIT_OPEN_LINE_ABOVE,        openLineAbove);
+    CommandManager.register(Strings.CMD_OPEN_LINE_BELOW,        Commands.EDIT_OPEN_LINE_BELOW,        openLineBelow);
+    CommandManager.register(Strings.CMD_SELECT_LINE,            Commands.EDIT_SELECT_LINE,            selectLine);
+    CommandManager.register(Strings.CMD_SPLIT_SEL_INTO_LINES,   Commands.EDIT_SPLIT_SEL_INTO_LINES,   splitSelIntoLines);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_NEXT_LINE,   Commands.EDIT_ADD_CUR_TO_NEXT_LINE,   addCursorToNextLine);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_PREV_LINE,   Commands.EDIT_ADD_CUR_TO_PREV_LINE,   addCursorToPrevLine);
+
+    CommandManager.register(Strings.CMD_UNDO,                   Commands.EDIT_UNDO,                   handleUndo);
+    CommandManager.register(Strings.CMD_REDO,                   Commands.EDIT_REDO,                   handleRedo);
+    CommandManager.register(Strings.CMD_CUT,                    Commands.EDIT_CUT,                    _execCommandCut);
+    CommandManager.register(Strings.CMD_COPY,                   Commands.EDIT_COPY,                   _execCommandCopy);
+    CommandManager.register(Strings.CMD_PASTE,                  Commands.EDIT_PASTE,                  _execCommandPaste);
+    CommandManager.register(Strings.CMD_SELECT_ALL,             Commands.EDIT_SELECT_ALL,             _handleSelectAll);
+});</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        addCursorToPrevLine 
+        <a class="anchor" href="#-addCursorToPrevLine" id="-addCursorToPrevLine"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToPrevLine(editor) {
+        addCursorToSelection(editor, -1);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        addCursorToSelection 
+        <a class="anchor" href="#-addCursorToSelection" id="-addCursorToSelection"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to operate on.</dd>
+    <dt>
+        dir
+        <span class="label label-info">number</span>
+    </dt>
+    <dd>The direction to add - 1 is down, -1 is up.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function addCursorToSelection(editor, dir) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (editor) {
+            var origSels = editor.getSelections(),
+                newSels = [];
+            _.each(origSels, function (sel) {
+                var pos, colOffset;
+                if ((dir === -1 &amp;&amp; sel.start.line &gt; editor.getFirstVisibleLine()) || (dir === 1 &amp;&amp; sel.end.line &lt; editor.getLastVisibleLine())) {
+                    &#x2F;&#x2F; Add a new cursor on the next line up&#x2F;down. It&#39;s okay if it overlaps another selection, because CM
+                    &#x2F;&#x2F; will take care of throwing it away in that case. It will also take care of clipping the char position
+                    &#x2F;&#x2F; to the end of the new line if the line is shorter.
+                    pos = _.clone(dir === -1 ? sel.start : sel.end);
+
+                    &#x2F;&#x2F; get sel column of current selection
+                    colOffset = editor.getColOffset(pos);
+
+                    pos.line += dir;
+
+                    &#x2F;&#x2F; translate column to ch in line of new selection
+                    pos.ch = editor.getCharIndexForColumn(pos.line, colOffset);
+
+
+                    &#x2F;&#x2F; If this is the primary selection, we want the new cursor we&#39;re adding to become the
+                    &#x2F;&#x2F; primary selection.
+                    newSels.push({start: pos, end: pos, primary: sel.primary});
+                    sel.primary = false;
+                }
+            });
+            &#x2F;&#x2F; CM will take care of sorting the selections.
+            editor.setSelections(origSels.concat(newSels));
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        blockComment 
+        <a class="anchor" href="#-blockComment" id="-blockComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Invokes a language-specific block-comment/uncomment handler</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>If unspecified, applies to the currently focused editor</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function blockComment(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        var edits = [],
+            lineCommentSels = [];
+        _.each(editor.getSelections(), function (sel) {
+            var mode = editor.getModeForRange(sel.start, sel.end),
+                edit = {edit: [], selection: [sel]}; &#x2F;&#x2F; default edit in case we don&#39;t have a mode for this selection
+            if (mode) {
+                var language = editor.document.getLanguage().getLanguageForMode(mode.name || mode);
+
+                if (language.hasBlockCommentSyntax()) {
+                    &#x2F;&#x2F; getLineCommentPrefixes always return an array, and will be empty if no line comment syntax is defined
+                    edit = _getBlockCommentPrefixSuffixEdit(editor, language.getBlockCommentPrefix(), language.getBlockCommentSuffix(),
+                                                            language.getLineCommentPrefixes(), sel);
+                    if (!edit) {
+                        &#x2F;&#x2F; This is only null if the block comment code found that the selection is within a line-commented line.
+                        &#x2F;&#x2F; Add this to the list of line-comment selections we need to handle. Since edit is null, we&#39;ll skip
+                        &#x2F;&#x2F; pushing anything onto the edit list for this selection.
+                        lineCommentSels.push(sel);
+                    }
+                }
+            }
+            if (edit) {
+                edits.push(edit);
+            }
+        });
+
+        &#x2F;&#x2F; Handle any line-comment edits. It&#39;s okay if these are out-of-order with the other edits, since
+        &#x2F;&#x2F; they shouldn&#39;t overlap, and `doMultipleEdits()` will take care of sorting the edits so the
+        &#x2F;&#x2F; selections can be tracked appropriately.
+        edits.push.apply(edits, _getLineCommentEdits(editor, lineCommentSels, &quot;block&quot;));
+
+        editor.setSelections(editor.document.doMultipleEdits(edits));
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        deleteCurrentLines 
+        <a class="anchor" href="#-deleteCurrentLines" id="-deleteCurrentLines"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Deletes the current line if there is no selection or the lines for the selection
+(removing the end of line too)</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function deleteCurrentLines(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        &#x2F;&#x2F; Walk the selections, calculating the deletion edits we need to do as we go;
+        &#x2F;&#x2F; document.doMultipleEdits() will take care of adjusting the edit locations when
+        &#x2F;&#x2F; it actually performs the edits.
+        var doc = editor.document,
+            from,
+            to,
+            lineSelections = editor.convertToLineSelections(editor.getSelections()),
+            edits = [];
+
+        _.each(lineSelections, function (lineSel, index) {
+            var sel = lineSel.selectionForEdit;
+
+            from = sel.start;
+            to = sel.end; &#x2F;&#x2F; this is already at the beginning of the line after the last selected line
+            if (to.line === editor.getLastVisibleLine() + 1) {
+                &#x2F;&#x2F; Instead of deleting the newline after the last line, delete the newline
+                &#x2F;&#x2F; before the beginning of the line--unless this is the entire visible content
+                &#x2F;&#x2F; of the editor, in which case just delete the line content.
+                if (from.line &gt; editor.getFirstVisibleLine()) {
+                    from.line -= 1;
+                    from.ch = doc.getLine(from.line).length;
+                }
+                to.line -= 1;
+                to.ch = doc.getLine(to.line).length;
+            }
+
+            &#x2F;&#x2F; We don&#39;t need to track the original selections, since they&#39;ll get collapsed as
+            &#x2F;&#x2F; part of the various deletions that occur.
+            edits.push({edit: {text: &quot;&quot;, start: from, end: to}});
+        });
+        doc.doMultipleEdits(edits);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        duplicateText 
+        <a class="anchor" href="#-duplicateText" id="-duplicateText"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Duplicates the selected text, or current line if no selection. The cursor/selection is left
+on the second copy.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function duplicateText(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        var selections = editor.getSelections(),
+            delimiter = &quot;&quot;,
+            edits = [],
+            rangeSels = [],
+            cursorSels = [],
+            doc = editor.document;
+
+        &#x2F;&#x2F; When there are multiple selections, we want to handle all the cursors first (duplicating
+        &#x2F;&#x2F; their lines), then all the ranges (duplicating the ranges).
+        _.each(selections, function (sel) {
+            if (CodeMirror.cmpPos(sel.start, sel.end) === 0) {
+                cursorSels.push(sel);
+            } else {
+                rangeSels.push(sel);
+            }
+        });
+
+        var cursorLineSels = editor.convertToLineSelections(cursorSels);
+        _.each(cursorLineSels, function (lineSel, index) {
+            var sel = lineSel.selectionForEdit;
+            if (sel.end.line === editor.lineCount()) {
+                delimiter = &quot;\n&quot;;
+            }
+            &#x2F;&#x2F; Don&#39;t need to explicitly track selections since we are doing the edits in such a way that
+            &#x2F;&#x2F; the existing selections will get appropriately updated.
+            edits.push({edit: {text: doc.getRange(sel.start, sel.end) + delimiter, start: sel.start }});
+        });
+        _.each(rangeSels, function (sel) {
+            edits.push({edit: {text: doc.getRange(sel.start, sel.end), start: sel.start }});
+        });
+
+        doc.doMultipleEdits(edits);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        indentText 
+        <a class="anchor" href="#-indentText" id="-indentText"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Indent a line of text if no selection. Otherwise, indent all lines in selection.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function indentText() {
+        var editor = EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        editor._codeMirror.execCommand(&quot;indentMore&quot;);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        lineComment 
+        <a class="anchor" href="#-lineComment" id="-lineComment"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Invokes a language-specific line-comment/uncomment handler</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-nullable">nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>If unspecified, applies to the currently focused editor</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function lineComment(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        editor.setSelections(editor.document.doMultipleEdits(_getLineCommentEdits(editor, editor.getSelections(), &quot;line&quot;)));
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        moveLine 
+        <a class="anchor" href="#-moveLine" id="-moveLine"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection. The cursor/selection
+moves with the line/lines.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>target editor</dd>
+    <dt>
+        direction
+        <span class="label label-info">Number</span>
+    </dt>
+    <dd>direction of the move (-1,+1) => (Up,Down)</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLine(editor, direction) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        var doc             = editor.document,
+            lineSelections  = editor.convertToLineSelections(editor.getSelections()),
+            isInlineWidget  = !!EditorManager.getFocusedInlineWidget(),
+            firstLine       = editor.getFirstVisibleLine(),
+            lastLine        = editor.getLastVisibleLine(),
+            totalLines      = editor.lineCount(),
+            lineLength      = 0,
+            edits           = [],
+            newSels         = [],
+            pos             = {};
+
+        _.each(lineSelections, function (lineSel) {
+            var sel = lineSel.selectionForEdit,
+                editGroup = [];
+
+            &#x2F;&#x2F; Make the move
+            switch (direction) {
+            case DIRECTION_UP:
+                if (sel.start.line !== firstLine) {
+                    var prevText = doc.getRange({ line: sel.start.line - 1, ch: 0 }, sel.start);
+
+                    if (sel.end.line === lastLine + 1) {
+                        if (isInlineWidget) {
+                            prevText   = prevText.substring(0, prevText.length - 1);
+                            lineLength = doc.getLine(sel.end.line - 1).length;
+                            editGroup.push({text: &quot;\n&quot;, start: { line: sel.end.line - 1, ch: lineLength }});
+                        } else {
+                            prevText = &quot;\n&quot; + prevText.substring(0, prevText.length - 1);
+                        }
+                    }
+
+                    editGroup.push({text: &quot;&quot;, start: { line: sel.start.line - 1, ch: 0 }, end: sel.start});
+                    editGroup.push({text: prevText, start: { line: sel.end.line - 1, ch: 0 }});
+
+                    &#x2F;&#x2F; Make sure CodeMirror hasn&#39;t expanded the selection to include
+                    &#x2F;&#x2F; the line we inserted below.
+                    _.each(lineSel.selectionsToTrack, function (originalSel) {
+                        originalSel.start.line--;
+                        originalSel.end.line--;
+                    });
+
+                    edits.push({edit: editGroup, selection: lineSel.selectionsToTrack});
+                }
+                break;
+            case DIRECTION_DOWN:
+                if (sel.end.line &lt;= lastLine) {
+                    var nextText      = doc.getRange(sel.end, { line: sel.end.line + 1, ch: 0 }),
+                        deletionStart = sel.end;
+
+                    if (sel.end.line === lastLine) {
+                        if (isInlineWidget) {
+                            if (sel.end.line === totalLines - 1) {
+                                nextText += &quot;\n&quot;;
+                            }
+                            lineLength = doc.getLine(sel.end.line - 1).length;
+                            editGroup.push({text: &quot;\n&quot;, start: { line: sel.end.line, ch: doc.getLine(sel.end.line).length }});
+                        } else {
+                            nextText     += &quot;\n&quot;;
+                            deletionStart = { line: sel.end.line - 1, ch: doc.getLine(sel.end.line - 1).length };
+                        }
+                    }
+
+                    editGroup.push({text: &quot;&quot;, start: deletionStart, end: { line: sel.end.line + 1, ch: 0 }});
+                    if (lineLength) {
+                        editGroup.push({text: &quot;&quot;, start: { line: sel.end.line - 1, ch: lineLength }, end: { line: sel.end.line, ch: 0 }});
+                    }
+                    editGroup.push({text: nextText, start: { line: sel.start.line, ch: 0 }});
+
+                    &#x2F;&#x2F; In this case, we don&#39;t need to track selections, because the edits are done in such a way that
+                    &#x2F;&#x2F; the existing selections will automatically be updated properly by CodeMirror as it does the edits.
+                    edits.push({edit: editGroup});
+                }
+                break;
+            }
+        });
+
+        &#x2F;&#x2F; Make sure selections are correct and primary selection is scrolled into view
+        if (edits.length) {
+            newSels = doc.doMultipleEdits(edits);
+
+            pos.ch = 0;
+
+            if (direction === DIRECTION_UP) {
+                editor.setSelections(newSels);
+                pos.line = editor.getSelection().start.line;
+            } else if (direction === DIRECTION_DOWN) {
+                pos.line = editor.getSelection().end.line;
+            } else {
+                console.error(&quot;EditorCommandHandler.moveLine() called with invalid argument &#39;direction&#39; = %d&quot;, direction);
+                pos = null;
+            }
+
+            editor._codeMirror.scrollIntoView(pos);
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        moveLineDown 
+        <a class="anchor" href="#-moveLineDown" id="-moveLineDown"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line down. The cursor/selection
+moves with the line/lines.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLineDown(editor) {
+        moveLine(editor, DIRECTION_DOWN);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        moveLineUp 
+        <a class="anchor" href="#-moveLineUp" id="-moveLineUp"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Moves the selected text, or current line if no selection, one line up. The cursor/selection
+moves with the line/lines.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function moveLineUp(editor) {
+        moveLine(editor, DIRECTION_UP);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        openLine 
+        <a class="anchor" href="#-openLine" id="-openLine"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line above/below the selected text, or current line if no selection.
+The cursor is moved in the new line.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>target editor</dd>
+    <dt>
+        direction
+        <span class="label label-info">Number</span>
+    </dt>
+    <dd>direction where to place the new line (-1,+1) => (Up,Down)</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLine(editor, direction) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        var selections     = editor.getSelections(),
+            isInlineWidget = !!EditorManager.getFocusedInlineWidget(),
+            lastLine       = editor.getLastVisibleLine(),
+            doc            = editor.document,
+            edits          = [],
+            newSelections,
+            line;
+
+        &#x2F;&#x2F; First, insert all the newlines (skipping multiple selections on the same line),
+        &#x2F;&#x2F; then indent them all. (We can&#39;t easily do them all at once, because doMultipleEdits()
+        &#x2F;&#x2F; won&#39;t do the indentation for us, but we want its help tracking any selection changes
+        &#x2F;&#x2F; as the result of the edits.)
+
+        &#x2F;&#x2F; Note that we don&#39;t just use `editor.getLineSelections()` here because we don&#39;t actually want
+        &#x2F;&#x2F; to coalesce adjacent selections - we just want to ignore dupes.
+
+        doc.batchOperation(function () {
+            _.each(selections, function (sel, index) {
+                if (index === 0 ||
+                        (direction === DIRECTION_UP &amp;&amp; sel.start.line &gt; selections[index - 1].start.line) ||
+                        (direction === DIRECTION_DOWN &amp;&amp; sel.end.line &gt; selections[index - 1].end.line)) {
+                    &#x2F;&#x2F; Insert the new line
+                    switch (direction) {
+                    case DIRECTION_UP:
+                        line = sel.start.line;
+                        break;
+                    case DIRECTION_DOWN:
+                        line = sel.end.line;
+                        if (!(CodeMirror.cmpPos(sel.start, sel.end) !== 0 &amp;&amp; sel.end.ch === 0)) {
+                            &#x2F;&#x2F; If not linewise selection
+                            line++;
+                        }
+                        break;
+                    }
+
+                    var insertPos;
+                    if (line &gt; lastLine &amp;&amp; isInlineWidget) {
+                        insertPos = {line: line - 1, ch: doc.getLine(line - 1).length};
+                    } else {
+                        insertPos = {line: line, ch: 0};
+                    }
+                    &#x2F;&#x2F; We want the selection after this edit to be right before the \n we just inserted.
+                    edits.push({edit: {text: &quot;\n&quot;, start: insertPos}, selection: {start: insertPos, end: insertPos, primary: sel.primary}});
+                } else {
+                    &#x2F;&#x2F; We just want to discard this selection, since we&#39;ve already operated on the
+                    &#x2F;&#x2F; same line and it would just collapse to the same location. But if this was
+                    &#x2F;&#x2F; primary, make sure the last selection we did operate on ends up as primary.
+                    if (sel.primary) {
+                        edits[edits.length - 1].selections[0].primary = true;
+                    }
+                }
+            });
+            newSelections = doc.doMultipleEdits(edits, &quot;+input&quot;);
+
+            &#x2F;&#x2F; Now indent each added line (which doesn&#39;t mess up any line numbers, and
+            &#x2F;&#x2F; we&#39;re going to set the character offset to the last position on each line anyway).
+            _.each(newSelections, function (sel) {
+                &#x2F;&#x2F; This is a bit of a hack. The document is the one that batches operations, but we want
+                &#x2F;&#x2F; to use CodeMirror&#39;s &quot;smart indent&quot; operation. So we need to use the document&#39;s own backing editor&#39;s
+                &#x2F;&#x2F; CodeMirror to do the indentation. A better way to fix this would be to expose this
+                &#x2F;&#x2F; operation on Document, but I&#39;m not sure we want to sign up for that as a public API.
+                doc._masterEditor._codeMirror.indentLine(sel.start.line, &quot;smart&quot;, true);
+                sel.start.ch = null; &#x2F;&#x2F; last character on line
+                sel.end = sel.start;
+            });
+        });
+        editor.setSelections(newSelections);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        openLineAbove 
+        <a class="anchor" href="#-openLineAbove" id="-openLineAbove"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line above the selected text, or current line if no selection.
+The cursor is moved in the new line.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>target editor</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLineAbove(editor) {
+        openLine(editor, DIRECTION_UP);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        openLineBelow 
+        <a class="anchor" href="#-openLineBelow" id="-openLineBelow"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Inserts a new and smart indented line below the selected text, or current line if no selection.
+The cursor is moved in the new line.</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>target editor</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function openLineBelow(editor) {
+        openLine(editor, DIRECTION_DOWN);
+    }</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        splitSelIntoLines 
+        <a class="anchor" href="#-splitSelIntoLines" id="-splitSelIntoLines"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd>The editor to operate on.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function splitSelIntoLines(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (editor) {
+            editor._codeMirror.execCommand(&quot;splitSelectionByLine&quot;);
+        }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        unindentText 
+        <a class="anchor" href="#-unindentText" id="-unindentText"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Unindent a line of text if no selection. Otherwise, unindent all lines in selection.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function unindentText() {
+        var editor = EditorManager.getFocusedEditor();
+        if (!editor) {
+            return;
+        }
+
+        editor._codeMirror.execCommand(&quot;indentLess&quot;);
+    }
+
+    function selectLine(editor) {
+        editor = editor || EditorManager.getFocusedEditor();
+        if (editor) {
+            &#x2F;&#x2F; We can just use `convertToLineSelections`, but throw away the original tracked selections and just use the
+            &#x2F;&#x2F; coalesced selections.
+            editor.setSelections(_.pluck(editor.convertToLineSelections(editor.getSelections(), { expandEndAtStartOfLine: true }), &quot;selectionForEdit&quot;));
+        }
+    }</code></pre></div>
+</section>
+
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="../../assets/js/prism.js"></script>
+  </body>
+</html>
