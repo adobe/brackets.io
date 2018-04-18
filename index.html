@@ -315,7 +315,7 @@
     </div>
     <div id="about" class="row">
         <div class="large-12 columns">
-            <p>Brackets was founded by Adobe as a community guided, open source project to push web development editors to the next level.<br>Brackets is released under the <a href="https://github.com/adobe/brackets/blob/master/LICENSE">MIT License</a>.</p>
+            <p><span data-i18n="footer.project-info.motivation">Brackets was founded by Adobe as a community guided, open source project to push web development editors to the next level.</span><br></p>
         </div>
     </div>
 </div>
@@ -421,6 +421,16 @@
             });
         }
     }
+    
+    i18nLoaded.done(function () {
+        // load the complete license string
+        var licenseStr = i18n.t("footer.project-info.license", {defaultValue: "Brackets is released under the MIT License"});
+        // load the license type string
+        var licenseTypeStr = i18n.t("footer.project-info.licensetype", {defaultValue: "MIT License"});
+        // identify the license type string and wrap it in an anchor
+        licenseStr = licenseStr.replace(licenseTypeStr, "<a href='https://github.com/adobe/brackets/blob/master/LICENSE'>" + licenseTypeStr + "</a>");
+        $("#about div p").append(licenseStr + ".");
+    });
 
     var shortLocale = (requestedLang && requestedLang.split("/")[0].split("-")[0]) || "en",
         versionInfoBaseUrl = "//s3.amazonaws.com/files.brackets.io/updates/stable/",
@@ -539,7 +549,8 @@
                 });
             })
             .fail(function () {
-                $blogposts.append("<p>Refresh page to load posts</p>");
+                var errorString = i18n.t("index.page.content.blog.error", { defaultValue: "Refresh page to load posts" });
+                $blogposts.append("<p>" + errorString + "</p>");
             });
     }
 
