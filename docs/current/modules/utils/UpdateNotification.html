@@ -720,11 +720,38 @@ _versionInfoUrl is used for unit testing.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function _getVersionInfoUrl(locale, removeCountryPartOfLocale) {
+
         locale = locale || brackets.getLocale();
 
         if (removeCountryPartOfLocale) {
             locale = locale.substring(0, 2);
         }
+
+        &#x2F;&#x2F;AUTOUPDATE_PRERELEASE_BEGIN
+        &#x2F;&#x2F; The following code is needed for supporting Auto Update in prerelease,
+        &#x2F;&#x2F;and will be removed eventually for stable releases
+        {
+            if (locale) {
+                if(locale.length &gt; 2) {
+                    locale = locale.substring(0, 2);
+                }
+                switch(locale)  {
+                case &quot;de&quot;:
+                    break;
+                case &quot;es&quot;:
+                    break;
+                case &quot;fr&quot;:
+                    break;
+                case &quot;ja&quot;:
+                    break;
+                case &quot;en&quot;:
+                default:
+                    locale = &quot;en&quot;;
+                }
+                return brackets.config.update_info_url.replace(&quot;&lt;locale&gt;&quot;, locale);
+            }
+        }
+        &#x2F;&#x2F;AUTOUPDATE_PRERELEASE_END
 
         return brackets.config.update_info_url + &#39;?locale=&#39; + locale;
     }</code></pre></div><div class="member private">
@@ -772,24 +799,46 @@ _versionInfoUrl is used for unit testing.</p>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function _showUpdateNotificationDialog(updates) {
+<pre class="code language-javascript"><code class="language-javascript">    function _showUpdateNotificationDialog(updates, force) {
         Dialogs.showModalDialogUsingTemplate(Mustache.render(UpdateDialogTemplate, Strings))
             .done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_DOWNLOAD) {
-                    &#x2F;&#x2F; The first entry in the updates array has the latest download link
-                    NativeApp.openURLInDefaultBrowser(updates[0].downloadURL);
+                    HealthLogger.sendAnalyticsData(
+                        eventNames.AUTOUPDATE_UPDATENOW_CLICK,
+                        &quot;autoUpdate&quot;,
+                        &quot;updateNotification&quot;,
+                        &quot;updateNow&quot;,
+                        &quot;click&quot;
+                    );
+                    handleUpdateProcess(updates);
+                } else {
+                    HealthLogger.sendAnalyticsData(
+                        eventNames.AUTOUPDATE_CANCEL_CLICK,
+                        &quot;autoUpdate&quot;,
+                        &quot;updateNotification&quot;,
+                        &quot;cancel&quot;,
+                        &quot;click&quot;
+                    );
                 }
             });
 
         &#x2F;&#x2F; Populate the update data
         var $dlg        = $(&quot;.update-dialog.instance&quot;),
-            $updateList = $dlg.find(&quot;.update-info&quot;);
+            $updateList = $dlg.find(&quot;.update-info&quot;),
+            subTypeString = force ? &quot;userAction&quot; : &quot;auto&quot;;
 
         &#x2F;&#x2F; Make the update notification icon clickable again
         _addedClickHandler = false;
 
         updates.Strings = Strings;
         $updateList.html(Mustache.render(UpdateListTemplate, updates));
+        HealthLogger.sendAnalyticsData(
+            eventNames.AUTOUPDATE_UPDATE_AVAILABLE_DIALOG_BOX_RENDERED,
+            &quot;autoUpdate&quot;,
+            &quot;updateNotification&quot;,
+            &quot;render&quot;,
+            subTypeString
+        );
     }</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -978,7 +1027,7 @@ displayed for newly available updates.</p>
                     &#x2F;&#x2F; Only show the update dialog if force = true, or if the user hasn&#39;t been
                     &#x2F;&#x2F; alerted of this update
                     if (force || allUpdates[0].buildNumber &gt;  lastNotifiedBuildNumber) {
-                        _showUpdateNotificationDialog(allUpdates);
+                        _showUpdateNotificationDialog(allUpdates, force);
 
                         &#x2F;&#x2F; Update prefs with the last notified build number
                         lastNotifiedBuildNumber = allUpdates[0].buildNumber;
@@ -1026,6 +1075,63 @@ displayed for newly available updates.</p>
     Public API
 </span>
     <h4>
+        enableUpdateNotificationIcon 
+        <a class="anchor" href="#-enableUpdateNotificationIcon" id="-enableUpdateNotificationIcon"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        enable
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>when false Update Notification Icon in TollBar will grayed and Click will be blocked. when true icon will be green and clickable.</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function enableUpdateNotificationIcon(enable) {
+        var $updateNotification = $(&quot;#update-notification&quot;);
+        _addedClickHandler = !enable;
+
+        $updateNotification.toggleClass(&quot;update-in-progress&quot;, !enable);
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        handleUpdateProcess 
+        <a class="anchor" href="#-handleUpdateProcess" id="-handleUpdateProcess"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Handles the update process</p>
+</div>
+    
+<dl>
+    <dt>
+        updates
+        <span class="label label-info">Array</span>
+    </dt>
+    <dd>array object containing info of updates</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function handleUpdateProcess(updates) {
+        var handler = _updateProcessHandler || _defaultUpdateProcessHandler;
+        handler(updates);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         launchAutomaticUpdate 
         <a class="anchor" href="#-launchAutomaticUpdate" id="-launchAutomaticUpdate"><span class="icon-link"></span></a>
     </h4>
@@ -1044,14 +1150,66 @@ displayed for newly available updates.</p>
         checkForUpdate();
         checkForExtensionsUpdate();
         window.setInterval(checkForUpdate, ONE_DAY + TWO_MINUTES);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        registerUpdateHandler 
+        <a class="anchor" href="#-registerUpdateHandler" id="-registerUpdateHandler"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Registers the update process handler function</p>
+</div>
+    
+<dl>
+    <dt>
+        handler
+        <span class="label label-info">function</span>
+    </dt>
+    <dd>function for update process handler</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerUpdateHandler(handler) {
+        _updateProcessHandler = handler;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        resetToDefaultUpdateHandler 
+        <a class="anchor" href="#-resetToDefaultUpdateHandler" id="-resetToDefaultUpdateHandler"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Utility function to reset back to the default update handler</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function resetToDefaultUpdateHandler() {
+        _updateProcessHandler = null;
     }
 
     &#x2F;&#x2F; Events listeners
     ExtensionManager.on(&quot;registryDownload&quot;, _onRegistryDownloaded);
 
     &#x2F;&#x2F; Define public API
+    exports.registerUpdateHandler = registerUpdateHandler;
+    exports.resetToDefaultUpdateHandler = resetToDefaultUpdateHandler;
     exports.launchAutomaticUpdate = launchAutomaticUpdate;
     exports.checkForUpdate        = checkForUpdate;
+    exports.enableUpdateNotificationIcon = enableUpdateNotificationIcon;
 });</code></pre></div>
 </section>
 

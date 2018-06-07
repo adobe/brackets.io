@@ -561,85 +561,10 @@
         intervalId = 0,
         lastQueriedText = &quot;&quot;,
         lastTypedText = &quot;&quot;,
+        lastTypedTextWasRegexp = false,
         lastKeyCode;</code></pre></div>
 </section>
 
-<section id="functions">
-
-    <h3>Functions 
-<label class="checkbox">
-    <input class="toggle-public" type="checkbox"> Show Private Members
-</label>    </h3>
-
-<div class="member">
-
-<span class="pull-right scope">
-    
-    
-</span>
-    <h4>
-        getInitialQueryFromSelection 
-        <a class="anchor" href="#-getInitialQueryFromSelection" id="-getInitialQueryFromSelection"><span class="icon-link"></span></a>
-    </h4>
-
-    
-    <div class="description"><p>Returns the string used to prepopulate the find bar</p>
-</div>
-    
-<dl>
-    <dt>
-        editor
-        <span class="label label-non-nullable">non-nullable</span>
-        <span class="label label-info">Editor</span>
-    </dt>
-    <dd></dd>
-</dl><dl>
-    <dt>Returns: <span class="label label-info">string</span></dt>
-    <dd>first line of primary selection to populate the find bar</dd>
-</dl><dl>
-</dl><dl>
-<dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">        function getInitialQueryFromSelection(editor) {
-            var selectionText = editor.getSelectedText();
-            if (selectionText) {
-                return selectionText
-                    .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
-                    .split(&quot;\n&quot;)[0];
-            }
-            return &quot;&quot;;
-        }
-
-        if (currentFindBar &amp;&amp; !currentFindBar.isClosed()) {
-            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
-            &#x2F;&#x2F; current query instead of using the passed-in selected text.
-            query = currentFindBar.getQueryInfo().query;
-            replaceText = currentFindBar.getReplaceText();
-        } else {
-            var openedFindBar = FindBar._bars &amp;&amp; _.find(FindBar._bars, function (bar) {
-                    return !bar.isClosed();
-                });
-
-            if (openedFindBar) {
-                query = openedFindBar.getQueryInfo().query;
-                replaceText = openedFindBar.getReplaceText();
-            } else if (editor) {
-                query = getInitialQueryFromSelection(editor) || lastQueriedText || lastTypedText;
-            }
-        }
-
-        return {query: query, replaceText: replaceText};
-    };
-
-    PreferencesManager.stateManager.definePreference(&quot;caseSensitive&quot;, &quot;boolean&quot;, false);
-    PreferencesManager.stateManager.definePreference(&quot;regexp&quot;, &quot;boolean&quot;, false);
-    PreferencesManager.stateManager.definePreference(&quot;searchHistory&quot;, &quot;array&quot;, []);
-    PreferencesManager.definePreference(&quot;maxSearchHistory&quot;, &quot;number&quot;, 10, {
-        description: Strings.FIND_HISTORY_MAX_COUNT
-    });
-
-    exports.FindBar = FindBar;
-});</code></pre></div>
-</section>
 
 <section id="classes">
     
@@ -688,6 +613,7 @@
         this._enabled = true;
         this.lastQueriedText = &quot;&quot;;
         this.lastTypedText = &quot;&quot;;
+        this.lastTypedTextWasRegexp = false;
     }
     EventDispatcher.makeEventDispatcher(FindBar.prototype);</code></pre>
         </div>
@@ -986,6 +912,43 @@
     
 </span>
     <h4>
+        _getInitialQueryFromSelection     <span class="label label-info">STATIC</span>
+
+        <a class="anchor" href="#FindBar-_getInitialQueryFromSelection" id="FindBar-_getInitialQueryFromSelection"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns the string used to prepopulate the find bar</p>
+</div>
+    
+<dl>
+    <dt>
+        editor
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">Editor</span>
+    </dt>
+    <dd></dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">string</span></dt>
+    <dd>first line of primary selection to populate the find bar</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    FindBar._getInitialQueryFromSelection = function(editor) {
+        var selectionText = editor.getSelectedText();
+        if (selectionText) {
+            return selectionText
+                .replace(&#x2F;^\n*&#x2F;, &quot;&quot;) &#x2F;&#x2F; Trim possible newlines at the very beginning of the selection
+                .split(&quot;\n&quot;)[0];
+        }
+        return &quot;&quot;;
+    };</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _removeFindBar     <span class="label label-info">STATIC</span>
 
         <a class="anchor" href="#FindBar-_removeFindBar" id="FindBar-_removeFindBar"><span class="icon-link"></span></a>
@@ -1028,8 +991,10 @@
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.prototype._updatePrefsFromSearchBar = function () {
+        var isRegexp = this.$(&quot;#find-regexp&quot;).is(&quot;.active&quot;);
         PreferencesManager.setViewState(&quot;caseSensitive&quot;, this.$(&quot;#find-case-sensitive&quot;).is(&quot;.active&quot;));
-        PreferencesManager.setViewState(&quot;regexp&quot;,        this.$(&quot;#find-regexp&quot;).is(&quot;.active&quot;));
+        PreferencesManager.setViewState(&quot;regexp&quot;, isRegexp);
+        lastTypedTextWasRegexp = isRegexp;
     };</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
@@ -1260,8 +1225,43 @@ will need to refresh their enable state after calling this.</p>
         <dd></dd>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FindBar.getInitialQuery = function (currentFindBar, editor) {
-        var query = lastTypedText,
-            replaceText = &quot;&quot;;</code></pre></div><div class="member">
+        var query,
+            selection = FindBar._getInitialQueryFromSelection(editor),
+            replaceText = &quot;&quot;;
+
+        if (currentFindBar &amp;&amp; !currentFindBar.isClosed()) {
+            &#x2F;&#x2F; The modalBar was already up. When creating the new modalBar, copy the
+            &#x2F;&#x2F; current query instead of using the passed-in selected text.
+            var queryInfo = currentFindBar.getQueryInfo();
+            query = (!queryInfo.isRegexp &amp;&amp; selection) || queryInfo.query;
+            replaceText = currentFindBar.getReplaceText();
+        } else {
+            var openedFindBar = FindBar._bars &amp;&amp; _.find(FindBar._bars,
+                function (bar) {
+                    return !bar.isClosed();
+                }
+            );
+
+            if (openedFindBar) {
+                query = openedFindBar.getQueryInfo().query;
+                replaceText = openedFindBar.getReplaceText();
+            } else if (editor) {
+                query = (!lastTypedTextWasRegexp &amp;&amp; selection) || lastQueriedText || lastTypedText;
+            }
+        }
+
+        return {query: query, replaceText: replaceText};
+    };
+
+    PreferencesManager.stateManager.definePreference(&quot;caseSensitive&quot;, &quot;boolean&quot;, false);
+    PreferencesManager.stateManager.definePreference(&quot;regexp&quot;, &quot;boolean&quot;, false);
+    PreferencesManager.stateManager.definePreference(&quot;searchHistory&quot;, &quot;array&quot;, []);
+    PreferencesManager.definePreference(&quot;maxSearchHistory&quot;, &quot;number&quot;, 10, {
+        description: Strings.FIND_HISTORY_MAX_COUNT
+    });
+
+    exports.FindBar = FindBar;
+});</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -1445,10 +1445,27 @@ will need to refresh their enable state after calling this.</p>
 
         self._addElementToSearchHistory(this._options.initialQuery);
 
-        this._modalBar = new ModalBar(Mustache.render(_searchBarTemplate, templateVars), true);  &#x2F;&#x2F; 2nd arg = auto-close on Esc&#x2F;blur
-
+        this._modalBar = new ModalBar(
+            Mustache.render(_searchBarTemplate, templateVars),
+            !!PreferencesManager.get(&#39;autoHideSearch&#39;)		&#x2F;&#x2F; 2nd arg = auto-close on Esc&#x2F;blur
+        );
+        
+        &#x2F;&#x2F; Done this way because ModalBar.js seems to react unreliably when
+        &#x2F;&#x2F; modifying it to handle the escape key - the findbar wasn&#39;t getting
+        &#x2F;&#x2F; closed as it should, instead persisting in the background
+        function _handleKeydown(e) {
+            if (e.keyCode === KeyEvent.DOM_VK_ESCAPE) {
+                e.stopPropagation();
+                e.preventDefault();
+                self.close();
+            }
+        }
+        window.document.body.addEventListener(&quot;keydown&quot;, _handleKeydown, true);
+        
         &#x2F;&#x2F; When the ModalBar closes, clean ourselves up.
         this._modalBar.on(&quot;close&quot;, function (event) {
+            window.document.body.removeEventListener(&quot;keydown&quot;, _handleKeydown, true);
+
             &#x2F;&#x2F; Hide error popup, since it hangs down low enough to make the slide-out look awkward
             self.showError(null);
             self._modalBar = null;
@@ -1471,7 +1488,9 @@ will need to refresh their enable state after calling this.</p>
         $root
             .on(&quot;input&quot;, &quot;#find-what&quot;, function () {
                 self.trigger(&quot;queryChange&quot;);
-                lastTypedText = self.getQueryInfo().query;
+                var queryInfo = self.getQueryInfo();
+                lastTypedText = queryInfo.query;
+                lastTypedTextWasRegexp = queryInfo.isRegexp;
             })
             .on(&quot;click&quot;, &quot;#find-case-sensitive, #find-regexp&quot;, function (e) {
                 $(e.currentTarget).toggleClass(&quot;active&quot;);
@@ -1506,8 +1525,11 @@ will need to refresh their enable state after calling this.</p>
                         return;
                     }
                     currentTime = new Date().getTime();
-                    if (lastTypedTime &amp;&amp; (currentTime - lastTypedTime &gt;= 100) &amp;&amp; self.getQueryInfo().query !==  lastQueriedText &amp;&amp;
+
+                    if (lastTypedTime &amp;&amp; (currentTime - lastTypedTime &gt;= 100) &amp;&amp;
+                            self.getQueryInfo().query !== lastQueriedText &amp;&amp;
                             !FindUtils.isNodeSearchInProgress()) {
+
                         &#x2F;&#x2F; init Search
                         if (self._options.multifile) {
                             if ($(e.target).is(&quot;#find-what&quot;)) {
@@ -1556,6 +1578,9 @@ will need to refresh their enable state after calling this.</p>
                         quickSearchContainer.show();
                     }
                 }
+            })
+            .on(&quot;click&quot;, &quot;.close&quot;, function () {
+                self.close();
             });
 
         if (!this._options.multifile) {
