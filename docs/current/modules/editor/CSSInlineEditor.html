@@ -517,6 +517,7 @@
         <li><a href="..&#x2F;../modules/editor/Editor.html">Editor</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/language/HTMLUtils.html">HTMLUtils</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
         <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
@@ -1022,6 +1023,14 @@ CSS rules and show (one/all of them) in an inline editor.</p>
         if (hostEditor.getLanguageForSelection().getId() !== &quot;html&quot;) {
             return null;
         }
+
+        &#x2F;&#x2F;Send analytics data for QuickEdit open
+        HealthLogger.sendAnalyticsData(
+            &quot;QuickEditOpen&quot;,
+            &quot;usage&quot;,
+            &quot;quickEdit&quot;,
+            &quot;open&quot;
+        );
 
         &#x2F;&#x2F; Only provide CSS editor if the selection is within a single line
         var sel = hostEditor.getSelection();

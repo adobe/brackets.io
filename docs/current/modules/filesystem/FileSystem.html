@@ -581,6 +581,8 @@ worry about the underlying storage, which could be a local filesystem or a remot
         <li><a href="..&#x2F;../modules/filesystem/FileIndex.html">FileIndex</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
         <li><a href="..&#x2F;../modules/fileSystemImpl.html">fileSystemImpl</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/lodash.html">lodash</a></li>
+        <li><a href="..&#x2F;../modules/thirdparty/path-utils/path-utils.html">path-utils</a></li>
         <li><a href="..&#x2F;../modules/filesystem/WatchedRoot.html">WatchedRoot</a></li>
     </ul>
 
@@ -614,6 +616,104 @@ worry about the underlying storage, which could be a local filesystem or a remot
 <pre class="code language-javascript"><code class="language-javascript">    var _DUPLICATED_SLASH_RE = &#x2F;\&#x2F;{2,}&#x2F;g;</code></pre></div>
 </section>
 
+<section id="functions">
+
+    <h3>Functions 
+<label class="checkbox">
+    <input class="toggle-public" type="checkbox"> Show Private Members
+</label>    </h3>
+
+<div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
+        _getProtocolAdapter 
+        <a class="anchor" href="#-_getProtocolAdapter" id="-_getProtocolAdapter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>
+        protocol
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>ex: "https:"|"http:"|"ftp:"|"file:"</dd>
+    <dt>
+        filePath
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>fullPath of the file</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">adapter</span></dt>
+    <dd>adapter wrapper over file implementation</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function _getProtocolAdapter(protocol, filePath) {
+        var protocolAdapters = _fileProtocolPlugins[protocol] || [],
+            selectedAdapter;
+
+        &#x2F;&#x2F; Find the fisrt compatible adapter having highest priority
+        _.forEach(protocolAdapters, function (adapter) {
+            if (adapter.canRead &amp;&amp; adapter.canRead(filePath)) {
+                selectedAdapter = adapter;
+                &#x2F;&#x2F; Break at first compatible adapter
+                return false;
+            }
+        });
+
+        return selectedAdapter;
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        registerProtocolAdapter 
+        <a class="anchor" href="#-registerProtocolAdapter" id="-registerProtocolAdapter"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>FileSystem hook to register file protocol adapter</p>
+</div>
+    
+<dl>
+    <dt>
+        protocol
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>ex: "https:"|"http:"|"ftp:"|"file:"</dd>
+    <dt>
+        adapter
+        <span class="label label-info">...FileProtocol~Adapter</span>
+    </dt>
+    <dd>wrapper over file implementation</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function registerProtocolAdapter(protocol, adapter) {
+        var adapters;
+        if (protocol) {
+            adapters = _fileProtocolPlugins[protocol] || [];
+            adapters.push(adapter);
+
+            &#x2F;&#x2F; We will keep a sorted adapter list on &#39;priority&#39;
+            &#x2F;&#x2F; If priority is not provided a default of &#39;0&#39; is assumed
+            adapters.sort(function (a, b) {
+                return (b.priority || 0) - (a.priority || 0);
+            });
+
+            _fileProtocolPlugins[protocol] = adapters;
+        }
+    }</code></pre></div>
+</section>
 
 <section id="classes">
     
@@ -1539,6 +1639,7 @@ watched root and ignores errors.</p>
 
     &#x2F;&#x2F; Static public utility methods
     exports.isAbsolutePath = FileSystem.isAbsolutePath;
+    exports.registerProtocolAdapter = registerProtocolAdapter;
 
     &#x2F;&#x2F; For testing only
     exports._getActiveChangeCount = _wrap(FileSystem.prototype._getActiveChangeCount);</code></pre></div><div class="member private">
@@ -1878,7 +1979,14 @@ mechanism.</p>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileSystem.prototype.getFileForPath = function (path) {
-        return this._getEntryForPath(File, path);
+        var protocol = PathUtils.parseUrl(path).protocol,
+            protocolAdapter = _getProtocolAdapter(protocol);
+
+        if (protocolAdapter &amp;&amp; protocolAdapter.fileImpl) {
+            return new protocolAdapter.fileImpl(protocol, path, this);
+        } else {
+            return this._getEntryForPath(File, path);
+        }
     };</code></pre></div><div class="member public">
 
 <span class="pull-right scope">

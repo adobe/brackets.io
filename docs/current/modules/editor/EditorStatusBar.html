@@ -523,6 +523,7 @@
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+        <li><a href="..&#x2F;../modules/utils/HealthLogger.html">HealthLogger</a></li>
         <li><a href="..&#x2F;../modules/document/InMemoryFile.html">InMemoryFile</a></li>
         <li><a href="..&#x2F;../modules/utils/KeyEvent.html">KeyEvent</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
@@ -1189,6 +1190,13 @@ If passed then save the preferred encoding in state.</p>
             selStr = &quot;&quot;;
 
         if (sels.length &gt; 1) {
+            &#x2F;&#x2F;Send analytics data for multicursor use
+            HealthLogger.sendAnalyticsData(
+                &quot;multiCursor&quot;,
+                &quot;usage&quot;,
+                &quot;multiCursor&quot;,
+                &quot;use&quot;
+            );
             selStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE, sels.length);
         } else if (editor.hasSelection()) {
             var sel = sels[0];

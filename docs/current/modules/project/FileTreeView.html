@@ -538,6 +538,35 @@ and renders it to the given element using Preact. User actions are signaled via 
     
 </span>
     <h4>
+        _draggedItemPath 
+        <a class="anchor" href="#-_draggedItemPath" id="-_draggedItemPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"></div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>string</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _draggedItemPath;
+
+
+    &#x2F;&#x2F; Constants
+
+    &#x2F;&#x2F; Time range from first click to second click to invoke renaming.
+    var CLICK_RENAME_MINIMUM  = 500,
+        RIGHT_MOUSE_BUTTON    = 2,
+        LEFT_MOUSE_BUTTON     = 0;
+
+    var INDENTATION_WIDTH     = 10;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _extensions 
         <a class="anchor" href="#-_extensions" id="-_extensions"><span class="icon-link"></span></a>
     </h4>
@@ -550,16 +579,7 @@ and renders it to the given element using Preact. User actions are signaled via 
     <dd>Immutable.Map</dd>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _extensions = Immutable.Map();
-
-    &#x2F;&#x2F; Constants
-
-    &#x2F;&#x2F; Time range from first click to second click to invoke renaming.
-    var CLICK_RENAME_MINIMUM  = 500,
-        RIGHT_MOUSE_BUTTON    = 2,
-        LEFT_MOUSE_BUTTON     = 0;
-
-    var INDENTATION_WIDTH     = 10;</code></pre></div><div class="member private">
+<pre class="code language-javascript"><code class="language-javascript">    var _extensions = Immutable.Map();</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -601,6 +621,122 @@ and renders it to the given element using Preact. User actions are signaled via 
     
 </span>
     <h4>
+        dragAndDrop 
+        <a class="anchor" href="#-dragAndDrop" id="-dragAndDrop"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>This is a mixin that provides drag and drop move function.</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var dragAndDrop = {
+        handleDrag: function(e) {
+            &#x2F;&#x2F; Disable drag when renaming
+            if (this.props.entry.get(&quot;rename&quot;)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            &#x2F;&#x2F; In newer CEF versions, the drag and drop data from the event
+            &#x2F;&#x2F; (i.e. e.dataTransfer.getData) cannot be used to read data in dragOver event,
+            &#x2F;&#x2F; so store the drag and drop data in a global variable to read it in the dragOver
+            &#x2F;&#x2F; event.
+            _draggedItemPath = this.myPath();
+
+            &#x2F;&#x2F; Pass the dragged item path.
+            e.dataTransfer.setData(&quot;text&quot;, JSON.stringify({
+                path: _draggedItemPath
+            }));
+
+            this.props.actions.dragItem(this.myPath());
+
+            this.setDragImage(e);
+            e.stopPropagation();
+        },
+        handleDrop: function(e) {
+            var data = JSON.parse(e.dataTransfer.getData(&quot;text&quot;));
+
+            this.props.actions.moveItem(data.path, this.myPath());
+            this.setDraggedOver(false);
+
+            this.clearDragTimeout();
+            e.stopPropagation();
+        },
+
+        handleDragEnd: function(e) {
+            this.clearDragTimeout();
+        },
+
+        handleDragOver: function(e) {
+            var data = e.dataTransfer.getData(&quot;text&quot;),
+                path;
+
+            if (data) {
+                path = JSON.parse(data).path;
+            } else {
+                path = _draggedItemPath;
+            }
+
+            if (path === this.myPath() || FileUtils.getParentPath(path) === this.myPath()) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+            var self = this;
+            this.setDraggedOver(true);
+
+            &#x2F;&#x2F; Open the directory tree when item is dragged over a directory
+            if (!this.dragOverTimeout) {
+                this.dragOverTimeout = window.setTimeout(function() {
+                    self.props.actions.setDirectoryOpen(self.myPath(), true);
+                    self.dragOverTimeout = null;
+                }, 800);
+            }
+
+            e.preventDefault(); &#x2F;&#x2F; Allow the drop
+            e.stopPropagation();
+        },
+
+        handleDragLeave: function(e) {
+            this.setDraggedOver(false);
+            this.clearDragTimeout();
+        },
+
+        clearDragTimeout: function() {
+            if (this.dragOverTimeout) {
+                clearTimeout(this.dragOverTimeout);
+                this.dragOverTimeout = null;
+            }
+        },
+        setDraggedOver: function(draggedOver) {
+            if (this.state.draggedOver !== draggedOver) {
+                this.setState({
+                    draggedOver: draggedOver
+                });
+            }
+        },
+
+        setDragImage: function(e) {
+            var div = window.document.createElement(&#39;div&#39;);
+            div.textContent = this.props.name;
+            div.classList.add(&#39;jstree-dragImage&#39;);
+            window.document.body.appendChild(div);
+            e.dataTransfer.setDragImage(div, -10, -10);
+            setTimeout(function() {
+                window.document.body.removeChild(div);
+            }, 0);
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
         extendable 
         <a class="anchor" href="#-extendable" id="-extendable"><span class="icon-link"></span></a>
     </h4>
@@ -631,7 +767,7 @@ and renders it to the given element using Preact. User actions are signaled via 
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    var fileNode = Preact.createFactory(Preact.createClass({
-        mixins: [contextSettable, pathComputer, extendable],</code></pre></div><div class="member private">
+        mixins: [contextSettable, pathComputer, extendable, dragAndDrop],</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private

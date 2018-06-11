@@ -672,6 +672,26 @@ The UI allows the user to see what files are open/dirty and allows them to close
     
 </span>
     <h4>
+        _contextEntry 
+        <a class="anchor" href="#-_contextEntry" id="-_contextEntry"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>The file/folder object of the current context</p>
+</div>
+    
+<dl>
+    <dt>Type</dt>
+    <dd>FileSystemEntry</dd>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var _contextEntry;</code></pre></div><div class="member private">
+
+<span class="pull-right scope">
+    Private
+    
+</span>
+    <h4>
         _iconProviders 
         <a class="anchor" href="#-_iconProviders" id="-_iconProviders"><span class="icon-link"></span></a>
     </h4>
@@ -1684,6 +1704,41 @@ return content to prepend to the item.</p>
     Public API
 </span>
     <h4>
+        getContext 
+        <a class="anchor" href="#-getContext" id="-getContext"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Gets the filesystem object for the current context in the working set.</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function getContext() {
+        return _contextEntry;
+    }
+    
+    &#x2F;&#x2F; Public API
+    exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
+    exports.refresh                       = refresh;
+    exports.addIconProvider               = addIconProvider;
+    exports.addClassProvider              = addClassProvider;
+    exports.syncSelectionIndicator        = syncSelectionIndicator;
+    exports.getContext                    = getContext;
+    
+    &#x2F;&#x2F; API to be used only by default extensions
+    exports.useIconProviders              = useIconProviders;
+    exports.useClassProviders               = useClassProviders;
+});</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
         refresh 
         <a class="anchor" href="#-refresh" id="-refresh"><span class="icon-link"></span></a>
     </h4>
@@ -1767,19 +1822,7 @@ return content to prepend to the item.</p>
         _classProviders.forEach(function (provider) {
             $element.addClass(provider(data));
         });
-    }
-    
-    &#x2F;&#x2F; Public API
-    exports.createWorkingSetViewForPane   = createWorkingSetViewForPane;
-    exports.refresh                       = refresh;
-    exports.addIconProvider               = addIconProvider;
-    exports.addClassProvider              = addClassProvider;
-    exports.syncSelectionIndicator        = syncSelectionIndicator;
-    
-    &#x2F;&#x2F; API to be used only by default extensions
-    exports.useIconProviders              = useIconProviders;
-    exports.useClassProviders               = useClassProviders;
-});</code></pre></div><div class="member public">
+    }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -2694,7 +2737,6 @@ and adds a parent directory name to them</p>
                     data = {fullPath: file.fullPath,
                             name: file.name,
                             isFile: file.isFile};
-                $li.removeAttr(&quot;class&quot;);
                 _classProviders.forEach(function (provider) {
                     $li.addClass(provider(data));
                 });
@@ -2867,6 +2909,7 @@ and adds a parent directory name to them</p>
         this.$openFilesContainer.css(&quot;overflow-x&quot;, &quot;hidden&quot;);
 
         this.$openFilesContainer.on(&quot;contextmenu.workingSetView&quot;, function (e) {
+            _contextEntry = $(e.target).closest(&quot;li&quot;).data(_FILE_KEY);
             Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU).open(e);
         });
 

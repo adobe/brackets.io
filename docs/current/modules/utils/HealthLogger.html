@@ -510,6 +510,7 @@
     <h3>Dependencies</h3>
 
     <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
         <li><a href="..&#x2F;../modules/search/FindUtils.html">FindUtils</a></li>
         <li><a href="..&#x2F;../modules/language/LanguageManager.html">LanguageManager</a></li>
@@ -714,6 +715,30 @@ the standard file types have been opened. We only log the standard filetypes</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function init() {
         PreferencesManager.stateManager.definePreference(HEALTH_DATA_STATE_KEY, &quot;object&quot;, {});
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        notifyHealthManagerToSendData 
+        <a class="anchor" href="#-notifyHealthManagerToSendData" id="-notifyHealthManagerToSendData"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Notifies the HealthData extension to send Analytics Data to server</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+        <dt>param{Object}</dt>
+        <dd>eventParams Event Data to be sent to Analytics Server</dd>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function notifyHealthManagerToSendData(eventParams) {
+        exports.trigger(&quot;SendAnalyticsData&quot;, eventParams);
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -749,6 +774,60 @@ the standard file types have been opened. We only log the standard filetypes</p>
         }
         searchDetails[searchType]++;
         setHealthDataLog(&quot;searchDetails&quot;, searchDetails);
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        sendAnalyticsData 
+        <a class="anchor" href="#-sendAnalyticsData" id="-sendAnalyticsData"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Send Analytics Data</p>
+</div>
+    
+<dl>
+    <dt>
+        eventCategory
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The kind of Event Category that needs to be logged- should be a js var compatible string</dd>
+    <dt>
+        eventSubCategory
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The kind of Event Sub Category that needs to be logged- should be a js var compatible string</dd>
+    <dt>
+        eventType
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The kind of Event Type that needs to be logged- should be a js var compatible string</dd>
+    <dt>
+        eventSubType
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>The kind of Event Sub Type that needs to be logged- should be a js var compatible string</dd>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function sendAnalyticsData(eventName, eventCategory, eventSubCategory, eventType, eventSubType) {
+        var isEventDataAlreadySent = PreferencesManager.getViewState(eventName),
+            isHDTracking   = PreferencesManager.getExtensionPrefs(&quot;healthData&quot;).get(&quot;healthDataTracking&quot;),
+            eventParams = {};
+        if (isHDTracking &amp;&amp; !isEventDataAlreadySent &amp;&amp; eventName &amp;&amp; eventCategory) {
+            eventParams =  {
+                eventName: eventName,
+                eventCategory: eventCategory,
+                eventSubCategory: eventSubCategory || &quot;&quot;,
+                eventType: eventType || &quot;&quot;,
+                eventSubType: eventSubType || &quot;&quot;
+            };
+            notifyHealthManagerToSendData(eventParams);
+        }
     }
 
     &#x2F;&#x2F; Define public API
@@ -776,6 +855,7 @@ the standard file types have been opened. We only log the standard filetypes</p>
     exports.SEARCH_CASE_SENSITIVE     = &quot;searchCaseSensitive&quot;;
     &#x2F;&#x2F; A new search context on search bar up-Gives an idea of number of times user did a discrete search
     exports.SEARCH_NEW                = &quot;searchNew&quot;;
+    exports.sendAnalyticsData         = sendAnalyticsData;
 });</code></pre></div><div class="member">
 
 <span class="pull-right scope">
