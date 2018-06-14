@@ -510,8 +510,10 @@
 <section id="dependencies">
     <h3>Dependencies</h3>
 
+    <ul class="nav nav-list">
+        <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
+    </ul>
 
-    <span class="alert alert-info">This module has no dependencies</span>
 </section>
 
 
@@ -667,7 +669,9 @@ all affected entries in the index.</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    FileIndex.prototype.entryRenamed = function (oldPath, newPath, isDirectory) {
         var path,
-            renameMap = {};
+            renameMap = {},
+            oldParentPath = FileUtils.getParentPath(oldPath),
+            newParentPath = FileUtils.getParentPath(newPath);
 
         &#x2F;&#x2F; Find all entries affected by the rename and put into a separate map.
         for (path in this._index) {
@@ -693,6 +697,30 @@ all affected entries in the index.</p>
                 delete this._index[path];
                 this._index[renameMap[path]] = item;
                 item._setPath(renameMap[path]);
+            }
+        }
+
+
+        &#x2F;&#x2F; If file path is changed, i.e the file is moved
+        &#x2F;&#x2F; Remove the moved entry from old Directory and add it to new Directory
+        if (oldParentPath !== newParentPath) {
+            var oldDirectory = this._index[oldParentPath],
+                newDirectory = this._index[newParentPath],
+                renamedEntry;
+
+            if (oldDirectory &amp;&amp; oldDirectory._contents) {
+                oldDirectory._contents = oldDirectory._contents.filter(function(entry) {
+                    if (entry.fullPath === newPath) {
+                        renamedEntry = entry;
+                        return false;
+                    }
+                    return true;
+                });
+            }
+
+            if (newDirectory &amp;&amp; newDirectory._contents &amp;&amp; renamedEntry) {
+                renamedEntry._setPath(newPath);
+                newDirectory._contents.push(renamedEntry);
             }
         }
     };</code></pre></div><div class="member">

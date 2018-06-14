@@ -609,7 +609,8 @@ a project being opened (e.g. from the Refresh command)</li>
         ERR_TYPE_LOADING_PROJECT_NATIVE = 6,
         ERR_TYPE_MAX_FILES              = 7,
         ERR_TYPE_OPEN_DIALOG            = 8,
-        ERR_TYPE_INVALID_FILENAME       = 9;</code></pre></div><div class="member private">
+        ERR_TYPE_INVALID_FILENAME       = 9,
+        ERR_TYPE_MOVE                   = 10;</code></pre></div><div class="member private">
 
 <span class="pull-right scope">
     Private
@@ -1397,6 +1398,17 @@ instead to check for unsaved changes and (optionally) let the user choose the fo
 
         $projectTreeContainer.on(&quot;contextmenu&quot;, function () {
             forceFinishRename();
+        });
+
+        $projectTreeContainer.on(&quot;dragover&quot;, function(e) {
+            e.preventDefault();
+        });
+
+        &#x2F;&#x2F; Add support for moving items to root directory
+        $projectTreeContainer.on(&quot;drop&quot;, function(e) {
+            var data = JSON.parse(e.originalEvent.dataTransfer.getData(&quot;text&quot;));
+            actionCreator.moveItem(data.path, getProjectRoot().fullPath);
+            e.stopPropagation();
         });
 
         &#x2F;&#x2F; When a context menu item is selected, we need to clear the context
@@ -2487,6 +2499,59 @@ path lies outside the project, or if it doesn&#39;t exist.</p>
 <pre class="code language-javascript"><code class="language-javascript">    ActionCreator.prototype.closeSubtree = function (path) {
         this.model.closeSubtree(path);
         _saveTreeState();
+    };
+
+    ActionCreator.prototype.dragItem = function (path) {
+        &#x2F;&#x2F; Close open menus on drag and clear the context, but only if there&#39;s a menu open.
+        if ($(&quot;.dropdown.open&quot;).length &gt; 0) {
+            Menus.closeAll();
+            this.setContext(null);
+        }
+
+        &#x2F;&#x2F; Close directory, if dragged item is directory
+        if (_.last(path) === &#39;&#x2F;&#39;) {
+            this.setDirectoryOpen(path, false);
+        }
+    };</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        moveItem 
+        <a class="anchor" href="#ActionCreator-moveItem" id="ActionCreator-moveItem"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Moves the item in the oldPath to the newDirectory directory</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    ActionCreator.prototype.moveItem = function (oldPath, newDirectory) {
+        var fileName = FileUtils.getBaseName(oldPath),
+            newPath = newDirectory + fileName,
+            self = this;
+
+        &#x2F;&#x2F; If item dropped onto itself or onto its parent directory, return
+        if (oldPath === newDirectory || FileUtils.getParentPath(oldPath) === newDirectory) {
+            return;
+        }
+
+        &#x2F;&#x2F; Add trailing slash if directory is moved
+        if (_.last(oldPath) === &#39;&#x2F;&#39;) {
+            newPath = ProjectModel._ensureTrailingSlash(newPath);
+        }
+
+        this.startRename(oldPath, true);
+        this.setRenameValue(newPath);
+
+        this.performRename();
+        this.setDirectoryOpen(newDirectory, true);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2772,12 +2837,12 @@ path lies outside the project, or if it doesn&#39;t exist.</p>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ActionCreator.prototype.startRename = function (path) {
+<pre class="code language-javascript"><code class="language-javascript">    ActionCreator.prototype.startRename = function (path, isMoved) {
         &#x2F;&#x2F; This is very not Flux-like, which is a sign that Flux may not be the
         &#x2F;&#x2F; right choice here *or* that this architecture needs to evolve subtly
         &#x2F;&#x2F; in how errors are reported (more like the create case).
         &#x2F;&#x2F; See #9284.
-        renameItemInline(path);
+        renameItemInline(path, isMoved);
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">

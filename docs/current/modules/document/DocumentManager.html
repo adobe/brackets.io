@@ -1121,13 +1121,19 @@ refs and listeners for that Editor UI).</p>
         <span class="label label-info">string</span>
     </dt>
     <dd></dd>
+    <dt>
+        fileObj
+        <span class="label label-non-nullable">non-nullable</span>
+        <span class="label label-info">object</span>
+    </dt>
+    <dd>actual File|RemoteFile or some other protocol adapter handle</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span></dt>
     <dd>A promise object that will be resolved with the Document, or rejected with a FileSystemError if the file is not yet open and can't be read from disk.</dd>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath) {
+<pre class="code language-javascript"><code class="language-javascript">    function getDocumentForPath(fullPath, fileObj) {
         var doc = getOpenDocumentForPath(fullPath);
 
         if (doc) {
@@ -1143,7 +1149,7 @@ refs and listeners for that Editor UI).</p>
                 return promise;
             }
 
-            var file            = FileSystem.getFileForPath(fullPath),
+            var file            = fileObj || FileSystem.getFileForPath(fullPath),
                 pendingPromise  = getDocumentForPath._pendingDocumentPromises[file.id];
 
             if (pendingPromise) {

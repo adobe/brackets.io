@@ -1002,6 +1002,7 @@ is not a range after expansion.</p>
 
     function _launchFind() {
         var editor = EditorManager.getActiveEditor();
+
         if (editor) {
             &#x2F;&#x2F; Create a new instance of the search bar UI
             clearSearch(editor._codeMirror);
@@ -1138,6 +1139,7 @@ is not a range after expansion.</p>
         if (!primary) {
             primary = _.last(selections);
         }
+
         editor._codeMirror.scrollIntoView({from: primary.start, to: primary.end});
         editor.setSelections(selections, center, centerOptions);
     }</code></pre></div><div class="member private">
@@ -1310,12 +1312,12 @@ next/prev result (depending on &#39;searchBackwards&#39;)</p>
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doSearch(editor, searchBackwards) {
         var state = getSearchState(editor._codeMirror);
+
         if (state.parsedQuery) {
             findNext(editor, searchBackwards);
-            return;
+        } else {
+            openSearchBar(editor, false);
         }
-
-        openSearchBar(editor, false);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1446,6 +1448,8 @@ the first matching result, starting from the original cursor position.</p>
             &#x2F;&#x2F; Blank or invalid query: just jump back to initial pos
             editor._codeMirror.setCursor(state.searchStartPos);
         }
+
+        editor.lastParsedQuery = state.parsedQuery;
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -1489,6 +1493,9 @@ the first matching result, starting from the original cursor position.</p>
 
         &#x2F;&#x2F; Prepopulate the search field
         var initialQuery = FindBar.getInitialQuery(findBar, editor);
+        if (initialQuery.query === &quot;&quot; &amp;&amp; editor.lastParsedQuery !== &quot;&quot;) {
+            initialQuery.query = editor.lastParsedQuery;
+        }
 
         &#x2F;&#x2F; Close our previous find bar, if any. (The open() of the new findBar will
         &#x2F;&#x2F; take care of closing any other find bar instances.)
@@ -1514,6 +1521,7 @@ the first matching result, starting from the original cursor position.</p>
                 findNext(editor, searchBackwards);
             })
             .on(&quot;close.FindReplace&quot;, function (e) {
+                editor.lastParsedQuery = state.parsedQuery;
                 &#x2F;&#x2F; Clear highlights but leave search state in place so Find Next&#x2F;Previous work after closing
                 clearHighlights(cm, state);
 

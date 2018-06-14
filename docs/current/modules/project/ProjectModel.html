@@ -565,8 +565,7 @@
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">
-    var _illegalFilenamesRegEx = &#x2F;^(\.+|com[1-9]|lpt[1-9]|nul|con|prn|aux|)$|\.+$&#x2F;i;</code></pre></div><div class="member private public">
+<pre class="code language-javascript"><code class="language-javascript">    var _illegalFilenamesRegEx = &#x2F;((\b(com[0-9]+|lpt[0-9]+|nul|con|prn|aux)\b)|\.+$|\&#x2F;+|\\+|\:)&#x2F;i;</code></pre></div><div class="member private public">
 
 <span class="pull-right scope">
     Private
@@ -583,7 +582,7 @@
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var _invalidChars;</code></pre></div><div class="member public">
+<pre class="code language-javascript"><code class="language-javascript">    var _invalidChars = &#x2F;([?\*\|\&lt;\&gt;&quot;]+|\&#x2F;{2,}|\.{2,}|\.$)&#x2F;i;</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
     
@@ -847,25 +846,17 @@ or the one for the current build.</p>
         return welcomeProjects.indexOf(pathNoSlash) !== -1;
     }
 
-    &#x2F;&#x2F; Init invalid characters string
-    if (brackets.platform === &quot;mac&quot;) {
-        _invalidChars = &quot;?*|:&#x2F;&quot;;
-    } else if (brackets.platform === &quot;linux&quot;) {
-        _invalidChars = &quot;?*|&#x2F;&quot;;
-    } else {
-        _invalidChars = &quot;&#x2F;?*:&lt;&gt;\\|\&quot;&quot;;  &#x2F;&#x2F; invalid characters on Windows
-    }
-
     exports._getWelcomeProjectPath  = _getWelcomeProjectPath;
     exports._addWelcomeProjectPath  = _addWelcomeProjectPath;
     exports._isWelcomeProjectPath   = _isWelcomeProjectPath;
     exports._ensureTrailingSlash    = _ensureTrailingSlash;
     exports._shouldShowName         = _shouldShowName;
-    exports._invalidChars           = _invalidChars;
+    exports._invalidChars           = &quot;? * | : &#x2F; &lt; &gt; \\ | \&quot; ..&quot;;
 
     exports.shouldShow              = shouldShow;
     exports.defaultIgnoreGlobs      = defaultIgnoreGlobs;
     exports.isValidFilename         = isValidFilename;
+    exports.isValidPath             = isValidPath;
     exports.EVENT_CHANGE            = EVENT_CHANGE;
     exports.EVENT_SHOULD_SELECT     = EVENT_SHOULD_SELECT;
     exports.EVENT_SHOULD_FOCUS      = EVENT_SHOULD_FOCUS;
@@ -951,7 +942,7 @@ and send notifications about the rename.</p>
 
         if (oldPath === newPath) {
             result.resolve();
-        } else if (!isValidFilename(newName, _invalidChars)) {
+        } else if (!isValidFilename(newName)) {
             result.reject(ERROR_INVALID_FILENAME);
         } else {
             var entry = isFolder ? FileSystem.getDirectoryForPath(oldPath) : FileSystem.getFileForPath(oldPath);
@@ -1023,9 +1014,16 @@ is invalid, the new path already exists or some other filesystem error comes up.
 <dl><button class="btn btn-small show-code">Show code</button>
 <pre class="code language-javascript"><code class="language-javascript">    function doCreate(path, isFolder) {
         var d = new $.Deferred();
+        var filename = FileUtils.getBaseName(path);
 
-        var name = FileUtils.getBaseName(path);
-        if (!isValidFilename(name, _invalidChars)) {
+        &#x2F;&#x2F; Check if filename
+        if (!isValidFilename(filename)){
+            return d.reject(ERROR_INVALID_FILENAME).promise();
+        }
+
+        &#x2F;&#x2F; Check if fullpath with filename is valid
+        &#x2F;&#x2F; This check is used to circumvent directory jumps (Like ..&#x2F;..)
+        if (!isValidPath(path)) {
             return d.reject(ERROR_INVALID_FILENAME).promise();
         }
 
@@ -1068,7 +1066,8 @@ is invalid, the new path already exists or some other filesystem error comes up.
     </h4>
 
     
-    <div class="description"><p>Returns true if this matches valid filename specifications.</p>
+    <div class="description"><p>Returns true if this matches valid filename specifications.
+See <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx</a></p>
 <p>TODO: This likely belongs in FileUtils.</p>
 </div>
     
@@ -1078,25 +1077,49 @@ is invalid, the new path already exists or some other filesystem error comes up.
         <span class="label label-info">string</span>
     </dt>
     <dd>to check</dd>
-    <dt>
-        invalidChars
-        <span class="label label-info">string</span>
-    </dt>
-    <dd>List of characters that are disallowed</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">boolean</span></dt>
     <dd>true if the filename is valid</dd>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    function isValidFilename(filename, invalidChars) {
-        &#x2F;&#x2F; Validate file name
-        &#x2F;&#x2F; Checks for valid Windows filenames:
-        &#x2F;&#x2F; See http:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;library&#x2F;windows&#x2F;desktop&#x2F;aa365247(v=vs.85).aspx
+<pre class="code language-javascript"><code class="language-javascript">    function isValidFilename(filename) {
+        &#x2F;&#x2F; Fix issue adobe#13099
+        &#x2F;&#x2F; See https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;13099
         return !(
-            new RegExp(&quot;[&quot; + invalidChars + &quot;]+&quot;).test(filename) ||
-            _illegalFilenamesRegEx.test(filename)
+            filename.match(_invalidChars)|| filename.match(_illegalFilenamesRegEx)
         );
+    }</code></pre></div><div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        isValidPath 
+        <a class="anchor" href="#-isValidPath" id="-isValidPath"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Returns true if given path is valid.</p>
+</div>
+    
+<dl>
+    <dt>
+        path
+        <span class="label label-info">string</span>
+    </dt>
+    <dd>to check</dd>
+</dl><dl>
+    <dt>Returns: <span class="label label-info">boolean</span></dt>
+    <dd>true if the filename is valid</dd>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function isValidPath(path) {
+        &#x2F;&#x2F; Fix issue adobe#13099
+        &#x2F;&#x2F; See https:&#x2F;&#x2F;github.com&#x2F;adobe&#x2F;brackets&#x2F;issues&#x2F;13099
+        return !(path.match(_invalidChars));
     }</code></pre></div><div class="member public">
 
 <span class="pull-right scope">
@@ -2048,17 +2071,17 @@ Does not support paths containing &quot;..&quot;</p>
             &#x2F;&#x2F; To get the parent directory, we need to strip off the trailing slash on a directory name
             parentDirectory = FileUtils.getDirectoryPath(isFolder ? FileUtils.stripTrailingSlash(oldPath) : oldPath),
             oldName         = FileUtils.getBaseName(oldPath),
-            newName         = renameInfo.newName,
-            newPath         = parentDirectory + newName,
+            newPath         = renameInfo.newPath,
+            newName         = FileUtils.getBaseName(newPath),
             viewModel       = this._viewModel,
             self            = this;
 
-        if (renameInfo.type !== FILE_CREATING &amp;&amp; oldName === newName) {
+        if (renameInfo.type !== FILE_CREATING &amp;&amp; oldPath === newPath) {
             this.cancelRename();
             return;
         }
 
-        if (isFolder) {
+        if (isFolder &amp;&amp; _.last(newPath) !== &quot;&#x2F;&quot;) {
             newPath += &quot;&#x2F;&quot;;
         }
 
@@ -2070,9 +2093,10 @@ Does not support paths containing &quot;..&quot;</p>
         viewModel.moveMarker(&quot;creating&quot;, oldProjectPath, null);
 
         function finalizeRename() {
-            viewModel.renameItem(oldProjectPath, newName);
+            viewModel.renameItem(oldProjectPath, self.makeProjectRelativeIfPossible(newPath));
             if (self._selections.selected &amp;&amp; self._selections.selected.indexOf(oldPath) === 0) {
                 self._selections.selected = newPath + self._selections.selected.slice(oldPath.length);
+                self.setCurrentFile(newPath);
             }
         }
 
@@ -2551,19 +2575,19 @@ to <code>startRename</code>).</p>
     
 <dl>
     <dt>
-        name
+        newPath
         <span class="label label-info">string</span>
     </dt>
-    <dd>new name for the file or directory being renamed</dd>
+    <dd>new path for the file or directory being renamed</dd>
 </dl><dl>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.setRenameValue = function (name) {
+<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.setRenameValue = function (newPath) {
         if (!this._selections.rename) {
             return;
         }
-        this._selections.rename.newName = name;
+        this._selections.rename.newPath = newPath;
     };</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2857,13 +2881,19 @@ not provided, the current context is used.</p>
         <span class="label label-info">string</span>
     </dt>
     <dd>optional path to start renaming</dd>
+    <dt>
+        isMoved
+        <span class="label label-optional">optional</span>
+        <span class="label label-info">boolean</span>
+    </dt>
+    <dd>optional flag which indicates whether the entry is being moved instead of renamed</dd>
 </dl><dl>
     <dt>Returns: <span class="label label-info">$.Promise</span></dt>
     <dd>resolved when the operation is complete.</dd>
 </dl><dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.startRename = function (path) {
+<pre class="code language-javascript"><code class="language-javascript">    ProjectModel.prototype.startRename = function (path, isMoved) {
         var d = new $.Deferred();
         path = _getPathFromFSObject(path);
         if (!path) {
@@ -2874,7 +2904,7 @@ not provided, the current context is used.</p>
         }
 
         if (this._selections.rename &amp;&amp; this._selections.rename.path === path) {
-            return;
+            return d.resolve().promise();
         }
 
         if (!this.isWithinProject(path)) {
@@ -2891,19 +2921,21 @@ not provided, the current context is used.</p>
             this.showInTree(path);
         }
 
-        if (path !== this._selections.context) {
-            this.setContext(path);
-        } else {
-            this.performRename();
-        }
+        if (!isMoved) {
+            if (path !== this._selections.context) {
+                this.setContext(path);
+            } else {
+                this.performRename();
+            }
 
-        this._viewModel.moveMarker(&quot;rename&quot;, null,
-                                   projectRelativePath);
+            this._viewModel.moveMarker(&quot;rename&quot;, null,
+                projectRelativePath);
+        }
         this._selections.rename = {
             deferred: d,
             type: FILE_RENAMING,
             path: path,
-            newName: FileUtils.getBaseName(path)
+            newPath: path
         };
         return d.promise();
     };</code></pre></div><div class="member">
