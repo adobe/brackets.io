@@ -518,6 +518,7 @@
         <li><a href="..&#x2F;../modules/widgets/Dialogs.html">Dialogs</a></li>
         <li><a href="..&#x2F;../modules/document/DocumentManager.html">DocumentManager</a></li>
         <li><a href="..&#x2F;../modules/editor/EditorManager.html">EditorManager</a></li>
+        <li><a href="..&#x2F;../modules/utils/EventDispatcher.html">EventDispatcher</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystem.html">FileSystem</a></li>
         <li><a href="..&#x2F;../modules/filesystem/FileSystemError.html">FileSystemError</a></li>
         <li><a href="..&#x2F;../modules/file/FileUtils.html">FileUtils</a></li>
@@ -549,7 +550,25 @@
     <input class="toggle-public" type="checkbox"> Show Private Members
 </label>    </h3>
 
-<div class="member">
+<div class="member public">
+
+<span class="pull-right scope">
+    
+    Public API
+</span>
+    <h4>
+        APP_QUIT_CANCELLED 
+        <a class="anchor" href="#-APP_QUIT_CANCELLED" id="-APP_QUIT_CANCELLED"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Event triggered when File Save is cancelled, when prompted to save dirty files</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    var APP_QUIT_CANCELLED = &quot;appQuitCancelled&quot;;</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -571,7 +590,8 @@
 
     PreferencesManager.definePreference(&quot;defaultExtension&quot;, &quot;string&quot;, &quot;&quot;, {
         excludeFromHints: true
-    });</code></pre></div><div class="member">
+    });
+    EventDispatcher.makeEventDispatcher(exports);</code></pre></div><div class="member">
 
 <span class="pull-right scope">
     
@@ -903,7 +923,47 @@ file creation call is outstanding</p>
 <dl>
 </dl><dl>
 <dl><button class="btn btn-small show-code">Show code</button>
-<pre class="code language-javascript"><code class="language-javascript">    var handleReloadWithoutExts = _.partial(handleReload, true);</code></pre></div>
+<pre class="code language-javascript"><code class="language-javascript">    var handleReloadWithoutExts = _.partial(handleReload, true);</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        isTestWindow 
+        <a class="anchor" href="#-isTestWindow" id="-isTestWindow"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Attach a beforeunload handler to notify user about unsaved changes and URL redirection in CEF.
+Prevents data loss in scenario reported under #13708
+Make sure we don&#39;t attach this handler if the current window is actually a test window</p>
+</div>
+    
+<dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">
+    var isTestWindow = (new window.URLSearchParams(window.location.search || &quot;&quot;)).get(&quot;testEnvironment&quot;);
+    if (!isTestWindow) {
+        window.onbeforeunload = function(e) {
+            var openDocs = DocumentManager.getAllOpenDocuments();
+
+            &#x2F;&#x2F; Detect any unsaved changes
+            openDocs = openDocs.filter(function(doc) {
+                return doc &amp;&amp; doc.isDirty;
+            });
+
+            &#x2F;&#x2F; Ensure we are not in normal app-quit or reload workflow
+            if (!_isReloading &amp;&amp; !_windowGoingAway) {
+                if (openDocs.length &gt; 0) {
+                    return Strings.WINDOW_UNLOAD_WARNING_WITH_UNSAVED_CHANGES;
+                } else {
+                    return Strings.WINDOW_UNLOAD_WARNING;
+                }
+            }
+        };
+    }</code></pre></div>
 </section>
 
 <section id="functions">
@@ -1004,6 +1064,7 @@ file creation call is outstanding</p>
             )
                 .done(function (id) {
                     if (id === Dialogs.DIALOG_BTN_CANCEL) {
+                        dispatchAppQuitCancelledEvent();
                         result.reject();
                     } else if (id === Dialogs.DIALOG_BTN_OK) {
                         &#x2F;&#x2F; Save all unsaved files, then if that succeeds, close all
@@ -1510,6 +1571,7 @@ When saving to the original document the document is saved as if save was called
                     if (selectedPath) {
                         _doSaveAfterSaveDialog(selectedPath);
                     } else {
+                        dispatchAppQuitCancelledEvent();
                         result.reject(USER_CANCELED);
                     }
                 } else {
@@ -1914,7 +1976,9 @@ Promise is immediately rejected.</p>
 <pre class="code language-javascript"><code class="language-javascript">    function _updateTitle() {
         var currentDoc          = DocumentManager.getCurrentDocument(),
             windowTitle         = brackets.config.app_title,
-            currentlyViewedPath = MainViewManager.getCurrentlyViewedPath(MainViewManager.ACTIVE_PANE);
+            currentlyViewedFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
+            currentlyViewedPath = currentlyViewedFile &amp;&amp; currentlyViewedFile.fullPath,
+            readOnlyString      = (currentlyViewedFile &amp;&amp; currentlyViewedFile.readOnly) ? &quot;[Read Only] - &quot; : &quot;&quot;;
 
         if (!brackets.nativeMenus) {
             if (currentlyViewedPath) {
@@ -1954,7 +2018,7 @@ Promise is immediately rejected.</p>
             var projectName = projectRoot.name;
             &#x2F;&#x2F; Construct shell&#x2F;browser window title, e.g. &quot;• index.html (myProject) — Brackets&quot;
             if (currentlyViewedPath) {
-                windowTitle = StringUtils.format(WINDOW_TITLE_STRING_DOC, _currentTitlePath, projectName, brackets.config.app_title);
+                windowTitle = StringUtils.format(WINDOW_TITLE_STRING_DOC, readOnlyString + _currentTitlePath, projectName, brackets.config.app_title);
                 &#x2F;&#x2F; Display dirty dot when there are unsaved changes
                 if (currentDoc &amp;&amp; currentDoc.isDirty) {
                     windowTitle = &quot;• &quot; + windowTitle;
@@ -2061,6 +2125,28 @@ never get further down the list.</p>
             _addedNavKeyHandler = false;
             $(window.document.body).off(&quot;keyup&quot;, detectDocumentNavEnd);
         }
+    }</code></pre></div><div class="member">
+
+<span class="pull-right scope">
+    
+    
+</span>
+    <h4>
+        dispatchAppQuitCancelledEvent 
+        <a class="anchor" href="#-dispatchAppQuitCancelledEvent" id="-dispatchAppQuitCancelledEvent"><span class="icon-link"></span></a>
+    </h4>
+
+    
+    <div class="description"><p>Dispatches the app quit cancelled event</p>
+</div>
+    
+<dl>
+</dl><dl>
+</dl><dl>
+</dl><dl>
+<dl><button class="btn btn-small show-code">Show code</button>
+<pre class="code language-javascript"><code class="language-javascript">    function dispatchAppQuitCancelledEvent() {
+        exports.trigger(exports.APP_QUIT_CANCELLED);
     }</code></pre></div><div class="member">
 
 <span class="pull-right scope">
@@ -2570,6 +2656,7 @@ is open. Prompts user about saving changes first, if document is dirty.</p>
             )
                 .done(function (id) {
                     if (id === Dialogs.DIALOG_BTN_CANCEL) {
+                        dispatchAppQuitCancelledEvent();
                         result.reject();
                     } else if (id === Dialogs.DIALOG_BTN_OK) {
                         &#x2F;&#x2F; &quot;Save&quot; case: wait until we confirm save has succeeded before closing

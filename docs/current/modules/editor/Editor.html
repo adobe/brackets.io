@@ -643,6 +643,8 @@ Documents, not Editors.</p>
         UPPERCASE_COLORS    = &quot;uppercaseColors&quot;,
         USE_TAB_CHAR        = &quot;useTabChar&quot;,
         WORD_WRAP           = &quot;wordWrap&quot;,
+        AUTO_HIDE_SEARCH    = &quot;autoHideSearch&quot;,
+        INDENT_LINE_COMMENT   = &quot;indentLineComment&quot;,
         INDENT_LINE_COMMENT = &quot;indentLineComment&quot;,
         INPUT_STYLE         = &quot;inputStyle&quot;;</code></pre></div><div class="member">
 
@@ -777,6 +779,11 @@ Documents, not Editors.</p>
     PreferencesManager.definePreference(WORD_WRAP,          &quot;boolean&quot;, true, {
         description: Strings.DESCRIPTION_WORD_WRAP
     });
+  
+    PreferencesManager.definePreference(AUTO_HIDE_SEARCH,   &quot;boolean&quot;, true, {
+        description: Strings.DESCRIPTION_SEARCH_AUTOHIDE
+    });
+
     PreferencesManager.definePreference(INDENT_LINE_COMMENT,  &quot;boolean&quot;, false, {
         description: Strings.DESCRIPTION_INDENT_LINE_COMMENT
     });
@@ -1032,7 +1039,7 @@ Document modifiable.</p>
             <pre class="code language-javascript"><code class="language-javascript">    function Editor(document, makeMasterEditor, container, range, options) {
         var self = this;
 
-        var isReadOnly = options &amp;&amp; options.isReadOnly;
+        var isReadOnly = (options &amp;&amp; options.isReadOnly) || !document.editable;
 
         _instances.push(this);
 
