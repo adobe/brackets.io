@@ -459,8 +459,30 @@
         });
 
         $.when(ajaxRequest, i18nLoaded).done(function (data) {
-            var build = data[0][0],
-                buildName = build.versionString;
+            var allBuilds = data[0],
+                build = data[0][0]; // default initialization with latest build
+
+            // Find the applicable build for current platform
+            // If current platform is unsupported (OTHERS), then take the last common release
+            // If a build entry doesn't have 'platforms' key -> Older format for all supported OS
+            for (var buildIndex = 0; buildIndex < allBuilds.length; buildIndex++) {
+                build = allBuilds[buildIndex];
+                if (!build.platforms) { // Older format detected - Applicable to all platforms
+                    break;
+                } else {
+                    if (OS === "OTHER") { // Unsupported platform detected
+                        if (Object.keys(build.platforms).length == 4) {
+                            break;
+                        }
+                    } else { // Current platform is one of the supported platforms
+                        if (build.platforms[OS]) { // Build applicable to current platform
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var buildName = build.versionString;
 
             if (buildName) {
                 var buildNum = buildName.match(/([\d.]+)/);
@@ -470,11 +492,16 @@
 
                 // update button
                 if (OS !== "OTHER" && buildNum) {
-                    var tag = buildName.toLowerCase().split(" ").join("-"),
+                    var url;
+                    if (build.platforms && build.platforms[OS]) { // Fetch download url from platform entry
+                        url = build.platforms[OS].downloadURL;
+                    } else { // Generate the download URI
+                        var tag = buildName.toLowerCase().split(" ").join("-");
                         url = "https://github.com/adobe/brackets/releases/" + tag;
 
-                    if (ext) {
-                        url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+                        if (ext) {
+                            url = "https://github.com/adobe/brackets/releases/download/" + tag + "/Brackets." + buildName.split(" ").join(".") + ext;
+                        }
                     }
 
                     $("#download-brackets-version").text(buildNum);
