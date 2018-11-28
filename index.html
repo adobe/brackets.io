@@ -470,12 +470,10 @@
                 if (!build.platforms) { // Older format detected - Applicable to all platforms
                     break;
                 } else {
-                    if (OS === "OTHER") { // Unsupported platform detected
-                        if (Object.keys(build.platforms).length == 4) {
-                            break;
-                        }
-                    } else { // Current platform is one of the supported platforms
-                        if (build.platforms[OS]) { // Build applicable to current platform
+                    if (build.platforms[OS]) { // Current platform is one of the supported platforms
+                        break;
+                    } else if (OS == "OTHER") { // Unsupported platform detected
+                        if (Object.keys(build.platforms).length == 4) { // Build applicable for all platforms
                             break;
                         }
                     }
