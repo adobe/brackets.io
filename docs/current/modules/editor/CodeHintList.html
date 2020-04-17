@@ -51,7 +51,7 @@
       <div class="row-fluid">
         <div class="span3">
           <div class="left-section">
-            <h2 class="number-of-modules">Modules (188)</h2>
+            <h2 class="number-of-modules">Modules (207)</h2>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
                 <a href="javascript:;" class="toggle-package" data-package="package_"><i class="icon-folder-open"></i>[root]</a>
@@ -121,6 +121,17 @@
               <li><a href="../../modules/extensibility/InstallExtensionDialog.html">InstallExtensionDialog</a></li>
               <li><a href="../../modules/extensibility/Package.html">Package</a></li>
               <li><a href="../../modules/extensibility/registry_utils.html">registry_utils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_features"><i class="icon-folder-open"></i>features</a>
+              </li>
+            </ul>
+            <ul id="package_features" class="nav nav-list">
+              <li><a href="../../modules/features/FindReferencesManager.html">FindReferencesManager</a></li>
+              <li><a href="../../modules/features/JumpToDefManager.html">JumpToDefManager</a></li>
+              <li><a href="../../modules/features/ParameterHintsManager.html">ParameterHintsManager</a></li>
+              <li><a href="../../modules/features/PriorityBasedRegistration.html">PriorityBasedRegistration</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -210,6 +221,41 @@
               <li><a href="../../modules/language/JSUtils.html">JSUtils</a></li>
               <li><a href="../../modules/language/LanguageManager.html">LanguageManager</a></li>
               <li><a href="../../modules/language/XMLUtils.html">XMLUtils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_languageTools"><i class="icon-folder-open"></i>languageTools</a>
+              </li>
+            </ul>
+            <ul id="package_languageTools" class="nav nav-list">
+              <li><a href="../../modules/languageTools/BracketsToNodeInterface.html">BracketsToNodeInterface</a></li>
+              <li><a href="../../modules/languageTools/ClientLoader.html">ClientLoader</a></li>
+              <li><a href="../../modules/languageTools/DefaultEventHandlers.html">DefaultEventHandlers</a></li>
+              <li><a href="../../modules/languageTools/DefaultProviders.html">DefaultProviders</a></li>
+              <li><a href="../../modules/languageTools/LanguageClientWrapper.html">LanguageClientWrapper</a></li>
+              <li><a href="../../modules/languageTools/LanguageTools.html">LanguageTools</a></li>
+              <li><a href="../../modules/languageTools/PathConverters.html">PathConverters</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_languageTools_LanguageClient"><i class="icon-folder-open"></i>languageTools&#x2F;LanguageClient</a>
+              </li>
+            </ul>
+            <ul id="package_languageTools_LanguageClient" class="nav nav-list">
+              <li><a href="../../modules/languageTools/LanguageClient/Connection.html">Connection</a></li>
+              <li><a href="../../modules/languageTools/LanguageClient/LanguageClient.html">LanguageClient</a></li>
+              <li><a href="../../modules/languageTools/LanguageClient/NodeToBracketsInterface.html">NodeToBracketsInterface</a></li>
+              <li><a href="../../modules/languageTools/LanguageClient/ProtocolAdapter.html">ProtocolAdapter</a></li>
+              <li><a href="../../modules/languageTools/LanguageClient/ServerUtils.html">ServerUtils</a></li>
+              <li><a href="../../modules/languageTools/LanguageClient/Utils.html">Utils</a></li>
+            </ul>
+            <ul class="nav nav-list package-list">
+              <li class="nav-header">
+                <a href="javascript:;" class="toggle-package" data-package="package_languageTools_node"><i class="icon-folder-open"></i>languageTools&#x2F;node</a>
+              </li>
+            </ul>
+            <ul id="package_languageTools_node" class="nav nav-list">
+              <li><a href="../../modules/languageTools/node/RegisterLanguageClientInfo.html">RegisterLanguageClientInfo</a></li>
             </ul>
             <ul class="nav nav-list package-list">
               <li class="nav-header">
@@ -487,6 +533,7 @@
               <li><a href="../../modules/widgets/DefaultDialogs.html">DefaultDialogs</a></li>
               <li><a href="../../modules/widgets/Dialogs.html">Dialogs</a></li>
               <li><a href="../../modules/widgets/DropdownButton.html">DropdownButton</a></li>
+              <li><a href="../../modules/widgets/infobar.html">infobar</a></li>
               <li><a href="../../modules/widgets/InlineMenu.html">InlineMenu</a></li>
               <li><a href="../../modules/widgets/ModalBar.html">ModalBar</a></li>
               <li><a href="../../modules/widgets/PopUpManager.html">PopUpManager</a></li>
@@ -593,6 +640,7 @@
 
         this.hints = hintObj.hints;
         this.hints.handleWideResults = hintObj.handleWideResults;
+        this.enableDescription = hintObj.enableDescription;
 
         &#x2F;&#x2F; if there is no match, assume name is already a formatted jQuery
         &#x2F;&#x2F; object; otherwise, use match to format name for display.
@@ -667,6 +715,13 @@
             &#x2F;&#x2F; attach to DOM
             $parent.append($ul);
 
+            &#x2F;&#x2F; If a a description field requested attach one
+            if (this.enableDescription) {
+                &#x2F;&#x2F; Remove the desc element first to ensure DOM order
+                $parent.find(&quot;#codehint-desc&quot;).remove();
+                $parent.append(&quot;&lt;div id=&#39;codehint-desc&#39; class=&#39;dropdown-menu quiet-scrollbars&#39;&gt;&lt;&#x2F;div&gt;&quot;);
+                $ul.addClass(&quot;withDesc&quot;);
+            }
             this._setSelectedIndex(selectInitial ? 0 : -1);
         }
     };</code></pre></div><div class="member private">
@@ -699,7 +754,9 @@ Also computes the largest available width.</p>
             textHeight  = this.editor.getTextHeight(),
             $window     = $(window),
             $menuWindow = this.$hintMenu.children(&quot;ul&quot;),
-            menuHeight  = $menuWindow.outerHeight();
+            $descElement = this.$hintMenu.find(&quot;#codehint-desc&quot;),
+            descOverhang = $descElement.length === 1 ? $descElement.height() : 0,
+            menuHeight  = $menuWindow.outerHeight() + descOverhang;
 
         &#x2F;&#x2F; TODO Ty: factor out menu repositioning logic so code hints and Context menus share code
         &#x2F;&#x2F; adjust positioning so menu is not clipped off bottom or right
@@ -719,6 +776,13 @@ Also computes the largest available width.</p>
             &#x2F;&#x2F; Right overhang is negative
             availableWidth = menuWidth + Math.abs(rightOverhang);
         }
+
+        &#x2F;&#x2F;Creating the offset element for hint description element
+        var descOffset = this.$hintMenu.find(&quot;ul.dropdown-menu&quot;)[0].getBoundingClientRect().height;
+        if (descOffset === 0) {
+            descOffset = menuHeight - descOverhang;
+        }
+        this.$hintMenu.find(&quot;#codehint-desc&quot;).css(&quot;margin-top&quot;, descOffset - 1);
 
         return {left: posLeft, top: posTop, width: availableWidth};
     };</code></pre></div><div class="member private">
@@ -924,7 +988,7 @@ selection if index &lt; 0.</p>
             ViewUtils.scrollElementIntoView($view, $item, false);
 
             if (this.handleHighlight) {
-                this.handleHighlight($item.find(&quot;a&quot;));
+                this.handleHighlight($item.find(&quot;a&quot;), this.$hintMenu.find(&quot;#codehint-desc&quot;));
             }
         }
     };</code></pre></div><div class="member">
